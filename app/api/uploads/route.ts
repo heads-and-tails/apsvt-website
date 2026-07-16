@@ -1,0 +1,6 @@
+import { env } from "cloudflare:workers";
+import { NextResponse } from "next/server";
+import { requirePublisher } from "@/lib/auth";
+
+const allowed=new Set(["image/jpeg","image/png","image/webp"]);const maxSize=8*1024*1024;
+export async function POST(request:Request){try{await requirePublisher();const data=await request.formData();const file=data.get("file");if(!(file instanceof File))return NextResponse.json({error:"Оберіть файл"},{status:400});if(!allowed.has(file.type))return NextResponse.json({error:"Підтримуються JPG, PNG і WebP"},{status:400});if(file.size>maxSize)return NextResponse.json({error:"Фото має бути менше 8 МБ"},{status:400});if(!env.MEDIA)return NextResponse.json({error:"Сховище фото недоступне"},{status:503});const extension=file.type==="image/png"?"png":file.type==="image/webp"?"webp":"jpg";const key=`articles/${new Date().toISOString().slice(0,10)}/${crypto.randomUUID()}.${extension}`;await env.MEDIA.put(key,file.stream(),{httpMetadata:{contentType:file.type,cacheControl:"public, max-age=31536000, immutable"},customMetadata:{uploadedBy:"vportnaia@kse.org.ua"}});return NextResponse.json({url:`/media/${key}`})}catch{return NextResponse.json({error:"Доступ заборонено"},{status:403})}}
