@@ -1,0 +1,1472 @@
+Title: Visnyk_2_2019-66-84.pdf
+
+URL Source: http://www.socosvita.kiev.ua/sites/default/files/Visnyk_2_2019-66-84.pdf
+
+Published Time: Sat, 22 Jun 2019 07:40:17 GMT
+
+Number of Pages: 19
+
+Markdown Content:
+66 
+
+# ДОСЛІДЖЕННЯ 
+
+# СФЕРИ ОХОРОНИ ЗДОРОВ’Я 
+
+Tetyana Semigina 
+
+Dr. in Political Science, Vice-Rector for Research, Academy of Labour, Social Sciences and Tourism 
+
+Тетяна Семигіна 
+
+доктор політ. наук, проректор з наукової роботи Академії праці соціальних відносин і туризму 
+
+orcid.org/0000-0001-5677-1785 
+
+semigina.tv@socosvita.kiev.ua 
+
+Tetiana Stepurko 
+
+PhD in Healthcare Management, Associate Professor, School of Public Health, National University of Kyiv-
+
+Mohyla Academy 
+
+Тетяна Степурко 
+
+доктор філософії в управлінні в охороні здоров’я, доцент Школи охорони здоров’я 
+
+Національного університету «Києво-Могилянська академія» 
+
+orcid.org/0000-0001-8267-1585 
+
+stepurko@ukma.edu.ua 
+
+Victoriia Tymoshevska 
+
+Director of Public Health Program Initiative, International Renaissance Foundation 
+
+Вікторія Тимошевська 
+
+директорка Програмної ініціативи “Громадське здоров’я” Міжнародного фонду “Відродження” 
+
+DOI 10.33287/11206 
+
+УДК 346.614(477) 
+
+# PRIMARY HEALTH CARE REFORM IN UKRAINE: RESULTS OF THE NATION-WIDE 
+
+# SURVEY “HEALTH INDEX.UKRAINE” 
+
+# РЕФОРМА ПЕРВИННОЇ МЕДИЧНОЇ ДОПОМОГИ В УКРАЇНІ: РЕЗУЛЬТАТИ 
+
+# ЗАГАЛЬНОНАЦІОНАЛЬНОГО ОПИТУВАННЯ «ІНДЕКС ЗДОРОВ’Я. УКРАЇНА» 67 Вісник АПСВТ, 2019, № 2 
+
+## Key words: 
+
+health care reform, primary 
+
+health care, family doctor, 
+
+e-health, perception, 
+
+Ukraine. 
+
+## Ключові слова: 
+
+реформа охорони здоров’я, 
+
+первинна медична допомо -
+
+га, сімейний лікар, елек -
+
+тронна система охорони 
+
+здоров’я, сприйняття, 
+
+Україна. 
+
+> Інформація про рукопис
+> Надійшов до редакції:
+> 22.02.2019
+> Рецензований: 05.03.2019
+> Подано доопрацьовану
+> версію: 28.04.2019
+> Прийнятий до друку:
+> 13.05.2019
+
+## Abstract 
+
+This paper is aimed to present how people respond to some innovations 
+
+introduced within the Ukrainian health care system by legislation adopted in 
+
+2017. It is focused on issues of choosing family doctors and on perception of 
+
+e-health by population. 
+
+The survey “Health Index. Ukraine” has been launched in 2015 by the 
+
+International Renaissance Foundation, School of Public Health of National 
+
+University of Kyiv-Mohyla Academy and Kyiv International Institute of 
+
+Sociology. In 2018, the questions on primary health care reform (choosing 
+
+the primary health care provider, perception of e-health) were added to 
+
+the research instrument of “Health index. Ukraine”. This paper analyses 
+
+data collected in 2018 only, because the users’ experience of choosing family 
+
+doctor and perception of e-health variables are available for 2018 data 
+
+solely. The third wave of the survey took place in June - July 2018 and overall 
+
+10219 respondents were interviewed in Ukraine. 
+
+At the moment of the third wave of survey, 42% of respondents reported 
+
+that all their household members including themselves had their declarations 
+
+signed with family doctors, 5.8% reported that some of their household 
+
+members had their declarations signed, and 52.2% more informed that none 
+
+of their household members had his/her declaration signed. Households with 
+
+children were more active: 52% of them had their declarations signed with 
+
+doctors. 12.4% of household representatives reported that do not plan to 
+
+choose a family doctor. 59.5% of respondents reported that they did not 
+
+experience problems in the process of choosing a family doctor. 
+
+There is no significant difference in rates of declarations signing between 
+
+different type of areas, education levels, and health self-assessment status. 
+
+Regional difference in signing declarations (self-reported) by all household 
+
+members reaches up to 52.4%. 
+
+The survey results demonstrate that patients want their medical records 
+
+to be visible by different doctors (29.9%) and by patients themselves (28.9%), 
+
+and only 19.8% believe the e-health instrument is not necessary at all. Those 
+
+self-assessing their health as very bad or bad are three times more critical 
+
+about the electronic system as those self-assessing their health as very good. 
+
+## Анотація 
+
+Ця стаття має на меті представити, як люди реагують на деякі 
+
+нововведення в системі охорони здоров’я України, запроваджені ухва -
+
+леним у 2017 році законодавством. В статті розглядається досвід ви -
+
+бору сімейних лікарів та сприйняття населенням електронної системи 
+
+охорони здоров’я. 
+
+Опитування «Індекс здоров’я. Україна» було започатковане у
+
+2015 році Міжнародним фондом «Відродження», Школою охорони здо -
+
+ров’я Національного університету «Києво-Могилянська академія» та 
+
+Київським міжнародним інститутом соціології. У 2018 році до дослід -
+
+ницького інструменту «Індекс здоров’я» додано питання щодо реформи 
+
+первинної медичної допомоги (вибір лікаря первинної медичної допомо -
+
+ги, сприйняття електронної системи охорони здоров’я). У цій статті 
+
+аналізуються дані, зібрані лише у 2018 році, оскільки інформація щодо 68  
+
+> Tetyana Semigina et al.
+
+досвіду користувачів у виборі сімейного лікаря та сприйняття «електронно -
+
+го здоров’я» доступна виключно для даних 2018 року. Третя хвиля опитуван -
+
+ня відбулася у червні - липні 2018 року, в Україні було опитано 10219 осіб. 
+
+На момент проведення третьої хвилі опитування 42% респондентів, по -
+
+відомило, що всі члени домогосподарства, включно з опитуваними, мали під -
+
+писані декларації із сімейним лікарем, 5,8% сказало, що в їх домогосподарстві 
+
+частина осіб має підписані декларації і ще 52,2% поінформувало про те, що 
+
+жоден із членів домогосподарства не має такої декларації. Дещо активніши -
+
+ми виявилися ті домогосподарства, у складі яких є діти: 52% таких домогос -
+
+подарств мали декларації із сімейним лікарем у всіх його членів. Не планують 
+
+обирати сімейного лікаря 12,4% опитаних представників домогосподарств. 
+
+59,5% респондентів повідомили, що у них не виникало проблеми під час вибору 
+
+сімейного лікаря. 
+
+Принципових відмінностей у підписанні декларацій не виявлено серед 
+
+респондентів, що мешкають у поселеннях різного типу, мають різний рівень 
+
+освіти та доходу, оцінюють своє здоров’я певним чином. Регіональні розбіж -
+
+ності у підписанні декларацій всіма членами родини дорівнюють 52,4% для 
+
+всіх домогосподарств. 
+
+Результати дослідження засвідчують, що пацієнти хочуть, щоб їхні ме -
+
+дичні записи були доступні різним лікарям (29,9%) і самим пацієнтами (28,9%), 
+
+і лише 19,8% вважають, що електронна система охорони здоров’я не потріб -
+
+на взагалі. Ті, хто оцінюють своє здоров’я як «дуже погане» та «погане», на -
+
+лаштовані до електронної охорони здоров’я майже утричі критичніше, аніж 
+
+ті, хто вважає своє здоров’я «дуже добрим» 
+
+# Introduction 
+
+The primary health care plays a crucial role in provision of medical services. In many counties, up to 
+
+80% of financing for health care goes to this level of care, moreover family doctors and community nurses 
+
+perform gatekeeping functions and are involved not only in treatment, but in prevention interventions 
+
+(Baum, 2016). However, there is no an ideal model or system of such care, so the system changes in order to 
+
+achieve better quality and economic efficiency (Rechel, 2015). There are evidences that good primary care 
+
+enhance national health status at relatively low costs (Atun et al., 2015; Cheng et al., 2017). 
+
+The primary health care also plays a unique role in guarantying universal health coverage. International 
+
+organizations consider universal health coverage an important mechanism of social justice, which is defined 
+
+as an established list of services available to the population without any additional payment. Universal 
+
+coverage means that all people receive basic, needed healthcare services of the proper quality without the 
+
+risk of getting into financial difficulties. This concept involves sensitivity to the individual needs of each 
+
+patient; however such universal health coverage is also sometimes viewed as a standard list or a minimum 
+
+of the same medical services for everyone. The WHO recommendations suggest establishing a single pool 
+
+for medical purposes as the most effective mechanism for funding this package. WHO recommendations are 
+
+feasible for both small and large countries, since it is about the effective management of resources and 
+
+introduction of the mechanisms of financial security (WHO, 2012; WHO, 2013). 69 Вісник АПСВТ, 2019, № 2 
+
+In Ukraine, the current state of the healthcare system does not allow to fully ensure the right of 
+
+citizens to healthcare at the level defined by international standards and the laws of Ukraine (Oseychuk and 
+
+Semigina, 2017). Researches demonstrate that up to recent times the Ukrainian system of primary health 
+
+care, as well as the whole system of health care was not efficient and effective (Romaniuk and Semigina, 
+
+2018; Semigina and Mandrik, 2017; Stepurko, 2017; World Bank, 2015). Currently, in the Ukrainian healthcare 
+
+system, the tertiary level of care receives the majority of resources (Ministry of Health of Ukraine, 2017). 
+
+In 2014, Ministry of Health of Ukraine issued the National Strategy on Health Reform to speed up 
+
+the process of reforms in health sector in order to improve the quality and access to health care and to 
+
+ensure the mitigation of financial risks for population (Ministry of Health of Ukraine, 2105). In 2017, several 
+
+legislative documents were adopted (Verkhona Rada of Ukraine, 2017a; Verkhona Rada of Ukraine, 2017b). 
+
+These laws have introduced a new model of the financing of healthcare services. The start of a new system 
+
+on the primary level is scheduled for 2018, while the key elements of the reform will be introduced in 2019. 
+
+One of the core ideas of Ukrainian transition is that the existing budget line financing and maintenance 
+
+of the institutions (so-called «pay-per-bed» funding) will be substituted by a «money follows the patient» 
+
+principle. For primary health care, tt means that instead of funding specific health care facilities, the state 
+
+introduces per capita payment - the provider receives the payment for the number of patients referring to 
+
+the specific family doctor. So, each citizen has to sign a declaration with a family doctor (general practitioner, 
+
+pediatrician). Also, autonomous health care facilities only (private, municipal, individual enrepreneurs but 
+
+not state facilities) are receiving funds according to the new financing policy. Newly established National 
+
+Health Service of Ukraine (NSHU, a public agency responsible for contracting health service providers) is 
+
+paying directly to the providers according to the number of declarations. As a result, health care providers 
+
+have to manage their budgets under new - more flexible – regulations and the family doctors’ salary could 
+
+be higher in several times than before-the-reform one (Ministry of Health of Ukraine, 2105; Romaniuk and 
+
+Semigina, 2018; Stepurko, 2017). 
+
+The transition to a new healthcare procurement system is accompanied by the creation of a modern 
+
+platform for the collection and exchange of medical and financial information electronically (e-health). 
+
+The new electronic system makes it possible to implement the principle of «money follows the patient», 
+
+as well as to analyze the situation with the health of the population, in order to promptly develop an 
+
+optimal plan for the purchase of health services and spend money the most efficiently. This system opens 
+
+up the opportunity to create a «single medical space» (the coordination and integration between the levels 
+
+of health care, as well as the introduction of a new quality management system). A modern platform for 
+
+the collection and exchange of medical and financial information in electronic form has been essential 
+
+for transparent funding, including signing of patient declarations, electronic registers, electronic cards of 
+
+patients, etc. (Cabinet of Ministry of Ukraine, 2018). 
+
+It is expected that implementation of e-health system would make it impossible to sell counterfeit 
+
+prevenative check-ups’ certificates.Besides, as the reform started to roll out the key objective for primary 
+
+healthcare doctors was defined as provision of population with comprehensive and integrated services aimed 
+
+at meeting the need of people to restore and maintain their health, prevent diseases, improve quality of 
+
+life.That is why, in the nearest future situation with prevention and disease-related outcomes is expected 
+
+to improve. 
+
+The health care reform also foresees implementation of the “Affordable Medicines” programme (since 
+
+April 2019 administred by the NHSU), simple and transparent medicines procurement procedures, creating 
+
+an enabling environment for the exercise of healthcare powers by local governments etc. (Ministry of Health 
+
+of Ukraine, 2105). In 2018, the Ministry of Health together with partner organizations has started a reform 
+
+of subspecialist’, hospital and emergency care funding. A new funding mechanism is piloted to fund care 
+
+based on diagnosis-related groups. 70  
+
+> Tetyana Semigina et al.
+
+This paper is aimed to describe how people respond to some innovations introduced within the 
+
+Ukrainian health care system. It is focused on choosing family doctors and on perception of e-health by 
+
+population. The paper has been prepared from the perspectives of normative approach to policy-making 
+
+and consideration of health as a public good, for ensuring and the distribution of which the government is 
+
+responsible according to the egalitarian views on healthcare (Semigina, 2013). It is designed with regard 
+
+to the concept of health governance, paying special attention to transparency and other specific issues of 
+
+governance on different levels (Brinkerhoff and Bossert, 2008). 
+
+# Methods 
+
+The survey “Health Index. Ukraine” has been launched in 2015 by the International Renaissance 
+
+Foundation, School of Public Health of National University of Kyiv-Mohyla Academy and Kyiv International 
+
+Institute of Sociology. The first wave of data collection has been conducted in May - June, 2016. The 
+
+conceptual approach of the survey could be described as follows: “Health Index. Ukraine” is a longitudinal 
+
+quantitative empirical study which comprises both non-modifiable and flexible content parts. In particular, 
+
+such variables as satisfaction with various health care services, users’ experience with out- and in-patient 
+
+services, relevant to these services patients payments and some others are core part of the survey which 
+
+does not change through the years. Still, “Health Index. Ukraine” also devotes its attention to various topics 
+
+which are either widely discussed in the country or present health-related challenge. Thus, in 2017 we 
+
+studied people’s experience in case of high blood pressure and other cardiovascular conditions, while in 
+
+2018 the questions on primary health care reform (choosing the primary health care provider, perception of 
+
+e-health) were added to the research instrument of “Health index. Ukraine”. 
+
+Overall, “Health index. Ukraine” like Eurohealth consumer index (2017) compares experience of 
+
+health care users from different regions (in Eurohealth consumer index - EU countries, while in Ukrainian 
+
+Index - oblasts, or the regions of the country). Thus, the sample of the study is nationally and regionally 
+
+representative for adult population (18 years and older people who live in Ukraine). In details, the study 
+
+uses multi-stage sample, random at each stage. At the first stage of sample development in each oblast, 
+
+inhabited locations are randomly chosen proportionally to their population size. The second stage involves 
+
+randomization of areas on the territory of the chosen inhabited locations. On the territory of each chosen 
+
+area, streets, buildings and apartments are randomly selected. The last stage included choosing a respondent 
+
+within a household and actual interview. Field research was performed in 476 inhabited locations in Ukraine 
+
+(on territories, controlled by the government of Ukraine). The data obtained corresponds to estimated data 
+
+of State Statistics Service in terms of the share of individual sex-age groups within population of Ukraine 
+
+(as of January 1, 2017). Distribution of study respondents by key demographic characteristics corresponds 
+
+to the official population composition according to statistical data (State statistics committee of Ukraine, 
+
+2018). 
+
+Face-to-face interviews based on the structured questionnaire was the mode of data collection. 
+
+Research instrument was pre-tested by interviewing respondents in the city of Kyiv and several towns and 
+
+villages of Kyiv oblast in May, 2018. 
+
+This paper analyses data collected in 2018 only, because the users’ experience of choosing family 
+
+doctor and perception of e-health variables are available for 2018 data solely. Survey took place in June -
+
+July 2018 and overall 10219 respondents were interviewed in Ukraine. 
+
+In details, the paper analyses the variables on choosing family doctors (number of household members 
+
+who signed the declaration, reasons why the declaration is not signed, approaches for family doctor selection) 
+
+and on perception of e-health. The exact wording of these questions is presented in  Table 1 .71 Вісник АПСВТ, 2019, № 2  
+
+> Table 1. Wording of the questions used in the analysis
+
+# Wording of the question  Answer options 
+
+1 How many members of your household, individually 
+
+adults, including you and your children, already have 
+
+signed declarations with family doctor? 
+
+[question number in the research instrument: A20] 
+
+- indicate number of adults, 
+
+- number of children 
+
+2 Do you personally have such a signed declaration? If 
+
+not, did you try to sign it? [A21] 
+
+Answer options: 
+
+- Yes 
+
+- No, but I tried 
+
+- No, and I did not try 
+
+3.  Guided by what considerations did you choose / 
+
+plan to choose your family doctor? You can choose 2 
+
+answer options. [A22] 
+
+- This must necessarily be a doctor who once 
+
+treated me and to whom I trust 
+
+- This is the doctor advised to me (friends, 
+
+colleagues, etc.) 
+
+- This is my previous district doctor 
+
+- The doctor should have a cabinet located nearby 
+
+- Other (please specify) 
+
+- I do not plan to choose a doctor 
+
+4.  What problems did you encounter while choosing 
+
+a family doctor? Choose everything that suits you. 
+
+[A23] 
+
+- They did not want to accept a temporary 
+
+residence permit 
+
+- They did not want to accept my documents due 
+
+to the lack of registration 
+
+- Long queues 
+
+- We have no choice 
+
+- I did not choose a doctor - I was just said to give 
+
+a passport and sign a declaration 
+
+- My doctor could not register in the database 
+
+- Technical problems in a health care facility (lack 
+
+of computer, internet, etc.) 
+
+- Other issues (please specify) 
+
+- There were no problems 
+
+5.  Do you have an agreement with your family doctor or 
+
+nurse,the if necessary, you can ask for their advice 
+
+by phone, e-mail or some other online channels(for 
+
+example, Weber, Skype, etc.)? / All relevant to the 
+
+experience of respondent answers are accepted [A24] 
+
+- Yes, by phone 
+
+- Yes, by e-mail 
+
+- Yes, another channel (V iber, Skype, etc.) 
+
+- No 
+
+6.  The Ministry of Health plans to introduce an e-health 
+
+system in the coming years. What would be the most 
+
+important for you as a patient in such a service that 
+
+can provide access to your medical card in electronic 
+
+form? [A25] 
+
+- I will be able to see my entire history of the 
+
+disease and the record of doctors 
+
+- Any doctor to whom I apply will be able to see 
+
+the necessary records 
+
+- Confidentiality, that is, keeping the secret of my 
+
+health status 
+
+- Ability to get results of laboratory tests and 
+
+diagnostics online 
+
+- Ability to contact the doctor through the system 
+
+- Other (please specify) 
+
+- This service is not  needed 
+
+Among all interviewed, 54.9% were women, 45.1% — men (see Table 2). A quarter of all respondents 
+
+(26.7%) are 60+ years old. One third (30.5%) of respondents live in villages, the rest (69.5%) — in cities, towns 
+
+and urban-type settlements, that is similar to demographic characteristics of the previous wave’s samples 
+
+(of 2016 and 2017). Out of all respondents, 51.8% were employed, including 4.4% of self-employed, 1.4% 
+
+of employed pensioners. Unemployed population (the other half of the respondents) included pensioners 72  
+
+> Tetyana Semigina et al.
+
+(27.5%), unemployed (5.6%), housewives and other unemployed people not looking for a job (9.3%), students 
+
+(3.4%) and disabled people (2.1%). Average respondents’ household size was 2.9 persons.  
+
+> Table 2. Distribution of respondents by the key demographic characteristics
+
+Survey Questions 
+
+N = 10,194 
+
+Health Index Survey  National Data 
+
+N % %
+
+Age Groups 
+
+18–29  1,994  19.6  19.6 
+
+30–44  2,860  28.1  28.1 
+
+45–59  2,620  25.7  25.7 
+
+60 and older  2,719  26.7  26.7 
+
+Sex 
+
+Female  5,593  54.9  54.9 
+
+Male  4,601  45.1  45.1 
+
+Education 
+
+Primary /incomplete high  340  3.3  —
+
+Complete high education  1,969  19.3  —
+
+Vocational  2,031  19.9  —
+
+Basic college  3,033  29.8  —
+
+Basic higher education  534  5.2  —
+
+Complete higher educ.  2,286  23.5  —
+
+Type of Residence 
+
+Urban  7,088  69.5  69.5 
+
+Rural  3,106  30.5  30.5 
+
+Average Household 
+
+Size  10,194  2.9  2.58 
+
+# Results 
+
+Experience of signing declarations with a family doctor 
+
+At the moment of the survey,  42% of respondents reported that all their household members 
+
+including themselves had their declarations signed with family doctors , 5.8% reported that some of their 
+
+household members had their declarations signed, and 52.2% more informed that none of their household 
+
+members had his/her declaration signed (see  Table 3 ). Households with children were more active: 52% of 
+
+them had their declarations signed with doctors. 73 Вісник АПСВТ, 2019, № 2 
+
+> Table 3 . Breakdown by sex, age, type of area, education level, health self-assessment of answers to the question
+> “How many members of your household (adults, including you, and children) have their declarations signed with their family
+> doctor?”, %
+
+Any  Some  All  Any  Some  All 
+
+Survey question А20  Among adults in a household  Among children in a household 
+
+Ukraine  52,2  5,8  42  46,9  1,1  52 
+
+SEX 
+
+men  56,4  5,5  38,1  49,8  0,7  49,5 
+
+women  48,9  6,1  45,1  45  1,3  53,6 
+
+AGE GROUP  53 
+
+18–29  56,9  7,9  35,2  45,7  1,3  52,7 
+
+30–44  53,4  5,5  41,1  46,3  1 46,1 
+
+45–59  52,9  5,5  41,6  52,5  1,4  55,4 
+
+60 and over  47,1  4,9  48  44,1  0,5  52,4 
+
+TYPE OF AREA 
+
+urban  52,6  6,2  41,2  46,4  1,2  52,4 
+
+rural  51,5  4,9  43,7  48  0,9  51,1 
+
+EDUCATION LEVEL 
+
+primary of incomplete high  49,8  2,9  47,3  48,4  1,3  50,3 
+
+complete high  53,6  3,6  42,9  47,8  1,7  50,5 
+
+vocational (vocational school, 
+
+lyceum)  53,1  6 40,9  46,7  1 52,4 
+
+incomplete higher / college  52  6,2  41,7  48,7  0,8  50,5 
+
+basic higher (Bachelor)  52,5  11  36,5  59,3  0,8  40 
+
+complete higher (Specialist, Master)  51,1  6,3  42,6  42,2  1,2  56,6 
+
+degree (PhD, Doctor of Sciences)  29,5  3,4  67,1  25,3  0 74,7 74  
+
+> Tetyana Semigina et al.
+> Table 3. (сontinuation)
+
+HOUSEHOLD INCOME PER PERSON 
+
+up to 1000 UAH  52,8  8,5  38,7  48,3  1,5  50,3 
+
+1001–1500 UAH  51,1  4,3  44,5  49  2,6  48,5 
+
+1501–2000 UAH  46,1  5,8  48,1  44,8  1 54,1 
+
+2001–2500 UAH  46,5  6,7  46,8  43,2  0 56,8 
+
+over 2500 UAH  55,6  4,7  39,6  48  0,7  51,2 
+
+HEALTH SELF-ASSESSMENT 
+
+very bad  51,4  8,5  40,2  62,4  0 37,6 
+
+bad  46,3  4,2  49,5  45  2,1  52,9 
+
+average – not good, not bad  53  6 41  51  1,2  47,8 
+
+good  52,6  6 41,3  44,6  1 54,3 
+
+very good  53,4  4,5  42,1  45,2  0,6  54,2 
+
+Regional difference in signing declarations by all household members reaches up to 52.4% (the highest 
+
+score — 64.9% in Lviv, and the lowest — 12.5% in Sumy oblast). For households with children the highest is 
+
+69.2% in Chernihiv, and the lowest — 26.2% in Sumy oblast (the difference is 43%). 
+
+The highest declaration signing rates are in Lviv, Vinnitsia, and Chernihiv oblasts (see  Figure 1 ), and in 
+
+households with children – in Chernihiv and Vinnitsia oblasts.  
+
+> Figure 1. Proportion of households where all members have signed declarations with a family doctor, % across the
+> regions (oblasts) of Ukraine 75 Вісник АПСВТ, 2019, № 2
+
+The lowest proportion of households where all members have signed declarations with doctors is in 
+
+Sumy, Kirovograd oblasts, and the city of Kyiv. It’s worthwhile to mention that it is Sumy and Kirovograd 
+
+oblasts where population is the most dissatisfied with medical care according to other results of “Health 
+
+index” . 
+
+There is no significant difference in rates of declarations signing between different type of areas, 
+
+education levels, health self-assessment status. Declarations signing by all household members was more 
+
+frequently reported by: people over 60  (48%) vs young people aged 18–29  (35%); women (45.1%) vs men 
+
+(38.1%). 
+
+A slightly different results regarding declarations signing are retrieved from answers to the question “Do 
+
+you personally have your declaration signed? If not, did you attempt to sign it?” 37.4% of the respondents 
+
+had their personal declaration signed with the family doctor, 10% did not sign but attempted to do it, 52.6% 
+
+did not even try to do it. Breakdown of answers by regions and social and demographic characteristics 
+
+correlates with breakdown of answers to the other questions: declarations are more frequently signed by 
+
+women, older people, people with poorer health. 
+
+Answers to the question “What guided you (or will guide you in future) when choosing your family 
+
+doctor?” ( Figure 2 ) shows that the most important factor for respondents is trust: 40.2% respondent chose 
+
+the option “It should necessarily be a doctor who treated me before and whom I trust”. 24.5% have chosen 
+
+or plan to choose the GP they visited before. 
+
+> Figure 2 . Breakdown of answers to the question “What guided you (or will guide you in future) when choosing your
+> family doctor?”, %
+
+Just like with answers to the previous questions, there is considerable regional difference. Thus, “It 
+
+should necessarily be a doctor who treated me before and whom I trust” option was chosen by 64.1% of 
+
+respondents from Kherson oblast and only 18.5% of respondents from Khmelnitsky oblast. Former family 
+
+(district) doctor was chosen or is ready to be chosen by 54.9% of respondents from Volyn oblast and 7.3% of 
+
+people living in the city of Kyiv. 
+
+12.4% of household representatives do not plan to choose a family doctor. 42.9% are in favor of this 
+
+option in Khmelnitsky oblast, 39.2% — in Sumy, but only 3.4% in Chernivtsy, and 3.3% in Ternopil oblasts. 
+
+It is worthwhile mentioning that trust towards a doctor is important for all social and demographic 
+
+groups (difference is 8%). There is more propensity to choose former family (district) doctor reported by 76  
+
+> Tetyana Semigina et al.
+
+people over 60  (29.7%), people with primary, incomplete high (31.5%) and high education (26.7%), people 
+
+self-assessing their health as bad (30.6%), women (27.6%). 
+
+59.5% of respondents reported that they did not experience problems in the process of choosing a 
+
+family doctor (signing declaration), 9% say that there were no doctors they would like to choose, while 5.5% 
+
+pointed out the long waiting lines (see  Figure 3 ). The technical issues constitute moderate challenges to the 
+
+process of signing declarations with a family doctor, as well as issues of formal residence registration (unlike 
+
+the previous demands to link the place formal residence registration with health care, the new system 
+
+allows a patient to choose a family doctor in any area).  
+
+> Figure 3. Breakdown of answers to the question “What problems did you encounter while choosing a family doctor?”
+> (more than one answer could be chosen), %
+
+It is worth to note that around a third of respondents have an agreement with a family doctor or nurse 
+
+that in case of emergency they can seek their advice by phone, while 53.5% pf respondents reported that 
+
+they have no such an agreement (see  Figure 4 ). This is an innovation for the Ukrainian healthcare system as 
+
+well, as previously a patient was not supposed to contact a medical doctor directly. 77 Вісник АПСВТ, 2019, № 2 
+
+> Figure 4 . Breakdown of answers to the question “Do you have an agreement with your family doctor or nurse that in
+> case of emergency you can seek their advice by phone, e-mail or some other online communication channel (for example,
+> Viber, Skype etc.)?” (more than one answer could be chosen), %
+
+Attitudes towards e-Health 
+
+The question we asked is: “Ministry of Health plans to introduce e-Health system in the nearest years. 
+
+What is the most important to you as a patient in this service that can provide access to your medical record 
+
+in an electronic form?” (more than one answer could be chosen). The following answers were chosen a bit 
+
+more often “Any doctor I visit can see necessary records” (29.9%) and “I will be able to see my medical 
+
+history and doctors’ records” (28.9%). The least important for patients was “Confidentiality or keeping my 
+
+health status a secret” (18.2%). Also, almost one fifth of people who answered that question (19.8%) believes 
+
+this service is not necessary at all (Figure 5).  
+
+> Figure 5. Breakdown of answers to the question “Ministry of Health plans to introduce e-Health system in the nearest
+> years. What is the most important to you as a patient in this service that can provide access to your medical record in an
+> electronic form?” (more than one answer could be chosen), %
+
+78  
+
+> Tetyana Semigina et al.
+
+Regional breakdown of answers (provided in Table  4) demonstrates significant (3.2-8.9 times) differences 
+
+in assessing this innovation introduced in 2018  by the Ministry of Health. Thus, needlessness of e-Health is 
+
+reported by 36.4% of respondents in Chernivtsy oblast, 31.6% — Kyiv city, and 29.4% — Mykolayiv oblast. 
+
+Their opinion is shared only by 4.1% of residents of Sumy oblast who are extremely unhappy with the existing 
+
+healthcare system, 7.9% — Luhansk, and 11.5% — Kharkiv oblasts. 
+
+The largest proportion of those who think that the most important e-Health feature is that any doctor a 
+
+patient visits can have access to all necessary records lives in Volyn (58.1%), Chernihiv (47.3%), and Poltava 
+
+(45.4%) Oblasts, the smallest  — in Khmelnitsky (12.4%), Kirovograd (12.9%) Oblasts and the city of Kyiv 
+
+(13.6%). The majority of people who want to have access to own medical records live in Donetsk (47.6%), 
+
+Sumy (47.3%), and Volyn (45.6%) oblasts, the fewest — in Kirovograd oblast (7.4%).  
+
+> Table 4. Regional breakdown of answers to the question “Ministry of Health plans to introduce e-Health system in the
+> nearest years. What is the most important to you as a patient in this service that can provide access to your medical record
+> in an electronic form?” (more than one answer could be chosen), %
+
+Survey 
+
+question А25 
+
+I can see 
+
+my history 
+
+and 
+
+doctors’ 
+
+records 
+
+Any doctor 
+
+I visit will 
+
+be able 
+
+to see 
+
+necessary 
+
+records 
+
+Confidentiality 
+
+or keeping my 
+
+health status a 
+
+secret 
+
+Possibility to 
+
+get test or 
+
+diagnostic 
+
+examination 
+
+results online 
+
+Possibility to 
+
+make online 
+
+appointments 
+
+Other  This 
+
+service 
+
+is not 
+
+necessary 
+
+Ukraine  28.9  29.9  18.2  24.7  26.8  0 19.8 
+
+Vinnitsia  23.8  22.5  15.3  18.0  15.9  0 28.9 
+
+Volyn  58.1  45.6  9.5  11.9  14.1  0 18.2 
+
+Dnipropetrovsk  19.6  24.8  13.5  20.9  34.2  0 22.7 
+
+Donetsk  46.3  47.6  29.9  34.0  31.8  0 20.5 
+
+Zhytomyr  19.3  24.1  15.4  13.0  23.5  0 23.7 
+
+Transkarpathian  31.7  26.5  25.1  41.4  35.5  0 16.3 
+
+Zaporizzhya  16.6  23.7  14.4  12.4  17.3  0 17.6 
+
+Ivano-Frankivsk  25.7  28.9  21.2  28.5  30.9  0.1  12.8 
+
+Kyiv  30.4  42.6  28.6  23.5  28.7  0 11.7 
+
+Kirovograd  12.9  7.4  6.7  7.2  12.2  0 25.3 
+
+Luhansk  25.3  28.6  16.7  32.2  30.1  7.9 
+
+Lviv  43.2  33.0  23.5  31.1  25.5  0 21.5 
+
+Mykolayiv  25.8  25.1  16.2  27.4  23.5  0.2  29.4 
+
+Odessa  17.1  25.0  12.2  19.7  12.9  0 21.3 
+
+Poltava  45.4  39.9  31.8  40.8  35  0 29.2 79 Вісник АПСВТ, 2019, № 2  
+
+> Table 4. (сontinuation)
+> Rivne
+
+29.6  23.9  14.5  27.9  25.4  0 17.0  
+
+> Sumy
+
+42.7  47.3  19.0  14.0  20.4  0 4.1  
+
+> Ternopil
+
+18.7  25.9  5.9  38.0  33.2  0 12.0  
+
+> Kharkiv
+
+32.2  21.5  9.5  22.5  29.5  0 11.5  
+
+> Kherson
+
+16.6  24.1  6.0  22.5  27.4  0 18.0  
+
+> Khmelnitsky
+
+12.4  23.1  5.2  8.2  12.4  0 23.9  
+
+> Cherkassy
+
+33.9  39.7  29.8  25.5  27.8  0.3  13.9  
+
+> Chernivtsy
+
+23.1  27.5  15.6  14.9  12.7  0.3  36.4  
+
+> Chernihiv
+
+47.3  38.8  39.2  44.8  39.8  0 21.0  
+
+> city of Kyiv
+
+13.6  17.6  15.0  20.9  37.6  0 31.6 
+
+Review of answers to the question about introduction of e-Health system ( Table  5) shows significant 
+
+differences in attitudes towards this innovation between younger and older people, the latter most 
+
+frequently call it unnecessary and they do not value any aspects of this system. Differences are found 
+
+between people with different education levels: the most critical attitudes are reported by people with 
+
+primary or incomplete high and high education. This could be explained by the fact that people with lower 
+
+education levels have more difficulty to learn how to use an electronic system, and probably they have poor 
+
+access to equipment that would enable them to make electronic records or use them online. 
+
+It also should be noted that those self-assessing their health as very bad or bad are three times more 
+
+critical about the electronic system as those self-assessing their health as very good. This may be related 
+
+to the fact the first ones visit doctors more often and they are used to current status quo, thus, they are 
+
+apprehensive of innovations that might potentially interfere with their communication with doctors. It can 
+
+also be related to the fact that older people assess their health worse. So, this aspect needs more in-depth 
+
+assessment. 80   
+
+> Tetyana Semigina et al.
+> Table 5. Breakdown by sex, age, type of area, education level, health self-assessment of answers to the question
+> “Ministry of Health plans to introduce e-Health system in the nearest years. What is the most important to you as a patient in
+> this service that can provide access to your medical record in an electronic form?” (more than one answer could be chosen), %
+
+Survey question А25 
+
+I can 
+
+see my 
+
+history 
+
+and 
+
+doctors’ 
+
+records 
+
+Any 
+
+doctor I 
+
+visit will 
+
+be able 
+
+to see 
+
+necessary 
+
+records 
+
+Confidentiality 
+
+or keeping my 
+
+health status a 
+
+secret 
+
+Possibility to 
+
+get test or 
+
+diagnostic 
+
+examination 
+
+results 
+
+online 
+
+Possibility to 
+
+make online 
+
+appointments 
+
+Other  This 
+
+service 
+
+is not 
+
+necessary 
+
+Ukraine  28.9  29.9  18.2  24.7  26.8  0 19.8 
+
+SEX 
+
+men  28.2  30.8  19  24.9  27.6  0 20.4 
+
+women  29.4  29.2  17.5  24.5  26.2  0 22.6 
+
+AGE GROUP 
+
+18–29  39.8  39.6  24.8  37.2  42.7  0 7.2 
+
+30–44  36.2  36.3  23.1  31.6  34.6  0.1  12 
+
+45–59  26.5  28  18.2  23  22.9  0 22.2 
+
+60 and over  15.4  17.9  8.3  10  10.7  0 33.7 
+
+TYPE OF AREA 
+
+urban  30.4  32  20.3  26.7  29.8  0 18.9 
+
+rural  26.5  25.1  13.4  20.2  19.9  0 22.1 
+
+EDUCATION LEVEL 
+
+primary of incomplete 
+
+high  14.2  16.4  8.5  8.7  10  0 30.3 
+
+complete high  22.9  23.5  14.3  18.3  19.9  0 26.3 
+
+vocational (vocational 
+
+school, lyceum)  27.6  27.1  16.7  20.4  20.2  0.1  19.4 
+
+incomplete higher / 
+
+college  32.1  30.4  19.2  27.3  28.7  0 17.2 
+
+basic higher (Bachelor)  29  32.4  21.5  28.2  34.9  0 14.4 
+
+complete higher 
+
+(Specialist, Master)  33  33.8  22.3  32.2  36.6  0 18.1 
+
+degree (PhD, Doctor of 
+
+Sciences)  31  36.1  26.3  37.4  49.7  0 14.4 
+
+HOUSEHOLD INCOME PER PERSON 81 Вісник АПСВТ, 2019, № 2                                                                      
+
+> Table 5. (сontinuation)
+> up to 1000 UAH 26.9 26.2 18.5 25 23.4 0.1 17.1
+> 1001–1500 UAH 26.1 26.2 14.9 19.2 18.1 021.4
+> 1501–2000 UAH 25 26.1 14.8 19.9 20 023.9
+> 2001–2500 UAH 30.2 33.6 16.2 23.2 22.4 023.5
+> over 2500 UAH 31.4 33.7 20.3 27.5 32.5 17.3
+> HEALTH SELF-ASSESSMENT
+> very bad 12.4 16.2 6.7 9.7 6.7 038.7
+> bad 15.9 20.1 9.2 10.9 12.6 030.1
+> average – not good, not bad 27.5 29.2 17.3 21.5 22.2 022.4
+> good 32.5 32.7 20.9 29.3 32.6 015.3
+> very good 36.8 33 22.4 41.3 46.5 0.1 13
+
+# Discussions and concluding remarks 
+
+As Ukrainians is now free to choose their health care providers, and the state funds actual health 
+
+services that have been provided, thus patients’ experience, their satisfaction with care becomes critically 
+
+important for choosing a provider or a health care facility that also determines the future of each health 
+
+care facility in Ukraine. 
+
+As long as the third wave of “Health Index. Ukraine” took place in June-July of 2018 we could not make 
+
+a good assessment of the progress of signing declarations. At the same time, identifying what is important 
+
+for respondents when choosing a family doctor provides important managerial information. 
+
+The conducted survey demonstrates positive attitudes toward the first steps of the health care reform. 
+
+At the time of survey 42% of respondents reported that all their household members signed a declaration 
+
+with a family doctor. As of September, 2018 around 17 million patients have signed their declarations, in 
+
+January 2019 – over 25 milion (Ministry of Health of Ukraine, 2019). 
+
+Despite the overall positive perception by respondents of the ‘Health Index.Ukraine’ for selected 
+
+innovations within the healthcare, the introduced in 2018 the new system of contacted relations between 
+
+family doctor and a patient raises a number of questions that are not distinctly reflected in existing legal 
+
+regulations and should be further developed, including prevention-oriented programmes (Spivak, 2018). 
+
+The survey confirms the well-known scientific fact reported in publications that doctor-patient 
+
+relationship might play a key role in perceptions of primary health care (Calcan et al., 1994; Kaba and 
+
+Sooriakumaran, 2007). Similar situation is seen in Ukraine: according to the survey, the most important 
+
+guiding factor for respondents was trusting a doctor. Studies conducted in other countries demonstrate 
+
+association between satisfaction with medical services and treatment outcome (recovery). It is established 
+
+that higher level of trust towards a healthcare worker promotes better treatment adherence (Footman et 
+
+al., 2013). 82  
+
+> Tetyana Semigina et al.
+
+The introduction of e-Health system has just started as a prospective enabler in structuring, integrating 
+
+and providing appropriate access to the enormous amount of data regarding health status of population, 
+
+making it more transparent and accountable. The survey results demonstrate that patients want their 
+
+medical records to be visible by different doctors and by patients themselves. 
+
+The Ministry of Health at the moment already takes the leadership role in integrating various information 
+
+databases and registries, which contain information about patients’ results of diagnosis and treatment. It is 
+
+advisable to have tools that allow the patient to be informed about the need for a re-examination, a visit 
+
+to a doctor, etc., in the integrated database. The electronic prescriptions for medicines, especially for free 
+
+medicines, should become an integral part of the e-health system and the electronic card of a patient. It 
+
+will be valuable if the newly established National Health Service controls all money flows in the primary, 
+
+secondary and tertiary care. Ultimately, the robust and extensive knowledge management infrastructure 
+
+that contains individual patient information should be set up with regard to the known from other research 
+
+multi-level complexity of e-health implementation (Ross et al., 2016). 
+
+Our survey also correlates with the results of other surveys conducted in other countries that identified 
+
+that more critical assessment of healthcare and its transformations is reported by older people (Ali Jadoo 
+
+et al., 2014), as well as those with poorer health status, meaning that more experienced healthcare users 
+
+have higher expectations (Cockerham, 2012; Damm et al., 2014). 
+
+Regional differences in attitudes and perceptions of different aspects healthcare reform can be 
+
+explained both by initial differences in health services funding in different regions and previous experience 
+
+of reforms pointed out by some researchers (Lekhan et al., 2015), and by informational campaigns in regional 
+
+mass media that covered healthcare reform differently. 
+
+It is worth to mention that ‘Health Index. Ukraine’ (2018) results demonstrate that overall 75.8% 
+
+of respondents are satisfied with general practitioners or family doctors (57% rather satisfied and 18.8% 
+
+completely satisfied). Level of satisfaction with this healthcare component has a tendency to grow. In  2016, 
+
+satisfaction with general practitioners or family doctors was reported by 69.3% of respondents, in 2017 — 
+
+72.7%, in 2018 — 75.7%. It will be valuable to see whether introduction of a new system (choosing a family 
+
+doctor) will affect this high level of satisfaction. So far, the high level of signing declarations (choosing) 
+
+with a family doctor and appreciation of client-oriented steps within the health care reform in Ukraine 
+
+(Stepurko et al., 2018) evidences for legitimating of such steps. Academics (Bambra, Fox and Scott-Samuel, 
+
+2005; Rechel, 2015; Semigina, 2013) stress that the legitimation is one of crucial political resources needed 
+
+for health reform implementation. At the same time, the primary health care reform in Ukraine could 
+
+be stopped anytime due to the politics factor. It might happened because adopted in 2017 health care 
+
+reform has strong associations with pro-capitalist, pro-market, pro-European transitions, and it had been 
+
+publicly communicated as a such direction from the very beginning. Thus, there is a chance that the reform 
+
+implementation could be revised after the next elections and victory of pro-Russian groups who are critical 
+
+toward current reforms (Schandra, 2017) or under the population pressure or unplanned actions. 
+
+All in all, the data from “Health Index. Ukraine” is not only depict how health care reform implementation 
+
+in different regions impact medical services users, but also help in informed decision-making for those 
+
+involved in health care policy making on a national and local levels. 
+
+Acknowledgments 
+
+The data collection “Health index. Ukraine” is financed by the International Renaissance foundation and 
+
+conducted by Kyiv International Institute of Sociology. We are grateful to these organizations for devoting 
+
+their resources to the nation-wide survey as well as to openness to data disclose for the scientific publications. 
+
+The content of the publication is the sole responsibility of the authors and it in no way represents the views 83 Вісник АПСВТ, 2019, № 2 
+
+of the Fund, the Institute. Also, in 2018, the research and publishing activities of Tetiana Stepurko were 
+
+supported by “Povir u sebe grant”. 
+
+## References 
+
+Ali Jadoo, S.A. et al. (2014). Turkish health system reform from the people’s perspective: a cross sectional 
+
+study.  BMC Health Services Research , 14: 30. Retrieved from:  https://doi.org/10.1186/1472-6963-14-
+
+30 
+
+Atun, R. et al. (2015). Health system reform and universal health coverage in Latin America.  Lancet ,
+
+385 (9974), 1230-1247. 
+
+Bambra, C., Fox, D., & Scott-Samuel, A. (2005). Towards a politics of health.  Health promotion international ,
+
+20(2), 187-193. 
+
+Brinkerhoff, D. & Bossert, T. (2008).  Health Governance: Concepts, Experience, and Programming Options .
+
+Retrieved from:  https://www.hfgproject.org/health-governance-concepts-experience-programming-
+
+options 
+
+Cabinet of Ministry of Ukraine (2018).  Some questions of the electronic health system : Order №  411. 
+
+Calcan, M. et al. (1994). Major Determinants of Consumer Satisfaction with Primary Care in Different Health 
+
+Systems,  Family Practice , 11(4): 468–478. Retrieved from:  https://doi.org/10.1093/fampra/11.4.468 
+
+Cockerham, W. C. (2012). The social demography of health. Medical Sociology, 12th edn. Upper Saddle River, 
+
+NJ: Prentice Hall. Ch.3 (Class), Ch. 4 (Race, age, gender). Pp.48-96 
+
+Cheng, J.M., Yang, Y.X., Lu, W., Yang, L. (2017). Primary health care in China: is China’s health reform for 
+
+the whole population.  Primary health care research and development , 18(4), 398-403. 
+
+Damm, K. et al. (2014). Does the perception of fairness and standard of care in the health system depend on 
+
+the field of study? Results of an empirical analysis.  BMC Health Services Research , 14: 166. Retrieved 
+
+from:  https://doi.org/10.1186/1472-6963-14-16 .
+
+Eurohealth consumer index (2017). Euro Health Consumer Index 2016 Report. Marsellian, France: Euro 
+
+Health Consumer Powerhouse. 
+
+Footman, K., Roberts, B., Mills, A., Richardson, E., McKee, M. (2013). Public satisfaction as a measure of health 
+
+system performance: A study of nine countries in the former Soviet Union.  Health Policy . 112(3)62–9. 
+
+Retrieved from:  http://www.sciencedirect.com/science/article/pii/S0168851013000687?via%3Dihub 
+
+Kaba, R., & Sooriakumaran, P. (2007). The evolution of the doctor-patient relationship.  International 
+
+Journal of Surgery , 5(1), 57-65. Retrieved from:  http://www.sciencedirect.com/science/article/pii/ 
+
+S1743919106000094 
+
+Lekhan, V., Rudiy, V., Shevchenko, M., Kaluski, N., & Richardson, E. (2015). Ukraine: health system review. 
+
+Health systems in transition , 17(2), 1–154. 
+
+Ministy of Health of Ukraine (2019). Dynamics of registration of declarations. Retrieved from:  https:// 
+
+portal.ehealth.gov.ua 
+
+Ministry of Health of Ukraine (2017).  Annual report on the health status of the population, the sanitary and 
+
+epidemiological situation and the results of the health care system of Ukraine.  2016. Kyiv. 
+
+Ministy of Health of Ukraine (2105). National Health Reform Strategy for Ukraine 2015-2020. Retrieved from: 
+
+http://healthsag.org.ua/wpcontent/uploads/2015/03/Strategiya_Engl_for_inet.pdf 
+
+Oseychuk, O., Semigina, T. (2017). “Guaranteed package” and equity in health for Ukraine Visnyk  Akademiyi 
+
+pratsi, sotsial’nykh vidnosyn i turyzmu , 2, 55-60. 
+
+Spivak, M. (2018). Legal framework for reforming health care.  Fundamental and Applied Researches in 
+
+Practice of Leading Scientific Schools,  26(2), 54-60. Retrieved from  https://farplss.org/index.php/ 
+
+journal/article/view/304 
+
+Rechel, B. (2015). Health Policy Reform in the Countries of the Former Soviet Union. In: Kuhlmann E., Blank 
+
+R.H., Bourgeault I.L., Wendt C. (eds).  The Palgrave International Handbook of Healthcare Policy and 
+
+Governance  (pp. 238-253). London: Palgrave Macmillan. 
+
+Romaniuk, P. & Semigina, T. (2018). Ukrainian health care system and its chances for successful transition 
+
+from Soviet legacies.  Globalization and Health ,14: 116. DOI: 10.1186/s12992-018-0439-5. 
+
+Ross, J., Stevenson, F., Lau, R., Murray, E. (2016). Factors that influence the implementation of e-health: a 
+
+systematic review of systematic reviews.  Implementation science , 11 (1), 146. 84  
+
+> Tetyana Semigina et al.
+
+Semigina, T. (2013).  Politychny aspecty ohorohy zdorovya: Na peretyni globalnogo i localnogo  [Political 
+
+Issues of Healthcare: on the crossroads of global and local]. Kyiv: Kyiv-Mohyla Academy Publishing 
+
+House. 
+
+Semigina, Т. & Mandrik, O. (2017). Drug procurement policy in Ukraine: is there a «window of opportunity»?. 
+
+Visnyk Akademiyi pratsi, sotsial’nykh vidnosyn i turyzmu , 1, 25-38. 
+
+Shandra, A. (2017). Healthcare Reform in Ukraine under Attack of Old Mafia Clans.  Euromaidan Press ,
+
+January 21. 
+
+Stepurko, T. (2017). Entstehungskontext und Inhalte der ukrainischen Gesundheitsreform von 2017.  Ukraine 
+
+analysen , 193, 13.12.2017, 2-5. 
+
+Stepurko, T., Betliy, O., Semigina, T., Tymoshevska, V. (2018). Do people expect the healthcare reform? 
+
+(Results of the national representative survey “Health index. Ukraine”). Visnyk  Akademiyi pratsi, 
+
+sotsial’nykh vidnosyn i turyzmu , 4, 75-87. 
+
+Verkhovna Rada of Ukraine (2017a).  Pro derzhavni fnansovi harantiyi medychnoho obsluhovuvannya 
+
+naselennya : Zakon Ukrainy N 2168-VIII [On public fnancial guarantees of health care services to 
+
+population: Law of Ukraine N 2168VIII]. Retrieved from:  http://zakon5.rada.gov.ua/laws/show/2168-
+
+19 
+
+Verkhovna Rada of Ukraine (2017b).  Pro pidvyshchennya dostupnosti ta yakosti medychnoho obsluhovuvannya 
+
+u sil’s’kiy mistsevosti : Zakon Ukrainy N 2206-VIII [On improving the availability and quality of health 
+
+care in the rural areas: Law of Ukraine N 2206-VIII]. Retrieved from: h ttp://zakon3.rada.gov.ua/laws/ 
+
+show/2206-19 
+
+WHO (2012).  Health – 2020. A European policy framework supporting action across government and society 
+
+for health and wellbeing . Retrieved from:  http://bit.ly/2deQsAK 
+
+WHO (2013).  Global action plan for the prevention and control of noncommunicable diseases 2013-2020 .
+
+Geneva: World Health Organization. 
+
+World Bank (2015). How system works? Kyiv.

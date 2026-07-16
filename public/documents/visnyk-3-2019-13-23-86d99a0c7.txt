@@ -1,0 +1,845 @@
+Title: Visnyk_3_2019-13-23.pdf
+
+URL Source: http://www.socosvita.kiev.ua/sites/default/files/Visnyk_3_2019-13-23.pdf
+
+Published Time: Wed, 18 Dec 2019 15:17:28 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+13 
+
+# DOI  10.33287/11209 
+
+# УДК 364.043.4 
+
+# ADAPTATION OF THE «WINGS» METHODOLOGY AGAINST GENDER-BASED 
+
+# VIOLENCE IN UKRAINE 
+
+# АДАПТАЦІЯ МЕТОДОЛОГІЇ «WINGS» З ПРОТИДІЇ ГЕНДЕРНО-ОБУМОВЛЕНОМУ 
+
+# НАСИЛЬСТВУ В УКРАЇНІ 
+
+# Alina Sarnatska 
+
+BS, coordinator NGO «Club «Eney» 
+
+# Аліна Сарнацька 
+
+Бакалавр в галузі психології, координатор ГО «Клуб «Еней» 
+
+orcid.org/0000-0002-5253-291X 
+
+alina.sarnatska@gmail.com 
+
+# Iryna Pykalo 
+
+MPH, PhD student, Academy of Labour, Social Relations and Tourism 
+
+# Ірина Пикало 
+
+Магістр у галузі охорони громадського здоров’я, аспірантка Академії праці, соціальних відносин і 
+
+туризму 
+
+orcid.org/0000-0001-9290-8902 
+
+pykalo@uiphp.org.ua 
+
+# Maryna Hrudii 
+
+MPH, University of Kentucky 
+
+# Марина Грудій 
+
+Магістр у галузі охорони громадського здоров’я 
+
+orcid.org/0000-0002-9294-8725 
+
+# Vielta Parkhomenko 
+
+MS, manager NGO «Club «Eney» 
+
+# Вєлта Пархоменко 
+
+Магістр у галузі психології, менеджер ГО «Клуб «Еней». 
+
+orcid.org/0000-0003-4400-7397 
+
+# ВИВЧЕННЯ 
+
+# СОЦІАЛЬНИХ ПРАКТИК 14  
+
+> Alina Sarnatska et al.
+
+Abstract 
+
+Sexual and gender-based violence (GBV) is a critical global threat to 
+
+women’s physical and psychological health and social wellbeing. It is associated 
+
+with many negative health outcomes. In this study, we evaluated the feasibility 
+
+of WINGS (Women Initiating New Goals of Safety) evidence based GBV response 
+
+intervention for female sex workers (FSWs), who experience the highest rates 
+
+of GBV. 
+
+In-depth interviews were conducted with professionals who have 
+
+experience using WINGS methodology and focus groups with sex workers 
+
+in order to create a new safety plan, which is appropriate for this target 
+
+population. The adapted WINGS intervention was used for 20 women. A month 
+
+later we interviewed them to monitor the effectiveness. 
+
+GBV against FSWs is caused by contextual factors such as criminalization, 
+
+migration, gender and economic inequities, work environments and stigma. 
+
+In this regard, structural interventions become critical in tackling these 
+
+underlying factors in Ukraine. We also found a high need of WINGS methodology 
+
+among FSWs. 
+
+Thus, computerized WINGS provide an opportunity to reduce spending on 
+
+the further implementation of the methodology in low-resource settings, i.e. 
+
+small towns and villages. It is necessary to translate and adapt this tool for 
+
+use in Ukraine because of high prevalence of violence and lack of resources. 
+
+The majority of this study participants received necessary services for solving 
+
+urgent needs within 1 month after completion of WINGS intervention. The 
+
+high level of satisfaction with WINGS and application of the knowledge during 
+
+the next month after receiving this intervention suggest that adaptation of 
+
+WINGS can be useful for FSWs in Ukraine. 
+
+## Анотація 
+
+Було досліджено ефективність адаптації методології WINGS 
+
+(Жінки, що ініціюють нові цілі безпеки) проти гендерно-обумовленого 
+
+насильства (ГН). Основні елементи WINGS розроблені в 2015 році групою 
+
+соціальної інтервенції Колумбійського університету в Нью-Йорку для жі -
+
+нок, що вживають наркотики. 
+
+Ми виявили високу потребу у методології WINGS серед секс-пра -
+
+цівниць. Високий рівень задоволеності WINGS та застосування знань 
+
+протягом наступного місяця після отримання інтервенції дозволя -
+
+ють припустити, що адаптація WINGS може бути корисною для жінок 
+
+секс-працівниць в Україні 
+
+## Key words: 
+
+intimate partner violence, 
+
+gender -based violence, 
+
+female sex-workers, HIV, 
+
+Ukraine. 
+
+## Ключові слова: 
+
+насильство з боку інти -
+
+мних партнерів, гендерне 
+
+насильство, секс працівни -
+
+ці, ВІЛ, Україна.  
+
+> Інформація про рукопис
+> Надійшов до редакції:
+> 8.09.2019
+> Рецензований: 15.09.2019
+> Подано доопрацьовану
+> версію: 30.09.2019
+> Прийнятий до друку:
+> 5.10.2019
+
+# Вступ 
+
+Gender-based violence (GBV) is one of the greatest and persistent problems of women and girls all 
+
+over the world (Decker, 2015; Watts, 2002). Sexual and gender-based violence (SGBV) is a critical global 
+
+threat to women’s physical and psychological health and social well-being (Temmerman, 2015). 35% of 
+
+world women have experienced one or more cases of SGBV in their lifetime. Most of them have done by an 15 Вісник АПСВТ, 2019, № 3 
+
+intimate partner (World Health Organization, 2016). According to United Nations Population Fund (UNFPA) 
+
+1.1 million women per year experience physical or sexual violence in Ukraine (United Nations Population 
+
+Fund in Ukraine, 2016-2017). WINGS intervention was designed to enable women to identify different types 
+
+of GBV, safety plans and self-efficacy to protect themselves and reduce risks of violence, enhance social 
+
+support and link women to GBV-related services. Core elements of WINGS have been developed in 2016 by 
+
+Social Intervention Group at Columbia University in New York City, NY. Originally it was used for women who 
+
+use drugs. 
+
+GBV is one of the most prevalent forms of discrimination and a major type of human rights violation. It 
+
+takes roots in unequal power relations between women and men. The relationship between history of abuse 
+
+in general (e.g. history of childhood abuse, intimate partner violence (IPV), and client-perpetrated abuse) 
+
+and HIV risk among female sex workers (FSWs) has been well documented (Deering, 2014; Sanders, 2004). 
+
+FSWs are at highest risk group for GBV and it is associated with a lot of negative health outcomes (Shannon, 
+
+2014; Deering, 2014). El-Bassel et al. found that two out of three sex workers (SW) in New York experienced 
+
+lifetime physical or sexual abuse by either an intimate or a commercial partner (El-Bassel, 2001). Sanders 
+
+reported that SW in Britain are constantly at risk of being abused by male partners, clients, and the police 
+
+(Sanders, 2004). Furthering the harm, violence against SW, including murder, is rarely reported to the police 
+
+for fear of being arrested for prostitution (Deering, 2014). Experience of violence in childhood is a known 
+
+risk factor for later re-victimization, including IPV (Kristin L. Dunkle, 2004; Richter, 2014). Globally, have 
+
+been shown that prevalence of experienced childhood sexual abuse among FSWs range from 32.4%–42.0%, 
+
+which is higher among SWs than other women (Stoltz, 2007; Vaddiparti, 2006). 
+
+According to the study conducted by Alliance for Public Health in Ukraine, 46.6% of FSWs have 
+
+experienced violence at work (Sazonova, 2018). Generalized research results from studies around the 
+
+world including such in Ukraine has found that GBV/IPV increases lifetime risks of HIV and other sexually 
+
+transmitted infections (STIs) among FSWs (Gilbert, 2015). 
+
+There are multiple challenges like insecurity and limited resources in the world that potentiate the 
+
+development, implementation, and evaluation of innovations in GBV programs (Glass, 2018). Previous 
+
+studies of this issue provide an opportunity to initiate GBV primary prevention efforts, such as those that 
+
+engage community leaders and members in critical reflection on norms that legitimate gender inequality 
+
+and what actions can be taken by the individual, family, and community to change norms that cause harm 
+
+(Glass, 2018; Read-Hamilton, 2016). 
+
+One of tools that aimed to reduce GBV and IPV is «Women Initiating New Goals of Safety» (WINGS) – 
+
+an evidence-based screening, brief intervention and referral to treatment (SBIRT) tool designed by Social 
+
+Intervention Group (SIG) at Columbia University for women who use drugs (WUD) in the criminal justice 
+
+system in NYC (Gilbert, 2015). 
+
+WINGS includes seven core elements: 
+
+• raising awareness about different types of IPV and GBV, 
+
+• screening for IPV and GBV women may experiencing or perpetrating and providing individualized 
+
+feedback for IPV /GBV (no, some, high risk); 
+
+• motivation to address IPV/GBV and relationship conflict; 
+
+• safety planning to reduce risks; 
+
+• enhancing social support; 
+
+• setting goals to improve relationship safety and reduce risks of exposure to IPV/GBV; 
+
+• identifying and prioritizing service needs and linkage to it. 
+
+Also, WINGS have an optional HIV counseling and testing module, as well as session on overdose 
+
+prevention and first aid in case of overdose. WINGS was developed for low-resource settings and successfully 
+
+implemented in community corrections in NYC (USA), India, Kyrgyzstan, Georgia (Gilbert, 2016; Gilbert, 
+
+2017). 16  
+
+> Alina Sarnatska et al.
+
+The core components of WINGS were designed to enable women to identify different types of IPV and 
+
+GBV, develop self-efficacy to protect themselves from IPV and GBV, raise awareness of drug-related triggers 
+
+for IPV and GBV, develop safety plans to reduce risks for IPV and GBV, enhance social support and link 
+
+women to IPV and GBV-related services, substance abuse treatment and HIV care. WINGS can be delivered 
+
+in one or two sessions and has been integrated with HIV counseling and testing and linkage to HIV treatment 
+
+interventions. The studies were conducted among WUD in community corrections in NYC (USA), as well as 
+
+among women in harm reduction programs in Kyrgyzstan (Gilbert, 2016; Gilbert, 2017). 
+
+WINGS was successfully adapted for WUD in Kazakhstan, Kyrgyzstan, Georgia and India (Gilbert, 2015). 
+
+The author of the methodology WINGS Louisa Gilbert, PhD, in 2016 conducted a study of WINGS with an 
+
+additional HIV counseling and testing module for women who use drugs in Kyrgyzstan. The high rates of 
+
+participation, attendance and retention and significant reductions in IPV and GBV victimization and drug use 
+
+from baseline to the 3 -month follow -up suggest the feasibility and promising effects of this brief intervention 
+
+(Gilbert, 2017). 
+
+The main goal of our study is adaptation of the WINGS methodology and evaluation of its feasibility for 
+
+FSWs in Ukraine. 
+
+# Methods 
+
+Study design and procedures 
+
+This pilot study was conducted in Kyiv, Ukraine to assess the feasibility of WINGS in Ukraine and adopt 
+
+this intervention for FSWs for further use by NGOs to conduct informal GBV surveillance among key affected 
+
+populations of FSWs, identify women at risk of experiencing GBV and enable them to reduce GBV and HIV 
+
+risks through safety planning, social support and linkage to GBV services, HIV testing and counseling services 
+
+and HIV treatment. Intervention was implemented by social workers from local NGO. 
+
+For adaptation of intervention were conducted 2 in-depth interviews with service providers (NGO 
+
+representatives) who had the experience of conducting WINGS. Interviews with psychologist and social 
+
+worker were recorded on a digital audio device (voice recorder), transcribed and used for adaptation 
+
+of intervention. Besides that, were conducted 2 focus groups with clients: one with 4 WUD who have 
+
+participated in WINGS session; second with 8 FSWs who have not participated in WINGS session. 
+
+Based on information received from in-depth interviews and focus groups WINGS intervention 
+
+was adapted and divided into two separate guides based on a category of clients with whom it will be 
+
+implemented. The next step was testing of both guides for two types of clients: 8 WUD and 12 FSWs. The 
+
+total amount of women that participated in adapted WINGS intervention was 20. 
+
+Eligibility criteria for WUD: 18 years or older, injected drugs now or in the past, provided informed 
+
+consent to participate. 
+
+Eligibility criteria for FSWs: 18 years or older, have experience of sex work now or in the past, provided 
+
+informed consent to participate. 
+
+Recruitment and participation 
+
+Study participants were recruited by social workers from local NGO in harm reduction programs. 
+
+All participants were provided with psychosocial support, HIV testing and counseling and referrals 
+
+to additional medical, counseling and legal services if requested. Clients were not paid for receiving the 
+
+WINGS but were paid 200 UAH after the session and 100 UAH for completing telephone questionnaire within 
+
+a month after the intervention. 17 Вісник АПСВТ, 2019, № 3 
+
+Measures 
+
+Semi-structured questionnaire was used to get feedback from participants on the experience of 
+
+participating in the WINGS session and changes in their behavior after the intervention, and whether they 
+
+were able to fulfill their goals and receive the services that were defined during the session. Feasibility 
+
+of intervention was evaluated based on the number of women who received WINGS by: 1) respondents’ 
+
+feedback on what was the most useful for them in received intervention, 2) whether they applied the 
+
+knowledge gained during the intervention, 3) success in safety goals, 4) success in receiving needed services. 
+
+Questionnaires with clients were administered after one calendar month with a telephone. This method 
+
+was chosen because the target audience is hard to reach and it is technically difficult to schedule in-person 
+
+interviews. Respondents answered questions about their experience of participating in the WINGS session 
+
+and changing their behavior. 
+
+Ethical considerations 
+
+The study protocol and instruments were approved by Institutional review board at Ukrainian Institute 
+
+on Public Health Policy. 
+
+# Key Results 
+
+For appropriate adaptation of WINGS methodology were conducted in-depth interviews with providers 
+
+of services and focus groups with clients. Groups of respondents presented in Figure 1.  
+
+> Figure 1. The categories of respondent included into research
+
+Providers’ views 
+
+For adaptation of basic parts of methodology and its feasibility for Ukraine context were interviewed 
+
+2 service providers – one psychologist and one social worker. Both respondents are women from 31 to 39 18  
+
+> Alina Sarnatska et al.
+
+years old with higher education in psychology. Both of them have 2 and 3 years of experience working with 
+
+people who use drugs. 
+
+Both of them find a safety plan of WINGS intervention very useful. Respondents have called 
+
+WINGS a client-centered tool that is not judgmental towards the client’s actions or lifestyle, but 
+
+allows them to independently determine the risks of the situation in which they are located: 
+
+«There are methodologies for combating violence. Most of them relate to how to persuade 
+
+the client to leave the relationship [...]. The wings are different. They take into account the 
+
+features of a woman and her needs that we may not know [...]. WINGS help to inform clients 
+
+about different options and choose what they need [...]. A security plan helps protect the client 
+
+and advise her what to do in case of subsequent conflicts and risks of abuse» ( Provider 1) .
+
+About the least favorite aspects of WINGS, Provider 1 mentioned the duration of the form for screening 
+
+violence. 
+
+The other least favorite aspects of the methodology were found: 1) orientation only at heterosexual 
+
+women; 2) orientation on those women who live with their partners. 
+
+Provider 2 said that WINGS not all items should be used with every client. 
+
+In interviews was identified the need to adapt WINGS methodology for Ukraine and to create a separate 
+
+safety plan for FSWs. 
+
+Focus group with FSWs and WUD 
+
+For creation of specialized instrument of safety planning for FSWs and integration of comments given 
+
+by providers were conducted to separate focus groups with FSWs and WUD. 
+
+During the two focus groups that were held after the in-depth interviews, all participants talked about 
+
+the need to develop new strategies for helping women who suffered from violence, including additional 
+
+methods of work with partner’s aggression. 
+
+Respondents admit slow and untimely redirection for further assistance as the main gap in methodology. 
+
+Participants appreciated the methodology positively: 
+
+«When I answered some of these questions, I felt that they were developed by someone who 
+
+knows my situation. For example, the question «Has your partner strangled you?» He choked me 
+
+twice, and I still had bruises ...» (Participant 2). 
+
+«I had a low level of risk and still I learned that I had to keep the documents at my neighbor’s 
+
+home, that is, so that as soon as possible I could run out, leave, not run across the room, provoke 
+
+it all the worse with my appearing and in front of the eyes, and quickly grab and run, to whom 
+
+you could turn at such a moment that there are trusted people, and you can go to them and not 
+
+sit on the street on the bench, not knowing where to go and what to do, and in general how to 
+
+be in this situation»  (Participant 4). 
+
+The second focus group with 8 participants was about the use of successful practices of WINGS’s safety 
+
+plan among FSWs. The data of focus group is presented in Table 1. 19 Вісник АПСВТ, 2019, № 3 
+
+> Table 1 . Results of focus group discussion with FSWs
+
+Actions  N of respondents 
+
+(Total N=8) 
+
+Experienced physical violence during the last year of sex work  5
+
+Encountered physical violence during the entire period of sex service provision  7
+
+Clients forced them to sex  8
+
+Felt safe with their partner during the last year of sex work  4
+
+Did not have a partner  2
+
+Did not feel safe with their partner  2
+
+Did not feel safe because of police officers  6
+
+Always tried to use a condom with a client  8
+
+Imperceptibly used a condom for a client when it was not possible to agree on its use  4
+
+Called for help in the context of violence  7
+
+Consider the dangerous use of pepper spray  2
+
+Reported using alcohol control  3
+
+Also were received comments about the standard safety plan that is provided in original WINGS for 
+
+women living with drug dependency: 
+
+1.  None of the participants believes that they will be able stay on top during sex with their partner to 
+
+escape if necessary; 
+
+2.  None of the participants believes that it will be effective to tell the partner that they are going to 
+
+see a family member or friend in trouble; 
+
+3.  All participants agreed with the statement that it should be efficiently and clearly explained to a 
+
+partner that you do not want to have sex; 
+
+4.  Seven out of eight participants believe that for their safety, it will be useful to keep all important 
+
+personal belongings and clothes in one place, so that they can leave in the fastest and easiest way; 
+
+5.  All participants consider it necessary to keep funds awaiting accidents or a credit card in their 
+
+wallets to take a taxi or take public transport to a safe place; 
+
+6.  Half of participants consider it is necessary to write a message or call people from trusted contacts 
+
+to ask for a meeting or shelter; 
+
+7.  In order not to get pregnant from a partner, all respondents named the only one way of contraception 
+
+– use of condom. 20  
+
+> Alina Sarnatska et al.
+
+According to the results of the focus groups, all women had gaps in access to services, such as childcare 
+
+assistance, shelters for women who use drugs, opioid agonist therapy, help with employment, knowledge 
+
+and skills to receive help, social relationships. 
+
+The focus group found that social support, access to health services from tolerant physicians, counseling 
+
+of social workers who were trained to counter GBV/IPV would help improve security, reduce risks of conflicts 
+
+and violence and facilitate access to necessary services. 
+
+Additional recommendation was to use a short psychological screening to assess risks of violence during 
+
+the first conversation with the client and to agree on specific practices, were developed for FSWs who 
+
+negotiate with the client on their own. 
+
+Using of modern technical capabilities (Viber, Google Maps) and contact with friends to improve the 
+
+level of safety and protection of life was also added to the adopted intervention: 
+
+«I was pretending that I sent, well, in principle, sometimes I managed to send, there is such 
+
+a «location» option in the Viber, and then my godmother, well [name], knew where I have been 
+
+and she immediately called, «I know that you are there», I turned on the loudspeaker, it always 
+
+scared clients»  (Participant 8). 
+
+Feedback on intervention 
+
+After that adapted session using WINGS methodology was conducted for 12 FSWs and 8 WUD who experienced 
+
+violence. Follow-up interviews were conducted within one month after the intervention. All participants reported having 
+
+benefited from WINGS methodology against violence. 
+
+Four out of 20 participants reported that the updated security plan was beneficial to them. Four out of 
+
+20 participants find it most useful for them to engage in the community of women who experienced violence. 
+
+Despite the adaptation of the methodology, there is a need to continue working on the previous 
+
+screening to ensure greater homogeneity of the group and give contact of psychologist to all participants 
+
+after the end of the session .
+
+Participants’ feedback was received on how taking part in the intervention affected the further situation 
+
+with violence. Participants were asked whether the goals and needs selected during the intervention were 
+
+fulfilled. It was 15 goals and 12 needs totally, but women chose those that were applicable for their life 
+
+situation. 
+
+To the question «From these services,  you have identified one that is most important which solves your 
+
+most urgent problem or the issue on which your life depends. Have you received this assistance (service) 
+
+yourself or with your partner after participating in the WINGS session? » – 13 participants confirmed that they 
+
+received this service, 7 participants replied that they did not receive this service. Thus, the overwhelming 
+
+majority of participants received the most important service for solving urgent needs within 1 month after 
+
+intervention. 
+
+# Discussion 
+
+Since the development of WINGS methodology in 2016 it was used for WUD. To our knowledge, this 
+
+is the  fi rst study that adapts this tool for FSWs. We discovered high participation, attendance, retention 
+
+and client satisfaction rates. It coincides with results of Louisa Gilbert study where GBV screening brief 
+
+intervention and referral to treatment (SBIRT) model with HCT was implemented in Kyrgyzstan. In our 
+
+opinion, this is due to the fact that both groups of women face high levels of stigma and discrimination in 
+
+their countries, high levels of violence and self-stigma. 
+
+This study found that the most difficult for clients was to get the necessary services to meet their 
+
+needs: «Legal aid (including assistance in obtaining a security order, divorce, child care)», «Education / 
+
+Return to School / Examination on Maturity Certificate» and «Shelter for Emergency Care for victims of 21 Вісник АПСВТ, 2019, № 3 
+
+domestic violence or housing programs», which may be due to a high level of stigma and discrimination 
+
+against WUD and FSWs in the community, with the lack of inclusive services and tolerant service providers, 
+
+as well as the general lack of shelters for women survivors of violence. 
+
+One of the most important parts of methodology is setting up the goals for reaching safeness. The most 
+
+successful safety goals were: «My partner and I stayed together. Emotional violence has stopped», «The risk 
+
+for me has decreased», and receiving the services in relation to needs: «Rest/public activity», «Counselling 
+
+on alcohol and drug use for you or your partner». These goals that do not require additional resources and 
+
+expert assistance are generally met, most of the participants achieved their goals and received services. The 
+
+same goals and services requiring systemic intervention – shelter, legal aid, and medical services were able 
+
+to reach a smaller number of participants. The WINGS intervention works effectively with client motivation, 
+
+with needs and behavior, but it couldn’t create the opportunities for achieving the goals and access to 
+
+services. 
+
+Our findings reveal a remarkable confluence of GBV threats from these women’s intimate partners. We 
+
+used group-based strategies that prevent GBV perpetrated by intimate partners: peer education sessions, 
+
+creation of safe spaces. GBV against FSWs has its roots in contextual factors such as criminalization, 
+
+migration, gender and economic inequities, work environments and stigma (ASPIRES,  FHI 360, 2014; Zhang, 
+
+2016). In this regard, structural interventions become critical in tackling these underlying factors in Ukraine. 
+
+We also found a high need of WINGS methodology among FSWs. 
+
+# Conclusions 
+
+This study was the first attempt to implement this intervention in Ukraine. Also, the unique of this 
+
+study that the methodology was adapted for using with FSWs in Ukraine. 
+
+Central to this study is that WINGS methodology is an acceptable and feasible strategy to reduce GBV. 
+
+The overwhelming majority of participants received the most important services for solving urgent needs 
+
+within 1 month after intervention. This and the high level of satisfaction and application of the knowledge 
+
+gained during the month suggests that the adaptation of WINGS methodology can be used for FSWs in 
+
+Ukraine. 
+
+Translation and adaptation of the computerized version of the WINGS methodology is the next important 
+
+step to overcome the high risk of GBV and IPV in Ukraine among WUD and FSWs in Ukraine. 
+
+***** 
+
+Role of Funding Source 
+
+The authors would like to acknowledge the Eurasian Key Populations Health Network (EKHN) for funding 
+
+the research. 
+
+Acknowledgements 
+
+We would like to thank the non-government organization «Club «Eney» and all the participants of the 
+
+project without whom this study would not have been possible. 
+
+Conflict of interest 
+
+We have no conflict of interest to declare. 
+
+## References 
+
+ASPIRES, FHI 360 (2014).  Economic Strengthening for Female Sex Workers: A Review of the Literature .
+
+Retrieved from:  https://www.fhi360.org/sites/default/files/media/documents/Economic_ 
+
+Strengthening_for_Female_Sex_Workers.pdf?fbclid=IwAR3x1uUtezZEDEkWD1M0yhwvPyaBGwSeUShFw 
+
+6xMfEhSBX5lmm94iYJFeOQ .22  
+
+> Alina Sarnatska et al.
+
+Decker, M. R., Latimore, A., Yasutake, S., Haviland, M., Ahmed, S., Blum, R. W., ... Astone, N. M. (2015). 
+
+Gender-based violence against adolescent and young adult women in low- and middle-income countries. 
+
+Journal of Adolescent Health , 56(2), 188-196.  https://doi.org/10.1016/j.jadohealth.2014.09.003 .
+
+Deering, K. N., Amin, A., Shoveller, J., Nesbitt, A., Garcia-Moreno, C., Duff, P., … Shannon, K. (2014). A 
+
+systematic review of the correlates of violence against sex workers.  American journal of public health ,
+
+104(5), e42–e54. doi:10.2105/AJPH.2014.301909. 
+
+El-Bassel N, Witte SS, Wada T, Gilbert L, Wallace J (2001). Correlates of partner violence among female 
+
+street-based sex workers: substance abuse, history of childhood abuse, and HIV risks.  AIDS Patient Care 
+
+STDS  15: 41–51. doi 10.1089/ 108729101460092. 
+
+Gilbert, L., Goddard-Eckrich, D., Hunt, T., Ma, X., Chang, M., Rowe, J., … Shaw, S. A. (2016). Efficacy of 
+
+a Computerized Intervention on HIV and Intimate Partner Violence Among Substance-Using Women in 
+
+Community Corrections: A Randomized Controlled Trial.  American journal of public health , 106(7), 
+
+1278–1286. doi:10.2105/AJPH.2016.303119. 
+
+Gilbert, L., Shaw, S. A., Goddard-Eckrich, D., Chang, M., Rowe, J., McCrimmon, T., Almonte, M., Goodwin, 
+
+S., and Epperson, M. ( 2015) Project WINGS (Women Initiating New Goals of Safety): A randomized 
+
+controlled trial of a screening, brief intervention and referral to treatment (SBIRT) service to identify 
+
+and address intimate partner violence victimization among substance -using women receiving community 
+
+supervision.  Crim Behav Ment Health , 25: 314– 329. doi:  10.1002/cbm.1979 .
+
+Gilbert, L., Jiwatram-Negron, T., Nikitin, D., Rychkova, O., McCrimmon, T., Ermolaeva, I., … Hunt, T. (2017). 
+
+Feasibility and preliminary effects of a screening, brief intervention and referral to treatment model 
+
+to address gender-based violence among women who use drugs in Kyrgyzstan: Project WINGS (Women 
+
+Initiating New Goals of Safety).  Drug and alcohol review , 36(1), 125–133. doi:10.1111/dar.12437. 
+
+Glass, Nancy & Perrin, Nancy & Clough, Amber & Desgroppes, A & N. Kaburu, F & Melton, J & Rink, A & 
+
+Read-Hamilton, S & Marsh, M. (2018). Evaluating the communities care program: Best practice for 
+
+rigorous research to evaluate gender based violence prevention and response programs in humanitarian 
+
+settings.  Conflict and Health . 12. 10.1186/s13031-018-0138-0. 
+
+Kristin L. Dunkle, Rachel K. Jewkes, Heather C. Brown, Mieko Yoshihama, Glenda E. Gray, James A. McIntyre, 
+
+Siobán D. Harlow, Prevalence and Patterns of Gender-based Violence and Revictimization among 
+
+Women Attending Antenatal Clinics in Soweto, South Africa, American  Journal of Epidemiology , 160: 3, 
+
+230–239,  https://doi.org/10.1093/aje/kwh194 .
+
+Read-Hamilton, Sophie & Marsh, Mendy. (2016). The Communities Care programme: changing social norms 
+
+to end violence against women and girls in conflict-affected communities.  Gender & Development . 24. 
+
+261-276. 10.1080/13552074.2016.1195579. 
+
+Richter, L., Komárek, A., Desmond, C., Celentano, D., Morin, S., Sweat, M., … Coates, T. (2014). Reported 
+
+physical and sexual abuse in childhood and adult HIV risk behavior in three African countries: findings 
+
+from Project Accept (HPTN-043).  AIDS and behavior , 18(2), 381–389. doi:10.1007/s10461-013-0439-7. 
+
+Sanders, T. (2004). The Risks of Street Prostitution: Punters, Police and Protesters. Urban Studies, 41(9), 
+
+1703–1717.  https://doi.org/10.1080/0042098042000243110 .
+
+Sazonova Y., Saluk T. (2018).  Osnovni rezultaty biopovedinkovykh doslidzhen sered kluchovyh grup.  Retrieved 
+
+from:  http://aph.org.ua/wp-content/uploads/2018/07/OSNOVNI-REZULTATY__A4__10.07.2018__ 
+
+Cajt.pdf .
+
+Shannon, K., Goldenberg, S. M., Deering, K. N., & Strathdee, S. A. (2014). HIV infection among female sex 
+
+workers in concentrated and high prevalence epidemics: why a structural determinants framework is 
+
+needed.  Current opinion in HIV and AIDS , 9(2), 174–182. doi:10.1097/COH.0000000000000042. 
+
+Stoltz, J. A., Shannon, K., Kerr, T., Zhang, R., Montaner, J. S., & Wood, E. (2007). Associations between 
+
+childhood maltreatment and sex work in a cohort of drug-using youth.  Social science & medicine , 65(6), 
+
+1214–1221. doi:10.1016/j.socscimed.2007.05.005. 
+
+Temmerman, M. (2015). Research priorities to address violence against women and girls.  The Lancet , 385, 
+
+e38-e40. 
+
+United Nations Population Fund in Ukraine (2016-2017).  Economic Cost of Violence against Women in Ukraine .
+
+Retrieved from:  https://ukraine.unfpa.org/sites/default/files/pub-pdf/Infographics_ECV_ENG_2.pdf 
+
+?fbclid=IwAR34oo1IHiNCLCfsujSAwL8mUb5xl5xJ2pBLb4BJ8Dq9B8JVV543AkUMrio .23 Вісник АПСВТ, 2019, № 3 
+
+Vaddiparti, Krishna & Bogetto, Jane & Callahan, Catina & Ben Abdallah, Arbi & L Spitznagel, Edward & 
+
+Cottler, Linda. (2006). The Effects of Childhood Trauma on Sex Trading in Substance Using Women. 
+
+Archives of sexual behavior . 35. 451-9. 10.1007/s10508-006-9044-4. 
+
+Watts, Charlotte & Zimmerman, Cathy. (2002). Violence Against Women: Global Scope and Magnitude. 
+
+Lancet . 359. 1232-7. 10.1016/S0140-6736(02)08221-1. 
+
+World Health Organization (2014).  Violence against women: intimate partner and sexual violence 
+
+against women . Retrieved from:  https://apps.who.int/iris/bitstream/handle/10665/112325/WHO_ 
+
+RHR_14.11_eng.pdf;jsessionid=05E02DFA7FA1E01DB170665E10A9C0AE?sequence=1 .
+
+Zhang, X. D., Myers, S., Yang, H. J., Li, Y., Li, J. H., Luo, W., & Luchters, S. (2016). Prevalence and 
+
+correlates of sexual and gender-based violence against Chinese adolescent women who are involved in 
+
+commercial sex: a cross-sectional study.  BMJ open , 6(12), e013409. doi:10.1136/bmjopen-2016-013409

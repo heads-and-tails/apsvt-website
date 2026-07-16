@@ -1,0 +1,1157 @@
+Title: Visnyk_2_2019-85-101.pdf
+
+URL Source: http://www.socosvita.kiev.ua/sites/default/files/Visnyk_2_2019-85-101.pdf
+
+Published Time: Sat, 22 Jun 2019 07:40:23 GMT
+
+Number of Pages: 17
+
+Markdown Content:
+85 
+
+DOI 10.33287/11207 
+
+УДК 346.614(477) 
+
+# HEALTH INEQUALITIES: WHO IS THE MOST DISADVANTAGED AMONG THE 
+
+# UKRAINIAN WORKING-AGE POPULATION? 
+
+# НЕРІВНОСТІ У ЗДОРОВ’Ї: ХТО Є НАЙБІЛЬШ ВРАЗЛИВИМ СЕРЕД НАСЕЛЕННЯ 
+
+# ПРАЦЕЗДАТНОГО ВІКУ В УКРАЇНІ? 
+
+Abstract 
+
+Despite inequalities in health, it is a very well developed topic, and 
+
+tackling health inequalities is one of the main challenges of modern public 
+
+health policies, these are not much explored in Ukraine. 
+
+The European Social Survey data pooled together from 2004, 2006, 
+
+2008, 2010, and 2012 including 6,820 Ukrainian respondents of working-age. 
+
+Self-reported health was used as a dependent variable and four groups of 
+
+social determinants of health – as predictors. The multilevel binomial logistic 
+
+regression analysis was conducted to investigate gender and social differences 
+
+in subjective health. Both genders were analyzed together and separately. 
+
+Almost 60 % of the Ukrainian working-age population reported poor health. 
+
+Multilevel binomial logistic regression analysis showed that respondents who 
+
+were female, married or had been divorced, and had children at home tended 
+
+to report poor health; the probability of poor health is increasing with age and 
+
+decreasing with the level of SES for both genders. 
+
+Existence of between and within gender groups’ social inequalities in 
+
+self-reported health as well as the most disadvantaged female subgroups are 
+
+revealed among the Ukrainian working-age population. 
+
+Анотація 
+
+Попри те, що тема нерівності у здоров’ї є дуже добре розробленою 
+
+і поширеною у науках про здоров’я у світі, проблема нерівності у здо -
+
+Iryna Mazhak 
+
+Ph.D. in Sociology, Lecturer, Academy of Labour, Social Relations and Tourism 
+
+Ірина Мажак 
+
+Кандидат соціологічних наук, викладач, Академія праці, соціальних відносин і туризму 
+
+orcid.org/0000-0003-0190-0126 
+
+iryna.mk@gmail.com 
+
+Key words: 
+
+fself-reported health, 
+
+health inequalities, social 
+
+determinants of health, 
+
+socioeconomic status, 
+
+Ukraine. 
+
+Ключові слова: 
+
+самооцінка здоров’я, нерів -
+
+ності у здоров’ї, соціальні 
+
+детермінанти здоров’я, 
+
+соціально-економічний ста -
+
+тус, Україна. 
+
+Інформація про рукопис 
+
+Надійшов до редакції: 
+
+10.04.2019 
+
+Рецензований: 15.11.2018 
+
+Подано доопрацьовану 
+
+версію: 28.04.2019 
+
+Прийнятий до друку: 
+
+05.05.2019 86 
+
+> Iryna Mazhak
+
+ров’ї і надалі залишається однією з головних проблем сучасної політики 
+
+в галузі охорони здоров’я та є недостатньо дослідженою в Україні. 
+
+Для дослідження було використано дані Європейського соціального 
+
+дослідження (The European Social Survey) за 2004, 2006, 2008, 2010 та 
+
+2012 років, що включило 6820 українських респондентів працездатного 
+
+віку. Самооцінку здоров’я було використано як залежну змінну, а чо -
+
+тири групи соціальних детермінант здоров’я – як предиктори. Для до -
+
+слідження гендерних та соціальних відмінностей у самооцінці здоров’я 
+
+проведено багаторівневий біноміальний логістичний регресійний ана -
+
+ліз. Обидві гендерні групи було проаналізовано і разом, і окремо. 
+
+Результати дослідження показали, що майже 60% населення пра -
+
+цездатного віку в Україні оцінювали свій рівень здоров’я як поганий. 
+
+Багаторівневий біноміальний логістичний регресійний аналіз показав, 
+
+що жінки, одружені або розлучені, які мали неповнолітніх дітей, що 
+
+проживали у домогосподарстві, були більш схильні оцінювати своє 
+
+здоров’я як погане; крім того, вірогідність погіршення стану здоров’я 
+
+зростає з віком і зменшується із зростанням соціально-економічного 
+
+статусу для обох гендерних груп. 
+
+Отже, результати дослідження показали наявність соціальних 
+
+нерівностей у здоров’ї, на основі самооцінки здоров’я, як між гендерни -
+
+ми групами так і в середині них, а найбільш вразливими серед населен -
+
+ня України працездатного віку є жінки. 
+
+# Abbreviations 
+
+ESS : European Social Survey;  SRH : Self-reported health;  SDH : Social determinants of health; 
+
+SES:  Socioeconomic status;  IBM SPSS 24 : International Business Machines Corporation Statistical 
+
+Package for the Social Sciences (Version 24.0);  ISCED : International Standard Classification of Education; 
+
+ISCO88 : International Standard Classification of Occupations;  OR : Odd ratios. 
+
+# Background 
+
+As a result of the demographic crisis, Ukraine, a the largest country in Europe, has seen a decrease in 
+
+population from 51,94 mln. in 1991 to 45,43 in 2014 and 42,76 in 2016 (excluding the temporarily occupied 
+
+territories) (State, 2016). According to the State Statistical Service of Ukraine (State, 2016) the crisis 
+
+includes low birthrates, high mortality levels, especially among working-age males, high levels of morbidity 
+
+(an increase of chronic non-infectious diseases as well as infectious diseases during the last few years) which 
+
+requires in-depth analysis of health inequalities in Ukraine for monitoring and possible policy interventions. 
+
+In this paper, I address the problem of the gender and social inequalities in health in the Ukrainian 
+
+working-age population. 
+
+The first possibility to check if gender is a determinant of health inequality is to look at a gender gap 
+
+life expectancy. During 25 years of Ukrainian independence, there has not been a significant change in 87 Вісник АПСВТ, 2019, № 2 
+
+average life expectancy. Life expectancy at birth in 2015 was 71,38 years (66,37 – males; 76,25 – females) 
+
+with almost a ten-year gap in favor of females. In European region countries, life expectancy at birth is 80 
+
+years or more (World, 2016). The same gender gap in the EU countries is half - only 5,5 years (Eurostat, 
+
+2017). This supports the existence of social inequalities in health among the Ukrainian gender groups. 
+
+In this study, I am using Self-Reported Health (SRH) as an indicator of the general subjective health of 
+
+the population. This indicator is one of the most popular in health research and is one of the health indices 
+
+recommended by the World Health Organization for monitoring health outcomes. A lot of studies have shown 
+
+that SRH is a good predictor not only of health status but also morbidity, mortality, and a measure of the use 
+
+of health care services (Benyamini et al., 2003; Dominick et al., 2002; Guimarãeset al., 2012). Between and 
+
+within countries inequalities are widely reported in many studies (Mackenbach et al., 2008; Espelt et al., 
+
+2008; Jakab & Marmot, 2012; Palència et al., 2014; Schütte et al., 2013). Studies have shown an association 
+
+between reported health and such social determinants as demographic, socio-economic, behavioral, and 
+
+psychological (Demirchyan et al.,2012; Bambra, 2011; Hankivsky, 2014; Sen, Iyer & Mukherjee, 2009). 
+
+Previous studies of post-communist countries have shown that such socio-economic and psychological 
+
+factors such as smoking, alcohol consumption, hazardous working conditions, traffic accident mortality, 
+
+late medical treatment has affected the health and lifespan of the population (Bobak et al., 2007; Bobak 
+
+et al., 2000; Cockerham et al., 2017). Previous studies which are included in comparison analysis of Eastern 
+
+European countries have shown a higher prevalence of poor self-estimated health (Heyns, 2005; Michalski, 
+
+1990). 
+
+Ukraine wasn’t often included in health inequality studies conducted in Europe, and relatively little 
+
+is known about the situation with social and gender inequalities in health among the Ukrainian population. 
+
+However, few studies have explored the relationship of self-reported health (SRH) with social 
+
+determinants in Ukraine. Researchers from the UK (Gilmore, McKee, & Rose, 2002) studied socio-economic 
+
+and psychosocial determinants of self-estimated health in Ukraine through a national survey conducted 
+
+in 2000. Results have shown gender, socioeconomic, geographical, and psychosocial differences in health, 
+
+including negative effects of unemployment on subjective health (Gilmore, McKee, & Rose, 2002). Another 
+
+study (Platts & Gerry, 2016) used data from 2007 to examine social inequalities in health in Ukraine. The 
+
+study has found educational inequalities in health. Also, that association between higher education and 
+
+better estimated subjective health was partly affected by material and behavioral factors for both gender 
+
+groups (Platts & Gerry, 2016). One more study (Cockerham et al., 2017) used data from 2011 and applied 
+
+an intersectional theory to investigate the relation between SRH and barriers to healthcare in Ukraine. The 
+
+study has shown that women have more barriers to health care, until in old age where both genders faces 
+
+the same issue, in addition, the low SES women reported their health as been poorer compared to all others 
+
+groups (Cockerham et al., 2017). 
+
+Existing literature is inconclusive, and further studies are needed regarding the social inequalities in 
+
+health among the Ukrainian population as well as the gender gap in health and longevity. 
+
+My study is restricted to the working-age population because it is evident that health of the working-
+
+age population is crucial for economic development of the country and the public health system has to 
+
+respond to the working age population’s health needs. The purpose of this paper is to show social and 
+
+gender inequalities in health. The goals of the present study are: 1) to explore the association of a series 
+
+of potential social determinants of health (SDH) with SRH; 2) to identify and compare gender inequalities 
+
+in health. 
+
+In this paper, I present the result of multilevel analysis. 88 
+
+> Iryna Mazhak
+
+# Methods 
+
+Data 
+
+The paper is based on the European Social Survey (ESS) database [23], which is an academically driven, 
+
+cross-sectional, pan-European social survey; Ukraine has participated in this survey during five rounds from 
+
+2004 to 2012 (data from the 2nd to the 6th round of the ESS was pooled together). According to the ESS 
+
+instructions, the data was weighted by the post-stratification weight including that of design. The target 
+
+dataset includes 6,820 Ukrainian respondents of working-age from 18 to 65-year-old males and from 18 to 
+
+60 for females. The data was analyzed using the IBM SPSS 24. 
+
+Variables 
+
+Outcome measure: SRH 
+
+Self-reported health is used as a dependent variable which measures subjective health because it 
+
+reflects the subjective feeling of physical, psychological health and well-being. The respondents were asked 
+
+to evaluate their health, in general, using five answering categories: very good, good, fair, bad, and very 
+
+bad. SRH was dichotomized into two groups: good SRH which includes very good and good categories and 
+
+poor SRH, which include all categories less than good. 
+
+Predictor variables 
+
+Four groups of SDH were used as predictors’ variables: 
+
+Socio-demographic variables (gender, age of respondents were categorized into four age-groups (18-30, 
+
+31-40, 41-50, 51-60 for females (65 for males), and place of residence (urban/rural)). 
+
+The socio-economic status (SES) (included education, occupation and income of respondent). 
+
+Daily activity factors (using questions about if respondents have paid work, are unemployed, looking 
+
+for a or not looking, doing housework, looking after children, are studying or retired). 
+
+Statistical analysis 
+
+In the study, I used a socio-economic status (SES) because many previous studies have been reporting 
+
+that the relationship between health and socioeconomic factors explain a lot of the differences in SRH 
+
+(Mackenbach, 2008; Dubikaytis et al., 2014; Richter, Moor,& van Lenthe, 2010; Tsimbos, 2010; Dinesen et 
+
+al., 2011; Alvarez-Galvez et al., 2013). Principal Component Analysis was used as an algebraic operation 
+
+for reducing dimensionality and computing one variable, combining three main parameters of SES: the 
+
+highest level of education (which is expressed in terms of the  International Standard Classification of 
+
+Education  (ISCED)), occupation (using the  International Standard Classification of Occupations (ISCO88)), 
+
+and subjective income (using the questions about how respondents felt about household income). A further 
+
+factor variable was computed, using a regression method, and divided into five SES groups based on quintiles: 
+
+low, upper low, middle, upper middle, and high. 
+
+The multilevel binomial logistic regression analysis was conducted to investigate gender and social 
+
+differences in SRH using SDH. The results are reported in odd ratios (OR). 
+
+Firstly, males and females were pooled and analyzed together. A Univariate Model (Table 3) has shown 
+
+ORs from a univariate logistic regression analysis for each variable for checking association with poor SRH. 
+
+All associations except the place of residence (p=0.094) were statistically significant. As a result of the 
+
+univariate analysis, the place of residence was excluded from further analysis. The multivariate analysis 
+
+consists of five models. Four of them include four groups of SDH, Model 1 includes only the demographic 
+
+characteristic, and Model 2 includes Model 1 (for adjusting by gender and age-groups) and SES. To understand 
+
+how family factors and daily activities influence poor health, I conducted two more extent models, adjusted 89 Вісник АПСВТ, 2019, № 2 
+
+for gender, age groups, and SES. Model 3 includes family factors, and Model 4 - daily activity factors. The 
+
+Full Model includes all statistically significant predictors – SDH - entered in one step. 
+
+Secondly, to more deeply understand gender differences I divided the population into gender subgroups 
+
+and ran logistic regression models separately for males and females. Models include all predictor variables 
+
+which were included in the Full model conducted for both genders together. 
+
+# Results 
+
+Descriptive statistic of the sample 
+
+Table 1  presents the descriptive statistic for the study variables. Almost 60 % of the Ukrainian working-
+
+age population reported poor health. The sample is almost equally divided between males (48.4%) and 
+
+females (51.6%). The biggest age group was respondents under 30 years old (31.5 %), three others age 
+
+groups were almost equal (31-40 years old – 20.4%; 41-50 – 24.4%; over 50 – 23.7%). Most respondents are 
+
+live in the urban area (64%), have a partner (66%), have children living at home (58%), have paid work (60%), 
+
+and do housework, looking after children (26%). Some of the respondents reported that had been divorced 
+
+(14%), been unemployed and were actively looking for a job (7%) or not looking for a job (4%). Almost 
+
+77 % reported that they have from two to four family members living together in the household. A few 
+
+respondents reported education as the main life activity (8%), and more than 12% of the Ukrainian working-
+
+age population reported being retired early than the official state’s retirement age.  
+
+> Table 1 .Descriptive statistic of the sample of the study population (N=6,820)
+
+Variables  Category  Number  Percent 
+
+Dependent variable 
+
+Self-reported health  Good SRH  3,070  40.6 
+
+Poor SRH  4,496  59.4 
+
+Independent variable 
+
+Demographic factors 
+
+Gender  Male  3,686  48.4 
+
+Female  3,931  51.6 
+
+Age group  Under 30  2,403  31.5 
+
+31-40  1,552  20.4 
+
+41-50  1,856  24.4 
+
+Over 51  1,805  23.7 
+
+Place of residence  urban  4,838  63.7 
+
+rural  2,762  36.3 90 
+
+> Iryna Mazhak
+> Table 1. (сontinuation)
+
+Socio-economic status (SES) 
+
+SES  High  1,272  19.4 
+
+Upper middle  1,397  21.3 
+
+Middle  1,306  19.9 
+
+Lower middle  1,309  19.9 
+
+Low  1,277  19.5 
+
+Family factors 
+
+Live with partner  Yes  4,985  65.9 
+
+No  2,584  34.1 
+
+Ever been divorced  Yes  867  14.1 
+
+No  5,272  85.9 
+
+Children at household  Yes  4,380  57.5 
+
+No  3,233  42.5 
+
+Numbers of family 
+
+members 
+
+1 321  4.2 
+
+2 1,548  20.4 
+
+3 2,396  31.5 
+
+4 1,889  24.8 
+
+5 860  11.3 
+
+6 386  5.1 
+
+7+  206  2.7 
+
+Daily activity factors 
+
+Paid work  Marked  4,567  60.0 
+
+Not marked  3,050  40.0 
+
+Unemployed, looking for 
+
+a job 
+
+Marked  519  6.8 
+
+Not marked  7,098  93.2 
+
+Unemployed, not looking 
+
+for a job 
+
+Marked  265  3.5 
+
+Not marked  7,352  96.5 91 Вісник АПСВТ, 2019, № 2 
+
+> Table 1. (сontinuation)
+
+Housework, looking after 
+
+children, others 
+
+Marked  1,942  25.5 
+
+Not marked  5,675  74.5 
+
+Education  Marked  608  8.0 
+
+Not marked  7,008  92.0 
+
+Retired  Marked  942  12.4 
+
+Not marked  6,674  87.6 
+
+# The distribution of poor SRH 
+
+Table 2  presents the distribution of poor SRH across demographic, socioeconomic, family, and daily 
+
+activity factors as explanatory variables. According to Chi-square test examination, all explanatory variables 
+
+were statistically significant, except one - place of residence (p=0.94). 
+
+Such categories of respondents as female (65.2 %), the oldest age-group (83.5%), respondents living with 
+
+a partner (63.5%), had been divorced (71.2%) and had children living at home (63.5%) reported significantly 
+
+poor SRH. Compared with the high SES group (57.8%) the prevalence of poor SRH in the low SES (68.5%) was 
+
+higher. Respondents with poor health were more likely to be those who were retired (86.9%), unemployed 
+
+but not actively looking for a job (68.9%), and doing housework, looking after children (63.3%). Poor health 
+
+(from 59% to 63%) was associated with those who reported fewer family members living together in the 
+
+household (from 1 to 3).  
+
+> Table 2 .The distribution of poor SRH across demographic, socio-economic, family, and main life’s activity factors
+> (N=6,820)
+
+Variables  Category  Poor SRH  Pearson Chi-
+
+Square 
+
+P
+
+N %
+
+Demographic factors 
+
+Gender  Male  1,952  53.2  113.16  <0.0001 
+
+Female  2,544  65.2 
+
+Total  4,496  59.4 
+
+Age group  Under 30  888  37.1  1014.67  <0.0001 
+
+31-40  839  54.4 
+
+41-50  1,276  69.2 
+
+Over 51  1,493  83.5 92 
+
+> Iryna Mazhak
+> Table 2. (сontinuation)
+
+Place of residence  Urban  2,815  58.7  2.80  =0.94 
+
+Rural  1,669  60.6 
+
+Socioeconomic status 
+
+SES  High  703  55.6  51.12  <0.0001 
+
+Upper middle  849  61.3 
+
+Middle  817  62.9 
+
+Lower middle  792  60.8 
+
+Low  876  69.1 
+
+Family factors 
+
+Live with partner  Yes  3,143  63.5  98.78  <0.0001 
+
+No  1,326  51.6 
+
+Ever been divorced  Yes  612  71.2  42.14  <0.0001 
+
+No  3,116  59.5 
+
+Children at 
+
+household 
+
+Yes  2,760  63.5  70.75  <0.0001 
+
+No  1,735  53.9 
+
+Numbers of family 
+
+members 
+
+1 200  62.9  99.126  <0.0001 
+
+2 1,069  69.5 
+
+3 1,398  58.9 
+
+4 1,016  54.2 
+
+5 493  57.4 
+
+6 202  52.6 
+
+7+  112  54.1 
+
+Daily activity factors 
+
+Paid work  Marked  2,578  56.9  30.54  <0.0001 
+
+Not marked  1,918  63.2 
+
+Unemployed, 
+
+looking for a job 
+
+Marked  277  53.9  6.99  =0.008 
+
+Not marked  4,218  59.8 93 Вісник АПСВТ, 2019, № 2 
+
+> Table 2. (сontinuation)
+
+Unemployed, not 
+
+looking for a job 
+
+Marked  182  68.9  10.27  =0.001 
+
+Not marked  4,314  59.1 
+
+Housework, looking 
+
+after children, 
+
+others 
+
+Marked  1,223  63.3  16.50  <0.0001 
+
+Not marked  3,272  58.1 
+
+Education  Marked  199  33.1  188.50  <0.0001 
+
+Not marked  4,296  61.7 
+
+Retired  Marked  811  86.9  333.79  <0.0001 
+
+Not marked  3,685  55.6 
+
+# The multilevel binomial logistic regression analysis 
+
+The binary logistic regression analysis results for both gender groups analyzed together presents in 
+
+Table 3 . Firstly, the univariate logistic regression analysis has shown that all explanatory variables except the 
+
+place of residence (urban/rural) were significantly associated with poor SRH (Univariate Model). Secondly, 
+
+in all models gender, age and SES were important factors associated with poor reported health. The socio-
+
+economic status difference between the low SES and the high SES groups was revealed. Respondents from 
+
+all SES groups were less likely to report poor health compared with the low SES group. Then, such categories 
+
+of respondent as female, those who live with a partner, been divorced, and having children living at 
+
+home tended to report poor health. Those who were unemployed but not actively looking for a job, doing 
+
+housework, taking care of children as well as retired also were more likely to report poor SRH. As expected, 
+
+those with paid work and also who had been unemployed but actively looking for a job are less likely to 
+
+report poor health 94 
+
+Iryna Mazhak 
+
+> Variables  Category  Univariate
+> Model
+> Model 1  Model 2  Model 3  Model 4  Full Model
+> OR  95%CI  OR  95%CI  OR  95%CI  OR  95%CI  OR  95%CI  OR  95%CI
+> Demographic  factors
+> Gender  Male  1 1 1 1 1 1
+> Female  1.65***  (1.50-1.81)  1.76***  (1.59-1.94)  1.99***  (1.78-2.22)  2.14***  (1.89-2.43)  1.88***  (1.68-2.12)  2.02***  (1.76-2.31)
+> Age group  Under 30  1 1 1 1 1 1
+> 31-40  2.02***  (1.78-2.30)  2.03***  (1.78-2.32)  1.81***  (1.56-2.09)  1.51***  (1.27-1.81)  1.81***  (1.56-2.10)  1.50***  (1.26-1.80)
+> 41-50  3.81***  (3.35-4.33)  3.85***  (3.38-4.39)  3.56***  (3.08-4.11)  3.16***  (2.66-3.76)  3.51***  (3.02-4.07)  3.09***  (2.58-3.69)
+> Over 51  8.60***  (7.40-9.99)  8.88***  (7.63-10.33)  7.91***  (6.72-9.32)  7.04***  (5.83-8.49)  6.28***  (5.22-7.56)  5.67***  (4.60-6.99)
+> Place of residence  Urban  0.92  (0.84-1.01)
+> Rural  1
+> Socioeconomic status
+> SES  High  0.56***  (0.48-0.66)  0.53***  (0.44-0.63)  0.49***  (0.41-0.60)  0.57 ***  (0.47-0.69)  0.53 ***  (0.44-0.65)
+> Upper middle  0.71**  (0.60-0.83)  0.65***  (0.54-0.77)  0.62***  (0.51-0.75)  0.69***  (0.57-0.82)  0.65***  (0.53-0.80)
+> Middle  0.76***  (0.64-0.89)  0.71***  (0.60-0.85)  0.66***  (0.54-0.81)  0.75**  (0.63-0.90)  0.69***  (0.57-0.85)
+> Lower middle  0.69***  (0.59-82)  0.68***  (0.57-0.81)  0.70***  (0.57-0.86)  0.71***  (0.59-0.84)  0.73***  (0.60-0.89)
+> Low  1 1 1 1 1 1
+> Table 3.  Odd ratios for poor SRH for both gender groups together (Full Model)
+
+95 Вісник АПСВТ, 2019, № 2 
+
+> Family factors
+> Live with partner  Yes  1.63***  (1.48-1.80)  1.45***  (1.22-1.72)  1.43***  (1.20-1.70)
+> No  1 1 1
+> Ever been divorce d Yes  1.68***  (1.43-1.97)  1.37***  (1.14-1.64)  1.37***  (1.14-1.65)
+> No  1 1 1
+> Children at househol d Yes  1.49***  (1.36-1.63)  1.08  (0.92-1.27)  1.08  (0.92-1.28)
+> No  1 1 1
+> Numbes of family member s 0.88***  (0.85-0.91)  0.90***  (0.85-0.94)  0.90***  (0.85-0.95)
+> Daily activity factors
+> Paid work  Marked  0.77***  (0.70-0.83)  0.75***  (0.62-0.89)  0.80**  (0.66-0.98)
+> Not market  1 1 1
+> Unemployed, looking for a jo b Marked  0.79***  (0.66-0.94)  0.72**  (0.57-0.94)  0.83  (0.61-1.12)
+> Not market  1 1 1
+> Unemployed, not looking for
+> a jo b
+> Marked  1.53***  (1.18-2.00)  1.74***  (1.19-2.54)  1.97***  (1.26-3.08)
+> Not market  1 1 1
+> Housework, looking after
+> children, other s
+> Marked  1.25***  (1.12-1.39)  0.98  (0.85-1.14)  1.00  (0.86-1.18)
+> Not market  1 1
+> Table 2. (сontinuation)
+
+96 
+
+> Iryna Mazhak
+> Education  Marked  0.31***  (0.26-0.37)  0.87  (0.64-1.18)  0.61  (0.36-1.04)
+> Not market  1 1 1
+> Retire d Marked  5.30  (4.35-6.45)  1.51***  (1.16-1.98)  1.48***  (1.12-1.97)
+> Not market  1 1 1
+> Model characteristics
+> Nagelkerke R 2 0.196  0.195  0.201  0.206  0.211
+> Correctly classificated ca ses  68.3 %  68.8%  69.9%  69.2%  69.7%
+> *** p<0.01, **p<0.05, *p<0.1
+> Table 2. (сontinuation)
+
+## Furthermore, the binary logistic regres -
+
+## sion analysis was conducted for males and 
+
+## females separately, and results are present -
+
+## ed in  Table 4 . The logistic analysis has shown 
+
+## a positive relation between age groups and 
+
+## poor health for both genders (of the old -
+
+## est age groups: males – OR=5.31, females  –
+
+## OR=6.03). As expected, the likelihood of 
+
+## estimated health as poor in the high SES is 
+
+## lower for both genders. Also, in this table, 
+
+## we can see that marital status is a disadvan -
+
+## tage for health because married males and 
+
+## females are more likely to report poor health 
+
+## compared to single ones and also, odd ratios 
+
+## are greater in the female group. But then 
+
+## odd ratios to report poor health are greater 
+
+## for males if they have ever been divorced. 
+
+## The association between poor SRH and chil -
+
+## dren living in the household was not found. 
+
+## As well, we can see that males with paid 
+
+## work or unemployed but actively looking for 
+
+## a job are less likely to estimate their health 
+
+## as poor. At the same time, females are more 
+
+## likely to report poor health if they are unem -
+
+## ployed and not actively looking for a job or 
+
+## retired. 97 Вісник АПСВТ, 2019, № 2 
+
+> Table 4 . Odd ratios for poor SRH by gender (Full Model)
+
+Variables  Category  Male (N=2,877 ) Female (N=3,943 )
+
+OR  95%CI  OR  95%CI 
+
+Age group  Under 30  1 1
+
+31-40  1.64***  (1.24-2.11)  1.34**  (1.06-1.72) 
+
+41-50  3.45***  (2.60-4.37)  2.62***  (2.07-3.41) 
+
+Over 51  5.41***  (3.98-7.08)  5.88***  (4.33-8.39) 
+
+Socioeconomic status  High  0.57***  (0.48-0.83)  0.51***  (0.47-0.88) 
+
+Upper middle  0.67  (0.59-1.06)  0.69**  (0.53-0.98) 
+
+Middle  0.64***  (0.42-0.70)  0.81  (0.76-1.42) 
+
+Lower middle  0.65***  (0.48-0.80)  0.92  (0.64-1.23) 
+
+Low  1 1
+
+Live with partner  Yes  1.46***  (1.09-1.89)  1.53***  (1.19-1.93) 
+
+No  1 1
+
+Ever been divorced  Yes  1.41**  (1.10-1.88)  1.30**  (1.03-1.73) 
+
+No  1 1
+
+Children at house  Yes  1.07  (0.86-1.35)  1.15  (0.90-1.49) 
+
+No  1 1
+
+Numbers of family members  0.89***  (0.83-0.96)  0.90***  (0.83-0.97) 
+
+Paid work  Yes  0.48***  (0.33-0.69)  1.02  (0.77-1.28) 
+
+No  1 1
+
+Unemployed, looking for a job  Yes  0.48***  (0.30-0.77)  1.07  (0.70-1.72) 
+
+No  1 1
+
+Unemployed, not looking for a job  Yes  1.24  (0.58-2.52)  2.26***  (1.26-3.95) 
+
+No  1 1
+
+Housework, looking after children, 
+
+others 
+
+Yes  1.12  (0.87-1.41)  0.98  (0.79-1.22) 
+
+No  1 198 
+
+> Iryna Mazhak
+> Table 4. (сontinuation)
+
+Education  Yes  1.53  (0.74-2.99)  0.19***  (0.08-0.44) 
+
+No  1 1
+
+Retired  Yes  1.03  (0.68-1.54)  1.68**  (1.10-2.65) 
+
+No  1 1
+
+Model characteristics 
+
+Nagelkerke R 2 0.211  0.182 
+
+Correctly classificated cases  68.3  73.1 
+
+> ***p<0.01, **p<0.05, *p<0.1.
+
+In summary, separate analysis of male and female groups showed a similar tendency regarding 
+
+increased probability of poor health with increasing age as well as increased probability of poor health with 
+
+a decreasing level of SES. Also, there is a higher likelihood of poor SRH connected with marital status and 
+
+having been divorced. The strong gender difference is connected with employed status. There is a relation 
+
+between having paid work or being unemployed but actively looking for a job and a lower likelihood of 
+
+poor health (OR=0.48) which was statistically significant only for male groups. In female groups there is a 
+
+statistically significant relation between the status “unemployed and not actively looking for a job” and the 
+
+status “poor health” (OR=2.26). 
+
+# Discussion 
+
+This paper investigates the association of SRH with various determinants and aims to identify social and 
+
+gender inequalities in health among the Ukrainian working-age population. The results of the study provide 
+
+evidence of the association of SRH with some demographic, socio-economic, family-related, and main life 
+
+activity conditions. Almost 60% of the Ukrainian working-age population reported poor health. Significant 
+
+differences were observed in the level of health across all SDH included in the study. The first part of the 
+
+study which applied traditional income theory showed that genders, age, SES, employment status seem 
+
+to be important factors associated with reported poor health status. According to “gender paradox” in 
+
+mortality and morbidity (Liu, 2014), females estimate their health worse in almost all studies in different 
+
+countries despite a longer lifespan. As well as in previous Ukrainian sudies (Cockerham et al., 2017; Gilmore, 
+
+McKee,& Rose, 2002; Platts & Gerry, 2016) my research showed that although Ukrainian females live longer 
+
+than males more than ten years, they are more likely to report poorer health compared to males because 
+
+of higher rates of morbidity. At the same time, Ukrainian males estimated their health better but have a 
+
+shorter lifespan because of unhealthy lifestyles (Cockerham, Hinote & Abbott, 2006; Cockerham et al., 
+
+2006). 
+
+As was expected SRH is decreasing with age which is similar to another study (Gilmore, McKee,& Rose, 
+
+2002). In contrast, the study showed that marital status is a disadvantage for health among both genders 
+
+of Ukrainian working-age population because findings in the Gilmore et al. study were reporting a positive 
+
+correlation between good family relations and SRH (Gilmore, McKee,& Rose, 2002). 
+
+The socioeconomic status difference in SRH between the low SES and the high SES groups was revealed. 
+
+The result is supported by the other studies conducted in Ukraine (Cockerham et al., 2017; Gilmore, McKee,& 99 Вісник АПСВТ, 2019, № 2 
+
+Rose, 2002), the likelihood to estimate health as poor in the low SES group is higher for both genders. 
+
+In addition, one more study reported that association between education and health status was in part 
+
+affected by material factors (Platts LG & Gerry, 2016). 
+
+The study showed gender differences in the association between employed status and SRH. It was 
+
+revealed that males who have paid work (or being unemployed but actively looking for a job) have a 
+
+smaller probability of reporting poor health (OR=0.48). For females there is a relation between the status 
+
+“unemployed and not actively looking for a job” and a higher probability of reporting poor health (OR=2.26). 
+
+The study of Gilmore et al. also found that employed respondents estimate their health better. 
+
+# Strengths and limitations 
+
+The ESS is the only open source database which gives the opportunity to analyze SRH in Ukraine. To 
+
+my knowledge, this is the first study which explores the gender and social inequalities in health in the 
+
+Ukrainian working-age population. This study contributes to the existing literature on health inequalities in 
+
+the Ukrainian population by analyzing intersections of social identities such as gender, place of residence, 
+
+education, SES, occupational, employment and marital status in order to reveal gender and social inequalities 
+
+in SRH. However, the study has some limitations which need attention. First of all, for this analysis cross-
+
+sectional data was used for checking association between gender, SDH, and SRH. Another limitation is that 
+
+the number of valid cases included in specific analysis differs because of dissimilar patterns of non-response 
+
+to questions for analyzed variables. Also, for simplicity of statistical analysis SRH was dichotomized into two 
+
+groups: good and poor SRH and was not analyzed based on the five-point scale. Additionally, only four groups 
+
+of SDH which were available in the ESS were included in the analysis. 
+
+# Conclusion 
+
+The analysis showed that gender, age, SES, marital and employed status were important factors 
+
+associated with poor reported health. Then, categories of respondents such as females, those who live with 
+
+a partner, divorced, and have children living at home tended to report poor health. In addition, the separate 
+
+analysis of male and female groups showed a similar tendency regarding increased probability of poor 
+
+health with increasing age as well as a decreasing level of SES. Also, there is a higher likelihood of poor SRH 
+
+connected with marital status and divorce. The strong gender difference exists in employed status because 
+
+unemployed females are more than twice as likely to estimate their health as poor. 
+
+# Availability of data and materials 
+
+The dataset supporting the conclusions of this article is available in the European Social Survey 
+
+repository,  http://www.europeansocialsurvey.org/ .
+
+# Acknowledgements 
+
+The data for the study was provided by the European Social Survey. This study was supported by Aarhus 
+
+Institute of Advanced Studies. Also, I would like to thank Danylo Sudyn for technical support of the statistical 
+
+analysis. 
+
+References 
+
+Alvarez-Galvez, J., Rodero-Cosano, M., Motrico, E., Salinas-Perez, J., Garcia-Alonso, C., & Salvador-
+
+Carulla, L. (2013). The impact of socio-economic status on self-rated health: Study of 29 countries 100 
+
+> Iryna Mazhak
+
+using European social surveys (2002–2008).  International journal of environmental research and public 
+
+health , 10(3), 747-761. 
+
+Bambra, C. (2011). Health inequalities and welfare state regimes: theoretical insights on a public health 
+
+‘puzzle’.  Journal of Epidemiology & Community Health , 65(9), 740-745. 
+
+Benyamini, Y., Blumstein, T., Lusky, A., & Modan, B. (2003). Gender differences in the self-rated health– 
+
+mortality association: Is it poor self-rated health that predicts mortality or excellent self-rated health 
+
+that predicts survival?.  The gerontologist , 43(3), 396-405. 
+
+Bobak, M., Murphy, M., Rose, R., & Marmot, M. (2007). Societal characteristics and health in the former 
+
+communist countries of Central and Eastern Europe and the former Soviet Union: a multilevel 
+
+analysis.  Journal of Epidemiology & Community Health , 61(11), 990-996. 
+
+Bobak, M., Pikhart, H., Rose, R., Hertzman, C., & Marmot, M. (2000). Socioeconomic factors, material 
+
+inequalities, and perceived control in self-rated health: cross-sectional data from seven post-communist 
+
+countries.  Social science & medicine , 51(9), 1343-1350. 
+
+Cockerham, W. C., Hamby, B. W., Hankivsky, O., Baker, E. H., & Rouhani, S. (2017). Self-rated health and 
+
+barriers to healthcare in Ukraine: The pivotal role of gender and its intersections.  Communist and Post-
+
+Communist Studies , 50(1), 53-63. 
+
+Cockerham, W. C., Hinote, B. P., & Abbott, P. (2006). Psychological distress, gender, and health lifestyles in 
+
+Belarus, Kazakhstan, Russia, and Ukraine.  Social science & medicine , 63(9), 2381-2394. 
+
+Cockerham, W. C., Hinote, B. P., Cockerham, G. B., & Abbott, P. (2006). Health lifestyles and political 
+
+ideology in Belarus, Russia, and Ukraine.  Social science & medicine , 62(7), 1799-1809. 
+
+Demirchyan, A., Petrosyan, V., & Thompson, M. E. (2012). Gender differences in predictors of self-rated 
+
+health in Armenia: a population-based study of an economy in transition.  International journal for 
+
+equity in health , 11(1), 67. 
+
+Dinesen, C., Nielsen, S. S., Mortensen, L. H., & Krasnik, A. (2011). Inequality in self-rated health 
+
+among immigrants, their descendants and ethnic Danes: examining the role of socioeconomic 
+
+position.  International journal of public health , 56 (5), 503-514. 
+
+Dominick, K. L., Ahern, F. M., Gold, C. H., & Heller, D. A. (2002). Relationship of health-related quality 
+
+of life to health care utilization and mortality among older adults.  Aging clinical and experimental 
+
+research , 14 (6), 499-508. 
+
+Dubikaytis, T., Härkänen, T., Regushevskaya, E., Hemminki, E., Haavio-Mannila, E., Laanpere, M., ... & 
+
+Koskinen, S. (2014). Socioeconomic differences in self-rated health among women: a comparison of St. 
+
+Petersburg to Estonia and Finland.  International journal for equity in health , 13 (1), 39. 
+
+Espelt, A., Borrell, C., Rodriguez-Sanz, M., Muntaner, C., Pasarín, M. I., Benach, J., ... & Navarro, V. 
+
+(2008). Inequalities in health by social class dimensions in European countries of different political 
+
+traditions.  International journal of epidemiology , 37 (5), 1095-1105. 
+
+Eurostat,  Database; 2016.  http://ec.europa.eu/eurostat/ . Accessed 30 May 2017. 
+
+Gilmore, A. B., McKee, M., & Rose, R. (2002). Determinants of and inequalities in self-perceived health in 
+
+Ukraine.  Social science & medicine , 55 (12), 2177-2188. 
+
+Guimarães, J. M. N., Chor, D., Werneck, G. L., Carvalho, M. S., Coeli, C. M., Lopes, C. S., & Faerstein, 
+
+E. (2012). Association between self-rated health and mortality: 10 years follow-up to the Pró-Saúde 
+
+cohort study.  BMC Public Health,  12(1), 676. 
+
+Hankivsky, O. (2014). Intersectionality 101.  The Institute for Intersectionality Research & Policy, SFU , 1-34. 
+
+Heyns, B. (2005). Emerging Inequalities in Central and Eastern Europe.  Annual Review of Sociology,  31 , 163-
+
+197. Retrieved from  http://www.jstor.org/stable/29737716 
+
+Jakab, Z., & Marmot, M. (2012). Social determinants of health in Europe.  The Lancet , 379 (9811), 103-105. 
+
+Liu, H. (2014). Gender paradox (and the health myth).  The Wiley Blackwell Encyclopedia of Health, Illness, 
+
+Behavior, and Society , 629-633. 
+
+Mackenbach, J. P., Stirbu, I., Roskam, A. J. R., Schaap, M. M., Menvielle, G., Leinsalu, M., & Kunst, A. 
+
+E. (2008). Socioeconomic inequalities in health in 22 European countries.  New England journal of 
+
+medicine , 358 (23), 2468-2481. 
+
+Michalski, T. (2016). The differentiation of the health situation in European post–communist countries after 
+
+1990.  Geography and Tourism , 4(1), 33-42. 101 Вісник АПСВТ, 2019, № 2 
+
+Palència, L., Malmusi, D., De Moortel, D., Artazcoz, L., Backhans, M., Vanroelen, C., & Borrell, C. (2014). 
+
+The influence of gender equality policies on gender inequalities in health in Europe.  Social science & 
+
+medicine , 117 , 25-33. 
+
+Platts, L. G., & Gerry, C. J. (2017). Social inequalities in self-rated health in Ukraine in 2007: the role of 
+
+psychosocial, material and behavioural factors.  European Journal of Public Health , 27 (2), 211-217. 
+
+Richter, M., Moor, I., & van Lenthe, F. J. (2012). Explaining socioeconomic differences in adolescent self-rated 
+
+health: the contribution of material, psychosocial and behavioural factors.  J Epidemiol Community 
+
+Health , 66 (8), 691-697. 
+
+Schütte, S., Chastang, J. F., Parent-Thirion, A., Vermeylen, G., & Niedhammer, I. (2013). Social differences 
+
+in self-reported health among men and women in 31 countries in Europe.  Scandinavian journal of 
+
+public health , 41 (1), 51-57. 
+
+Sen, G., Iyer, A., & Mukherjee, C. (2009). A methodology to analyse the intersections of social inequalities 
+
+in health.  Journal of Human Development and Capabilities , 10 (3), 397-415. 
+
+State Statistical Service of Ukraine, Database; 2016.  https://ukrstat.org/en . Accessed 30 May 2017. 
+
+The European Social Survey, Database; 2016.  http://www.europeansocialsurvey.org/ . Accessed 15 Jun 
+
+2016. 
+
+Tsimbos, C. (2010). An assessment of socio-economic inequalities in health among elderly in Greece, Italy 
+
+and Spain.  International journal of public health , 55 (1), 5-15. 
+
+World Development Indicators, Database; 2016.  http://data.worldbank.org/data-catalog/world-
+
+development-indicators . Accessed 30 May 2017.
