@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const links=[
   ["/about","Про Академію"],["/programs","Програми"],["/admissions","Вступ"],["/people","Люди"],
-  ["/stories","Історії"],["/events","Події"],["/students","Студенту"],["/faq","FAQ"],["/news","Новини"],["/materials","Матеріали"],["/contacts","Контакти"],
+  ["/international","Міжнародне"],["/research","Наука"],["/stories","Історії"],["/events","Події"],["/students","Студенту"],["/faq","FAQ"],["/news","Новини"],["/materials","Матеріали"],["/contacts","Контакти"],
 ];
 
 export function SiteHeader(){const pathname=usePathname();const [open,setOpen]=useState(false);return <header className="legacy-header"><div className="wrap topbar">

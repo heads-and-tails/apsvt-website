@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./expanded.css";
 import { SiteMotion } from "./components/SiteMotion";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://apsvt-website.site"),
+  metadataBase: new URL("https://apsvt-academy.ikucha.chatgpt.site"),
   title: {
     default: "АПСВТ — освіта з людським виміром",
     template: "%s · АПСВТ",
