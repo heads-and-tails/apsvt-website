@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SiteMotion } from "./components/SiteMotion";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://apsvt-website.site"),
@@ -30,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="uk">
-      <body>{children}</body>
+      <body><SiteMotion />{children}</body>
     </html>
   );
 }

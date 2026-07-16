@@ -1,25 +1,4 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { SiteHeader } from "../../components/SiteHeader";
-import { SiteFooter } from "../../components/SiteFooter";
-import { getPostBySlug, getPosts } from "@/lib/data";
-import { NewsCard } from "../../components/NewsCard";
-
-export const dynamic = "force-dynamic";
-
-type Props={params:Promise<{slug:string}>};
-
-export async function generateMetadata({params}:Props):Promise<Metadata>{const {slug}=await params;const post=await getPostBySlug(slug);return post?{title:post.title,description:post.excerpt,openGraph:{title:post.title,description:post.excerpt,images:[post.imageUrl]}}:{title:"Матеріал не знайдено"}}
-
-export default async function ArticlePage({params}:Props){
-  const {slug}=await params;const post=await getPostBySlug(slug);if(!post)notFound();
-  const related=(await getPosts({limit:8})).filter(p=>p.id!==post.id).slice(0,3);
-  const date=new Intl.DateTimeFormat("uk-UA",{day:"2-digit",month:"long",year:"numeric"}).format(new Date(post.publishedAt||post.createdAt));
-  return <main id="top"><SiteHeader />
-    <article className="article-page"><header className="article-head"><Link href="/news">← Усі матеріали</Link><div className="article-meta"><span>{post.category}</span><time>{date}</time><span>6 хв читання</span></div><h1>{post.title}</h1><p>{post.excerpt}</p></header>
-      <div className="article-cover"><img src={post.imageUrl} alt={post.imageAlt} /></div>
-      <div className="article-layout"><aside><span>Поділитися</span><a href={`mailto:?subject=${encodeURIComponent(post.title)}`}>Email</a><a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`/news/${post.slug}`)}`} target="_blank" rel="noreferrer">LinkedIn</a></aside><div className="article-body">{post.body.split(/\n\n+/).map((paragraph,index)=>index===0?<p className="lead" key={index}>{paragraph}</p>:<p key={index}>{paragraph}</p>)}<blockquote>Освіта стає цінною тоді, коли нове знання переходить у відповідальну дію.</blockquote><div className="article-author"><span>АП</span><div><b>Редакція АПСВТ</b><p>Історії академічної спільноти</p></div></div></div></div>
-    </article>
-    <section className="related-news section-pad"><div className="section-heading"><div><span className="kicker blue">Читайте далі</span><h2>Ще з<br /><i>Академії.</i></h2></div></div><div className="media-grid compact-grid">{related.map(p=><NewsCard key={p.id} post={p}/>)}</div></section><SiteFooter /></main>
-}
+import type{Metadata}from"next";import Link from"next/link";import{notFound}from"next/navigation";import{SiteHeader}from"../../components/SiteHeader";import{SiteFooter}from"../../components/SiteFooter";import{getPostBySlug,getPosts}from"@/lib/data";import{NewsCard}from"../../components/NewsCard";
+export const dynamic="force-dynamic";type Props={params:Promise<{slug:string}>};
+export async function generateMetadata({params}:Props):Promise<Metadata>{const{slug}=await params;const post=await getPostBySlug(slug);return post?{title:post.title,description:post.excerpt}:{title:"Матеріал не знайдено"}}
+export default async function Page({params}:Props){const{slug}=await params;const post=await getPostBySlug(slug);if(!post)notFound();const related=(await getPosts({limit:6})).filter(p=>p.id!==post.id).slice(0,3);const date=new Intl.DateTimeFormat("uk-UA",{day:"2-digit",month:"long",year:"numeric"}).format(new Date(post.publishedAt||post.createdAt));return <main id="top"><SiteHeader/><section className="detail-hero"><div className="wrap"><div className="detail-kicker mono">{post.category} · {date}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div></section><div className="phero-rule"/><section><div className="wrap article-cover ph wide"><img src={post.imageUrl} alt={post.imageAlt}/></div></section><section className="article-section"><div className="wrap detail-layout"><article className="detail-copy"><p className="lede">{post.excerpt}</p>{post.body.split(/\n\n+/).map((p,i)=><p key={i}>{p}</p>)}<blockquote>Освіта стає цінною тоді, коли знання переходить у відповідальну дію.</blockquote><Link className="back-link" href="/news">← До всіх новин</Link></article><aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Категорія</b>{post.category}</li><li><b>Опубліковано</b>{date}</li><li><b>Автор</b>Редакція АПСВТ</li></ul></aside></div></section>{related.length>0&&<section className="soft"><div className="wrap"><div className="sec-head"><div><div className="idx">Читайте далі</div><h2>Ще з Академії</h2></div></div><div className="news-grid">{related.map(p=><NewsCard post={p} key={p.id}/>)}</div></div></section>}<SiteFooter/></main>}

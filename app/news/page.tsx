@@ -1,21 +1,3 @@
-import type { Metadata } from "next";
-import { SiteHeader } from "../components/SiteHeader";
-import { SiteFooter } from "../components/SiteFooter";
-import { NewsCard } from "../components/NewsCard";
-import { getPosts } from "@/lib/data";
-
-export const metadata: Metadata = { title: "Медіа", description: "Новини, історії та ідеї спільноти АПСВТ." };
-
-export const dynamic = "force-dynamic";
-
-export default async function NewsPage(){
-  const posts=await getPosts({limit:60});
-  const featured=posts.find(p=>p.featured) || posts[0];
-  const rest=posts.filter(p=>p.id!==featured?.id);
-  return <main id="top"><SiteHeader />
-    <section className="page-hero compact media-hero"><div><span className="kicker blue">Новини · Історії · Ідеї</span><h1>Академія<br /><i>говорить.</i></h1><p>Про людей, дослідження, партнерства й рішення, які народжуються у нашій спільноті.</p></div></section>
-    {featured && <section className="featured-story section-pad"><NewsCard post={featured} large /></section>}
-    <section className="media-grid section-pad">{rest.map(post=><NewsCard key={post.id} post={post} />)}</section>
-    <section className="media-subscribe"><div><span className="kicker yellow">Щотижневий дайджест</span><h2>Одна пошта.<br />Найважливіше <i>за тиждень.</i></h2></div><form action="mailto:info@socosvita.kiev.ua" method="post"><input type="email" required placeholder="you@example.com" aria-label="Email" /><button type="submit">Підписатися →</button></form></section>
-    <SiteFooter /></main>
-}
+import type{Metadata}from"next";import{SiteHeader}from"../components/SiteHeader";import{SiteFooter}from"../components/SiteFooter";import{NewsCard}from"../components/NewsCard";import{getPosts}from"@/lib/data";
+export const metadata:Metadata={title:"Новини",description:"Новини, історії та оголошення АПСВТ."};export const dynamic="force-dynamic";
+export default async function Page(){const posts=await getPosts({limit:60});return <main id="top"><SiteHeader/><section className="phero"><div className="wrap"><div className="crumb">Головна / Новини</div><h1>Академія<br/>сьогодні</h1><p className="lead">Новини, дослідження, міжнародні партнерства, студентські історії та важливі оголошення.</p></div></section><div className="phero-rule"/><section><div className="wrap"><div className="sec-head"><div><div className="idx">Останні матеріали</div><h2>У фокусі</h2></div></div><div className="news-grid">{posts.map(post=><NewsCard post={post} key={post.id}/>)}</div></div></section><SiteFooter/></main>}
