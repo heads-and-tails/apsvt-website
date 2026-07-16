@@ -7,6 +7,11 @@ const scholarProfiles=[
   {name:"Віктор Сухомлин",field:"Публічне управління, зайнятість",url:"https://scholar.google.com/citations?user=Fye2EVwAAAAJ&hl=en",metric:"h-index 2 · 7 цитувань"},
   {name:"Ігор Чорнодід",field:"Соціальна економіка, економічна безпека",url:"https://scholar.google.com.ua/citations?user=zoVq-icAAAAJ&hl=uk",metric:"Scopus · ORCID · Google Scholar"},
   {name:"Гліб Пріб",field:"Психіатрія, психологія, психічне здоров’я",url:"https://scholar.google.com.ua/citations?hl=ru&user=kLThYfwAAAAJ",metric:"200+ наукових і методичних праць"},
+  {name:"Людмила Бегеза",field:"Професійний розвиток особистості, психологія",url:"https://scholar.google.com.ua/citations?user=8P5Oe1kAAAAJ&hl=ru",metric:"100+ наукових і методичних праць"},
+  {name:"Олена Карагодіна",field:"Соціальна робота, громадське здоров’я, консультування",url:"https://scholar.google.com.ua/citations?hl=ru&user=bet3y9gAAAAJ",metric:"120+ наукових праць"},
+  {name:"Володимир Ліпкан",field:"Національна безпека, кримінальне й інформаційне право",url:"https://scholar.google.com.ua/citations?hl=uk&user=mmE8GhkAAAAJ",metric:"Доктор юридичних наук, професор"},
+  {name:"Ігор Діордіца",field:"Інформаційне право, кібербезпека, кримінальне право",url:"https://scholar.google.com.ua/citations?user=iaezWoQAAAAJ&hl=uk",metric:"Scopus · ORCID · Google Scholar"},
+  {name:"Галина Муляр",field:"Міжнародне судочинство, кримінально-виконавче право",url:"https://scholar.google.com.ua/citations?hl=uk&user=chKXb-QAAAAJ",metric:"Scopus · ORCID · Google Scholar"},
 ];
 
 const publications=[

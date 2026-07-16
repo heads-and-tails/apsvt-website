@@ -9,7 +9,7 @@ import re
 import shutil
 from pathlib import Path
 
-from bs4 import BeautifulSoup, Comment
+from bs4 import BeautifulSoup, Comment, NavigableString
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,7 +40,7 @@ def clean_body(legacy, title: str) -> tuple[str, str]:
     if candidate is None:
         candidate = legacy.body or legacy
 
-    for selector in ("script", "style", "form", "nav", ".links", ".tabs", ".breadcrumb", ".print-link", ".sharethis-wrapper"):
+    for selector in ("script", "style", "form", "nav", ".links", ".tabs", ".breadcrumb", ".print-link", ".sharethis-wrapper", ".downloads", ".download-list", ".b-related-page-item", "#gtx-trans"):
         for node in candidate.select(selector):
             node.decompose()
     for comment in candidate.find_all(string=lambda value: isinstance(value, Comment)):
@@ -49,16 +49,21 @@ def clean_body(legacy, title: str) -> tuple[str, str]:
         source = image.get("src", "").strip()
         if not source or source == "#asset-pending":
             image.decompose()
-    for anchor in candidate.select("a[href]"):
-        href = anchor.get("href", "").strip()
-        if href in {"../index.html", "../../index.html", "#asset-pending"}:
-            anchor["href"] = "/materials"
-        elif href.startswith("../../documents/"):
-            anchor["href"] = "/documents/" + href.split("../../documents/", 1)[1]
-        elif "socosvita.kiev.ua" in href:
-            anchor["href"] = "/materials"
-        elif href.startswith("javascript:"):
-            anchor["href"] = "/materials"
+    for anchor in list(candidate.select("a")):
+        label = clean_text(anchor.get_text(" ", strip=True))
+        if re.match(r"^(TXT|PDF|DOCX?|XLSX?)\s*·", label, re.I) or label in {"Завантажити", "Продивитись", "Переглянути"}:
+            anchor.decompose()
+        else:
+            anchor.unwrap()
+    for node in list(candidate.find_all(["h2", "h3", "h4", "p"])):
+        label = clean_text(node.get_text(" ", strip=True)).strip("*_ ").upper()
+        if label in {"ДОКУМЕНТИ ДО МАТЕРІАЛУ", "ЗАВАНТАЖЕННЯ", "ДОДАТОК РОЗМІР ЗАВАНТАЖИТИ ПРОДИВИТИСЬ"}:
+            node.decompose()
+    for value in list(candidate.find_all(string=True)):
+        if isinstance(value, NavigableString):
+            cleaned = re.sub(r"@@HTML\d+@@", "", str(value)).replace("**", "")
+            if cleaned != str(value):
+                value.replace_with(cleaned)
     for node in list(candidate.select("p")):
         if not clean_text(node.get_text(" ", strip=True)).strip("*_") and not node.select_one("a[href]"):
             node.decompose()
@@ -77,7 +82,7 @@ def page_shell(title: str, category: str, date: str, body: str, filename: str) -
     return f'''<!doctype html>
 <html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{safe_title} · АПСВТ</title><meta name="description" content="{safe_category}: {safe_title}"><link rel="stylesheet" href="/materials.css"></head>
 <body><header><div class="wrap topbar"><a class="brand" href="/"><span class="mark"><i>А</i></span><span>Академія праці,<br>соціальних відносин і туризму<em>Київ · засновано 1993</em></span></a><nav><a href="/about">Академія</a><a href="/programs">Програми</a><a href="/admissions">Вступ</a><a href="/news">Новини</a><a class="active" href="/materials">Матеріали</a><a href="/contacts">Контакти</a></nav></div></header>
-<main><section class="hero"><div class="wrap"><div class="crumb">Матеріали / {safe_category}</div><h1>{safe_title}</h1><div class="meta"><span>{safe_date}</span><span>Офіційний матеріал АПСВТ</span></div></div></section><div class="rule"></div><article class="wrap article"><a class="back" href="/materials">← Усі матеріали</a><div class="content">{body}</div><aside><b>Матеріал перенесено до нового сайту</b><p>Текст і доступні документи збережено, а всі внутрішні переходи працюють у новій структурі.</p></aside></article></main>
+<main><section class="hero"><div class="wrap"><div class="crumb">Матеріали / {safe_category}</div><h1>{safe_title}</h1><div class="meta"><span>{safe_date}</span><span>Офіційний матеріал АПСВТ</span></div></div></section><div class="rule"></div><article class="wrap article"><a class="back" href="/materials">← Усі матеріали</a><div class="archive-label">Повний текст матеріалу</div><div class="content">{body}</div></article></main>
 <footer><div class="wrap"><b>АПСВТ · Київ</b><a href="/">Головна</a><a href="/materials">Матеріали</a><span>© 1993–2026</span></div></footer></body></html>'''
 
 
@@ -101,11 +106,9 @@ def main() -> None:
         meta = soup.select_one(".article-hero .meta span")
         date = clean_text(meta.get_text(" ", strip=True)) if meta else ""
         body, summary = clean_body(legacy, title)
-        downloads = soup.select_one(".downloads")
-        if downloads:
-            body += str(downloads)
         target = OUTPUT_PAGES / source.name
-        target.write_text(page_shell(title, category, date, body, source.name), "utf-8")
+        rendered = re.sub(r"[ \t]+\n", "\n", page_shell(title, category, date, body, source.name))
+        target.write_text(rendered, "utf-8")
         items.append({
             "title": title,
             "category": category,
