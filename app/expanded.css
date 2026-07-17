@@ -77,3 +77,8 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 @media(max-width:900px){.book-grid{grid-template-columns:1fr}.dorm-gallery figure{min-height:420px}.schedule-toolbar{align-items:stretch;flex-direction:column}.session-link{min-height:64px}}
 @media(max-width:700px){.calendar-actions{display:grid}.catalogue-controls{grid-template-columns:1fr}.catalogue-controls .available-check{height:48px}.catalogue-result span{display:block;margin-top:5px}.book-card{grid-template-columns:100px 1fr;gap:15px;padding:15px}.book-cover{min-height:180px;padding:10px}.book-cover b{font-size:12px}.book-info h3{font-size:16px;margin-top:12px}.book-info dl{gap:12px}.dorm-gallery{grid-template-columns:1fr}.dorm-gallery figure{min-height:440px}.week-switch{grid-template-columns:42px 1fr 42px;min-width:0}.week-switch button{min-height:68px}.week-switch div{padding:10px}.week-switch b{font-size:13px}.schedule-controls.two{grid-template-columns:1fr}table.schedule-table{min-width:970px}table.schedule-table th,table.schedule-table td{padding:13px 12px}.schedule-table-wrap{margin-right:calc(50% - 50vw);padding-right:16px;border-right:0}.phero.img .bgi img{object-position:center}}
 @media(prefers-reduced-motion:reduce){.dorm-gallery img{transition:none}}
+
+/* Non-clickable research records with unavailable external sources */
+.publication-list>article{display:grid;grid-template-columns:80px 1fr;gap:20px;padding:24px 6px;border-bottom:1px solid var(--line);align-items:center;background:rgba(255,255,255,.35)}
+.publication-list>article>span{font:700 20px var(--disp);color:var(--cobalt)}
+@media(max-width:700px){.publication-list>article{grid-template-columns:55px 1fr;gap:10px}}

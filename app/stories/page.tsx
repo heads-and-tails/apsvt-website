@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 
@@ -15,5 +14,5 @@ const stories=[
 
 export default function Page(){return <main id="top"><SiteHeader />
   <section className="phero img"><div className="bgi"><img src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=1800&q=92&auto=format&fit=crop" alt="Студентська команда" /></div><div className="wrap"><div className="crumb">Головна / Історії</div><h1>Справжні<br />історії</h1><p className="lead">Люди, дослідження й ініціативи з архіву Академії — без вигаданих кейсів.</p></div></section><div className="phero-rule" />
-  <section><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Академія в дії</div><h2>Досвід, який залишається</h2></div></div><div className="story-grid">{stories.map((story,i)=><Link className={`story ${i===0?"feat":""}`} href={`/news/${story.slug}`} key={story.slug}><div className="ph"><img src={story.image} alt="" /></div><span className="cat">{story.cat}</span><h3>{story.title}</h3><p>{story.desc}</p><span className="more">→</span></Link>)}</div></div></section>
+  <section><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Академія в дії</div><h2>Досвід, який залишається</h2></div></div><div className="story-grid">{stories.map((story,i)=><article className={`story ${i===0?"feat":""}`} key={story.slug}><div className="ph"><img src={story.image} alt="" /></div><span className="cat">{story.cat}</span><h3>{story.title}</h3><p>{story.desc}</p></article>)}</div></div></section>
   <SiteFooter /></main>}
