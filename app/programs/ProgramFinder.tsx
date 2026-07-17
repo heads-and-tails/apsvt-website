@@ -98,7 +98,7 @@ export function ProgramFinder({ index = "02 / Тест на програму" }:
       <div className="mono">Ваш персональний результат</div><h2>Напрями, що пасують вам</h2>
       <p className="finder-summary">Тест врахував ваші інтереси, спосіб мислення та бажане середовище. Відкрийте програму, щоб побачити навчальний план, вартість і кар’єрні можливості.</p>
       <div className="finder-results">{result.map(({ program, fit }, index) => <Link href={`/programs/${program.slug}`} key={program.slug}><span>0{index + 1}</span><div><b>{program.title}</b><small>{program.short}</small></div><em>{fit}% збіг</em><strong>→</strong></Link>)}</div>
-      <div className="finder-actions"><button className="finder-reset" type="button" onClick={reset}>Пройти ще раз</button><a className="cta" href="#consultation"><span>Обговорити результат</span></a></div>
+      <div className="finder-actions"><button className="finder-reset" type="button" onClick={reset}>Пройти ще раз</button><Link className="cta" href="/admissions#consultation"><span>Обговорити результат</span></Link></div>
     </>}
   </div></div></section>;
 }
