@@ -160,3 +160,28 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 @media(max-width:1000px){.leadership-grid,.professor-list{grid-template-columns:1fr}.leader-card{grid-template-columns:minmax(210px,38%) minmax(0,1fr)}.faculty-group-head{grid-template-columns:78px minmax(0,1fr) max-content}.career-layout{grid-template-columns:1fr}.faculty-card{width:100%}}
 @media(max-width:700px){.loader-orbit{width:88vw}.loader>strong{right:18px;bottom:88px}.loader-line{left:18px;right:18px;bottom:46px}.loader-top{left:18px;right:18px}.leader-card{grid-template-columns:1fr}.leader-photo{min-height:340px}.faculty-group-head{grid-template-columns:1fr;gap:12px;align-items:start}.faculty-group-head h3{font-size:clamp(23px,7.4vw,34px)}.professor-list article{grid-template-columns:26px 52px minmax(0,1fr);gap:12px;min-height:0}.professor-list h4{font-size:16px}.professor-list b,.professor-list p{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.motion-ready .motion-reveal{opacity:1;transform:none;transition:none}.route-entering .phero h1,.route-entering .program-hero h1,.route-entering .detail-hero h1,.route-entering .phero .lead,.route-entering .program-hero p,.route-entering .detail-deck,.phero:before,.bigcta,.intl-band{animation:none}}
+
+/* Crisp editorial hero geometry and English-first spacing */
+.phero:not(.img):before{top:-120px;right:-100px;width:420px;height:420px;background:transparent!important;border:1px solid rgba(201,214,255,.42);outline:1px solid rgba(36,72,255,.72);outline-offset:-72px;box-shadow:none;animation:heroGeometryFloat 7s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform}
+.phero:not(.img):after{content:"";position:absolute;top:78px;right:58px;width:64px;aspect-ratio:1;border:2px solid var(--gold);background:var(--navy);box-shadow:inset 0 0 0 15px var(--navy),inset 0 0 0 17px var(--cobalt);transform:rotate(45deg);animation:heroGeometryCore 7s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform}
+@keyframes heroGeometryFloat{to{transform:translate3d(-48px,42px,0) rotate(14deg)}}
+@keyframes heroGeometryCore{to{transform:translate3d(-48px,42px,0) rotate(135deg)}}
+
+.english-page .phero>.wrap,.english-page .program-hero-in,.english-page .detail-hero>.wrap{min-width:0}
+.english-page .phero h1{max-width:13ch;font-size:clamp(42px,6.7vw,94px);line-height:.92;letter-spacing:-.045em;text-wrap:balance;overflow-wrap:normal}
+.english-page .phero .lead{max-width:58ch;line-height:1.55}
+.english-page .deep-intro{grid-template-columns:minmax(0,.9fr) minmax(340px,1.1fr);align-items:start}
+.english-page .deep-intro>*{min-width:0}
+.english-page .deep-intro h2,.english-page .detail-copy h2,.english-page .sec-head h2{text-wrap:balance;overflow-wrap:normal}
+.english-page .deep-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.english-page .deep-card{min-height:235px}
+.english-page .detail-layout{grid-template-columns:minmax(0,.88fr) minmax(360px,1.12fr);gap:clamp(44px,6vw,90px)}
+.english-page .detail-layout>*{min-width:0}
+.english-page .detail-aside{min-width:0}
+.english-page .row{grid-template-columns:56px minmax(0,1fr);gap:22px}
+.english-page .row h3{overflow-wrap:normal;text-wrap:balance}
+.english-page .program-hero h1,.english-page .detail-hero h1{text-wrap:balance;overflow-wrap:normal}
+
+@media(max-width:1000px){.english-page .deep-intro,.english-page .detail-layout{grid-template-columns:1fr}.english-page .detail-aside{position:static}.english-page .deep-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.phero:not(.img):before{top:-70px;right:-100px;width:220px;height:220px;outline-offset:-40px}.phero:not(.img):after{top:35px;right:12px;width:38px;box-shadow:inset 0 0 0 8px var(--navy),inset 0 0 0 10px var(--cobalt)}.english-page .phero h1{max-width:100%;font-size:clamp(34px,10.4vw,48px);line-height:.94;letter-spacing:-.04em}.english-page .phero .crumb{max-width:32ch;line-height:1.55}.english-page .deep-intro{gap:30px;margin-bottom:38px}.english-page .deep-intro h2{font-size:clamp(31px,9vw,42px);line-height:.98}.english-page .deep-grid{grid-template-columns:1fr}.english-page .deep-card{min-height:210px;padding:22px}.english-page .detail-layout{gap:30px}.english-page .detail-copy .lede{font-size:clamp(19px,5.7vw,24px)}.english-page .row{grid-template-columns:38px minmax(0,1fr);gap:12px;padding:23px 0}.english-page .row h3{font-size:18px;line-height:1.25}.english-page .program-hero h1,.english-page .detail-hero h1{font-size:clamp(32px,10vw,48px);line-height:.96}.english-page .brand-name{max-width:170px;font-size:8.5px;line-height:1.05}}
+@media(prefers-reduced-motion:reduce){.phero:not(.img):before,.phero:not(.img):after{animation:none}}
