@@ -4,7 +4,7 @@ import { SiteFooter } from "../components/SiteFooter";
 import { EventRegistrationForm } from "./EventRegistrationForm";
 
 export const metadata: Metadata = { title:"Події", description:"Події, зустрічі, конференції та реєстрація на заходи АПСВТ." };
-export const events=[
+const events=[
   {date:"22 серпня 2026",day:"22",month:"СЕР",title:"День відкритих дверей",place:"Кампус · 11:00",desc:"Знайомство з програмами, викладачами, кампусом і маршрутом вступу."},
   {date:"4 вересня 2026",day:"04",month:"ВЕР",title:"Відкрита лекція: право і суспільні зміни",place:"Актова зала · 15:00",desc:"Розмова з практиками про нову роль юриста та роботу правничої спільноти."},
   {date:"12 вересня 2026",day:"12",month:"ВЕР",title:"Кар’єрна лабораторія",place:"Онлайн · 17:30",desc:"Як перетворити навчальний проєкт на перший професійний кейс."},

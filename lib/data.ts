@@ -1,5 +1,3 @@
-import { env } from "cloudflare:workers";
-
 export type Post = {
   id: string;
   slug: string;
@@ -147,16 +145,22 @@ const createTableSql = `CREATE TABLE IF NOT EXISTS posts (
   updated_at TEXT NOT NULL, author_email TEXT NOT NULL
 )`;
 
-function db(): D1Database {
-  if (!env.DB) throw new Error("D1_UNAVAILABLE");
-  return env.DB;
+async function db(): Promise<D1Database | null> {
+  try {
+    const moduleName = "cloudflare:workers";
+    const { env } = await import(/* webpackIgnore: true */ moduleName);
+    return env.DB ?? null;
+  } catch {
+    return null;
+  }
 }
 
 let initialized = false;
 
 export async function ensurePosts(): Promise<void> {
   if (initialized) return;
-  const database = db();
+  const database = await db();
+  if (!database) return;
   await database.prepare(createTableSql).run();
   await database.prepare("CREATE INDEX IF NOT EXISTS posts_status_published_idx ON posts(status, published_at)").run();
   await database.batch(seedPosts.map((post) => database.prepare(
@@ -179,9 +183,11 @@ function fromRow(row: Record<string, unknown>): Post {
 export async function getPosts(options: { includeDrafts?: boolean; limit?: number } = {}): Promise<Post[]> {
   try {
     await ensurePosts();
+    const database = await db();
+    if (!database) throw new Error("D1_UNAVAILABLE");
     const where = options.includeDrafts ? "" : "WHERE status = 'published'";
     const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
-    const result = await db().prepare(`SELECT * FROM posts ${where} ORDER BY featured DESC, COALESCE(published_at, created_at) DESC LIMIT ?`).bind(limit).all<Record<string, unknown>>();
+    const result = await database.prepare(`SELECT * FROM posts ${where} ORDER BY featured DESC, COALESCE(published_at, created_at) DESC LIMIT ?`).bind(limit).all<Record<string, unknown>>();
     return result.results.map(fromRow);
   } catch {
     return seedPosts.filter((post) => options.includeDrafts || post.status === "published").slice(0, options.limit ?? 50);
@@ -191,7 +197,9 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   try {
     await ensurePosts();
-    const row = await db().prepare("SELECT * FROM posts WHERE slug = ? AND status = 'published'").bind(slug).first<Record<string, unknown>>();
+    const database = await db();
+    if (!database) throw new Error("D1_UNAVAILABLE");
+    const row = await database.prepare("SELECT * FROM posts WHERE slug = ? AND status = 'published'").bind(slug).first<Record<string, unknown>>();
     return row ? fromRow(row) : null;
   } catch {
     return seedPosts.find((post) => post.slug === slug && post.status === "published") ?? null;
@@ -205,23 +213,29 @@ export function slugify(value: string): string {
 
 export async function createPost(input: PostInput, authorEmail: string): Promise<Post> {
   await ensurePosts();
+  const database = await db();
+  if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
   const now = new Date().toISOString();
   const post: Post = { ...input, id: crypto.randomUUID(), slug: slugify(input.slug || input.title), createdAt: now, updatedAt: now, authorEmail };
   if (post.status === "published" && !post.publishedAt) post.publishedAt = now;
-  await db().prepare(`INSERT INTO posts (id,slug,title,excerpt,body,category,image_url,image_alt,status,featured,published_at,created_at,updated_at,author_email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(post.id, post.slug, post.title, post.excerpt, post.body, post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail).run();
+  await database.prepare(`INSERT INTO posts (id,slug,title,excerpt,body,category,image_url,image_alt,status,featured,published_at,created_at,updated_at,author_email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(post.id, post.slug, post.title, post.excerpt, post.body, post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail).run();
   return post;
 }
 
 export async function updatePost(id: string, input: PostInput, authorEmail: string): Promise<Post | null> {
   await ensurePosts();
+  const database = await db();
+  if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
   const now = new Date().toISOString();
   const publishedAt = input.status === "published" ? (input.publishedAt || now) : null;
-  await db().prepare(`UPDATE posts SET slug=?,title=?,excerpt=?,body=?,category=?,image_url=?,image_alt=?,status=?,featured=?,published_at=?,updated_at=?,author_email=? WHERE id=?`).bind(slugify(input.slug || input.title), input.title, input.excerpt, input.body, input.category, input.imageUrl, input.imageAlt, input.status, input.featured ? 1 : 0, publishedAt, now, authorEmail, id).run();
-  const row = await db().prepare("SELECT * FROM posts WHERE id = ?").bind(id).first<Record<string, unknown>>();
+  await database.prepare(`UPDATE posts SET slug=?,title=?,excerpt=?,body=?,category=?,image_url=?,image_alt=?,status=?,featured=?,published_at=?,updated_at=?,author_email=? WHERE id=?`).bind(slugify(input.slug || input.title), input.title, input.excerpt, input.body, input.category, input.imageUrl, input.imageAlt, input.status, input.featured ? 1 : 0, publishedAt, now, authorEmail, id).run();
+  const row = await database.prepare("SELECT * FROM posts WHERE id = ?").bind(id).first<Record<string, unknown>>();
   return row ? fromRow(row) : null;
 }
 
 export async function deletePost(id: string): Promise<void> {
   await ensurePosts();
-  await db().prepare("DELETE FROM posts WHERE id = ?").bind(id).run();
+  const database = await db();
+  if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
+  await database.prepare("DELETE FROM posts WHERE id = ?").bind(id).run();
 }
