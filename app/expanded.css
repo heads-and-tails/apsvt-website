@@ -96,3 +96,65 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .article-section{padding-top:85px}
 .journal-feature h2{font-size:clamp(28px,3.8vw,52px)}
 @media(max-width:700px){.phero h1{font-size:clamp(32px,9.5vw,50px)}.program-hero h1{font-size:clamp(32px,9vw,48px)}.detail-hero.image{min-height:72svh;padding:126px 0 44px}.detail-hero h1{font-size:clamp(30px,9vw,46px)}.detail-hero-bg img{object-position:center}.article-section{padding-top:58px}}
+
+/* Cinematic motion and resilient faculty layouts */
+.loader{background:
+  radial-gradient(circle at 50% 50%,rgba(36,72,255,.26),transparent 34%),
+  radial-gradient(circle at 16% 82%,rgba(255,209,59,.1),transparent 30%),
+  var(--navy);transition:clip-path 1.05s cubic-bezier(.77,0,.18,1),visibility 0s 1.05s;will-change:clip-path}
+.loader:before{content:"";position:absolute;inset:-45%;background:conic-gradient(from 20deg,transparent 0 34%,rgba(36,72,255,.13) 42%,transparent 51% 76%,rgba(255,209,59,.08) 84%,transparent 94%);animation:loaderWash 9s linear infinite}
+.loader.done{clip-path:inset(0 0 100% 0 round 0 0 52% 52%);visibility:hidden}
+.loader.done .loader-orbit{transform:scale(.72) rotate(18deg);opacity:0}
+.loader-aura{position:absolute;width:min(72vw,760px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(36,72,255,.18),rgba(36,72,255,.04) 40%,transparent 68%);filter:blur(18px);animation:auraBreath 3.2s ease-in-out infinite alternate}
+.loader-grid{opacity:.65;transform:perspective(700px) rotateX(62deg) scale(1.65);transform-origin:center bottom;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(12.5% - 1px),rgba(201,214,255,.1) 12.5%),repeating-linear-gradient(0deg,transparent 0,transparent calc(12.5% - 1px),rgba(201,214,255,.07) 12.5%);animation:gridDrift 4s ease-in-out infinite alternate}
+.loader-top{z-index:2;letter-spacing:.18em}.loader-top span:last-child{color:var(--gold)}
+.loader-orbit{width:min(56vw,570px);transition:transform .8s cubic-bezier(.7,0,.2,1),opacity .55s;filter:drop-shadow(0 0 30px rgba(36,72,255,.2))}
+.loader-orbit:before,.loader-orbit:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.loader-orbit:before{inset:1%;border:1px solid rgba(201,214,255,.2);animation:orbitHalo 4.8s ease-in-out infinite}
+.loader-orbit:after{inset:27%;border:1px dashed rgba(255,209,59,.5);animation:loaderSpin 7s linear infinite reverse}
+.loader-orbit i{inset:10%;border-width:1px;will-change:transform;animation:loaderSpin 3.6s linear infinite}
+.loader-orbit i:nth-child(1){border-color:rgba(240,238,232,.65);transform:rotate(12deg) scaleY(.62);animation-name:loaderSpinOne}
+.loader-orbit i:nth-child(2){border-color:var(--cobalt);transform:rotate(68deg) scaleX(.52);animation:loaderSpinTwo 2.8s linear infinite}
+.loader-orbit i:nth-child(3){border-color:var(--gold);transform:rotate(-58deg) scaleX(.48);animation:loaderSpinThree 4.2s linear infinite reverse}
+.loader-orbit b{width:82px;aspect-ratio:1;display:grid;place-items:center;background:linear-gradient(135deg,var(--cobalt),#6c83ff);border-radius:24%;box-shadow:0 0 0 12px rgba(36,72,255,.1),0 0 70px rgba(36,72,255,.45);animation:corePulse 1.9s cubic-bezier(.65,0,.35,1) infinite alternate;z-index:2}
+.loader-orbit b span{width:18px;aspect-ratio:1;border-radius:50%;background:var(--gold);box-shadow:0 0 24px rgba(255,209,59,.7)}
+.loader>strong{z-index:2;font-size:clamp(58px,9vw,132px);letter-spacing:-.06em;font-variant-numeric:tabular-nums;color:transparent;-webkit-text-stroke:1px rgba(255,209,59,.9)}
+.loader-line{z-index:2;height:2px;overflow:visible}.loader-line span{position:relative;background:linear-gradient(90deg,var(--cobalt),var(--gold));transition:none;box-shadow:0 0 16px rgba(255,209,59,.42)}
+.loader-line span:after{content:"";position:absolute;right:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 18px var(--gold)}
+.scroll-progress{height:2px;background:linear-gradient(90deg,var(--cobalt),var(--gold));box-shadow:0 0 10px rgba(255,209,59,.45);transition:width .08s linear}
+@keyframes loaderWash{to{transform:rotate(360deg)}}
+@keyframes auraBreath{to{transform:scale(1.14);opacity:.58}}
+@keyframes gridDrift{to{transform:perspective(700px) rotateX(62deg) scale(1.7) translateY(2.5%)}}
+@keyframes loaderSpin{to{transform:rotate(360deg)}}
+@keyframes loaderSpinOne{to{transform:rotate(372deg) scaleY(.62)}}
+@keyframes loaderSpinTwo{to{transform:rotate(428deg) scaleX(.52)}}
+@keyframes loaderSpinThree{to{transform:rotate(302deg) scaleX(.48)}}
+@keyframes orbitHalo{50%{transform:scale(.93);opacity:.42}}
+@keyframes corePulse{to{transform:rotate(135deg) scale(.72);border-radius:50%;background:linear-gradient(135deg,var(--gold),#fff0a3);box-shadow:0 0 0 18px rgba(255,209,59,.06),0 0 82px rgba(255,209,59,.34)}}
+
+.motion-ready .motion-reveal{opacity:0;transform:translate3d(0,30px,0);transition:opacity .8s cubic-bezier(.2,.72,.2,1),transform .9s cubic-bezier(.2,.72,.2,1);transition-delay:var(--reveal-delay,0ms);will-change:transform,opacity}
+.motion-ready .motion-reveal.is-revealed{opacity:1;transform:translate3d(0,0,0)}
+.route-entering .phero h1,.route-entering .program-hero h1,.route-entering .detail-hero h1{animation:titleArrival .9s cubic-bezier(.16,.8,.2,1) both}
+.route-entering .phero .lead,.route-entering .program-hero p,.route-entering .detail-deck{animation:titleArrival .9s .12s cubic-bezier(.16,.8,.2,1) both}
+.phero:before{animation:ambientOrbit 8s ease-in-out infinite alternate;will-change:transform}
+.bigcta,.intl-band{background-size:180% 180%;animation:colourCurrent 11s ease-in-out infinite alternate}
+.bigcta{background-image:linear-gradient(125deg,var(--cobalt),#1739da 42%,#3158ff 70%,var(--cobalt))}
+.intl-band{background-image:linear-gradient(135deg,var(--cobalt),#1736bb 48%,#3158ff)}
+@keyframes titleArrival{from{opacity:0;transform:translate3d(0,42px,0);clip-path:inset(0 0 100% 0)}to{opacity:1;transform:none;clip-path:inset(0)}}
+@keyframes ambientOrbit{to{transform:translate(-72px,54px) scale(1.16);opacity:.72}}
+@keyframes colourCurrent{to{background-position:100% 60%}}
+
+.leadership-grid,.professor-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+.leader-card{grid-template-columns:minmax(150px,44%) minmax(0,1fr);min-width:0;overflow:hidden}
+.leader-photo,.leader-info{min-width:0}.leader-role{overflow-wrap:anywhere;line-height:1.35}.leader-info h3,.faculty-card h3{overflow-wrap:anywhere;word-break:normal}.leader-info p{overflow-wrap:anywhere}
+.faculty-group,.faculty-group-head,.professor-list,.professor-list article,.professor-list article>div:last-child{min-width:0}
+.faculty-group-head{grid-template-columns:minmax(72px,90px) minmax(0,1fr) max-content;align-items:end}
+.faculty-group-head h3{max-width:22ch;overflow-wrap:anywhere;text-wrap:balance}
+.professor-list article{grid-template-columns:34px 64px minmax(0,1fr);min-width:0;overflow:hidden}
+.professor-list h4,.professor-list b,.professor-list p{overflow-wrap:anywhere}
+.career-layout{grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr)}.career-layout>*{min-width:0}.faculty-card{min-width:0;overflow:hidden}
+.sec-head>div{min-width:0;max-width:100%}.sec-head h2{overflow-wrap:anywhere;text-wrap:balance}main{overflow:clip}
+
+@media(max-width:1000px){.leadership-grid,.professor-list{grid-template-columns:1fr}.leader-card{grid-template-columns:minmax(210px,38%) minmax(0,1fr)}.faculty-group-head{grid-template-columns:78px minmax(0,1fr) max-content}.career-layout{grid-template-columns:1fr}.faculty-card{width:100%}}
+@media(max-width:700px){.loader-orbit{width:88vw}.loader>strong{right:18px;bottom:88px}.loader-line{left:18px;right:18px;bottom:46px}.loader-top{left:18px;right:18px}.leader-card{grid-template-columns:1fr}.leader-photo{min-height:340px}.faculty-group-head{grid-template-columns:1fr;gap:12px;align-items:start}.faculty-group-head h3{font-size:clamp(23px,7.4vw,34px)}.professor-list article{grid-template-columns:26px 52px minmax(0,1fr);gap:12px;min-height:0}.professor-list h4{font-size:16px}.professor-list b,.professor-list p{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.motion-ready .motion-reveal{opacity:1;transform:none;transition:none}.route-entering .phero h1,.route-entering .program-hero h1,.route-entering .detail-hero h1,.route-entering .phero .lead,.route-entering .program-hero p,.route-entering .detail-deck,.phero:before,.bigcta,.intl-band{animation:none}}
