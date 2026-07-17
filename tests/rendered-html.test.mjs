@@ -1,87 +1,56 @@
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
-const developmentPreviewMeta =
-  /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
-const templateRoot = new URL("../", import.meta.url);
-const previewRoot = new URL("../app/_sites-preview/", import.meta.url);
-
-async function render() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
-
-  return worker.fetch(
-    new Request("http://localhost/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
+let workerPromise;
+async function worker(){
+  if(!workerPromise){
+    const workerUrl=new URL("../dist/server/index.js",import.meta.url);
+    workerUrl.searchParams.set("test",`${process.pid}-${Date.now()}`);
+    workerPromise=import(workerUrl.href).then(module=>module.default);
+  }
+  return workerPromise;
 }
 
-test("server-renders the starter loading skeleton", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+async function render(path="/"){
+  const app=await worker();
+  return app.fetch(new Request(`http://localhost${path}`,{headers:{accept:"text/html"}}),{ASSETS:{fetch:async()=>new Response("Not found",{status:404})}},{waitUntil(){},passThroughOnException(){}});
+}
 
-  const html = await response.text();
-  assert.match(html, developmentPreviewMeta);
-  assert.match(html, /<title>Your site is taking shape<\/title>/i);
-  assert.match(html, /Codex is working/);
-  assert.match(html, /Your site is taking shape/);
-  assert.match(html, /Codex is building the first version/);
-  assert.match(html, /react-loading-skeleton/);
-  assert.match(html, /role="status"/);
+test("server-renders the finished Ukrainian homepage",async()=>{
+  const response=await render();
+  assert.equal(response.status,200);
+  assert.match(response.headers.get("content-type")??"",/^text\/html\b/i);
+  const html=await response.text();
+  assert.match(html,/<title>АПСВТ — освіта з людським виміром<\/title>/i);
+  assert.match(html,/href="\/en"[^>]*>EN<\/a>/i);
+  assert.match(html,/Освітні траєкторії/);
+  assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
-test("keeps the loading skeleton scoped and disposable", async () => {
-  const [preview, css, page, layout, packageJson, files] = await Promise.all([
-    readFile(new URL("SkeletonPreview.tsx", previewRoot), "utf8"),
-    readFile(new URL("preview.css", previewRoot), "utf8"),
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
-    readdir(previewRoot),
-  ]);
+test("serves every main public section in English",async()=>{
+  const paths=["/en/about","/en/programs","/en/admissions","/en/people","/en/international","/en/research","/en/research/journals","/en/research/conferences","/en/facilities","/en/facilities/campus","/en/facilities/dormitory","/en/facilities/library","/en/events","/en/students","/en/schedule","/en/exam-schedule","/en/academic-calendar","/en/materials","/en/stories","/en/faq","/en/news","/en/contacts"];
+  for(const path of paths){
+    const response=await render(path);
+    assert.equal(response.status,200,`${path} should render`);
+    const html=await response.text();
+    assert.match(html,/Academy of Labour|Admissions 2026|Degree programmes|Research and publications|Campus and services|Student space|Academy events|Class schedule|Examination timetable|Academic year|Academy materials|Academy stories|Frequently asked questions|News and stories|Contacts/i,`${path} should contain English content`);
+    assert.match(html,/href="\/en\/programs"/i,`${path} should keep English navigation`);
+  }
+});
 
-  assert.deepEqual(files.sort(), ["SkeletonPreview.tsx", "preview.css"]);
-  assert.match(preview, /from "react-loading-skeleton"/);
-  assert.match(preview, /baseColor="#eceae7"/);
-  assert.match(preview, /highlightColor="#f9f8f6"/);
-  assert.match(preview, /duration=\{2\.8\}/);
-  assert.match(preview, /sites-skeleton-search-placeholder/);
-  assert.match(packageJson, /"react-loading-skeleton": "3\.5\.0"/);
+test("serves programme and news detail pages in English",async()=>{
+  const programme=await render("/en/programs/management");
+  assert.equal(programme.status,200);
+  const programmeHtml=await programme.text();
+  assert.match(programmeHtml,/What you will study/);
+  assert.match(programmeHtml,/Career opportunities/);
+  assert.match(programmeHtml,/Strategic Management/);
+  assert.match(programmeHtml,/href="\/programs\/management"[^>]*>UA<\/a>/i);
 
-  const shellIndex = preview.indexOf('className="sites-skeleton-shell"');
-  const statusIndex = preview.indexOf('className="sites-skeleton-status"');
-  assert.ok(shellIndex >= 0 && statusIndex > shellIndex);
-  assert.match(css, /position:\s*fixed/);
-  assert.match(css, /inset:\s*0/);
-  assert.match(css, /opacity:\s*0\.52/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.doesNotMatch(css, /#020617|canvas|pets|progress/i);
-  assert.doesNotMatch(
-    preview,
-    /loading-spinner|status-mark|status-progress|canvas|cookie|random/i,
-  );
-
-  assert.match(page, /export const metadata:\s*Metadata/);
-  assert.match(page, /"codex-preview": "development"/);
-  assert.match(page, /<SkeletonPreview \/>/);
-  assert.match(layout, /title:\s*"Starter Project"/);
-  assert.doesNotMatch(layout, /codex-preview|_sites-preview|themeColor|\bViewport\b/);
-  assert.doesNotMatch(css, /(^|\s)(html|body)\s*\{/m);
-
-  await assert.rejects(
-    access(new URL("public/_sites-preview", templateRoot)),
-  );
+  const article=await render("/en/news/open-day-2026");
+  assert.equal(article.status,200);
+  const articleHtml=await article.text();
+  assert.match(articleHtml,/Open Day: experience the Academy in person/);
+  assert.match(articleHtml,/Participation is free/);
+  assert.match(articleHtml,/href="\/news\/open-day-2026"[^>]*>UA<\/a>/i);
 });
