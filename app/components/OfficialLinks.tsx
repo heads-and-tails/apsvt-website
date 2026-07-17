@@ -1,2 +1,2 @@
 type Item={title:string;description:string;href:string};
-export function OfficialLinks({index="Матеріали",title="Офіційна інформація",items}:{index?:string;title?:string;items:Item[]}){return <section className="official-links"><div className="wrap"><div className="sec-head"><div><div className="idx">{index}</div><h2>{title}</h2></div></div><div className="rows">{items.map((item,i)=><article className="row" key={item.title}><span className="rnum">{String(i+1).padStart(2,"0")}</span><div><h3>{item.title}</h3><p>{item.description}</p></div><span className="tag">Включено</span></article>)}</div></div></section>}
+export function OfficialLinks(_props:{index?:string;title?:string;items:Item[]}){return null}

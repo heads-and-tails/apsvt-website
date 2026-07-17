@@ -4,14 +4,14 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const scholarProfiles=[
-  {name:"Віктор Сухомлин",field:"Публічне управління, зайнятість",url:"https://scholar.google.com/citations?user=Fye2EVwAAAAJ&hl=en",metric:"h-index 2 · 7 цитувань"},
-  {name:"Ігор Чорнодід",field:"Соціальна економіка, економічна безпека",url:"https://scholar.google.com.ua/citations?user=zoVq-icAAAAJ&hl=uk",metric:"Scopus · ORCID · Google Scholar"},
-  {name:"Гліб Пріб",field:"Психіатрія, психологія, психічне здоров’я",url:"https://scholar.google.com.ua/citations?hl=ru&user=kLThYfwAAAAJ",metric:"200+ наукових і методичних праць"},
-  {name:"Людмила Бегеза",field:"Професійний розвиток особистості, психологія",url:"https://scholar.google.com.ua/citations?user=8P5Oe1kAAAAJ&hl=ru",metric:"100+ наукових і методичних праць"},
-  {name:"Олена Карагодіна",field:"Соціальна робота, громадське здоров’я, консультування",url:"https://scholar.google.com.ua/citations?hl=ru&user=bet3y9gAAAAJ",metric:"120+ наукових праць"},
-  {name:"Володимир Ліпкан",field:"Національна безпека, кримінальне й інформаційне право",url:"https://scholar.google.com.ua/citations?hl=uk&user=mmE8GhkAAAAJ",metric:"Доктор юридичних наук, професор"},
-  {name:"Ігор Діордіца",field:"Інформаційне право, кібербезпека, кримінальне право",url:"https://scholar.google.com.ua/citations?user=iaezWoQAAAAJ&hl=uk",metric:"Scopus · ORCID · Google Scholar"},
-  {name:"Галина Муляр",field:"Міжнародне судочинство, кримінально-виконавче право",url:"https://scholar.google.com.ua/citations?hl=uk&user=chKXb-QAAAAJ",metric:"Scopus · ORCID · Google Scholar"},
+  {name:"Віктор Сухомлин",field:"Публічне управління, зайнятість",url:"https://scholar.google.com/citations?user=Fye2EVwAAAAJ&hl=en"},
+  {name:"Ігор Чорнодід",field:"Соціальна економіка, економічна безпека",url:"https://scholar.google.com.ua/citations?user=zoVq-icAAAAJ&hl=uk"},
+  {name:"Гліб Пріб",field:"Психіатрія, психологія, психічне здоров’я",url:"https://scholar.google.com.ua/citations?hl=ru&user=kLThYfwAAAAJ"},
+  {name:"Людмила Бегеза",field:"Професійний розвиток особистості, психологія",url:"https://scholar.google.com.ua/citations?user=8P5Oe1kAAAAJ&hl=ru"},
+  {name:"Олена Карагодіна",field:"Соціальна робота, громадське здоров’я, консультування",url:"https://scholar.google.com.ua/citations?hl=ru&user=bet3y9gAAAAJ"},
+  {name:"Володимир Ліпкан",field:"Національна безпека, кримінальне й інформаційне право",url:"https://scholar.google.com.ua/citations?hl=uk&user=mmE8GhkAAAAJ"},
+  {name:"Ігор Діордіца",field:"Інформаційне право, кібербезпека, кримінальне право",url:"https://scholar.google.com.ua/citations?user=iaezWoQAAAAJ&hl=uk"},
+  {name:"Галина Муляр",field:"Міжнародне судочинство, кримінально-виконавче право",url:"https://scholar.google.com.ua/citations?hl=uk&user=chKXb-QAAAAJ"},
 ];
 
 const publications=[
@@ -32,7 +32,7 @@ export function PublicationSearch(){
   const topics=["Усі теми",...Array.from(new Set(publications.map(p=>p.topic)))];
   const filtered=useMemo(()=>publications.filter(p=>(topic==="Усі теми"||p.topic===topic)&&`${p.title} ${p.author} ${p.year} ${p.topic}`.toLowerCase().includes(query.toLowerCase())),[query,topic]);
   const scholarQuery=`https://scholar.google.com/scholar?q=${encodeURIComponent(query||"Академія праці соціальних відносин і туризму")}`;
-  return <section><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Наукові профілі</div><h2>Дослідники</h2></div></div><div className="scholar-profiles">{scholarProfiles.map(p=><a href={p.url} target="_blank" rel="noreferrer" key={p.name}><span>Google Scholar</span><h3>{p.name}</h3><p>{p.field}</p><small>{p.metric}</small><b>↗</b></a>)}</div>
+  return <section><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Наукові профілі</div><h2>Дослідники</h2></div></div><div className="scholar-profiles">{scholarProfiles.map(p=><a href={p.url} target="_blank" rel="noreferrer" key={p.name}><span>Google Scholar</span><h3>{p.name}</h3><p>{p.field}</p><small>Відкрити профіль ↗</small><b>↗</b></a>)}</div>
     <div className="research-head"><div><div className="idx">02 / Каталог</div><h2>Пошук публікацій</h2></div><a href={scholarQuery} target="_blank" rel="noreferrer">Шукати також у Google Scholar ↗</a></div>
     <div className="publication-controls"><label>Автор, назва або рік<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Наприклад: Чорнодід, психологія, 2025" /></label><label>Тема<select value={topic} onChange={e=>setTopic(e.target.value)}>{topics.map(t=><option key={t}>{t}</option>)}</select></label></div>
     <p className="publication-count">Знайдено: {filtered.length}</p><div className="publication-list">{filtered.map((p,i)=>{const external=p.href.startsWith("http");const content=<><span>{p.year}</span><div><small>{p.type} · {p.topic}</small><h3>{p.title}</h3><p>{p.author}</p></div><b>→</b></>;return external?<a href={p.href} target="_blank" rel="noreferrer" key={p.title}>{content}</a>:<Link href={p.href} key={p.title}>{content}</Link>})}</div>
