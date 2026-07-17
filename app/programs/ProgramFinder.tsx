@@ -4,24 +4,101 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { programs } from "@/lib/programs";
 
-const questions = [
-  {title:"Що вам найцікавіше?", options:[{label:"Люди й підтримка",tags:["люди","допомога","психологія"]},{label:"Бізнес і рішення",tags:["бізнес","аналітика","лідерство"]},{label:"Суспільство й правила",tags:["держава","суспільство","справедливість"]},{label:"Подорожі й події",tags:["подорожі","організація"]}]},
-  {title:"Який тип завдань вам ближчий?", options:[{label:"Консультувати",tags:["підтримка","допомога","люди"]},{label:"Аналізувати дані",tags:["аналітика","цифри","інвестиції"]},{label:"Аргументувати",tags:["аргументація","політика","справедливість"]},{label:"Створювати проєкти",tags:["проєкти","креативність","підприємництво"]}]},
-  {title:"Де ви уявляєте першу роботу?", options:[{label:"У компанії",tags:["бізнес","бренди","команди"]},{label:"У громаді або NGO",tags:["громади","суспільство","допомога"]},{label:"У державній чи правничій сфері",tags:["держава","політика","справедливість"]},{label:"У власному проєкті",tags:["підприємництво","продажі","організація"]}]},
-  {title:"Яка ваша сильна сторона?", options:[{label:"Емпатія",tags:["люди","підтримка","здоров’я"]},{label:"Системність",tags:["аналітика","управління","логістика"]},{label:"Комунікація",tags:["бренди","команди","аргументація"]},{label:"Допитливість",tags:["дослідження","подорожі","інвестиції"]}]},
+type Option = {
+  label: string;
+  note: string;
+  tags: string[];
+  boosts: string[];
+};
+
+const questions: { title: string; eyebrow: string; options: Option[] }[] = [
+  {
+    eyebrow: "Ваш інтерес",
+    title: "Що хочеться змінювати своєю роботою?",
+    options: [
+      { label: "Добробут людей", note: "Підтримувати, консультувати, відновлювати", tags: ["люди", "підтримка", "допомога", "психологія"], boosts: ["psychology", "social-work"] },
+      { label: "Бізнес і команди", note: "Розвивати організації, бренди та проєкти", tags: ["бізнес", "лідерство", "команди", "бренди"], boosts: ["management", "marketing", "trade"] },
+      { label: "Справедливі правила", note: "Працювати з правом, політикою та громадами", tags: ["справедливість", "держава", "політика", "громади"], boosts: ["law", "public-administration"] },
+      { label: "Нові враження", note: "Створювати подорожі, події та сервіс", tags: ["подорожі", "організація", "підприємництво"], boosts: ["tourism", "trade"] },
+    ],
+  },
+  {
+    eyebrow: "Ваш спосіб мислення",
+    title: "Який тип завдань заряджає вас найбільше?",
+    options: [
+      { label: "Слухати й допомагати", note: "Розбиратися в ситуації людини", tags: ["підтримка", "допомога", "люди"], boosts: ["psychology", "social-work"] },
+      { label: "Аналізувати", note: "Шукати закономірності у цифрах і даних", tags: ["аналітика", "цифри", "інвестиції"], boosts: ["finance", "marketing"] },
+      { label: "Аргументувати", note: "Захищати позицію та знаходити рішення", tags: ["аргументація", "справедливість", "держава"], boosts: ["law", "public-administration"] },
+      { label: "Організовувати", note: "Збирати людей і ресурси навколо ідеї", tags: ["проєкти", "організація", "лідерство"], boosts: ["management", "tourism", "trade"] },
+    ],
+  },
+  {
+    eyebrow: "Ваше середовище",
+    title: "Де ви бачите себе після випуску?",
+    options: [
+      { label: "У компанії", note: "Команда, клієнти й вимірюваний результат", tags: ["бізнес", "бренди", "команди"], boosts: ["management", "marketing", "finance"] },
+      { label: "У громаді або NGO", note: "Соціальні зміни та суспільна користь", tags: ["громади", "суспільство", "допомога"], boosts: ["social-work", "public-administration", "psychology"] },
+      { label: "У правничій чи державній сфері", note: "Правила, інституції та публічні рішення", tags: ["держава", "політика", "справедливість"], boosts: ["law", "public-administration"] },
+      { label: "У власному проєкті", note: "Свобода створювати й відповідати за результат", tags: ["підприємництво", "продажі", "організація"], boosts: ["trade", "tourism", "marketing"] },
+    ],
+  },
+  {
+    eyebrow: "Ваша сильна сторона",
+    title: "За що до вас найчастіше звертаються інші?",
+    options: [
+      { label: "За підтримкою", note: "Ви уважні до людей та їхнього стану", tags: ["люди", "підтримка", "здоров’я"], boosts: ["psychology", "social-work"] },
+      { label: "За порядком", note: "Ви бачите систему й тримаєте фокус", tags: ["аналітика", "управління", "логістика"], boosts: ["finance", "management", "trade"] },
+      { label: "За сильними словами", note: "Ви пояснюєте, переконуєте й домовляєтесь", tags: ["бренди", "команди", "аргументація"], boosts: ["marketing", "law", "management"] },
+      { label: "За новими ідеями", note: "Ви помічаєте можливості раніше за інших", tags: ["дослідження", "подорожі", "інвестиції"], boosts: ["tourism", "finance", "psychology"] },
+    ],
+  },
 ];
 
-export function ProgramFinder(){
-  const [answers,setAnswers]=useState<string[][]>([]);
-  const [step,setStep]=useState(0);
-  const result=useMemo(()=>{
-    const chosen=answers.flat();
-    return [...programs].sort((a,b)=>chosen.filter(t=>b.tags.includes(t)).length-chosen.filter(t=>a.tags.includes(t)).length).slice(0,3);
-  },[answers]);
-  const choose=(tags:string[])=>{setAnswers(v=>[...v,tags]);setStep(v=>v+1)};
-  const reset=()=>{setAnswers([]);setStep(0)};
-  return <section id="test" className="finder-section"><div className="wrap"><div className="idx">02 / Тест на програму</div><div className="finder-shell">
-    {step<questions.length?<><div className="finder-progress"><span style={{width:`${(step/questions.length)*100}%`}} /></div><div className="mono">Питання {step+1} з {questions.length}</div><h2>{questions[step].title}</h2><div className="finder-options">{questions[step].options.map(o=><button onClick={()=>choose(o.tags)} key={o.label}>{o.label}<b>→</b></button>)}</div></>:
-    <><div className="mono">Ваші найсильніші збіги</div><h2>Програми для вас</h2><div className="finder-results">{result.map((p,i)=><Link href={`/programs/${p.slug}`} key={p.slug}><span>0{i+1}</span><div><b>{p.title}</b><small>{p.short}</small></div><strong>→</strong></Link>)}</div><button className="finder-reset" onClick={reset}>Пройти ще раз</button></>}
+export function ProgramFinder({ index = "02 / Тест на програму" }: { index?: string }) {
+  const [answers, setAnswers] = useState<Option[]>([]);
+  const [step, setStep] = useState(0);
+
+  const result = useMemo(() => {
+    const chosenTags = answers.flatMap((answer) => answer.tags);
+    return programs
+      .map((program) => {
+        const tagScore = chosenTags.filter((tag) => program.tags.includes(tag)).length * 2;
+        const boostScore = answers.filter((answer) => answer.boosts.includes(program.slug)).length * 4;
+        return { program, score: tagScore + boostScore };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .map((item, position, all) => ({
+        ...item,
+        fit: Math.max(68, Math.min(96, 88 - position * 8 + item.score - (all[0]?.score || 0))),
+      }));
+  }, [answers]);
+
+  const choose = (option: Option) => {
+    setAnswers((current) => [...current, option]);
+    setStep((current) => current + 1);
+  };
+  const back = () => {
+    setAnswers((current) => current.slice(0, -1));
+    setStep((current) => Math.max(0, current - 1));
+  };
+  const reset = () => {
+    setAnswers([]);
+    setStep(0);
+  };
+
+  return <section id="test" className="finder-section"><div className="wrap"><div className="idx">{index}</div><div className="finder-shell">
+    {step < questions.length ? <>
+      <div className="finder-progress" aria-label={`Питання ${step + 1} з ${questions.length}`}><span style={{ width: `${((step + 1) / questions.length) * 100}%` }} /></div>
+      <div className="finder-meta"><span className="mono">{questions[step].eyebrow}</span><span className="mono">{step + 1} / {questions.length}</span></div>
+      <h2>{questions[step].title}</h2>
+      <div className="finder-options">{questions[step].options.map((option) => <button type="button" onClick={() => choose(option)} key={option.label}><span><b>{option.label}</b><small>{option.note}</small></span><strong>→</strong></button>)}</div>
+      {step > 0 && <button className="finder-back" type="button" onClick={back}>← Назад</button>}
+    </> : <>
+      <div className="mono">Ваш персональний результат</div><h2>Напрями, що пасують вам</h2>
+      <p className="finder-summary">Тест врахував ваші інтереси, спосіб мислення та бажане середовище. Відкрийте програму, щоб побачити навчальний план, вартість і кар’єрні можливості.</p>
+      <div className="finder-results">{result.map(({ program, fit }, index) => <Link href={`/programs/${program.slug}`} key={program.slug}><span>0{index + 1}</span><div><b>{program.title}</b><small>{program.short}</small></div><em>{fit}% збіг</em><strong>→</strong></Link>)}</div>
+      <div className="finder-actions"><button className="finder-reset" type="button" onClick={reset}>Пройти ще раз</button><a className="cta" href="#consultation"><span>Обговорити результат</span></a></div>
+    </>}
   </div></div></section>;
 }
