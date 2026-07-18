@@ -45,7 +45,6 @@ export function BookCatalogue({ language = "uk", books = defaultBooks }: { langu
       <label><span>{english ? "Subject" : "Напрям"}</span><select value={topic} onChange={(event) => setTopic(event.target.value)}>{topics.map((item) => <option key={item} value={item}>{topicLabel(item)}</option>)}</select></label>
       <label className="available-check"><input checked={availableOnly} onChange={(event) => setAvailableOnly(event.target.checked)} type="checkbox" /><span>{english ? "Available now" : "Тільки доступні"}</span></label>
     </div>
-    <div className="catalogue-result"><b>{results.length}</b> {english ? "items found" : "видань знайдено"} <span>· {english ? "demonstration section of the electronic catalogue" : "демонстраційний фрагмент електронного каталогу"}</span></div>
     {results.length ? <div className="book-grid">{results.map((book, index) => <article className="book-card" key={`${book.code}-${book.title}`}>
       <div className={`book-cover tone-${index % 4}`} aria-hidden="true"><small>{english ? "APSVT · LIBRARY" : "АПСВТ · БІБЛІОТЕКА"}</small><b>{book.title}</b><i>{book.year}</i></div>
       <div className="book-info"><span>{topicLabel(book.topic)} · {typeLabel(book.type)}</span><h3>{book.title}</h3><p>{book.author}</p><dl><div><dt>{english ? "Year" : "Рік"}</dt><dd>{book.year}</dd></div><div><dt>{english ? "Shelfmark" : "Шифр"}</dt><dd>{book.code}</dd></div></dl><strong className={book.status === "Доступна" ? "available" : ""}>{statusLabel(book.status)}</strong></div>

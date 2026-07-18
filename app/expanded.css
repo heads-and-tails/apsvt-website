@@ -238,6 +238,25 @@ section{padding-block:clamp(72px,8vw,112px)}
 .operations-heading{align-items:start}
 .operations-heading p{margin-top:8px;font-size:13px;color:#657084}
 .operations-heading>a{background:var(--navy);color:#fff;padding:12px 16px;font-size:11px}
+
+/* Audience-first directory headings: the faculty code never shares a row with the long name. */
+.faculty-group-head{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:12px;
+  min-width:0;
+}
+.faculty-group-head>span,.faculty-group-head h3,.faculty-group-head>b{
+  display:block;
+  max-width:100%;
+  min-width:0;
+}
+.faculty-group-head>span{font-size:clamp(28px,3vw,38px);line-height:1}
+.faculty-group-head h3{font-size:clamp(24px,3.1vw,40px);line-height:1.12;text-wrap:pretty;overflow-wrap:normal;word-break:normal}
+.faculty-group-head>b{line-height:1.5}
+.publication-list{margin-top:26px}
+.material-grid{margin-top:26px}
 .operations-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:26px 0 18px}
 .operations-tabs button{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #d7dce5;background:#fff;padding:15px 17px;text-align:left;cursor:pointer}
 .operations-tabs button b{font-size:12px}.operations-tabs button span{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#eef1f7;font:10px var(--mono)}

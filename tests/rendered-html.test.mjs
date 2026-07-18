@@ -60,20 +60,24 @@ test("keeps full people, research, materials and library content in English",asy
   assert.match(peopleHtml,/Rectorate/);
   assert.match(peopleHtml,/Faculty of Economics, Social Technologies and Tourism/);
   assert.match(peopleHtml,/Viktor Sukhomlyn/);
+  assert.doesNotMatch(peopleHtml,/Photo forthcoming/);
 
   const researchHtml=await (await render("/en/research")).text();
   assert.match(researchHtml,/Publication search/);
   assert.match(researchHtml,/Google Scholar/);
   assert.match(researchHtml,/APSVT Scientific Bulletin/);
+  assert.doesNotMatch(researchHtml,/Found:\s*\d+/);
 
   const materialsHtml=await (await render("/en/materials")).text();
   assert.match(materialsHtml,/Complete searchable collection|Complete catalogue/i);
   assert.match(materialsHtml,/Title, topic or word in the description/);
+  assert.doesNotMatch(materialsHtml,/materials found/);
 
   const libraryHtml=await (await render("/en/facilities/library")).text();
   assert.match(libraryHtml,/70,000\+/);
   assert.match(libraryHtml,/Search the catalogue/);
   assert.match(libraryHtml,/Opening hours/);
+  assert.doesNotMatch(libraryHtml,/items found|demonstration section/);
 });
 
 test("renders editorially managed public information",async()=>{

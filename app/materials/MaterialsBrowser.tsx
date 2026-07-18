@@ -56,14 +56,13 @@ export function MaterialsBrowser({ language = "uk" }: { language?: "uk" | "en" }
       <label>{english ? "Search" : "Пошук"}<input value={query} onChange={(event) => { setQuery(event.target.value); setLimit(60); }} placeholder={english ? "Title, topic or word in the description" : "Назва, тема або слово у змісті"} /></label>
       <label>{english ? "Section" : "Розділ"}<select value={category} onChange={(event) => { setCategory(event.target.value); setLimit(60); }}>{categories.map((item) => <option value={item} key={item}>{categoryLabel(item)}</option>)}</select></label>
     </div>
-    <div className="material-count">{english ? `${filtered.length.toLocaleString("en-GB")} materials found` : `Знайдено ${filtered.length.toLocaleString("uk-UA")} матеріалів`}</div>
     <div className="material-grid">{filtered.slice(0, limit).map((item, index) => {
       const href = resolveMaterialLink(item);
       const external = href.startsWith("http");
       const journal = isVisnyk(item);
       return <a href={href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined} className="material-card" key={item.href}>
         <span>{String(index + 1).padStart(3, "0")}</span>
-        <div><small>{categoryLabel(item.category)}{item.date ? ` · ${item.date}` : ""}{VISNYK_ISSUES[item.href] ? (english ? " · Full issue · PDF" : " · Повний випуск · PDF") : journal ? (english ? " · Academy journal" : " · Журнал Академії") : external ? (english ? " · External resource" : " · Зовнішній ресурс") : ""}</small><h2>{item.title}</h2><p>{item.summary}</p></div>
+        <div><small>{categoryLabel(item.category)}{item.date && item.date !== "Матеріал Академії" ? ` · ${item.date}` : ""}{VISNYK_ISSUES[item.href] ? (english ? " · Full issue · PDF" : " · Повний випуск · PDF") : journal ? (english ? " · Academy journal" : " · Журнал Академії") : external ? (english ? " · External resource" : " · Зовнішній ресурс") : ""}</small><h2>{item.title}</h2><p>{item.summary}</p></div>
         <b>{external ? "↗" : "→"}</b>
       </a>;
     })}</div>
