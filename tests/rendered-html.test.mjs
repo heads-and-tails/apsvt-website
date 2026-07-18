@@ -25,6 +25,10 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/<title>АПСВТ — освіта з людським виміром<\/title>/i);
   assert.match(html,/href="\/en"[^>]*>EN<\/a>/i);
   assert.match(html,/Освітні траєкторії/);
+  assert.match(html,/news-hospitality-lab\.jpg/);
+  assert.match(html,/news-international-workshop\.jpg/);
+  assert.match(html,/news-legal-clinic\.jpg/);
+  assert.match(html,/news-marketing-conference\.jpg/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 

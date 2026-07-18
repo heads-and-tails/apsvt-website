@@ -1,5 +1,6 @@
 import { programs, type Program } from "@/lib/programs";
 import { seedPosts, type Post } from "@/lib/data";
+import { getEditorialImage } from "@/lib/post-image";
 
 type ProgramCopy = Pick<Program,"title"|"short"|"levels"|"duration"|"faculty"|"lead"|"leadRole"|"overview"|"focus"|"plan"|"careers"|"international"|"tags">;
 
@@ -31,7 +32,10 @@ const postCopy: Record<string, Pick<Post,"title"|"excerpt"|"body"|"category"|"im
   "territorial-communities-law-survey-2023":{title:"Academy studied legislative challenges facing local communities",excerpt:"A survey transformed practical local-government problems into research findings and recommendations.",body:"The Academy surveyed Ukrainian territorial communities about legal challenges in local-government work. Representatives from different regions contributed evidence.\n\nThe report organised recurring implementation problems and professional support needs, providing a basis for expert discussions, conferences and student research.",category:"Research",imageAlt:"A team discussing research results"},
 };
 
-export const englishPosts: Post[] = seedPosts.map((post)=>({...post,...postCopy[post.slug]}));
+export const englishPosts: Post[] = seedPosts.map((post)=>{
+  const translatedPost={...post,...postCopy[post.slug]};
+  return {...translatedPost,...getEditorialImage(translatedPost)};
+});
 
 export type EnglishPage = {title:string;eyebrow:string;lead:string;image?:string;introTitle:string;intro:string;highlights:{title:string;text:string}[];sections:{kicker:string;title:string;body:string;items?:string[]}[];cta?:{title:string;text:string;href:string;label:string}};
 
