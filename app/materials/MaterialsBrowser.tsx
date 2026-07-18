@@ -4,17 +4,16 @@ import { useEffect, useMemo, useState } from "react";
 
 type Item = { title: string; category: string; date: string; summary: string; href: string };
 
-const VISNYK_ARCHIVE = "https://www.socosvita.kiev.ua/publishing/bulletin/issues-list";
 const VISNYK_ISSUES: Record<string, string> = {
-  "/materials/visnyk-1-2-2020-50b2542a1.html": "https://www.socosvita.kiev.ua/Visnyk_1_2_2020",
-  "/materials/visnyk-3-4-2020-5ac217cef.html": "https://www.socosvita.kiev.ua/Visnyk_3_4_2020",
-  "/materials/visnyk-1-2019-e0ba72738.html": "https://www.socosvita.kiev.ua/visnyk_1_2019",
-  "/materials/visnyk-2-2019-643fbc683.html": "https://www.socosvita.kiev.ua/Visnyk_2_2019",
-  "/materials/visnyk-3-2019-665fcaf31.html": "https://www.socosvita.kiev.ua/Visnyk_3_2019",
-  "/materials/visnyk-4-2019-012fd0cbb.html": "https://www.socosvita.kiev.ua/Visnyk_4_2019",
-  "/materials/visnyk-2-2018-c27f342ff.html": "https://www.socosvita.kiev.ua/Visnyk_2_2018",
-  "/materials/visnyk-3-2018-0ecc8ab18.html": "https://www.socosvita.kiev.ua/Visnyk_3_2018",
-  "/materials/visnyk-4-2018-d95ccb926.html": "https://www.socosvita.kiev.ua/Visnyk_4_2018",
+  "/materials/visnyk-1-2-2020-50b2542a1.html": "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_1-2_2020.pdf",
+  "/materials/visnyk-3-4-2020-5ac217cef.html": "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_3-4_2020.pdf",
+  "/materials/visnyk-1-2019-e0ba72738.html": "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_1_2019.pdf",
+  "/materials/visnyk-2-2019-643fbc683.html": "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_2_2019.pdf",
+  "/materials/visnyk-3-2019-665fcaf31.html": "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_3_2019.pdf",
+  "/materials/visnyk-4-2019-012fd0cbb.html": "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_4_2019.pdf",
+  "/materials/visnyk-2-2018-c27f342ff.html": "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_2_2018.pdf",
+  "/materials/visnyk-3-2018-0ecc8ab18.html": "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_3_2018.pdf",
+  "/materials/visnyk-4-2018-d95ccb926.html": "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_4_2018.pdf",
 };
 
 const categoryEnglish: Record<string, string> = {
@@ -30,7 +29,7 @@ function isVisnyk(item: Item) {
 }
 
 function resolveMaterialLink(item: Item) {
-  return VISNYK_ISSUES[item.href] || (isVisnyk(item) ? VISNYK_ARCHIVE : item.href);
+  return VISNYK_ISSUES[item.href] || item.href;
 }
 
 export function MaterialsBrowser({ language = "uk" }: { language?: "uk" | "en" }) {
@@ -64,7 +63,7 @@ export function MaterialsBrowser({ language = "uk" }: { language?: "uk" | "en" }
       const journal = isVisnyk(item);
       return <a href={href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined} className="material-card" key={item.href}>
         <span>{String(index + 1).padStart(3, "0")}</span>
-        <div><small>{categoryLabel(item.category)}{item.date ? ` · ${item.date}` : ""}{journal ? (english ? " · Official journal resource" : " · Офіційний ресурс журналу") : external ? (english ? " · External resource" : " · Зовнішній ресурс") : ""}</small><h2>{item.title}</h2><p>{item.summary}</p></div>
+        <div><small>{categoryLabel(item.category)}{item.date ? ` · ${item.date}` : ""}{VISNYK_ISSUES[item.href] ? (english ? " · Full issue · PDF" : " · Повний випуск · PDF") : journal ? (english ? " · Academy journal" : " · Журнал Академії") : external ? (english ? " · External resource" : " · Зовнішній ресурс") : ""}</small><h2>{item.title}</h2><p>{item.summary}</p></div>
         <b>{external ? "↗" : "→"}</b>
       </a>;
     })}</div>

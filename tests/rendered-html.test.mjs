@@ -93,5 +93,7 @@ test("renders editorially managed public information",async()=>{
 
   const researchHtml=await (await render("/research")).text();
   assert.match(researchHtml,/Ресурси Академії/);
-  assert.match(researchHtml,/Офіційний випуск наукового журналу Академії/);
+  assert.match(researchHtml,/Повний випуск наукового журналу Академії у форматі PDF/);
+  assert.match(researchHtml,/sites\/default\/files\/Visnyk_1-2_2020\.pdf/);
+  assert.doesNotMatch(researchHtml,/socosvita\.kiev\.ua\/Visnyk_/);
 });

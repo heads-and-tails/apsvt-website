@@ -34,10 +34,10 @@ const publicationsUk: Publication[] = [
   {year:"2020",author:"Ігор Чорнодід, Олена Баженова",title:"Умови торгівлі та індустріалізація: реалії в Україні",type:"Стаття",topic:"Економіка",href:"https://scholar.google.com/scholar?q=%D0%A7%D0%BE%D1%80%D0%BD%D0%BE%D0%B4%D1%96%D0%B4+%D0%A3%D0%BC%D0%BE%D0%B2%D0%B8+%D1%82%D0%BE%D1%80%D0%B3%D1%96%D0%B2%D0%BB%D1%96+%D1%82%D0%B0+%D1%96%D0%BD%D0%B4%D1%83%D1%81%D1%82%D1%80%D1%96%D0%B0%D0%BB%D1%96%D0%B7%D0%B0%D1%86%D1%96%D1%8F"},
   {year:"2018",author:"Віктор Сухомлин",title:"Ідентифікація проблеми зайнятості у контексті сучасних дослідницьких підходів",type:"Стаття",topic:"Зайнятість",href:""},
   {year:"2014",author:"Ігор Чорнодід",title:"Соціальна конкурентоспроможність національної економіки: сутність, показники та чинники забезпечення",type:"Монографія",topic:"Економіка",href:"https://scholar.google.com/scholar?q=%D0%A1%D0%BE%D1%86%D1%96%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0+%D0%BA%D0%BE%D0%BD%D0%BA%D1%83%D0%B5%D0%BD%D1%82%D0%BE%D1%81%D0%BF%D1%80%D0%BE%D0%BC%D0%BE%D0%B6%D0%BD%D1%96%D1%81%D1%82%D1%8C+%D0%A7%D0%BE%D1%80%D0%BD%D0%BE%D0%B4%D1%96%D0%B4"},
-  {year:"2020",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2020, №1–2",type:"Вісник Академії",topic:"Право · соціальна робота",href:"https://www.socosvita.kiev.ua/Visnyk_1_2_2020"},
-  {year:"2019",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2019, №4",type:"Вісник Академії",topic:"Економіка · право",href:"https://www.socosvita.kiev.ua/Visnyk_4_2019"},
-  {year:"2019",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2019, №3",type:"Вісник Академії",topic:"Соціальна робота",href:"https://www.socosvita.kiev.ua/Visnyk_3_2019"},
-  {year:"2018",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2018, №4",type:"Вісник Академії",topic:"Соціальна робота · ринок праці",href:"https://www.socosvita.kiev.ua/Visnyk_4_2018"},
+  {year:"2020",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2020, №1–2",type:"Вісник Академії · PDF",topic:"Право · соціальна робота",href:"https://www.socosvita.kiev.ua/sites/default/files/Visnyk_1-2_2020.pdf"},
+  {year:"2019",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2019, №4",type:"Вісник Академії · PDF",topic:"Економіка · право",href:"https://www.socosvita.kiev.ua/sites/default/files/Visnyk_4_2019.pdf"},
+  {year:"2019",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2019, №3",type:"Вісник Академії · PDF",topic:"Соціальна робота",href:"https://www.socosvita.kiev.ua/sites/default/files/Visnyk_3_2019.pdf"},
+  {year:"2018",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2018, №4",type:"Вісник Академії · PDF",topic:"Соціальна робота · ринок праці",href:"https://www.socosvita.kiev.ua/sites/default/files/Visnyk_4_2018.pdf"},
 ];
 
 const publicationsEn: Publication[] = [

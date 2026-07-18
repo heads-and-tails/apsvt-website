@@ -77,7 +77,7 @@ export const seedContent: ContentItem[] = [
   seed("event-04", "event", { date: "2026-09-25", time: "12:00", title: "Міжнародний день Академії", place: "Кампус", description: "Мобільність, Erasmus+, подвійний диплом і студентські історії." }, 40),
 
   seed("research-01", "research_resource", { year: "2026", category: "Дослідницький ресурс", title: "Google Scholar — профілі дослідників Академії", description: "Пошук авторів, цитувань і пов’язаних публікацій викладачів.", url: "https://scholar.google.com/" }, 10),
-  seed("research-02", "research_resource", { year: "2020", category: "Наукове видання", title: "Вісник АПСВТ · №1–2", description: "Офіційний випуск наукового журналу Академії.", url: "https://www.socosvita.kiev.ua/Visnyk_1_2_2020" }, 20),
+  seed("research-02", "research_resource", { year: "2020", category: "Наукове видання", title: "Вісник АПСВТ · №1–2", description: "Повний випуск наукового журналу Академії у форматі PDF.", url: "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_1-2_2020.pdf" }, 20),
   seed("research-03", "research_resource", { year: "2026", category: "Репозитарій", title: "Наукові публікації та матеріали конференцій", description: "Добірка академічних статей, монографій і збірників для навчання та досліджень.", url: "/materials" }, 30),
 
   seed("admission-01", "admission_timeline", { dateLabel: "1 липня 2026", title: "Старт електронних кабінетів", description: "Зареєструйте кабінет вступника в ЄДЕБО та перевірте персональні дані.", status: "Триває" }, 10),
