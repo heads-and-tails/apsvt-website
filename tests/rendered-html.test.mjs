@@ -118,3 +118,19 @@ test("ships the complete mobile layout system",async()=>{
   assert.match(exams,/data-label="Контроль"/);
   assert.match(english,/data-label="Subject"/);
 });
+
+test("renders one accessible navigation menu across languages",async()=>{
+  const [ukHtml,enHtml,header,css]=await Promise.all([
+    (await render("/programs")).text(),
+    (await render("/en/programs")).text(),
+    readFile(new URL("../app/components/SiteHeader.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/expanded.css",import.meta.url),"utf8"),
+  ]);
+  assert.match(ukHtml,/aria-controls="site-navigation"/);
+  assert.match(ukHtml,/Відкрити меню/);
+  assert.match(enHtml,/Open menu/);
+  assert.match(header,/event\.key !== "Escape"/);
+  assert.match(header,/document\.body\.style\.overflow = "hidden"/);
+  assert.match(css,/\.mainnav\{display:block;position:absolute;top:100%/);
+  assert.match(css,/height:calc\(100svh - 68px\)/);
+});
