@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 let workerPromise;
@@ -100,4 +101,20 @@ test("renders editorially managed public information",async()=>{
   assert.match(researchHtml,/Повний випуск наукового журналу Академії у форматі PDF/);
   assert.match(researchHtml,/sites\/default\/files\/Visnyk_1-2_2020\.pdf/);
   assert.doesNotMatch(researchHtml,/socosvita\.kiev\.ua\/Visnyk_/);
+});
+
+test("ships the complete mobile layout system",async()=>{
+  const [css,schedule,exams,english]=await Promise.all([
+    readFile(new URL("../app/expanded.css",import.meta.url),"utf8"),
+    readFile(new URL("../app/schedule/ScheduleBrowser.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/exam-schedule/ExamScheduleBrowser.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/en/EnglishInteractive.tsx",import.meta.url),"utf8"),
+  ]);
+  assert.match(css,/table\.schedule-table tr\{display:grid/);
+  assert.match(css,/\.auth-card\{width:100%;max-width:100%/);
+  assert.match(css,/input,select,textarea\{font-size:16px!important/);
+  assert.match(css,/@media\(max-width:360px\)/);
+  assert.match(schedule,/data-label="Дисципліна"/);
+  assert.match(exams,/data-label="Контроль"/);
+  assert.match(english,/data-label="Subject"/);
 });
