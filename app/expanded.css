@@ -258,6 +258,25 @@ section{padding-block:clamp(72px,8vw,112px)}
 .publication-list{margin-top:26px}
 .material-grid{margin-top:26px}
 
+/* Long programme names stay editorial and readable without dominating their cards. */
+.pcard[data-program="public-administration"] h3,.pcard[data-program="social-work"] h3{
+  max-width:18ch;
+  font-size:clamp(18px,1.65vw,24px);
+  line-height:1.12;
+  letter-spacing:-.01em;
+  text-wrap:balance;
+  overflow-wrap:anywhere;
+}
+.pcard[data-program="public-administration"] img{object-position:center 54%}
+.pcard[data-program="social-work"] img{object-position:61% center}
+.program-hero[data-program="public-administration"] h1,.program-hero[data-program="social-work"] h1{
+  max-width:18ch;
+  font-size:clamp(34px,5.2vw,72px);
+  line-height:1.02;
+  text-wrap:balance;
+}
+.program-hero[data-program="social-work"] .program-hero-bg img{object-position:61% center}
+
 /* Complete phone layout: card schedules, compact controls and safe text flow. */
 @media(max-width:700px){
   html,body,main{width:100%;max-width:100%;min-width:0}
