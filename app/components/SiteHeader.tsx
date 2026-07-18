@@ -62,6 +62,16 @@ export function SiteHeader() {
     };
   }, [open]);
 
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1101px)");
+    const closeAtDesktopWidth = (event: MediaQueryListEvent) => {
+      if (event.matches) setOpen(false);
+    };
+
+    desktop.addEventListener("change", closeAtDesktopWidth);
+    return () => desktop.removeEventListener("change", closeAtDesktopWidth);
+  }, []);
+
   const closeMenu = () => setOpen(false);
 
   return (
@@ -79,6 +89,18 @@ export function SiteHeader() {
             </>}
           </span>
         </Link>
+
+        <nav className="desktop-mainnav" aria-label={english ? "Main navigation" : "Головна навігація"}>
+          {links.map(([href, label]) => (
+            <Link
+              className={pathname === href || pathname.startsWith(`${href}/`) ? "active" : ""}
+              href={href}
+              key={href}
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
 
         <nav
           id="site-navigation"
