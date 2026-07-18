@@ -54,3 +54,24 @@ test("serves programme and news detail pages in English",async()=>{
   assert.match(articleHtml,/Participation is free/);
   assert.match(articleHtml,/href="\/news\/open-day-2026"[^>]*>UA<\/a>/i);
 });
+
+test("keeps full people, research, materials and library content in English",async()=>{
+  const peopleHtml=await (await render("/en/people")).text();
+  assert.match(peopleHtml,/Rectorate/);
+  assert.match(peopleHtml,/Faculty of Economics, Social Technologies and Tourism/);
+  assert.match(peopleHtml,/Viktor Sukhomlyn/);
+
+  const researchHtml=await (await render("/en/research")).text();
+  assert.match(researchHtml,/Publication search/);
+  assert.match(researchHtml,/Google Scholar/);
+  assert.match(researchHtml,/APSVT Scientific Bulletin/);
+
+  const materialsHtml=await (await render("/en/materials")).text();
+  assert.match(materialsHtml,/Complete searchable collection|Complete catalogue/i);
+  assert.match(materialsHtml,/Title, topic or word in the description/);
+
+  const libraryHtml=await (await render("/en/facilities/library")).text();
+  assert.match(libraryHtml,/70,000\+/);
+  assert.match(libraryHtml,/Search the catalogue/);
+  assert.match(libraryHtml,/Opening hours/);
+});

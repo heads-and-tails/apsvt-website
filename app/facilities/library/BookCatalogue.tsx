@@ -19,7 +19,8 @@ const books = [
   { title: "Академічне письмо", author: "Т. В. Яхонтова", year: "2022", topic: "Наука", type: "Посібник", code: "001.81 Я90", status: "Доступна" },
 ];
 
-export function BookCatalogue() {
+export function BookCatalogue({ language = "uk" }: { language?: "uk" | "en" }) {
+  const english = language === "en";
   const [query, setQuery] = useState("");
   const [topic, setTopic] = useState("Усі напрями");
   const [availableOnly, setAvailableOnly] = useState(false);
@@ -32,16 +33,20 @@ export function BookCatalogue() {
     });
   }, [query, topic, availableOnly]);
 
+  const topicLabel = (value: string) => english ? ({"Усі напрями":"All subjects","Право":"Law","Менеджмент":"Management","Економіка":"Economics","Соціальна робота":"Social Work","Психологія":"Psychology","Туризм":"Tourism","Публічне управління":"Public Administration","Соціальні науки":"Social Sciences","Наука":"Research"}[value] || value) : value;
+  const typeLabel = (value: string) => english ? ({"Підручник":"Textbook","Навчальний посібник":"Study guide","Посібник":"Guide","Практикум":"Practical workbook","Монографія":"Monograph"}[value] || value) : value;
+  const statusLabel = (value: string) => english ? ({"Доступна":"Available","У читальній залі":"Reading room","На руках":"On loan"}[value] || value) : value;
+
   return <div className="book-catalogue">
     <div className="catalogue-controls">
-      <label className="catalogue-search"><span>Пошук у каталозі</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Назва, автор, тема або шифр" type="search" /></label>
-      <label><span>Напрям</span><select value={topic} onChange={(event) => setTopic(event.target.value)}>{topics.map((item) => <option key={item}>{item}</option>)}</select></label>
-      <label className="available-check"><input checked={availableOnly} onChange={(event) => setAvailableOnly(event.target.checked)} type="checkbox" /><span>Тільки доступні</span></label>
+      <label className="catalogue-search"><span>{english ? "Search the catalogue" : "Пошук у каталозі"}</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={english ? "Title, author, subject or shelfmark" : "Назва, автор, тема або шифр"} type="search" /></label>
+      <label><span>{english ? "Subject" : "Напрям"}</span><select value={topic} onChange={(event) => setTopic(event.target.value)}>{topics.map((item) => <option key={item} value={item}>{topicLabel(item)}</option>)}</select></label>
+      <label className="available-check"><input checked={availableOnly} onChange={(event) => setAvailableOnly(event.target.checked)} type="checkbox" /><span>{english ? "Available now" : "Тільки доступні"}</span></label>
     </div>
-    <div className="catalogue-result"><b>{results.length}</b> видань знайдено <span>· демонстраційний фрагмент електронного каталогу</span></div>
+    <div className="catalogue-result"><b>{results.length}</b> {english ? "items found" : "видань знайдено"} <span>· {english ? "demonstration section of the electronic catalogue" : "демонстраційний фрагмент електронного каталогу"}</span></div>
     {results.length ? <div className="book-grid">{results.map((book, index) => <article className="book-card" key={`${book.code}-${book.title}`}>
-      <div className={`book-cover tone-${index % 4}`} aria-hidden="true"><small>АПСВТ · БІБЛІОТЕКА</small><b>{book.title}</b><i>{book.year}</i></div>
-      <div className="book-info"><span>{book.topic} · {book.type}</span><h3>{book.title}</h3><p>{book.author}</p><dl><div><dt>Рік</dt><dd>{book.year}</dd></div><div><dt>Шифр</dt><dd>{book.code}</dd></div></dl><strong className={book.status === "Доступна" ? "available" : ""}>{book.status}</strong></div>
-    </article>)}</div> : <div className="catalogue-empty"><b>Нічого не знайдено</b><p>Спробуйте коротшу назву, прізвище автора або інший напрям.</p></div>}
+      <div className={`book-cover tone-${index % 4}`} aria-hidden="true"><small>{english ? "APSVT · LIBRARY" : "АПСВТ · БІБЛІОТЕКА"}</small><b>{book.title}</b><i>{book.year}</i></div>
+      <div className="book-info"><span>{topicLabel(book.topic)} · {typeLabel(book.type)}</span><h3>{book.title}</h3><p>{book.author}</p><dl><div><dt>{english ? "Year" : "Рік"}</dt><dd>{book.year}</dd></div><div><dt>{english ? "Shelfmark" : "Шифр"}</dt><dd>{book.code}</dd></div></dl><strong className={book.status === "Доступна" ? "available" : ""}>{statusLabel(book.status)}</strong></div>
+    </article>)}</div> : <div className="catalogue-empty"><b>{english ? "No results" : "Нічого не знайдено"}</b><p>{english ? "Try a shorter title, an author surname or another subject." : "Спробуйте коротшу назву, прізвище автора або інший напрям."}</p></div>}
   </div>;
 }
