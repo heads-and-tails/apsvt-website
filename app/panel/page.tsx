@@ -4,6 +4,7 @@ import { chatGPTSignInPath } from "../chatgpt-auth";
 import { getChatGPTUser } from "../chatgpt-auth";
 import { getPublisher } from "@/lib/auth";
 import { getPosts } from "@/lib/data";
+import { getAllContent } from "@/lib/content";
 import { PanelEditor } from "./PanelEditor";
 
 export const metadata:Metadata={title:"Редакційна панель"};
@@ -18,6 +19,6 @@ export default async function PanelPage(){
   if(!publisher){
     return <main className="auth-page"><div className="auth-card"><span className="auth-mark">АП</span><span className="kicker blue">Редакційний доступ</span><h1>{user?"Немає доступу":"Увійдіть, щоб публікувати"}</h1><p>{user?"Цей акаунт не має прав редактора.":"Редакційна панель захищена. Увійдіть акаунтом із правом публікації."}</p>{!user&&<Link href={chatGPTSignInPath("/panel")}>Увійти в захищений акаунт →</Link>}<Link className="back-home" href="/">← Повернутися на сайт</Link></div></main>;
   }
-  const posts=await getPosts({includeDrafts:true,limit:100});
-  return <PanelEditor initialPosts={posts}/>;
+  const [posts, content]=await Promise.all([getPosts({includeDrafts:true,limit:100}), getAllContent()]);
+  return <PanelEditor initialPosts={posts} initialContent={content}/>;
 }

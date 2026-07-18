@@ -75,3 +75,23 @@ test("keeps full people, research, materials and library content in English",asy
   assert.match(libraryHtml,/Search the catalogue/);
   assert.match(libraryHtml,/Opening hours/);
 });
+
+test("renders editorially managed public information",async()=>{
+  const admissionsHtml=await (await render("/admissions")).text();
+  assert.match(admissionsHtml,/19 липня — 1 серпня, 18:00/);
+  assert.match(admissionsHtml,/Ключові дати 2026/);
+
+  const scheduleHtml=await (await render("/schedule")).text();
+  assert.match(scheduleHtml,/Основи менеджменту/);
+  assert.match(scheduleHtml,/Графік іспитів і заліків/);
+
+  const libraryHtml=await (await render("/facilities/library")).text();
+  assert.match(libraryHtml,/Конституційне право України/);
+
+  const eventsHtml=await (await render("/events")).text();
+  assert.match(eventsHtml,/Міжнародний день Академії/);
+
+  const researchHtml=await (await render("/research")).text();
+  assert.match(researchHtml,/Ресурси Академії/);
+  assert.match(researchHtml,/Офіційний випуск наукового журналу Академії/);
+});

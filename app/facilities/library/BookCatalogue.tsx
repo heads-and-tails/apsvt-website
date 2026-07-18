@@ -2,7 +2,9 @@
 
 import { useMemo, useState } from "react";
 
-const books = [
+export type LibraryBook = { title: string; author: string; year: string; topic: string; type: string; code: string; status: string };
+
+const defaultBooks: LibraryBook[] = [
   { title: "Конституційне право України", author: "О. В. Совгиря, Н. Г. Шукліна", year: "2023", topic: "Право", type: "Підручник", code: "342(477) С56", status: "Доступна" },
   { title: "Цивільне право України", author: "Р. А. Майданик, Ю. О. Заіка", year: "2022", topic: "Право", type: "Підручник", code: "347(477) Ц58", status: "У читальній залі" },
   { title: "Менеджмент", author: "В. Г. Федоренко", year: "2021", topic: "Менеджмент", type: "Навчальний посібник", code: "005 Ф33", status: "Доступна" },
@@ -19,7 +21,7 @@ const books = [
   { title: "Академічне письмо", author: "Т. В. Яхонтова", year: "2022", topic: "Наука", type: "Посібник", code: "001.81 Я90", status: "Доступна" },
 ];
 
-export function BookCatalogue({ language = "uk" }: { language?: "uk" | "en" }) {
+export function BookCatalogue({ language = "uk", books = defaultBooks }: { language?: "uk" | "en"; books?: LibraryBook[] }) {
   const english = language === "en";
   const [query, setQuery] = useState("");
   const [topic, setTopic] = useState("Усі напрями");

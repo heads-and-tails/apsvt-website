@@ -16,3 +16,13 @@ export const posts = sqliteTable("posts", {
   updatedAt: text("updated_at").notNull(),
   authorEmail: text("author_email").notNull(),
 });
+
+export const contentItems = sqliteTable("content_items", {
+  id: text("id").primaryKey(),
+  kind: text("kind").notNull(),
+  payload: text("payload").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  authorEmail: text("author_email").notNull(),
+});

@@ -3,23 +3,10 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-const lessons = [
-  { date: "07.09", day: "Понеділок", time: "09:00–10:20", course: "Іноземна мова", type: "Практичне", group: "1 курс", faculty: "Економіка і туризм", teacher: "О. Мельник", room: "214" },
-  { date: "07.09", day: "Понеділок", time: "10:35–11:55", course: "Основи менеджменту", type: "Лекція", group: "1 курс", faculty: "Економіка і туризм", teacher: "Н. Василець", room: "305" },
-  { date: "07.09", day: "Понеділок", time: "12:20–13:40", course: "Теорія держави і права", type: "Лекція", group: "1 курс", faculty: "Право", teacher: "Я. Журавель", room: "118" },
-  { date: "08.09", day: "Вівторок", time: "09:00–10:20", course: "Маркетингові дослідження", type: "Лабораторне", group: "2 курс", faculty: "Економіка і туризм", teacher: "Н. Писаренко", room: "311" },
-  { date: "08.09", day: "Вівторок", time: "10:35–11:55", course: "Фінансовий аналіз", type: "Практичне", group: "3 курс", faculty: "Економіка і туризм", teacher: "Я. Ткаченко", room: "онлайн" },
-  { date: "08.09", day: "Вівторок", time: "12:20–13:40", course: "Цивільне право", type: "Семінар", group: "2 курс", faculty: "Право", teacher: "Г. Муляр", room: "201" },
-  { date: "09.09", day: "Середа", time: "10:35–11:55", course: "Психодіагностика", type: "Лабораторне", group: "2 курс", faculty: "Економіка і туризм", teacher: "Г. Пріб", room: "407" },
-  { date: "09.09", day: "Середа", time: "12:20–13:40", course: "Соціальна політика", type: "Лекція", group: "1 курс", faculty: "Економіка і туризм", teacher: "Н. Балашова", room: "216" },
-  { date: "09.09", day: "Середа", time: "14:00–15:20", course: "Кримінальний процес", type: "Практичне", group: "3 курс", faculty: "Право", teacher: "І. Діордіца", room: "Зала суду" },
-  { date: "10.09", day: "Четвер", time: "09:00–10:20", course: "Управління проєктами", type: "Практичне", group: "3 курс", faculty: "Економіка і туризм", teacher: "Н. Василець", room: "305" },
-  { date: "10.09", day: "Четвер", time: "12:20–13:40", course: "Юридична клініка", type: "Клінічна практика", group: "3 курс", faculty: "Право", teacher: "Я. Журавель", room: "Клініка" },
-  { date: "11.09", day: "П’ятниця", time: "10:35–11:55", course: "Економіка підприємства", type: "Лекція", group: "2 курс", faculty: "Економіка і туризм", teacher: "І. Чорнодід", room: "Актова зала" },
-];
+export type Lesson = { date: string; day: string; time: string; course: string; type: string; group: string; faculty: string; teacher: string; room: string };
 const days = ["Усі дні", "Понеділок", "Вівторок", "Середа", "Четвер", "П’ятниця"];
 
-export function ScheduleBrowser() {
+export function ScheduleBrowser({ lessons }: { lessons: Lesson[] }) {
   const [faculty, setFaculty] = useState("Усі факультети");
   const [group, setGroup] = useState("Усі курси");
   const [day, setDay] = useState("Усі дні");
