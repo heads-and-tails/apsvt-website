@@ -95,6 +95,7 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .detail-deck{font-size:clamp(16px,1.55vw,21px);max-width:60ch}
 .article-section{padding-top:85px}
 .journal-feature h2{font-size:clamp(28px,3.8vw,52px)}
+.journal-cover{transition:transform .4s ease,box-shadow .4s ease}.journal-cover:hover{transform:translateY(-7px);box-shadow:26px 26px var(--gold)}.journal-cover:focus-visible{outline:4px solid var(--gold);outline-offset:7px}
 @media(max-width:700px){.phero h1{font-size:clamp(32px,9.5vw,50px)}.program-hero h1{font-size:clamp(32px,9vw,48px)}.detail-hero.image{min-height:72svh;padding:126px 0 44px}.detail-hero h1{font-size:clamp(30px,9vw,46px)}.detail-hero-bg img{object-position:center}.article-section{padding-top:58px}}
 
 /* Cinematic motion and resilient faculty layouts */

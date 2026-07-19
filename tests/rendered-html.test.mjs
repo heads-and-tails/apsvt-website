@@ -85,6 +85,18 @@ test("keeps full people, research, materials and library content in English",asy
   assert.doesNotMatch(libraryHtml,/items found|demonstration section/);
 });
 
+test("opens the dedicated Scientific Bulletin website from both languages",async()=>{
+  const [ukHtml,enHtml]=await Promise.all([
+    (await render("/research/journals")).text(),
+    (await render("/en/research/journals")).text(),
+  ]);
+  assert.match(ukHtml,/href="https:\/\/visnyk-apsvt-journal\.vercel\.app\/"/);
+  assert.match(ukHtml,/Відкрити Вісник/);
+  assert.doesNotMatch(ukHtml,/alsrt\.com\.ua/);
+  assert.match(enHtml,/href="https:\/\/visnyk-apsvt-journal\.vercel\.app\/en"/);
+  assert.match(enHtml,/Open journal/);
+});
+
 test("renders editorially managed public information",async()=>{
   const admissionsHtml=await (await render("/admissions")).text();
   assert.match(admissionsHtml,/19 липня — 1 серпня, 18:00/);
