@@ -468,3 +468,13 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .schedule-mobile-row>div{min-width:0;padding:9px}
   .schedule-mobile-row .schedule-entry{min-height:150px}
 }
+
+/* Keep long contact details and the navigation layer inside every viewport. */
+.contact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ct{min-width:0;overflow:hidden}
+.ct span{max-width:100%;overflow-wrap:anywhere}
+.mainnav{background:var(--paper)}
+@media(max-width:700px){
+  .contact-grid{grid-template-columns:minmax(0,1fr)}
+  .ct span{font-size:clamp(16px,5.5vw,21px);line-height:1.25}
+}
