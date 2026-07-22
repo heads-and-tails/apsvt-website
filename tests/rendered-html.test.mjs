@@ -179,7 +179,7 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(migration,/private\.is_approved_editor/);
 });
 
-test("ships the protected BytesLab Academy workspace with admin-only statuses",async()=>{
+test("ships the public BytesLab Academy workspace with protected management",async()=>{
   const [page,dashboard,route,storage,styles]=await Promise.all([
     readFile(new URL("../app/panel/workspace/page.tsx",import.meta.url),"utf8"),
     readFile(new URL("../app/panel/workspace/WorkspaceDashboard.tsx",import.meta.url),"utf8"),
@@ -188,7 +188,8 @@ test("ships the protected BytesLab Academy workspace with admin-only statuses",a
     readFile(new URL("../app/panel/workspace/workspace.css",import.meta.url),"utf8"),
   ]);
   assert.match(page,/getPublisher/);
-  assert.match(page,/redirect\("\/panel\/login"\)/);
+  assert.doesNotMatch(page,/redirect\("\/panel\/login"\)/);
+  assert.match(dashboard,/Публічний перегляд/);
   assert.match(dashboard,/AI-помічник оцінювання|AI-оцінювання/);
   assert.match(dashboard,/Moodle \+ Telegram/);
   assert.match(dashboard,/disabled=\{!isAdmin/);
