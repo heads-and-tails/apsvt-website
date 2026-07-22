@@ -220,7 +220,7 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
       if (!options.includeDrafts) query = query.eq("status", "published");
       const { data, error } = await query.order("featured", { ascending: false }).order("published_at", { ascending: false, nullsFirst: false }).limit(limit);
       if (error) throw error;
-      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>));
+      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>)).filter((post) => post.category !== "__byteslab_workspace__");
     } catch {
       // Keep the public site available with bundled editorial content.
     }
@@ -232,7 +232,7 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
     const where = options.includeDrafts ? "" : "WHERE status = 'published'";
     const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
     const result = await database.prepare(`SELECT * FROM posts ${where} ORDER BY featured DESC, COALESCE(published_at, created_at) DESC LIMIT ?`).bind(limit).all<Record<string, unknown>>();
-    return result.results.map(fromRow);
+    return result.results.map(fromRow).filter((post) => post.category !== "__byteslab_workspace__");
   } catch {
     return seedPosts.filter((post) => options.includeDrafts || post.status === "published").slice(0, options.limit ?? 50);
   }

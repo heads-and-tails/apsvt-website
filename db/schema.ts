@@ -26,3 +26,21 @@ export const contentItems = sqliteTable("content_items", {
   updatedAt: text("updated_at").notNull(),
   authorEmail: text("author_email").notNull(),
 });
+
+export const workspaceItems = sqliteTable("workspace_items", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  system: text("system").notNull(),
+  status: text("status").notNull().default("planned"),
+  priority: text("priority").notNull().default("medium"),
+  owner: text("owner").notNull(),
+  progress: integer("progress").notNull().default(0),
+  dueDate: text("due_date"),
+  externalUrl: text("external_url"),
+  notes: text("notes").notNull().default(""),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  authorEmail: text("author_email").notNull(),
+});
