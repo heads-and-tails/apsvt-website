@@ -4,7 +4,7 @@ import "./expanded.css";
 import { SiteMotion } from "./components/SiteMotion";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://apsvt-academy.ikucha.chatgpt.site"),
+  metadataBase: new URL("https://apsvt-academy-website.vercel.app"),
   title: {
     default: "АПСВТ — освіта з людським виміром",
     template: "%s · АПСВТ",

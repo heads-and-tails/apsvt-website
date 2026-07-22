@@ -26,6 +26,10 @@ export type ContentInput = {
   sortOrder?: number;
 };
 
+import { createSupabaseAdmin } from "@/lib/supabase/admin";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+
 const SEED_AUTHOR = "editorial@apsvt.local";
 const SEED_DATE = "2026-07-18T00:00:00.000Z";
 
@@ -130,7 +134,8 @@ export async function ensureContent(): Promise<void> {
 
 function fromRow(row: Record<string, unknown>): ContentItem {
   let payload: ContentPayload = {};
-  try { payload = JSON.parse(String(row.payload)) as ContentPayload; } catch { payload = {}; }
+  if (row.payload && typeof row.payload === "object") payload = row.payload as ContentPayload;
+  else try { payload = JSON.parse(String(row.payload)) as ContentPayload; } catch { payload = {}; }
   return {
     id: String(row.id),
     kind: String(row.kind) as ContentKind,
@@ -142,7 +147,36 @@ function fromRow(row: Record<string, unknown>): ContentItem {
   };
 }
 
+function toSupabaseRow(item: ContentItem) {
+  return {
+    id: item.id, kind: item.kind, payload: item.payload, sort_order: item.sortOrder,
+    created_at: item.createdAt, updated_at: item.updatedAt, author_email: item.authorEmail,
+  };
+}
+
+let supabaseContentSeeded = false;
+async function ensureSupabaseContent(): Promise<void> {
+  if (supabaseContentSeeded || !isSupabaseConfigured()) return;
+  const admin = createSupabaseAdmin();
+  const { data, error } = await admin.from("editorial_content_items").select("id").limit(1);
+  if (error) throw error;
+  if (!data?.length) {
+    const inserted = await admin.from("editorial_content_items").upsert(seedContent.map(toSupabaseRow), { onConflict: "id" });
+    if (inserted.error) throw inserted.error;
+  }
+  supabaseContentSeeded = true;
+}
+
 export async function getContentItems(kind: ContentKind): Promise<ContentItem[]> {
+  if (isSupabaseConfigured()) {
+    try {
+      const { data, error } = await createSupabasePublicClient().from("editorial_content_items").select("*").eq("kind", kind).order("sort_order", { ascending: true });
+      if (error) throw error;
+      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>));
+    } catch {
+      // Keep public schedules and catalogues available with bundled data.
+    }
+  }
   try {
     await ensureContent();
     const database = await db();
@@ -155,18 +189,20 @@ export async function getContentItems(kind: ContentKind): Promise<ContentItem[]>
 }
 
 export async function getPublicContent(kind: ContentKind): Promise<PublicContentItem[]> {
-  if (process.env.VERCEL) {
-    try {
-      const response = await fetch(`https://apsvt-academy.ikucha.chatgpt.site/api/public-content?kind=${encodeURIComponent(kind)}`, { next: { revalidate: 60 } });
-      if (response.ok) return await response.json() as PublicContentItem[];
-    } catch {
-      // Use the bundled content below when the shared editorial source is temporarily unavailable.
-    }
-  }
   return (await getContentItems(kind)).map(({ id, kind: itemKind, payload, sortOrder }) => ({ id, kind: itemKind, payload, sortOrder }));
 }
 
 export async function getAllContent(): Promise<ContentItem[]> {
+  if (isSupabaseConfigured()) {
+    try {
+      await ensureSupabaseContent();
+      const { data, error } = await createSupabaseAdmin().from("editorial_content_items").select("*").order("kind").order("sort_order");
+      if (error) throw error;
+      return (data || []).map((row) => fromRow(row as Record<string, unknown>));
+    } catch {
+      // Fall through to the existing storage or seed content.
+    }
+  }
   try {
     await ensureContent();
     const database = await db();
@@ -179,6 +215,14 @@ export async function getAllContent(): Promise<ContentItem[]> {
 }
 
 export async function createContentItem(input: ContentInput, authorEmail: string): Promise<ContentItem> {
+  if (isSupabaseConfigured()) {
+    await ensureSupabaseContent();
+    const now = new Date().toISOString();
+    const item: ContentItem = { id: crypto.randomUUID(), kind: input.kind, payload: input.payload, sortOrder: input.sortOrder ?? Date.now(), createdAt: now, updatedAt: now, authorEmail };
+    const { data, error } = await createSupabaseAdmin().from("editorial_content_items").insert(toSupabaseRow(item)).select("*").single();
+    if (error) throw error;
+    return fromRow(data as Record<string, unknown>);
+  }
   await ensureContent();
   const database = await db();
   if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
@@ -189,6 +233,14 @@ export async function createContentItem(input: ContentInput, authorEmail: string
 }
 
 export async function updateContentItem(id: string, input: ContentInput, authorEmail: string): Promise<ContentItem | null> {
+  if (isSupabaseConfigured()) {
+    const { data, error } = await createSupabaseAdmin().from("editorial_content_items").update({
+      kind: input.kind, payload: input.payload, sort_order: input.sortOrder ?? 0,
+      updated_at: new Date().toISOString(), author_email: authorEmail,
+    }).eq("id", id).select("*").maybeSingle();
+    if (error) throw error;
+    return data ? fromRow(data as Record<string, unknown>) : null;
+  }
   await ensureContent();
   const database = await db();
   if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
@@ -199,6 +251,11 @@ export async function updateContentItem(id: string, input: ContentInput, authorE
 }
 
 export async function deleteContentItem(id: string): Promise<void> {
+  if (isSupabaseConfigured()) {
+    const { error } = await createSupabaseAdmin().from("editorial_content_items").delete().eq("id", id);
+    if (error) throw error;
+    return;
+  }
   await ensureContent();
   const database = await db();
   if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");

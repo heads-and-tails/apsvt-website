@@ -19,6 +19,10 @@ export type PostInput = Omit<Post, "id" | "slug" | "createdAt" | "updatedAt" | "
   slug?: string;
 };
 
+import { createSupabaseAdmin } from "@/lib/supabase/admin";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+
 const IMG = "https://images.unsplash.com";
 
 export const seedPosts: Post[] = [
@@ -184,7 +188,43 @@ function fromRow(row: Record<string, unknown>): Post {
   };
 }
 
+function toSupabaseRow(post: Post) {
+  return {
+    id: post.id, slug: post.slug, title: post.title, excerpt: post.excerpt, body: post.body,
+    category: post.category, image_url: post.imageUrl, image_alt: post.imageAlt, status: post.status,
+    featured: post.featured, published_at: post.publishedAt, created_at: post.createdAt,
+    updated_at: post.updatedAt, author_email: post.authorEmail,
+  };
+}
+
+let supabaseSeeded = false;
+async function ensureSupabasePosts(): Promise<void> {
+  if (supabaseSeeded || !isSupabaseConfigured()) return;
+  const admin = createSupabaseAdmin();
+  const { data, error } = await admin.from("editorial_posts").select("id").limit(1);
+  if (error) throw error;
+  if (!data?.length) {
+    const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
+    if (inserted.error) throw inserted.error;
+  }
+  supabaseSeeded = true;
+}
+
 export async function getPosts(options: { includeDrafts?: boolean; limit?: number } = {}): Promise<Post[]> {
+  if (isSupabaseConfigured()) {
+    try {
+      if (options.includeDrafts) await ensureSupabasePosts();
+      const client = options.includeDrafts ? createSupabaseAdmin() : createSupabasePublicClient();
+      const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
+      let query = client.from("editorial_posts").select("*");
+      if (!options.includeDrafts) query = query.eq("status", "published");
+      const { data, error } = await query.order("featured", { ascending: false }).order("published_at", { ascending: false, nullsFirst: false }).limit(limit);
+      if (error) throw error;
+      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>));
+    } catch {
+      // Keep the public site available with bundled editorial content.
+    }
+  }
   try {
     await ensurePosts();
     const database = await db();
@@ -199,6 +239,15 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
+  if (isSupabaseConfigured()) {
+    try {
+      const { data, error } = await createSupabasePublicClient().from("editorial_posts").select("*").eq("slug", slug).eq("status", "published").maybeSingle();
+      if (error) throw error;
+      if (data) return fromRow(data as Record<string, unknown>);
+    } catch {
+      // Fall back to bundled content during a temporary backend outage.
+    }
+  }
   try {
     await ensurePosts();
     const database = await db();
@@ -216,6 +265,15 @@ export function slugify(value: string): string {
 }
 
 export async function createPost(input: PostInput, authorEmail: string): Promise<Post> {
+  if (isSupabaseConfigured()) {
+    await ensureSupabasePosts();
+    const now = new Date().toISOString();
+    const post: Post = { ...input, id: crypto.randomUUID(), slug: slugify(input.slug || input.title), createdAt: now, updatedAt: now, authorEmail };
+    if (post.status === "published" && !post.publishedAt) post.publishedAt = now;
+    const { data, error } = await createSupabaseAdmin().from("editorial_posts").insert(toSupabaseRow(post)).select("*").single();
+    if (error) throw error;
+    return fromRow(data as Record<string, unknown>);
+  }
   await ensurePosts();
   const database = await db();
   if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
@@ -227,6 +285,17 @@ export async function createPost(input: PostInput, authorEmail: string): Promise
 }
 
 export async function updatePost(id: string, input: PostInput, authorEmail: string): Promise<Post | null> {
+  if (isSupabaseConfigured()) {
+    const now = new Date().toISOString();
+    const publishedAt = input.status === "published" ? (input.publishedAt || now) : null;
+    const { data, error } = await createSupabaseAdmin().from("editorial_posts").update({
+      slug: slugify(input.slug || input.title), title: input.title, excerpt: input.excerpt, body: input.body,
+      category: input.category, image_url: input.imageUrl, image_alt: input.imageAlt, status: input.status,
+      featured: input.featured, published_at: publishedAt, updated_at: now, author_email: authorEmail,
+    }).eq("id", id).select("*").maybeSingle();
+    if (error) throw error;
+    return data ? fromRow(data as Record<string, unknown>) : null;
+  }
   await ensurePosts();
   const database = await db();
   if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
@@ -238,6 +307,11 @@ export async function updatePost(id: string, input: PostInput, authorEmail: stri
 }
 
 export async function deletePost(id: string): Promise<void> {
+  if (isSupabaseConfigured()) {
+    const { error } = await createSupabaseAdmin().from("editorial_posts").delete().eq("id", id);
+    if (error) throw error;
+    return;
+  }
   await ensurePosts();
   const database = await db();
   if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");

@@ -158,3 +158,23 @@ test("renders one accessible navigation menu across languages",async()=>{
   assert.match(css,/height:calc\(100svh - 68px\)/);
   assert.match(css,/\.mainnav\{background:var\(--paper\)\}/);
 });
+
+test("ships a protected Supabase editorial panel",async()=>{
+  const login=await render("/panel/login");
+  assert.equal(login.status,200);
+  const html=await login.text();
+  assert.match(html,/Вхід до панелі/);
+  assert.match(html,/Підключення готується/);
+
+  const [panel,auth,migration]=await Promise.all([
+    readFile(new URL("../app/panel/page.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../lib/auth.ts",import.meta.url),"utf8"),
+    readFile(new URL("../supabase/migrations/202607220001_editorial_panel.sql",import.meta.url),"utf8"),
+  ]);
+  assert.doesNotMatch(panel,/apsvt-academy\.ikucha\.chatgpt\.site\/panel/);
+  assert.match(panel,/initialProfiles/);
+  assert.match(auth,/status !== "approved"/);
+  assert.match(migration,/enable row level security/i);
+  assert.match(migration,/editorial-media/);
+  assert.match(migration,/private\.is_approved_editor/);
+});

@@ -1,24 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { chatGPTSignInPath } from "../chatgpt-auth";
-import { getChatGPTUser } from "../chatgpt-auth";
-import { getPublisher } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { getAuthenticatedUser, getEditorialProfiles, getPublisher } from "@/lib/auth";
 import { getPosts } from "@/lib/data";
 import { getAllContent } from "@/lib/content";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { PanelEditor } from "./PanelEditor";
 
-export const metadata:Metadata={title:"Редакційна панель"};
-export const dynamic="force-dynamic";
+export const metadata: Metadata = { title: "Редакційна панель" };
+export const dynamic = "force-dynamic";
 
-export default async function PanelPage(){
-  if(process.env.VERCEL){
-    return <main className="auth-page"><div className="auth-card"><span className="auth-mark">АП</span><span className="kicker blue">Редакційний доступ</span><h1>Панель публікацій</h1><p>Захищена редакційна панель працює в основній версії сайту, де підключені сховище новин і фотографій.</p><a href="https://apsvt-academy.ikucha.chatgpt.site/panel">Відкрити панель →</a><Link className="back-home" href="/">← Повернутися на сайт</Link></div></main>;
+function SignOutButton() {
+  return <form action="/auth/signout" method="post"><button className="auth-signout" type="submit">Вийти з акаунта</button></form>;
+}
+
+export default async function PanelPage() {
+  if (!isSupabaseConfigured()) {
+    if (process.env.NODE_ENV !== "development") {
+      return <main className="auth-page"><div className="auth-card"><span className="auth-mark">АП</span><span className="kicker blue">Редакційний доступ</span><h1>Панель готується</h1><p>Безпечне підключення Supabase ще не активовано у Vercel. Публічний сайт працює без змін.</p><Link className="back-home" href="/">← Повернутися на сайт</Link></div></main>;
+    }
   }
-  const user=await getChatGPTUser();
-  const publisher=await getPublisher();
-  if(!publisher){
-    return <main className="auth-page"><div className="auth-card"><span className="auth-mark">АП</span><span className="kicker blue">Редакційний доступ</span><h1>{user?"Немає доступу":"Увійдіть, щоб публікувати"}</h1><p>{user?"Цей акаунт не має прав редактора.":"Редакційна панель захищена. Увійдіть акаунтом із правом публікації."}</p>{!user&&<Link href={chatGPTSignInPath("/panel")}>Увійти в захищений акаунт →</Link>}<Link className="back-home" href="/">← Повернутися на сайт</Link></div></main>;
+
+  const user = await getAuthenticatedUser();
+  if (isSupabaseConfigured() && !user) redirect("/panel/login");
+
+  const publisher = await getPublisher();
+  if (!publisher) {
+    return <main className="auth-page"><div className="auth-card"><span className="auth-mark">АП</span><span className="kicker blue">Очікує погодження</span><h1>Запит отримано</h1><p>Акаунт <b>{user?.email}</b> успішно створено, але ще не має доступу до редакційної панелі. Адміністратор має погодити його та призначити роль.</p><SignOutButton/><Link className="back-home" href="/">← Повернутися на сайт</Link></div></main>;
   }
-  const [posts, content]=await Promise.all([getPosts({includeDrafts:true,limit:100}), getAllContent()]);
-  return <PanelEditor initialPosts={posts} initialContent={content}/>;
+
+  const [posts, content, profiles] = await Promise.all([
+    getPosts({ includeDrafts: true, limit: 100 }),
+    getAllContent(),
+    publisher.role === "admin" ? getEditorialProfiles() : Promise.resolve([]),
+  ]);
+
+  return <PanelEditor initialPosts={posts} initialContent={content} publisher={publisher} initialProfiles={profiles} />;
 }
