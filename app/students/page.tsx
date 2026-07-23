@@ -7,6 +7,7 @@ import { PageDocuments } from "../components/PageDocuments";
 export const metadata: Metadata = { title: "Студентам", description: "Розклад, навчальний календар, кампус і студентські сервіси АПСВТ." };
 export const dynamic = "force-dynamic";
 const services = [
+  ["Мобільний розклад — демо", "Інтерактивний перегляд застосунку, нагадування та онлайн-посилання.", "/student-app"],
   ["Розклад занять", "Актуальний тиждень, аудиторії та формат пар.", "/schedule"],
   ["Графік сесії", "Іспити, заліки, консультації, аудиторії та викладачі.", "/schedule#session"],
   ["Навчальний рік", "Семестри, сесії, практика та канікули.", "/academic-calendar"],

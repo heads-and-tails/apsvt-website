@@ -119,6 +119,20 @@ test("renders editorially managed public information",async()=>{
   assert.doesNotMatch(researchHtml,/socosvita\.kiev\.ua\/Visnyk_/);
 });
 
+test("renders the interactive student schedule application demo",async()=>{
+  const response=await render("/student-app");
+  assert.equal(response.status,200);
+  const html=await response.text();
+  const source=await readFile(new URL("../app/student-app/StudentAppDemo.tsx",import.meta.url),"utf8");
+  assert.match(html,/Розклад<br\/>у кишені/);
+  assert.match(html,/З’єднано з редакційною панеллю/);
+  assert.match(html,/Основи менеджменту/);
+  assert.match(html,/href="\/schedule"/);
+  assert.match(source,/Надіслати демо-сповіщення/);
+  assert.match(source,/Мій розклад/);
+  assert.match(source,/Notification\.requestPermission/);
+});
+
 test("ships the complete mobile layout system",async()=>{
   const [css,schedule,exams,english]=await Promise.all([
     readFile(new URL("../app/expanded.css",import.meta.url),"utf8"),
