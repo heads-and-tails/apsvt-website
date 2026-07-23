@@ -11,8 +11,17 @@ export async function GET(request: Request) {
   const next = requestedNext?.startsWith("/") && !requestedNext.startsWith("//") ? requestedNext : "/panel";
   const supabase = await createServerSupabaseClient();
 
-  if (code) await supabase.auth.exchangeCodeForSession(code);
-  else if (tokenHash && type) await supabase.auth.verifyOtp({ token_hash: tokenHash, type });
+  const result = code
+    ? await supabase.auth.exchangeCodeForSession(code)
+    : tokenHash && type
+      ? await supabase.auth.verifyOtp({ token_hash: tokenHash, type })
+      : { error: new Error("Missing authentication code") };
+
+  if (result.error) {
+    const retry = new URL("/panel/forgot-password", request.url);
+    retry.searchParams.set("error", "invalid-link");
+    return NextResponse.redirect(retry);
+  }
 
   return NextResponse.redirect(new URL(next, request.url));
 }

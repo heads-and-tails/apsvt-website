@@ -1,18 +1,29 @@
 "use client";
 
 import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
-export function ForgotPasswordForm() {
+export function ForgotPasswordForm({ initialMessage = "" }: { initialMessage?: string }) {
+  const [supabase] = useState(() => createClient());
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialMessage);
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
 
   async function submit(event: React.FormEvent) {
     event.preventDefault(); setBusy(true); setMessage("");
-    const response = await fetch("/api/auth/forgot-password", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }) });
-    const result = await response.json() as { error?: string };
-    if (!response.ok) { setMessage(result.error || "Не вдалося надіслати лист"); setBusy(false); return; }
+    const callback = new URL("/auth/callback", window.location.origin);
+    callback.searchParams.set("next", "/panel/reset-password");
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
+      redirectTo: callback.toString(),
+    });
+    if (error) {
+      setMessage(error.code === "over_email_send_rate_limit"
+        ? "Забагато запитів. Зачекайте кілька хвилин і спробуйте ще раз."
+        : "Не вдалося надіслати лист. Спробуйте трохи пізніше.");
+      setBusy(false);
+      return;
+    }
     setSent(true); setMessage("Перевірте пошту. Посилання для відновлення пароля вже надіслано."); setBusy(false);
   }
 

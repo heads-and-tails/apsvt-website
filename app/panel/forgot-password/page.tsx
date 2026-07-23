@@ -3,13 +3,23 @@ import Link from "next/link";
 import { ForgotPasswordForm } from "./ForgotPasswordForm";
 
 export const metadata: Metadata = { title: "Відновлення пароля" };
+export const dynamic = "force-dynamic";
 
-export default function ForgotPasswordPage() {
+export default async function ForgotPasswordPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const params = await searchParams;
+  const initialMessage = params.error === "invalid-link"
+    ? "Посилання прострочене або вже використане. Запросіть новий лист у цьому браузері."
+    : "";
+
   return <main className="auth-page"><div className="auth-card editorial-auth-card">
     <span className="auth-mark">АП</span><span className="kicker blue">Відновлення доступу</span>
     <h1>Забули пароль?</h1>
     <p>Вкажіть робочу електронну адресу. Ми надішлемо безпечне посилання для створення нового пароля.</p>
-    <ForgotPasswordForm />
+    <ForgotPasswordForm initialMessage={initialMessage} />
     <Link className="back-home" href="/panel/login">← Повернутися до входу</Link>
   </div></main>;
 }

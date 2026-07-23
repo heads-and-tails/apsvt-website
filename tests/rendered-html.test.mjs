@@ -177,15 +177,18 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(migration,/enable row level security/i);
   assert.match(migration,/editorial-media/);
   assert.match(migration,/private\.is_approved_editor/);
-  const [loginForm,forgotRoute,callback]=await Promise.all([
+  const [loginForm,forgotForm,callback,resetForm]=await Promise.all([
     readFile(new URL("../app/panel/login/LoginForm.tsx",import.meta.url),"utf8"),
-    readFile(new URL("../app/api/auth/forgot-password/route.ts",import.meta.url),"utf8"),
+    readFile(new URL("../app/panel/forgot-password/ForgotPasswordForm.tsx",import.meta.url),"utf8"),
     readFile(new URL("../app/auth/callback/route.ts",import.meta.url),"utf8"),
+    readFile(new URL("../app/panel/reset-password/ResetPasswordForm.tsx",import.meta.url),"utf8"),
   ]);
   assert.match(loginForm,/Забули пароль/);
-  assert.match(forgotRoute,/resetPasswordForEmail/);
-  assert.match(forgotRoute,/\/panel\/reset-password/);
+  assert.match(forgotForm,/resetPasswordForEmail/);
+  assert.match(forgotForm,/\/panel\/reset-password/);
   assert.match(callback,/requestedNext/);
+  assert.match(callback,/invalid-link/);
+  assert.match(resetForm,/weak_password/);
 });
 
 test("ships the public BytesLab Academy workspace with protected management",async()=>{
