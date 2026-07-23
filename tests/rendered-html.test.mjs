@@ -126,6 +126,9 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   assert.match(html,/01-pravyla-pryiomu-apsvt-2026\.pdf/);
   assert.match(html,/11-dodatok-8\.pdf/);
   assert.match(html,/Подання і розгляд апеляцій/);
+  assert.match(html,/Запитайте\.<br\/>Отримайте джерело\./);
+  assert.match(html,/RAG · 11 документів · 150 сторінок/);
+  assert.match(html,/Запитання не зберігається/);
   assert.ok(html.indexOf("Правила прийому на навчання")<html.indexOf("Положення про Приймальну комісію"));
   assert.ok(html.indexOf("Положення про Приймальну комісію")<html.indexOf("Дії Приймальної комісії"));
   assert.ok(html.indexOf("Дії Приймальної комісії")<html.indexOf("Додаток 8"));
@@ -147,6 +150,22 @@ test("publishes the applicant hub and official 2026 admission documents",async()
     const pdf=await readFile(new URL(`../public/documents/admissions/${file}`,import.meta.url));
     assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
   }
+});
+
+test("answers applicant questions from the indexed admission documents with page citations",async()=>{
+  const app=await worker();
+  const response=await app.fetch(new Request("http://localhost/api/admissions/ask",{
+    method:"POST",
+    headers:{"content-type":"application/json"},
+    body:JSON.stringify({question:"Як і коли подати апеляцію?"}),
+  }),{ASSETS:{fetch:async()=>new Response("Not found",{status:404})}},{waitUntil(){},passThroughOnException(){}});
+  assert.equal(response.status,200);
+  const answer=await response.json();
+  assert.equal(answer.status,"found");
+  assert.ok(answer.sources.length>0);
+  assert.match(answer.sources[0].href,/10-poriadok-podannia-apeliatsii\.pdf#page=\d+/);
+  assert.match(answer.sources[0].title,/апеляцій/i);
+  assert.ok(answer.sources[0].excerpt.length>40);
 });
 
 test("renders the interactive student schedule application demo",async()=>{
