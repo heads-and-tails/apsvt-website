@@ -26,6 +26,11 @@ export type ContentInput = {
   sortOrder?: number;
 };
 
+export type ScheduleImportInput = {
+  kind: Extract<ContentKind, "lesson" | "exam">;
+  payload: ContentPayload;
+};
+
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -260,4 +265,58 @@ export async function deleteContentItem(id: string): Promise<void> {
   const database = await db();
   if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
   await database.prepare("DELETE FROM content_items WHERE id = ?").bind(id).run();
+}
+
+export async function replaceImportedSchedule(
+  entries: ScheduleImportInput[],
+  authorEmail: string,
+): Promise<{ items: ContentItem[]; replacedSourceIds: string[] }> {
+  const replacedSourceIds = [...new Set(entries.map((entry) => entry.payload.sourceId).filter(Boolean))];
+  const now = new Date().toISOString();
+  const items = entries.map((entry, index): ContentItem => ({
+    id: crypto.randomUUID(),
+    kind: entry.kind,
+    payload: entry.payload,
+    sortOrder: 1000 + index,
+    createdAt: now,
+    updatedAt: now,
+    authorEmail,
+  }));
+
+  if (isSupabaseConfigured()) {
+    await ensureSupabaseContent();
+    const admin = createSupabaseAdmin();
+    const { data: existing, error: existingError } = await admin
+      .from("editorial_content_items")
+      .select("id,payload")
+      .in("kind", ["lesson", "exam"]);
+    if (existingError) throw existingError;
+    const oldIds = (existing || [])
+      .filter((row) => replacedSourceIds.includes(String((row.payload as ContentPayload | null)?.sourceId || "")))
+      .map((row) => String(row.id));
+    if (oldIds.length) {
+      const removed = await admin.from("editorial_content_items").delete().in("id", oldIds);
+      if (removed.error) throw removed.error;
+    }
+    const { data, error } = await admin
+      .from("editorial_content_items")
+      .insert(items.map(toSupabaseRow))
+      .select("*");
+    if (error) throw error;
+    return { items: (data || []).map((row) => fromRow(row as Record<string, unknown>)), replacedSourceIds };
+  }
+
+  await ensureContent();
+  const database = await db();
+  if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
+  const statements = [
+    ...replacedSourceIds.map((sourceId) => database
+      .prepare("DELETE FROM content_items WHERE kind IN ('lesson','exam') AND json_extract(payload, '$.sourceId') = ?")
+      .bind(sourceId)),
+    ...items.map((item) => database.prepare(
+      "INSERT INTO content_items (id,kind,payload,sort_order,created_at,updated_at,author_email) VALUES (?,?,?,?,?,?,?)",
+    ).bind(item.id, item.kind, JSON.stringify(item.payload), item.sortOrder, item.createdAt, item.updatedAt, item.authorEmail)),
+  ];
+  await database.batch(statements);
+  return { items, replacedSourceIds };
 }

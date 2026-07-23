@@ -133,8 +133,9 @@ test("ships the complete mobile layout system",async()=>{
   assert.match(css,/\.contact-grid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
   assert.match(css,/\.ct\{min-width:0;overflow:hidden\}/);
   assert.match(schedule,/data-label="Дисципліна"/);
-  assert.match(schedule,/className="weekly-schedule-wrap"/);
-  assert.match(schedule,/"Понеділок", "Вівторок", "Середа", "Четвер", "П’ятниця"/);
+  assert.match(schedule,/className="schedule-table-wrap"/);
+  assert.match(schedule,/Усі опубліковані розклади/);
+  assert.match(schedule,/Приєднатися ↗/);
   assert.match(exams,/data-label="Контроль"/);
   assert.match(english,/data-label="Subject"/);
   assert.match(english,/className="weekly-schedule-wrap"/);
@@ -215,6 +216,28 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(access,/ScopePicker/);
   assert.match(accessRules,/accessScopes\.includes/);
   assert.match(multiAccessMigration,/string_to_array\(access_scope, ','\)/);
+});
+
+test("imports and normalizes sets of Word schedules before publishing",async()=>{
+  const [importer,parser,route,content,styles]=await Promise.all([
+    readFile(new URL("../app/panel/ScheduleImporter.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../lib/schedule-import.ts",import.meta.url),"utf8"),
+    readFile(new URL("../app/api/content/import-schedule/route.ts",import.meta.url),"utf8"),
+    readFile(new URL("../lib/content.ts",import.meta.url),"utf8"),
+    readFile(new URL("../app/expanded.css",import.meta.url),"utf8"),
+  ]);
+  assert.match(importer,/multiple/);
+  assert.match(importer,/parseScheduleDocx/);
+  assert.match(importer,/Попередній перегляд/);
+  assert.match(importer,/Показувати онлайн-посилання/);
+  assert.match(parser,/normalizeTime/);
+  assert.match(parser,/parseDateRange/);
+  assert.match(parser,/ЕКЗАМЕН\|ЗАЛІК/);
+  assert.match(route,/entries\.length > 600/);
+  assert.match(route,/requirePagePublisher/);
+  assert.match(content,/replaceImportedSchedule/);
+  assert.match(content,/json_extract\(payload, '\$\.sourceId'\)/);
+  assert.match(styles,/\.schedule-import-table-wrap/);
 });
 
 test("ships the public BytesLab Academy workspace with protected management",async()=>{
