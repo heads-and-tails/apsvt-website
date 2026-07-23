@@ -7,6 +7,24 @@ export function AccessManager({ initialProfiles, currentUserId }: { initialProfi
   const [profiles, setProfiles] = useState(initialProfiles);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [invite, setInvite] = useState({ displayName: "", email: "", role: "editor" as EditorialRole });
+
+  async function addPerson(event: React.FormEvent) {
+    event.preventDefault(); setBusyId("invite"); setMessage("");
+    const response = await fetch("/api/editorial/users", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(invite),
+    });
+    const result = await response.json() as EditorialProfile & { error?: string };
+    if (!response.ok) setMessage(result.error || "Не вдалося додати користувача");
+    else {
+      setProfiles((current) => [result, ...current.filter((profile) => profile.id !== result.id)]);
+      setInvite({ displayName: "", email: "", role: "editor" });
+      setMessage("Користувача додано й автоматично погоджено. Запрошення надіслано на пошту.");
+    }
+    setBusyId(null);
+  }
 
   async function update(id: string, role: EditorialRole, status: EditorialStatus) {
     setBusyId(id); setMessage("");
@@ -25,7 +43,14 @@ export function AccessManager({ initialProfiles, currentUserId }: { initialProfi
   }
 
   return <section className="access-manager" id="access">
-    <div className="materials-head"><div><span>Безпека редакції</span><h2>Користувачі та доступ</h2><p>Нові акаунти залишаються в очікуванні, доки адміністратор їх не погодить.</p></div><b>{profiles.filter((profile) => profile.status === "approved").length} активних</b></div>
+    <div className="materials-head"><div><span>Безпека редакції</span><h2>Користувачі та доступ</h2><p>Додані адміністратором люди одразу отримують погоджений доступ і вибрану роль.</p></div><b>{profiles.filter((profile) => profile.status === "approved").length} активних</b></div>
+    <form className="access-invite" onSubmit={addPerson}>
+      <div><small>Новий користувач</small><h3>Додати людину до редакції</h3><p>Якщо акаунт уже існує, його права оновляться без повторного створення.</p></div>
+      <label>Ім’я<input required value={invite.displayName} onChange={(event) => setInvite((current) => ({ ...current, displayName: event.target.value }))} placeholder="Ім’я та прізвище" /></label>
+      <label>Електронна пошта<input required type="email" value={invite.email} onChange={(event) => setInvite((current) => ({ ...current, email: event.target.value }))} placeholder="name@example.com" /></label>
+      <label>Роль<select value={invite.role} onChange={(event) => setInvite((current) => ({ ...current, role: event.target.value as EditorialRole }))}><option value="editor">Редактор</option><option value="admin">Адміністратор</option></select></label>
+      <button disabled={busyId === "invite"} type="submit">{busyId === "invite" ? "Додаємо…" : "Додати й погодити →"}</button>
+    </form>
     {message && <p className="access-message" role="status">{message}</p>}
     <div className="access-list">
       {profiles.map((profile) => <article key={profile.id}>

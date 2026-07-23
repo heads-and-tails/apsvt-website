@@ -1,8 +1,34 @@
 import { NextResponse } from "next/server";
-import { requireAdmin, updateEditorialProfile, type EditorialRole, type EditorialStatus } from "@/lib/auth";
+import { inviteApprovedEditorialUser, requireAdmin, updateEditorialProfile, type EditorialRole, type EditorialStatus } from "@/lib/auth";
 
 const roles = new Set<EditorialRole>(["editor", "admin"]);
 const statuses = new Set<EditorialStatus>(["pending", "approved", "suspended"]);
+
+export async function POST(request: Request) {
+  try {
+    const admin = await requireAdmin();
+    const body = await request.json() as { email?: unknown; displayName?: unknown; role?: unknown };
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const displayName = typeof body.displayName === "string" ? body.displayName.trim() : "";
+    if (!/^\S+@\S+\.\S+$/.test(email) || !displayName || !roles.has(body.role as EditorialRole)) {
+      return NextResponse.json({ error: "Вкажіть ім’я, коректну пошту та роль" }, { status: 400 });
+    }
+    const callback = new URL("/auth/callback", request.url);
+    callback.searchParams.set("next", "/panel");
+    const profile = await inviteApprovedEditorialUser(
+      { email, displayName, role: body.role as EditorialRole },
+      admin.id,
+      callback.toString(),
+    );
+    return NextResponse.json(profile, { status: 201 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message.toLowerCase() : "";
+    if (message.includes("rate") || message.includes("email")) {
+      return NextResponse.json({ error: "Користувача погоджено не було: поштовий сервіс тимчасово обмежив запрошення" }, { status: 429 });
+    }
+    return NextResponse.json({ error: "Не вдалося додати користувача" }, { status: 403 });
+  }
+}
 
 export async function PATCH(request: Request) {
   try {

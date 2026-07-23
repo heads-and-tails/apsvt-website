@@ -4,6 +4,7 @@ import { SiteFooter } from "../components/SiteFooter";
 import { ProgramFinder } from "../programs/ProgramFinder";
 import { ApplicantConsultationForm } from "./ApplicantConsultationForm";
 import { getPublicContent as getContentItems } from "@/lib/content";
+import { PageDocuments } from "../components/PageDocuments";
 
 export const metadata: Metadata = { title: "Вступ 2026", description: "Маршрут вступу до АПСВТ у 2026 році: вибір програми, документи та персональна консультація." };
 export const dynamic = "force-dynamic";
@@ -30,6 +31,7 @@ export default async function Page() {
 
     <section id="consultation" className="admission-consultation"><div className="wrap admission-consultation-grid"><div className="admission-consultation-copy"><div className="idx">05 / Персональна консультація</div><h2>Розкажіть, що плануєте</h2><p className="lead">Три короткі кроки — і команда вступу підготує відповідь саме для вашого рівня, програми та ситуації.</p><div className="consultation-benefits"><div><span>01</span><p><b>Без листування навмання</b>Оберіть зручний канал і час відповіді.</p></div><div><span>02</span><p><b>Персональний маршрут</b>Отримайте перелік документів і наступних дій.</p></div><div><span>03</span><p><b>Спокійний вибір</b>Порівняйте програми до подання заяви.</p></div></div></div><ApplicantConsultationForm /></div></section>
 
+    <PageDocuments pagePath="/admissions" />
     <SiteFooter />
   </main>;
 }

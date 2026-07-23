@@ -115,6 +115,43 @@ export async function getEditorialProfiles(): Promise<EditorialProfile[]> {
   return (data as ProfileRow[]).map(profileFromRow);
 }
 
+export async function inviteApprovedEditorialUser(
+  input: { email: string; displayName: string; role: EditorialRole },
+  approvedBy: string,
+  redirectTo: string,
+): Promise<EditorialProfile> {
+  const admin = createSupabaseAdmin();
+  const email = input.email.trim().toLowerCase();
+  const { data: users, error: usersError } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+  if (usersError) throw usersError;
+
+  let user = users.users.find((entry) => entry.email?.toLowerCase() === email) || null;
+  if (!user) {
+    const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
+      redirectTo,
+      data: { display_name: input.displayName },
+    });
+    if (error) throw error;
+    user = data.user;
+  }
+
+  const { data, error } = await admin
+    .from("editorial_profiles")
+    .upsert({
+      id: user.id,
+      email,
+      display_name: input.displayName || email,
+      role: input.role,
+      status: "approved",
+      approved_at: new Date().toISOString(),
+      approved_by: approvedBy,
+    }, { onConflict: "id" })
+    .select("id,email,display_name,role,status,created_at,approved_at")
+    .single<ProfileRow>();
+  if (error) throw error;
+  return profileFromRow(data);
+}
+
 export async function updateEditorialProfile(
   id: string,
   update: { role: EditorialRole; status: EditorialStatus },
