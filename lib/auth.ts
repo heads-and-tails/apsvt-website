@@ -2,7 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { editorialAdminEmails, isSupabaseConfigured } from "@/lib/supabase/config";
-import { canEditPage } from "@/lib/editorial-access";
+import { canEditPage, normalizeEditorialAccessScopes, serializeEditorialAccessScopes } from "@/lib/editorial-access";
 
 export type EditorialRole = "editor" | "admin";
 export type EditorialStatus = "pending" | "approved" | "suspended";
@@ -13,7 +13,7 @@ export type EditorialProfile = {
   displayName: string;
   role: EditorialRole;
   status: EditorialStatus;
-  accessScope: string;
+  accessScopes: string[];
   createdAt: string;
   approvedAt: string | null;
 };
@@ -38,7 +38,7 @@ function profileFromRow(row: ProfileRow): EditorialProfile {
     displayName: row.display_name || row.email,
     role: row.role,
     status: row.status,
-    accessScope: row.access_scope || "*",
+    accessScopes: normalizeEditorialAccessScopes(row.access_scope || "*"),
     createdAt: row.created_at,
     approvedAt: row.approved_at,
   };
@@ -60,7 +60,7 @@ export async function getPublisher(): Promise<Publisher | null> {
         displayName: "Victoria · local preview",
         role: "admin",
         status: "approved",
-        accessScope: "*",
+        accessScopes: ["*"],
         createdAt: new Date(0).toISOString(),
         approvedAt: new Date(0).toISOString(),
       };
@@ -122,7 +122,7 @@ export async function getEditorialProfiles(): Promise<EditorialProfile[]> {
 }
 
 export async function inviteApprovedEditorialUser(
-  input: { email: string; displayName: string; role: EditorialRole; accessScope: string },
+  input: { email: string; displayName: string; role: EditorialRole; accessScopes: string[] },
   approvedBy: string,
   redirectTo: string,
 ): Promise<EditorialProfile> {
@@ -149,7 +149,7 @@ export async function inviteApprovedEditorialUser(
       display_name: input.displayName || email,
       role: input.role,
       status: "approved",
-      access_scope: input.accessScope,
+      access_scope: serializeEditorialAccessScopes(input.accessScopes),
       approved_at: new Date().toISOString(),
       approved_by: approvedBy,
     }, { onConflict: "id" })
@@ -161,7 +161,7 @@ export async function inviteApprovedEditorialUser(
 
 export async function updateEditorialProfile(
   id: string,
-  update: { role: EditorialRole; status: EditorialStatus; accessScope: string },
+  update: { role: EditorialRole; status: EditorialStatus; accessScopes: string[] },
   approvedBy: string,
 ): Promise<EditorialProfile> {
   const admin = createSupabaseAdmin();
@@ -170,7 +170,7 @@ export async function updateEditorialProfile(
     .update({
       role: update.role,
       status: update.status,
-      access_scope: update.accessScope,
+      access_scope: serializeEditorialAccessScopes(update.accessScopes),
       approved_at: update.status === "approved" ? new Date().toISOString() : null,
       approved_by: update.status === "approved" ? approvedBy : null,
     })

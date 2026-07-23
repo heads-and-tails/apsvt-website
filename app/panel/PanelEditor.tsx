@@ -19,7 +19,7 @@ export function PanelEditor({initialPosts,initialContent,initialDocuments,publis
   const published=useMemo(()=>posts.filter(p=>p.status==="published").length,[posts]);
   const canManageNews=canEditPage(publisher,"/news");
   const allowedKinds=(Object.entries(contentKindPagePath).filter(([,path])=>canEditPage(publisher,path)).map(([kind])=>kind)) as ContentKind[];
-  const scopeLabel=accessScopeLabel(publisher.accessScope);
+  const scopeLabel=accessScopeLabel(publisher.accessScopes);
   function change<K extends keyof FormState>(key:K,value:FormState[K]){setForm(current=>({...current,[key]:value}))}
   function edit(post:Post){setEditing(post.id);setForm({title:post.title,excerpt:post.excerpt,body:post.body,category:post.category,imageUrl:post.imageUrl,imageAlt:post.imageAlt,status:post.status,featured:post.featured,publishedAt:post.publishedAt,slug:post.slug});window.scrollTo({top:0,behavior:"smooth"})}
   function reset(){setEditing(null);setForm(empty);setMessage("")}

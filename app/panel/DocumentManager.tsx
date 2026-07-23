@@ -25,7 +25,7 @@ function pageLabel(path: string): string {
 }
 
 export function DocumentManager({ initialDocuments, publisher }: { initialDocuments: PageDocument[]; publisher: Publisher }) {
-  const allowedPageOptions = pageOptions.filter(([value]) => value === "*" ? publisher.role === "admin" || publisher.accessScope === "*" : canEditPage(publisher, value));
+  const allowedPageOptions = pageOptions.filter(([value]) => value === "*" ? publisher.role === "admin" || publisher.accessScopes.includes("*") : canEditPage(publisher, value));
   const [documents, setDocuments] = useState(initialDocuments);
   const [form, setForm] = useState<PageDocumentInput>({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" });
   const [editing, setEditing] = useState<string | null>(null);

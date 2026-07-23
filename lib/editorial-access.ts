@@ -49,10 +49,28 @@ export function isEditorialAccessScope(value: unknown): value is string {
   return typeof value === "string" && validScopes.has(value);
 }
 
-export function canEditPage(profile: { role: string; accessScope: string }, pagePath: string): boolean {
-  return profile.role === "admin" || profile.accessScope === "*" || profile.accessScope === pagePath;
+export function normalizeEditorialAccessScopes(value: unknown): string[] {
+  const values = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : [];
+  const normalized = [...new Set(values.filter(isEditorialAccessScope))];
+  return normalized.includes("*") ? ["*"] : normalized;
 }
 
-export function accessScopeLabel(value: string): string {
-  return editorialAccessOptions.find((option) => option.value === value)?.label || value;
+export function isEditorialAccessScopes(value: unknown): value is string[] {
+  return Array.isArray(value) && value.length > 0 && normalizeEditorialAccessScopes(value).length === value.length;
+}
+
+export function serializeEditorialAccessScopes(value: string[]): string {
+  return normalizeEditorialAccessScopes(value).join(",");
+}
+
+export function canEditPage(profile: { role: string; accessScopes: string[] }, pagePath: string): boolean {
+  return profile.role === "admin" || profile.accessScopes.includes("*") || profile.accessScopes.includes(pagePath);
+}
+
+export function accessScopeLabel(values: string[]): string {
+  const normalized = normalizeEditorialAccessScopes(values);
+  if (normalized.includes("*")) return "Увесь сайт";
+  const labels = normalized.map((value) => editorialAccessOptions.find((option) => option.value === value)?.label || value);
+  if (labels.length <= 2) return labels.join(" · ");
+  return `${labels.slice(0, 2).join(" · ")} +${labels.length - 2}`;
 }
