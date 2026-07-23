@@ -63,7 +63,7 @@ export function WorkspaceDashboard({ initialItems, publisher }: { initialItems: 
   return <div className="workspace-shell">
     <aside className="workspace-side">
       <a className="workspace-brand" href="/panel/workspace"><span>BL</span><div><b>BytesLab</b><small>× Academy</small></div></a>
-      <nav aria-label="Навігація робочого простору"><a className="active" href="#overview">Огляд</a><a href="#roadmap">Напрями</a><a href="#ai-pipeline">AI-оцінювання</a><a href="#systems">Системи</a><a href="/panel">Редакційна панель</a><a href="/" target="_blank">Публічний сайт ↗</a></nav>
+      <nav aria-label="Навігація робочого простору"><a className="active" href="#overview">Огляд</a><a href="#roadmap">Напрями</a><a href="#ai-pipeline">AI-оцінювання</a><a href="#systems">Системи</a><a href="/panel/scheduler">Розумний планувальник</a><a href="/panel">Редакційна панель</a><a href="/" target="_blank">Публічний сайт ↗</a></nav>
       <div className="workspace-user">{publisher ? <><small>{isAdmin ? "Адміністратор" : "Редактор"}</small><b>{publisher.displayName}</b><p>{isAdmin ? "Повний контроль статусів" : "Статуси доступні лише для перегляду"}</p><form action="/auth/signout" method="post"><button type="submit">Вийти</button></form></> : <><small>Публічний перегляд</small><b>Відкритий workspace</b><p>Плани й прогрес доступні без входу.</p><a className="workspace-login" href="/panel/login">Увійти для редагування →</a></>}</div>
     </aside>
     <main className="workspace-main">
