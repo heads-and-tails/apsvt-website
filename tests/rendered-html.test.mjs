@@ -133,7 +133,8 @@ test("ships the complete mobile layout system",async()=>{
   assert.match(css,/\.contact-grid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
   assert.match(css,/\.ct\{min-width:0;overflow:hidden\}/);
   assert.match(schedule,/data-label="Дисципліна"/);
-  assert.match(schedule,/className="schedule-table-wrap"/);
+  assert.match(schedule,/className="weekly-schedule-wrap"/);
+  assert.match(schedule,/className="schedule-weeks"/);
   assert.match(schedule,/Усі опубліковані розклади/);
   assert.match(schedule,/Приєднатися ↗/);
   assert.match(exams,/data-label="Контроль"/);
