@@ -487,6 +487,7 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .editorial-login input{display:block;width:100%;margin-top:8px;border:1px solid #cbd2de;background:#fff;padding:14px;font:14px var(--body);text-transform:none}
 .editorial-login button,.auth-signout{border:0;background:var(--cobalt);color:#fff;padding:14px 18px;font-weight:800}
 .editorial-login button:disabled{opacity:.6}.auth-error{margin:0;color:#a92735!important;font-weight:700;font-size:12px}
+.forgot-password-link{justify-self:start!important;width:auto!important;min-height:0!important;background:transparent!important;color:var(--cobalt)!important;padding:0 0 3px!important;margin:0!important;border-bottom:2px solid var(--gold);font-size:12px;font-weight:800}.auth-success{margin:0;color:#17663a!important;font-weight:700;font-size:12px;background:#dff5e8;padding:12px}
 .auth-security{border-left:4px solid var(--gold);padding-left:13px;font-size:11px;line-height:1.5}
 .auth-setup{margin-top:25px;padding:18px;background:#fff;border-top:4px solid var(--gold)}
 .auth-setup b{font:700 13px var(--disp);text-transform:uppercase}.auth-setup p{margin-bottom:0;font-size:12px}

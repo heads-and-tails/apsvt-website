@@ -31,5 +31,6 @@ export function LoginForm() {
     <label>Пароль<input type="password" autoComplete="current-password" required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Ваш пароль" /></label>
     {message && <p className="auth-error" role="alert">{message}</p>}
     <button disabled={busy} type="submit">{busy ? "Перевіряємо…" : "Увійти до панелі →"}</button>
+    <a className="forgot-password-link" href="/panel/forgot-password">Забули пароль?</a>
   </form>;
 }
