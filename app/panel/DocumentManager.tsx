@@ -112,6 +112,16 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
 
   return <section className="document-manager" id="documents">
     <div className="materials-head"><div><span>Файли сторінок</span><h2>Документи</h2><p>Завантажуйте PDF, Word, Excel або PowerPoint і призначайте файл потрібній сторінці.</p></div><b>{published} опубліковано</b></div>
+    <details className="document-guide" open>
+      <summary><span>Підказка</span><b>Як самостійно додати або оновити документ</b><i>+</i></summary>
+      <div className="document-guide-steps">
+        <article><span>01</span><div><b>Оберіть файл</b><p>Натисніть «Оберіть файл» у формі нижче. Для офіційних документів найкраще використовувати PDF до 20 МБ.</p></div></article>
+        <article><span>02</span><div><b>Заповніть картку</b><p>Додайте зрозумілу назву, категорію та короткий опис без технічних скорочень у назві файла.</p></div></article>
+        <article><span>03</span><div><b>Призначте сторінку</b><p>Для матеріалів вступної кампанії оберіть сторінку «Вступ». Порядок 10, 20, 30 дозволяє пізніше вставляти нові документи між ними.</p></div></article>
+        <article><span>04</span><div><b>Опублікуйте</b><p>Оберіть статус «Опублікувати» й натисніть «Додати на сторінку». Для заміни базового файла завантажте новий із тим самим номером порядку.</p></div></article>
+      </div>
+      <p className="document-guide-slots"><b>Позиції вкладки «Вступнику»:</b> 10 — Правила прийому · 20 — Приймальна комісія · 30 — Положення про комісії · 40–100 — Порядки · 110 — Додаток.</p>
+    </details>
     <div className="document-layout">
       <form className="document-form" id="document-editor" onSubmit={save}>
         <div className="operations-form-head"><div><small>До 20 МБ</small><h3>{editing ? "Редагувати документ" : "Додати документ"}</h3></div>{editing && <button type="button" onClick={reset}>Скасувати</button>}</div>

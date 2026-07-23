@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 const ukLinks = [
   ["/about", "Про Академію"],
   ["/programs", "Програми"],
-  ["/admissions", "Вступ"],
+  ["/admissions", "Вступнику"],
   ["/people", "Люди"],
   ["/international", "Міжнародне"],
   ["/research", "Наука"],
@@ -135,7 +135,7 @@ export function SiteHeader() {
             <div className="menu-footer">
               <span>{english ? "Kyiv · Ukraine" : "Київ · Україна"}</span>
               <Link href={english ? "/en/admissions" : "/admissions"} onClick={closeMenu} tabIndex={open ? 0 : -1}>
-                {english ? "Admissions 2026" : "Вступ 2026"} <b>→</b>
+                {english ? "Admissions 2026" : "Вступнику 2026"} <b>→</b>
               </Link>
             </div>
           </div>
@@ -146,7 +146,7 @@ export function SiteHeader() {
             {english ? "UA" : "EN"}
           </Link>
           <Link className="cta hdr-cta" href={english ? "/en/admissions" : "/admissions"} onClick={closeMenu}>
-            <span>{english ? "Admissions 2026" : "Вступ 2026"}</span>
+            <span>{english ? "Admissions 2026" : "Вступнику 2026"}</span>
           </Link>
           <button
             ref={menuButton}

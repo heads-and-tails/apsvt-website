@@ -119,6 +119,36 @@ test("renders editorially managed public information",async()=>{
   assert.doesNotMatch(researchHtml,/socosvita\.kiev\.ua\/Visnyk_/);
 });
 
+test("publishes the applicant hub and official 2026 admission documents",async()=>{
+  const html=await (await render("/admissions")).text();
+  assert.match(html,/Вступнику 2026/);
+  assert.match(html,/Правила прийому<br\/>та нормативні документи/);
+  assert.match(html,/01-pravyla-pryiomu-apsvt-2026\.pdf/);
+  assert.match(html,/11-dodatok-8\.pdf/);
+  assert.match(html,/Подання і розгляд апеляцій/);
+  assert.ok(html.indexOf("Правила прийому на навчання")<html.indexOf("Положення про Приймальну комісію"));
+  assert.ok(html.indexOf("Положення про Приймальну комісію")<html.indexOf("Дії Приймальної комісії"));
+  assert.ok(html.indexOf("Дії Приймальної комісії")<html.indexOf("Додаток 8"));
+
+  const files=[
+    "01-pravyla-pryiomu-apsvt-2026.pdf",
+    "02-polozhennia-pro-pryimalnu-komisiiu.pdf",
+    "03-polozhennia-pro-komisii-vstupnykh-vyprobuvan.pdf",
+    "04-poriadok-dii-pk-v-umovakh-zahroz.pdf",
+    "05-poriadok-inkliuzyvnosti-vstupnoi-kampanii.pdf",
+    "06-poriadok-zberihannia-robit-vstupnykiv.pdf",
+    "07-poriadok-pryiomu-inozemtsiv.pdf",
+    "08-poriadok-provedennia-vstupnykh-vyprobuvan.pdf",
+    "09-poriadok-akredytatsii-media.pdf",
+    "10-poriadok-podannia-apeliatsii.pdf",
+    "11-dodatok-8.pdf",
+  ];
+  for(const file of files){
+    const pdf=await readFile(new URL(`../public/documents/admissions/${file}`,import.meta.url));
+    assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
+});
+
 test("renders the interactive student schedule application demo",async()=>{
   const response=await render("/student-app");
   assert.equal(response.status,200);
