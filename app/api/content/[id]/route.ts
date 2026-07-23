@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { deleteContentItem, isContentKind, updateContentItem, type ContentInput } from "@/lib/content";
-import { requirePublisher } from "@/lib/auth";
+import { deleteContentItem, getAllContent, isContentKind, updateContentItem, type ContentInput } from "@/lib/content";
+import { requirePagePublisher } from "@/lib/auth";
+import { contentKindPagePath } from "@/lib/editorial-access";
 
 export const dynamic = "force-dynamic";
 
@@ -13,26 +14,31 @@ function valid(value: unknown): value is ContentInput {
 
 export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const publisher = await requirePublisher();
     const body: unknown = await request.json();
     if (!valid(body)) return NextResponse.json({ error: "Некоректні дані" }, { status: 400 });
     const { id } = await context.params;
+    const existing = (await getAllContent()).find((entry) => entry.id === id);
+    if (!existing) return NextResponse.json({ error: "Запис не знайдено" }, { status: 404 });
+    await requirePagePublisher(contentKindPagePath[existing.kind]);
+    const publisher = await requirePagePublisher(contentKindPagePath[body.kind]);
     const item = await updateContentItem(id, body, publisher.email);
     return item ? NextResponse.json(item) : NextResponse.json({ error: "Запис не знайдено" }, { status: 404 });
   } catch (error) {
-    const denied = error instanceof Error && error.message === "UNAUTHORIZED";
+    const denied = error instanceof Error && (error.message === "UNAUTHORIZED" || error.message === "FORBIDDEN_SCOPE");
     return NextResponse.json({ error: denied ? "Доступ заборонено" : "Не вдалося оновити запис" }, { status: denied ? 403 : 500 });
   }
 }
 
 export async function DELETE(_: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    await requirePublisher();
     const { id } = await context.params;
+    const existing = (await getAllContent()).find((entry) => entry.id === id);
+    if (!existing) return NextResponse.json({ error: "Запис не знайдено" }, { status: 404 });
+    await requirePagePublisher(contentKindPagePath[existing.kind]);
     await deleteContentItem(id);
     return NextResponse.json({ ok: true });
   } catch (error) {
-    const denied = error instanceof Error && error.message === "UNAUTHORIZED";
+    const denied = error instanceof Error && (error.message === "UNAUTHORIZED" || error.message === "FORBIDDEN_SCOPE");
     return NextResponse.json({ error: denied ? "Доступ заборонено" : "Не вдалося видалити запис" }, { status: denied ? 403 : 500 });
   }
 }

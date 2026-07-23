@@ -2,6 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { editorialAdminEmails, isSupabaseConfigured } from "@/lib/supabase/config";
+import { canEditPage } from "@/lib/editorial-access";
 
 export type EditorialRole = "editor" | "admin";
 export type EditorialStatus = "pending" | "approved" | "suspended";
@@ -12,6 +13,7 @@ export type EditorialProfile = {
   displayName: string;
   role: EditorialRole;
   status: EditorialStatus;
+  accessScope: string;
   createdAt: string;
   approvedAt: string | null;
 };
@@ -24,6 +26,7 @@ type ProfileRow = {
   display_name: string | null;
   role: EditorialRole;
   status: EditorialStatus;
+  access_scope: string | null;
   created_at: string;
   approved_at: string | null;
 };
@@ -35,6 +38,7 @@ function profileFromRow(row: ProfileRow): EditorialProfile {
     displayName: row.display_name || row.email,
     role: row.role,
     status: row.status,
+    accessScope: row.access_scope || "*",
     createdAt: row.created_at,
     approvedAt: row.approved_at,
   };
@@ -56,6 +60,7 @@ export async function getPublisher(): Promise<Publisher | null> {
         displayName: "Victoria · local preview",
         role: "admin",
         status: "approved",
+        accessScope: "*",
         createdAt: new Date(0).toISOString(),
         approvedAt: new Date(0).toISOString(),
       };
@@ -77,6 +82,7 @@ export async function getPublisher(): Promise<Publisher | null> {
       display_name: user.user_metadata?.display_name || user.user_metadata?.full_name || normalizedEmail,
       role: "admin",
       status: "approved",
+      access_scope: "*",
       approved_at: new Date().toISOString(),
       approved_by: user.id,
     }, { onConflict: "id" });
@@ -84,7 +90,7 @@ export async function getPublisher(): Promise<Publisher | null> {
 
   const { data } = await admin
     .from("editorial_profiles")
-    .select("id,email,display_name,role,status,created_at,approved_at")
+    .select("id,email,display_name,role,status,access_scope,created_at,approved_at")
     .eq("id", user.id)
     .maybeSingle<ProfileRow>();
 
@@ -109,14 +115,14 @@ export async function getEditorialProfiles(): Promise<EditorialProfile[]> {
   const admin = createSupabaseAdmin();
   const { data, error } = await admin
     .from("editorial_profiles")
-    .select("id,email,display_name,role,status,created_at,approved_at")
+    .select("id,email,display_name,role,status,access_scope,created_at,approved_at")
     .order("created_at", { ascending: false });
   if (error) throw error;
   return (data as ProfileRow[]).map(profileFromRow);
 }
 
 export async function inviteApprovedEditorialUser(
-  input: { email: string; displayName: string; role: EditorialRole },
+  input: { email: string; displayName: string; role: EditorialRole; accessScope: string },
   approvedBy: string,
   redirectTo: string,
 ): Promise<EditorialProfile> {
@@ -143,10 +149,11 @@ export async function inviteApprovedEditorialUser(
       display_name: input.displayName || email,
       role: input.role,
       status: "approved",
+      access_scope: input.accessScope,
       approved_at: new Date().toISOString(),
       approved_by: approvedBy,
     }, { onConflict: "id" })
-    .select("id,email,display_name,role,status,created_at,approved_at")
+    .select("id,email,display_name,role,status,access_scope,created_at,approved_at")
     .single<ProfileRow>();
   if (error) throw error;
   return profileFromRow(data);
@@ -154,7 +161,7 @@ export async function inviteApprovedEditorialUser(
 
 export async function updateEditorialProfile(
   id: string,
-  update: { role: EditorialRole; status: EditorialStatus },
+  update: { role: EditorialRole; status: EditorialStatus; accessScope: string },
   approvedBy: string,
 ): Promise<EditorialProfile> {
   const admin = createSupabaseAdmin();
@@ -163,12 +170,19 @@ export async function updateEditorialProfile(
     .update({
       role: update.role,
       status: update.status,
+      access_scope: update.accessScope,
       approved_at: update.status === "approved" ? new Date().toISOString() : null,
       approved_by: update.status === "approved" ? approvedBy : null,
     })
     .eq("id", id)
-    .select("id,email,display_name,role,status,created_at,approved_at")
+    .select("id,email,display_name,role,status,access_scope,created_at,approved_at")
     .single<ProfileRow>();
   if (error) throw error;
   return profileFromRow(data);
+}
+
+export async function requirePagePublisher(pagePath: string): Promise<Publisher> {
+  const publisher = await requirePublisher();
+  if (!canEditPage(publisher, pagePath)) throw new Error("FORBIDDEN_SCOPE");
+  return publisher;
 }

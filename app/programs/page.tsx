@@ -4,6 +4,7 @@ import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { ProgramFinder } from "./ProgramFinder";
 import { programs } from "@/lib/programs";
+import { PageDocuments } from "../components/PageDocuments";
 
 export const metadata: Metadata = { title: "Освітні програми", description: "Програми АПСВТ: навчальні плани, вартість, викладачі та кар’єрні можливості." };
 
@@ -15,5 +16,6 @@ export default function Page() {
     </div></section>
     <ProgramFinder />
     <section className="soft"><div className="wrap split"><div className="copy"><div className="idx">03 / Умови навчання</div><h2>Прозоро до подання заяви</h2><p className="lead">На сторінці кожної програми вже зібрані навчальний план, денна й заочна вартість, викладачі, міжнародні можливості та професії після випуску.</p><p>Вартість взято з офіційного наказу АПСВТ для вступників 2026 року й показано безпосередньо в описі програми.</p><Link className="cta dark" href="/admissions"><span>Поставити запитання</span></Link></div><div className="panel"><h3>До кожної програми входить</h3><ul><li><span className="y">01</span>Практика та проєктна робота</li><li><span className="y">02</span>Вибіркові курси</li><li><span className="y">03</span>Міжнародні можливості</li><li><span className="y">04</span>Кар’єрні сценарії</li><li><span className="y">05</span>Академічний супровід</li></ul></div></div></section>
+    <PageDocuments pagePath="/programs" />
     <SiteFooter /></main>;
 }

@@ -495,18 +495,18 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .panel-user form{margin:0}.panel-user button{border:0;background:transparent;color:#9fabc2;font-size:11px;padding:0;text-align:left}
 .access-manager{margin-top:70px;padding-top:20px}.access-manager .materials-head p{max-width:58ch;font-size:12px;color:#657084}
 .access-manager .materials-head>b{display:grid;place-items:center;background:var(--gold);padding:12px 16px;font:700 11px var(--mono);text-transform:uppercase}
-.access-invite{display:grid;grid-template-columns:minmax(250px,1fr) minmax(150px,.55fr) minmax(210px,.75fr) minmax(135px,.45fr) auto;gap:16px;align-items:end;margin:22px 0 12px;padding:22px;background:#fff;border-top:4px solid var(--gold)}
+.access-invite{display:grid;grid-template-columns:minmax(230px,1fr) minmax(140px,.5fr) minmax(190px,.7fr) minmax(120px,.4fr) minmax(210px,.7fr) auto;gap:16px;align-items:end;margin:22px 0 12px;padding:22px;background:#fff;border-top:4px solid var(--gold)}
 .access-invite>div{align-self:center}.access-invite small{font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}.access-invite h3{font-size:19px;margin:5px 0}.access-invite p{margin:0;font-size:10px;line-height:1.45;color:#657084}
 .access-invite label{font:700 8px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#657084}.access-invite input,.access-invite select{display:block;width:100%;margin-top:7px;border:1px solid #d7dce5;background:#fafbfc;padding:11px;font:12px var(--body);color:var(--ink);text-transform:none}
 .access-invite button{border:0;background:var(--cobalt);color:#fff;padding:13px 17px;font-weight:800;white-space:nowrap}.access-invite button:disabled{opacity:.55}
 .access-message{padding:12px 15px;background:#eef1ff;border-left:4px solid var(--cobalt);font-size:12px;font-weight:700}
 .access-list{display:grid;gap:8px;margin-top:22px}
-.access-list article{display:grid;grid-template-columns:44px minmax(220px,1fr) minmax(130px,.35fr) minmax(140px,.35fr) 115px;gap:14px;align-items:center;background:#fff;padding:15px}
+.access-list article{display:grid;grid-template-columns:44px minmax(210px,1fr) minmax(110px,.3fr) minmax(210px,.65fr) minmax(125px,.35fr) 110px;gap:14px;align-items:center;background:#fff;padding:15px}
 .access-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:var(--gold);font:700 10px var(--mono)}
 .access-person{display:flex;flex-direction:column;min-width:0}.access-person b{font-size:12px}.access-person span{font-size:10px;color:#657084;overflow:hidden;text-overflow:ellipsis}.access-person small{font:8px var(--mono);color:#8b94a5;margin-top:4px}
 .access-list label{font:700 8px var(--mono);text-transform:uppercase;color:#657084}.access-list select{display:block;width:100%;margin-top:6px;border:1px solid #d7dce5;background:#fafbfc;padding:9px;font:11px var(--body);color:var(--ink)}
 .access-status{font:700 8px var(--mono);text-align:center;text-transform:uppercase;padding:9px}.access-status.approved{background:#e8f6ef;color:#14764e}.access-status.pending{background:#fff5cf;color:#806100}.access-status.suspended{background:#fdecee;color:#a92735}
-@media(max-width:1100px){.access-invite{grid-template-columns:repeat(2,minmax(0,1fr))}.access-invite>div{grid-column:1/-1}.access-invite button{align-self:end}}
+@media(max-width:1250px){.access-invite{grid-template-columns:repeat(2,minmax(0,1fr))}.access-invite>div{grid-column:1/-1}.access-invite button{align-self:end}.access-list article{grid-template-columns:44px minmax(200px,1fr) repeat(2,minmax(130px,.5fr))}.access-person{grid-column:2/-1}.access-status{grid-column:4}}
 @media(max-width:900px){.access-list article{grid-template-columns:44px 1fr 1fr}.access-person{grid-column:2/-1}.access-status{grid-column:3}}
 @media(max-width:700px){.editorial-login input{font-size:16px}.access-invite{grid-template-columns:1fr;padding:18px}.access-invite>div{grid-column:auto}.access-invite button{width:100%}.access-list article{grid-template-columns:42px 1fr}.access-person{grid-column:2}.access-list label{grid-column:1/-1}.access-status{grid-column:1/-1}.panel-user button{min-height:36px}}
 

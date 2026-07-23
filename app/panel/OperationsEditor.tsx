@@ -38,18 +38,19 @@ function itemTitle(item: ContentItem): string {
   return item.payload.title || item.payload.course || item.payload.dateLabel || "Запис";
 }
 
-export function OperationsEditor({ initialContent }: { initialContent: ContentItem[] }) {
+export function OperationsEditor({ initialContent, allowedKinds }: { initialContent: ContentItem[]; allowedKinds: ContentKind[] }) {
+  const availableSections = sections.filter((entry) => allowedKinds.includes(entry.kind));
   const [items, setItems] = useState(initialContent);
-  const [active, setActive] = useState<ContentKind>("lesson");
+  const [active, setActive] = useState<ContentKind>(allowedKinds[0]);
   const [editing, setEditing] = useState<ContentItem | null>(null);
-  const section = sections.find((entry) => entry.kind === active)!;
+  const section = availableSections.find((entry) => entry.kind === active) || availableSections[0];
   const [payload, setPayload] = useState<ContentPayload>(() => blank(section.fields));
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const visible = useMemo(() => items.filter((item) => item.kind === active).sort((a, b) => a.sortOrder - b.sortOrder), [items, active]);
 
   function choose(kind: ContentKind) {
-    const next = sections.find((entry) => entry.kind === kind)!;
+    const next = availableSections.find((entry) => entry.kind === kind)!;
     setActive(kind); setEditing(null); setPayload(blank(next.fields)); setMessage("");
   }
 
@@ -84,7 +85,7 @@ export function OperationsEditor({ initialContent }: { initialContent: ContentIt
 
   return <section className="operations" id="operations">
     <div className="materials-head operations-heading"><div><span>Операційний контент</span><h2>Керування сайтом</h2><p>Зміни одразу використовуються у відповідних публічних розділах.</p></div><a href={section.publicHref} target="_blank">Перевірити розділ ↗</a></div>
-    <div className="operations-tabs" role="tablist" aria-label="Розділи сайту">{sections.map((entry) => <button type="button" role="tab" aria-selected={active === entry.kind} className={active === entry.kind ? "active" : ""} onClick={() => choose(entry.kind)} key={entry.kind}><b>{entry.label}</b><span>{items.filter((item) => item.kind === entry.kind).length}</span></button>)}</div>
+    <div className="operations-tabs" role="tablist" aria-label="Розділи сайту">{availableSections.map((entry) => <button type="button" role="tab" aria-selected={active === entry.kind} className={active === entry.kind ? "active" : ""} onClick={() => choose(entry.kind)} key={entry.kind}><b>{entry.label}</b><span>{items.filter((item) => item.kind === entry.kind).length}</span></button>)}</div>
     <div className="operations-layout">
       <form className="operations-form" id="operations-editor" onSubmit={save}><div className="operations-form-head"><div><small>{section.description}</small><h3>{editing ? `Редагувати ${section.singular}` : `Додати ${section.singular}`}</h3></div>{editing && <button type="button" onClick={reset}>Скасувати</button>}</div><div className="operations-fields">{section.fields.map((field) => <label className={field.type === "textarea" ? "wide" : ""} key={field.key}>{field.label}{field.options ? <select required value={payload[field.key] || ""} onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))}><option value="">Оберіть</option>{field.options.map((option) => <option key={option}>{option}</option>)}</select> : field.type === "textarea" ? <textarea required rows={4} value={payload[field.key] || ""} placeholder={field.placeholder} onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))} /> : <input required type={field.type || "text"} value={payload[field.key] || ""} placeholder={field.placeholder} onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))} />}</label>)}</div><div className="operations-save"><p>{message || "Заповніть поля та збережіть запис."}</p><button disabled={busy} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити запис" : "Додати на сайт"}</button></div></form>
       <div className="operations-list"><div className="operations-list-head"><div><small>Опубліковано</small><h3>{section.label}</h3></div><b>{visible.length}</b></div>{visible.map((item) => <article key={item.id}><div><small>{item.payload.dateLabel || item.payload.date || item.payload.year || item.payload.time}</small><h4>{itemTitle(item)}</h4><p>{item.payload.description || [item.payload.time, item.payload.teacher, item.payload.author, item.payload.place].filter(Boolean).join(" · ")}</p></div><div><button type="button" onClick={() => startEdit(item)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => void remove(item)}>Видалити</button></div></article>)}</div>

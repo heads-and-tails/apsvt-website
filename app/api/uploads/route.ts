@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requirePublisher } from "@/lib/auth";
+import { requirePagePublisher, requirePublisher } from "@/lib/auth";
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
@@ -16,10 +16,10 @@ const documentTypes = new Set([
 
 export async function POST(request: Request) {
   try {
-    const publisher = await requirePublisher();
     const data = await request.formData();
     const file = data.get("file");
     const purpose = data.get("purpose") === "document" ? "document" : "image";
+    const publisher = purpose === "document" ? await requirePublisher() : await requirePagePublisher("/news");
     if (!(file instanceof File)) return NextResponse.json({ error: "Оберіть файл" }, { status: 400 });
     const allowed = purpose === "document" ? documentTypes : imageTypes;
     const maxSize = purpose === "document" ? 20 * 1024 * 1024 : 8 * 1024 * 1024;

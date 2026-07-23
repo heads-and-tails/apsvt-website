@@ -2,25 +2,10 @@
 
 import { useMemo, useState } from "react";
 import type { DocumentStatus, PageDocument, PageDocumentInput } from "@/lib/documents";
+import type { Publisher } from "@/lib/auth";
+import { canEditPage, editorialAccessOptions } from "@/lib/editorial-access";
 
-const pageOptions = [
-  ["*", "Усі основні сторінки"],
-  ["/materials", "Матеріали Академії"],
-  ["/about", "Про Академію"],
-  ["/admissions", "Вступ"],
-  ["/students", "Студентам"],
-  ["/research", "Наука"],
-  ["/international", "Міжнародне"],
-  ["/programs/psychology", "Програма · Психологія"],
-  ["/programs/finance", "Програма · Фінанси"],
-  ["/programs/management", "Програма · Менеджмент"],
-  ["/programs/public-administration", "Програма · Публічне управління"],
-  ["/programs/marketing", "Програма · Маркетинг"],
-  ["/programs/trade", "Програма · Торгівля"],
-  ["/programs/law", "Програма · Право"],
-  ["/programs/social-work", "Програма · Соціальна робота"],
-  ["/programs/tourism", "Програма · Туризм"],
-] as const;
+const pageOptions = editorialAccessOptions.map((option) => [option.value, option.value === "*" ? "Усі доступні сторінки" : option.label] as const);
 
 const empty: PageDocumentInput = {
   title: "",
@@ -39,9 +24,10 @@ function pageLabel(path: string): string {
   return pageOptions.find(([value]) => value === path)?.[1] || path;
 }
 
-export function DocumentManager({ initialDocuments }: { initialDocuments: PageDocument[] }) {
+export function DocumentManager({ initialDocuments, publisher }: { initialDocuments: PageDocument[]; publisher: Publisher }) {
+  const allowedPageOptions = pageOptions.filter(([value]) => value === "*" ? publisher.role === "admin" || publisher.accessScope === "*" : canEditPage(publisher, value));
   const [documents, setDocuments] = useState(initialDocuments);
-  const [form, setForm] = useState<PageDocumentInput>(empty);
+  const [form, setForm] = useState<PageDocumentInput>({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" });
   const [editing, setEditing] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -90,7 +76,7 @@ export function DocumentManager({ initialDocuments }: { initialDocuments: PageDo
     }
     setDocuments((current) => editing ? current.map((item) => item.id === editing ? result : item) : [result, ...current]);
     setMessage(result.status === "published" ? "Документ опубліковано на вибраній сторінці" : "Чернетку документа збережено");
-    setEditing(null); setForm(empty); setBusy(false);
+    setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setBusy(false);
   }
 
   function edit(item: PageDocument) {
@@ -111,7 +97,7 @@ export function DocumentManager({ initialDocuments }: { initialDocuments: PageDo
     window.document.querySelector("#document-editor")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function reset() { setEditing(null); setForm(empty); setMessage(""); }
+  function reset() { setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setMessage(""); }
 
   async function remove(document: PageDocument) {
     if (!confirm(`Видалити «${document.title}» зі сторінки?`)) return;
@@ -134,7 +120,7 @@ export function DocumentManager({ initialDocuments }: { initialDocuments: PageDo
           <label>Назва документа<input required value={form.title} onChange={(event) => change("title", event.target.value)} /></label>
           <label>Категорія<input required value={form.category} onChange={(event) => change("category", event.target.value)} placeholder="Наказ, положення, програма…" /></label>
           <label className="wide">Короткий опис<textarea rows={3} value={form.description} onChange={(event) => change("description", event.target.value)} /></label>
-          <label>Сторінка<select value={form.pagePath} onChange={(event) => change("pagePath", event.target.value)}>{pageOptions.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label>
+          <label>Сторінка<select value={form.pagePath} onChange={(event) => change("pagePath", event.target.value)}>{allowedPageOptions.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label>
           <label>Статус<select value={form.status} onChange={(event) => change("status", event.target.value as DocumentStatus)}><option value="published">Опублікувати</option><option value="draft">Чернетка</option></select></label>
           <label>Порядок<input type="number" min={0} value={form.sortOrder} onChange={(event) => change("sortOrder", Number(event.target.value))} /></label>
         </div>

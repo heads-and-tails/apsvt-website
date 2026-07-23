@@ -166,7 +166,7 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(html,/Вхід до панелі/);
   assert.match(html,/Підключення готується/);
 
-  const [panel,auth,migration,access,documents,documentMigration,pageDocuments]=await Promise.all([
+  const [panel,auth,migration,access,documents,documentMigration,pageDocuments,accessMigration,accessRules]=await Promise.all([
     readFile(new URL("../app/panel/page.tsx",import.meta.url),"utf8"),
     readFile(new URL("../lib/auth.ts",import.meta.url),"utf8"),
     readFile(new URL("../supabase/migrations/202607220001_editorial_panel.sql",import.meta.url),"utf8"),
@@ -174,6 +174,8 @@ test("ships a protected Supabase editorial panel",async()=>{
     readFile(new URL("../app/panel/DocumentManager.tsx",import.meta.url),"utf8"),
     readFile(new URL("../supabase/migrations/202607230001_editorial_documents.sql",import.meta.url),"utf8"),
     readFile(new URL("../app/components/PageDocuments.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../supabase/migrations/202607230002_editorial_access_scopes.sql",import.meta.url),"utf8"),
+    readFile(new URL("../lib/editorial-access.ts",import.meta.url),"utf8"),
   ]);
   assert.doesNotMatch(panel,/apsvt-academy\.ikucha\.chatgpt\.site\/panel/);
   assert.match(panel,/initialProfiles/);
@@ -202,6 +204,12 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(documentMigration,/editorial_documents/);
   assert.match(documentMigration,/editorial-documents/);
   assert.match(pageDocuments,/getPublicDocuments/);
+  assert.match(access,/Сторінка \/ кафедра/);
+  assert.match(access,/Кафедри та програми/);
+  assert.match(accessMigration,/access_scope/);
+  assert.match(accessMigration,/private\.can_edit_page/);
+  assert.match(accessRules,/canEditPage/);
+  assert.match(accessRules,/Кафедра психології/);
 });
 
 test("ships the public BytesLab Academy workspace with protected management",async()=>{
