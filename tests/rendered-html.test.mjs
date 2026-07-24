@@ -33,12 +33,12 @@ test("server-renders the finished Ukrainian homepage",async()=>{
 });
 
 test("serves every main public section in English",async()=>{
-  const paths=["/en/about","/en/programs","/en/admissions","/en/people","/en/international","/en/research","/en/research/journals","/en/research/conferences","/en/facilities","/en/facilities/campus","/en/facilities/dormitory","/en/facilities/library","/en/events","/en/students","/en/schedule","/en/exam-schedule","/en/academic-calendar","/en/materials","/en/stories","/en/faq","/en/news","/en/contacts"];
+  const paths=["/en/about","/en/programs","/en/admissions","/en/tuition","/en/people","/en/international","/en/research","/en/research/journals","/en/research/conferences","/en/facilities","/en/facilities/campus","/en/facilities/dormitory","/en/facilities/library","/en/events","/en/students","/en/schedule","/en/exam-schedule","/en/academic-calendar","/en/materials","/en/stories","/en/faq","/en/news","/en/contacts"];
   for(const path of paths){
     const response=await render(path);
     assert.equal(response.status,200,`${path} should render`);
     const html=await response.text();
-    assert.match(html,/Academy of Labour|Admissions 2026|Degree programmes|Research and publications|Campus and services|Student space|Academy events|Class schedule|Examination timetable|Academic year|Academy materials|Academy stories|Frequently asked questions|News and stories|Contacts/i,`${path} should contain English content`);
+    assert.match(html,/Academy of Labour|Admissions 2026|Degree programmes|Research and publications|Campus and services|Student space|Academy events|Class schedule|Examination timetable|Academic year|Academy materials|Academy stories|Frequently asked questions|News and stories|Contacts|Clear tuition/i,`${path} should contain English content`);
     assert.match(html,/href="\/en\/programs"/i,`${path} should keep English navigation`);
   }
 });
@@ -202,6 +202,39 @@ test("publishes the applicant hub and official 2026 admission documents",async()
     const pdf=await readFile(new URL(`../public/documents/admissions/${file}`,import.meta.url));
     assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
   }
+});
+
+test("publishes official 2026 tuition, secure bank details and local contracts",async()=>{
+  const html=await (await render("/tuition")).text();
+  assert.match(html,/Вартість<br\/>без дрібного/);
+  for(const value of ["38 600","30 900","43 500","34 800","36 300","23 500","20 400","$415","$500","$1 500"]){
+    assert.match(html,new RegExp(value.replace("$","\\$")));
+  }
+  assert.match(html,/UA673052990000026005006704535/);
+  assert.match(html,/04641405/);
+  assert.match(html,/\+38 096 450 85 04/);
+  assert.match(html,/contract-paid-educational-service\.docx/);
+  assert.match(html,/contract-education\.docx/);
+  assert.match(html,/tuition-2026-2027\.pdf/);
+  assert.match(html,/privatbank\.ua\/cpa\/mobile-p24-payments/);
+  assert.match(html,/Сайт не просить номер картки, CVV, пароль або SMS-код/);
+
+  const [pdf,paidContract,educationContract,assistant]=await Promise.all([
+    readFile(new URL("../public/documents/tuition/tuition-2026-2027.pdf",import.meta.url)),
+    readFile(new URL("../public/documents/tuition/contract-paid-educational-service.docx",import.meta.url)),
+    readFile(new URL("../public/documents/tuition/contract-education.docx",import.meta.url)),
+    readFile(new URL("../app/tuition/TuitionPaymentAssistant.tsx",import.meta.url),"utf8"),
+  ]);
+  assert.equal(pdf.subarray(0,4).toString(),"%PDF");
+  assert.equal(paidContract.subarray(0,2).toString(),"PK");
+  assert.equal(educationContract.subarray(0,2).toString(),"PK");
+  assert.match(assistant,/navigator\.clipboard\.writeText/);
+  assert.match(assistant,/не проводить платіж/);
+
+  const programmeHtml=await (await render("/programs/psychology")).text();
+  assert.match(programmeHtml,/Магістратура, заочна/);
+  assert.match(programmeHtml,/34 800 ₴ \/ рік/);
+  assert.match(programmeHtml,/href="\/tuition#calculator"/);
 });
 
 test("answers applicant questions from the indexed admission documents with page citations",async()=>{

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { ProgramFinder } from "../programs/ProgramFinder";
@@ -25,26 +26,29 @@ export default async function Page() {
     <nav className="applicant-section-nav" aria-label="Навігація для вступника"><div className="wrap">
       <a href="#route"><span>01</span><b>Як вступити</b></a>
       <a href="#dates"><span>02</span><b>Ключові дати</b></a>
-      <a href="#documents"><span>03</span><b>Що підготувати</b></a>
-      <a href="#admission-rules"><span>04</span><b>Правила і документи</b></a>
-      <a href="#document-assistant"><span>05</span><b>Запитати помічника</b></a>
-      <a href="#test"><span>06</span><b>Обрати програму</b></a>
-      <a href="#consultation"><span>07</span><b>Консультація</b></a>
+      <a href="#tuition"><span>03</span><b>Вартість і оплата</b></a>
+      <a href="#documents"><span>04</span><b>Що підготувати</b></a>
+      <a href="#admission-rules"><span>05</span><b>Правила і документи</b></a>
+      <a href="#document-assistant"><span>06</span><b>Запитати помічника</b></a>
+      <a href="#test"><span>07</span><b>Обрати програму</b></a>
+      <a href="#consultation"><span>08</span><b>Консультація</b></a>
     </div></nav>
 
     <section id="route"><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Чотири кроки</div><h2>Від вибору до зарахування</h2></div></div><div className="steps">{steps.map(([number, title, description]) => <article className="step" key={number}><span>{number}</span><h3>{title}</h3><p>{description}</p></article>)}</div></div></section>
 
     <section className="admission-dates" id="dates"><div className="wrap"><div className="sec-head"><div><div className="idx">02 / Календар вступника</div><h2>Ключові дати 2026</h2></div><p>Дати відповідають актуальному календарю МОН. Редакція може оперативно оновити їх у разі офіційних змін.</p></div><div className="admission-timeline">{timeline.map(({id,payload},index)=><article key={id}><span>{String(index+1).padStart(2,"0")}</span><div><small>{payload.status}</small><b>{payload.dateLabel}</b><h3>{payload.title}</h3><p>{payload.description}</p></div></article>)}</div><p className="timeline-source">Для вступників на бакалаврат і магістратуру. Перевіряйте персональний статус заяви в електронному кабінеті ЄДЕБО.</p></div></section>
 
-    <section className="soft" id="documents"><div className="wrap detail-layout"><div className="detail-copy"><div className="idx">03 / Документи вступника</div><h2>Підготуйтеся заздалегідь</h2><p className="lede">Точний перелік залежить від освітнього рівня та категорії вступника. Основний пакет можна підготувати онлайн.</p><div className="rows"><div className="row"><span className="rnum">01</span><div><h3>Документ про освіту</h3><p>Атестат або диплом із додатком.</p></div></div><div className="row"><span className="rnum">02</span><div><h3>Документ, що посвідчує особу</h3><p>Паспорт або ID-картка та реєстраційний номер.</p></div></div><div className="row"><span className="rnum">03</span><div><h3>Мотиваційний лист</h3><p>Ваша історія, цілі та причина обрати програму.</p></div></div></div></div><aside className="detail-aside"><div className="panel"><h3>Приймальна комісія</h3><ul><li><span className="y">Тел.</span><a href="tel:+380445260664">+38 (044) 526-06-64</a></li><li><span className="y">Email</span><a href="mailto:pk@socosvita.kiev.ua">pk@socosvita.kiev.ua</a></li><li><span className="y">Адреса</span>Кільцева дорога, 3-А, Київ</li></ul></div><p className="aside-hint">Не впевнені у своєму переліку? Залиште запит нижче — команда перевірить вашу ситуацію.</p></aside></div></section>
+    <section id="tuition"><div className="wrap split"><div className="copy"><div className="idx">03 / Вартість і оплата</div><h2>Знайте суму до договору</h2><p className="lead">Офіційні тарифи 2026/27 показані за рік, семестр і місяць — для денної та заочної форми.</p><p>Скористайтеся безпечним помічником: він підготує банківські реквізити й призначення платежу, не запитуючи дані картки.</p><Link className="cta dark" href="/tuition"><span>Переглянути тарифи й оплату</span></Link></div><div className="panel"><h3>На сторінці вартості</h3><ul><li><span className="y">01</span>Тарифи для вступників 2026</li><li><span className="y">02</span>Вартість старших курсів</li><li><span className="y">03</span>Оплата для іноземних студентів</li><li><span className="y">04</span>Банківські реквізити</li><li><span className="y">05</span>Офіційні договори DOCX</li></ul></div></div></section>
+
+    <section className="soft" id="documents"><div className="wrap detail-layout"><div className="detail-copy"><div className="idx">04 / Документи вступника</div><h2>Підготуйтеся заздалегідь</h2><p className="lede">Точний перелік залежить від освітнього рівня та категорії вступника. Основний пакет можна підготувати онлайн.</p><div className="rows"><div className="row"><span className="rnum">01</span><div><h3>Документ про освіту</h3><p>Атестат або диплом із додатком.</p></div></div><div className="row"><span className="rnum">02</span><div><h3>Документ, що посвідчує особу</h3><p>Паспорт або ID-картка та реєстраційний номер.</p></div></div><div className="row"><span className="rnum">03</span><div><h3>Мотиваційний лист</h3><p>Ваша історія, цілі та причина обрати програму.</p></div></div></div></div><aside className="detail-aside"><div className="panel"><h3>Приймальна комісія</h3><ul><li><span className="y">Тел.</span><a href="tel:+380445260664">+38 (044) 526-06-64</a></li><li><span className="y">Email</span><a href="mailto:pk@socosvita.kiev.ua">pk@socosvita.kiev.ua</a></li><li><span className="y">Адреса</span>Кільцева дорога, 3-А, Київ</li></ul></div><p className="aside-hint">Не впевнені у своєму переліку? Залиште запит нижче — команда перевірить вашу ситуацію.</p></aside></div></section>
 
     <ApplicantDocumentLibrary />
 
     <ApplicantDocumentAssistant />
 
-    <ProgramFinder index="06 / Тест на програму" />
+    <ProgramFinder index="07 / Тест на програму" />
 
-    <section id="consultation" className="admission-consultation"><div className="wrap admission-consultation-grid"><div className="admission-consultation-copy"><div className="idx">07 / Персональна консультація</div><h2>Розкажіть, що плануєте</h2><p className="lead">Три короткі кроки — і команда вступу підготує відповідь саме для вашого рівня, програми та ситуації.</p><div className="consultation-benefits"><div><span>01</span><p><b>Без листування навмання</b>Оберіть зручний канал і час відповіді.</p></div><div><span>02</span><p><b>Персональний маршрут</b>Отримайте перелік документів і наступних дій.</p></div><div><span>03</span><p><b>Спокійний вибір</b>Порівняйте програми до подання заяви.</p></div></div></div><ApplicantConsultationForm /></div></section>
+    <section id="consultation" className="admission-consultation"><div className="wrap admission-consultation-grid"><div className="admission-consultation-copy"><div className="idx">08 / Персональна консультація</div><h2>Розкажіть, що плануєте</h2><p className="lead">Три короткі кроки — і команда вступу підготує відповідь саме для вашого рівня, програми та ситуації.</p><div className="consultation-benefits"><div><span>01</span><p><b>Без листування навмання</b>Оберіть зручний канал і час відповіді.</p></div><div><span>02</span><p><b>Персональний маршрут</b>Отримайте перелік документів і наступних дій.</p></div><div><span>03</span><p><b>Спокійний вибір</b>Порівняйте програми до подання заяви.</p></div></div></div><ApplicantConsultationForm /></div></section>
 
     <SiteFooter />
   </main>;
