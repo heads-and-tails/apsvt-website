@@ -171,6 +171,35 @@ test("publishes the Academy licence, accreditation scans and verification links"
   }
 });
 
+test("publishes the official documents hub in the footer",async()=>{
+  const [homeHtml,documentsHtml]=await Promise.all([
+    (await render("/")).text(),
+    (await render("/documents")).text(),
+  ]);
+  assert.match(homeHtml,/href="\/documents"[^>]*>Документи<\/a>/);
+  assert.match(documentsHtml,/Документи\.<br\/><em>Зрозуміло\.<\/em>/);
+  assert.match(documentsHtml,/Положення про організацію освітнього процесу/);
+  assert.match(documentsHtml,/Запобігання корупції/);
+  assert.match(documentsHtml,/Ліцензії та акредитація/);
+  assert.match(documentsHtml,/<b>27<\/b><p>ключових офіційних документів<\/p>/);
+  assert.match(documentsHtml,/438 фрагментів/);
+});
+
+test("answers document questions from the curated RAG index with sources",async()=>{
+  const app=await worker();
+  const response=await app.fetch(new Request("http://localhost/api/documents/ask",{
+    method:"POST",
+    headers:{"content-type":"application/json"},
+    body:JSON.stringify({question:"Як подати апеляцію на результат вступного випробування?"}),
+  }),{ASSETS:{fetch:async()=>new Response("Not found",{status:404})}},{waitUntil(){},passThroughOnException(){}});
+  assert.equal(response.status,200);
+  const answer=await response.json();
+  assert.equal(answer.status,"found");
+  assert.ok(answer.sources.length>0);
+  assert.match(answer.sources[0].title,/апеляц/i);
+  assert.match(answer.sources[0].href,/10-poriadok-podannia-apeliatsii\.pdf/);
+});
+
 test("publishes the applicant hub and official 2026 admission documents",async()=>{
   const html=await (await render("/admissions")).text();
   assert.match(html,/Вступнику 2026/);

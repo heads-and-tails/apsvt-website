@@ -50,7 +50,7 @@ export function ApplicantDocumentAssistant() {
     }
   }
 
-  function useExample(example: string) {
+  function applyExample(example: string) {
     setQuestion(example);
     setAnswer(null);
     setError("");
@@ -69,7 +69,7 @@ export function ApplicantDocumentAssistant() {
           <textarea id="applicant-question" value={question} onChange={(event) => setQuestion(event.target.value)} rows={4} maxLength={600} placeholder="Наприклад: у який строк можна подати апеляцію?" />
           <button type="submit" disabled={loading || question.trim().length < 3}>{loading ? "Шукаю…" : "Знайти відповідь →"}</button>
         </div>
-        <div className="applicant-rag-examples"><span>Підказки:</span>{examples.map((example) => <button type="button" onClick={() => useExample(example)} key={example}>{example}</button>)}</div>
+        <div className="applicant-rag-examples"><span>Підказки:</span>{examples.map((example) => <button type="button" onClick={() => applyExample(example)} key={example}>{example}</button>)}</div>
         <p className="applicant-rag-privacy">Запитання не зберігається та не передається стороннім сервісам.</p>
       </form>
 
