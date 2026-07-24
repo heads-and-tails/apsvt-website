@@ -119,6 +119,19 @@ test("renders editorially managed public information",async()=>{
   assert.doesNotMatch(researchHtml,/socosvita\.kiev\.ua\/Visnyk_/);
 });
 
+test("publishes international partnerships and the foreign applicant guide",async()=>{
+  const html=await (await render("/international")).text();
+  assert.match(html,/Studieninstitut POLS/);
+  assert.match(html,/Transport and Telecommunication Institute/);
+  assert.match(html,/Vysoká škola technická a ekonomická v Prešove/);
+  assert.match(html,/Академія оформлює електронне запрошення на навчання/);
+  assert.match(html,/apply\.studyinukraine\.gov\.ua\/home/);
+  assert.match(html,/758-2024-%D0%BF#Text/);
+  assert.match(html,/07-poriadok-pryiomu-inozemtsiv\.pdf/);
+  assert.match(html,/Чи оформлює Академія запрошення на навчання/);
+  assert.match(html,/inz@sococvita\.kiev\.ua/);
+});
+
 test("publishes the applicant hub and official 2026 admission documents",async()=>{
   const html=await (await render("/admissions")).text();
   assert.match(html,/Вступнику 2026/);
