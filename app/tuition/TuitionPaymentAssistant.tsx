@@ -126,7 +126,9 @@ export function TuitionPaymentAssistant() {
           {copied === "all" ? "Реквізити скопійовано ✓" : "Скопіювати всі реквізити"}
         </button>
         {copied === "error" && <p className="payment-copy-error">Не вдалося скопіювати автоматично. Виділіть реквізити вручну.</p>}
-        <a className="payment-bank-link" href="https://privatbank.ua/cpa/mobile-p24-payments" target="_blank" rel="noreferrer">Як оплатити за реквізитами у Privat24 ↗</a>
+        <a className="payment-pay-now" href="https://next.privat24.ua/" target="_blank" rel="noreferrer">Перейти до оплати у Privat24 ↗</a>
+        <a className="payment-bank-link" href="https://privatbank.ua/cpa/mobile-p24-payments" target="_blank" rel="noreferrer">Інструкція з оплати за реквізитами ↗</a>
+        <small className="payment-bank-hint">У Privat24 відкрийте «Платежі» та знайдіть отримувача за IBAN або кодом ЄДРПОУ, скопійованими вище.</small>
         <small className="payment-check">Перед підтвердженням звірте отримувача, IBAN, суму й призначення у своєму банку.</small>
       </div>
     </div>

@@ -42,7 +42,7 @@ const continuingRates = [
 
 export default function Page() {
   return <main id="top"><SiteHeader />
-    <section className="tuition-hero"><div className="wrap tuition-hero-grid"><div><div className="crumb">Головна / Вартість та оплата</div><span className="tuition-kicker">Офіційні тарифи · 2026/27</span><h1>Вартість<br />без дрібного<br /><em>шрифту.</em></h1><p className="lead">Ціни за рік, семестр і місяць, реквізити для безпечної оплати та шаблони договорів — в одному місці.</p></div><aside><span className="mono">Для вступників 2026 року</span><b>від 30 900 <i>₴ / рік</i></b><p>Заочний бакалаврат на більшості програм.</p><a href="#prices">Переглянути всі тарифи ↓</a></aside></div></section>
+    <section className="tuition-hero"><div className="wrap tuition-hero-grid"><div><div className="crumb">Головна / Вартість та оплата</div><span className="tuition-kicker">Офіційні тарифи · 2026/27</span><h1>Вартість<br />навчання<br /><em>2026 / 27</em></h1><p className="lead">Ціни за рік, семестр і місяць, реквізити для безпечної оплати та шаблони договорів — в одному місці.</p></div><aside><span className="mono">Для вступників 2026 року</span><b>від 30 900 <i>₴ / рік</i></b><p>Заочний бакалаврат на більшості програм.</p><div className="tuition-hero-links"><a href="#prices">Усі тарифи ↓</a><a href="#payment">Перейти до оплати →</a></div></aside></div></section>
 
     <nav className="tuition-page-nav" aria-label="Навігація сторінкою вартості"><div className="wrap">
       <a href="#prices"><span>01</span><b>Вступникам 2026</b></a>
