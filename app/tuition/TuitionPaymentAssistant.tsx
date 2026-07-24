@@ -126,9 +126,9 @@ export function TuitionPaymentAssistant() {
           {copied === "all" ? "Реквізити скопійовано ✓" : "Скопіювати всі реквізити"}
         </button>
         {copied === "error" && <p className="payment-copy-error">Не вдалося скопіювати автоматично. Виділіть реквізити вручну.</p>}
-        <a className="payment-pay-now" href="https://next.privat24.ua/" target="_blank" rel="noreferrer">Перейти до оплати у Privat24 ↗</a>
-        <a className="payment-bank-link" href="https://privatbank.ua/cpa/mobile-p24-payments" target="_blank" rel="noreferrer">Інструкція з оплати за реквізитами ↗</a>
-        <small className="payment-bank-hint">У Privat24 відкрийте «Платежі» та знайдіть отримувача за IBAN або кодом ЄДРПОУ, скопійованими вище.</small>
+        <a className="payment-pay-now" href="https://www.portmone.com.ua/r3/oplata-osvity-akademiia-pratsi-sotsialnykh-vidnosyn-i-turyzmu-kyiv" target="_blank" rel="noreferrer">Оплатити навчання через Portmone ↗</a>
+        <small className="payment-bank-hint"><b>Отримувач уже заповнений.</b> На офіційній сторінці АПСВТ у Portmone вже вказані назва Академії, IBAN та ЄДРПОУ. Перенесіть сформовані вище суму й дані студента та перевірте їх перед оплатою. Комісія Portmone — 2%, але не менше 3 грн.</small>
+        <a className="payment-bank-link" href="https://privatbank.ua/cpa/mobile-p24-payments" target="_blank" rel="noreferrer">Альтернатива: оплата за IBAN у Privat24 ↗</a>
         <small className="payment-check">Перед підтвердженням звірте отримувача, IBAN, суму й призначення у своєму банку.</small>
       </div>
     </div>

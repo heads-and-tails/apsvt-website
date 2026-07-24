@@ -217,8 +217,9 @@ test("publishes official 2026 tuition, secure bank details and local contracts",
   assert.match(html,/contract-education\.docx/);
   assert.match(html,/tuition-2026-2027\.pdf/);
   assert.match(html,/privatbank\.ua\/cpa\/mobile-p24-payments/);
-  assert.match(html,/next\.privat24\.ua/);
-  assert.match(html,/Перейти до оплати у Privat24/);
+  assert.match(html,/portmone\.com\.ua\/r3\/oplata-osvity-akademiia-pratsi-sotsialnykh-vidnosyn-i-turyzmu-kyiv/);
+  assert.match(html,/Оплатити навчання через Portmone/);
+  assert.match(html,/Отримувач уже заповнений/);
   assert.match(html,/Сайт не просить номер картки, CVV, пароль або SMS-код/);
 
   const [pdf,paidContract,educationContract,assistant]=await Promise.all([
