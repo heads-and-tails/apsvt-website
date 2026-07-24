@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   documentCategories,
   officialDocuments,
   type DocumentCategoryId,
 } from "@/lib/official-documents";
+import { DOCUMENTS_SECTION_EVENT } from "./DocumentsMap";
 
 function normalize(value: string) {
   return value.toLocaleLowerCase("uk-UA").replace(/[’'`ʼ]/g, "").trim();
@@ -14,6 +15,20 @@ function normalize(value: string) {
 export function DocumentsCatalogue() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"all" | DocumentCategoryId>("all");
+  const [pendingSection, setPendingSection] = useState<DocumentCategoryId | null>(null);
+
+  useEffect(() => {
+    function revealSection(event: Event) {
+      const selected = (event as CustomEvent<DocumentCategoryId>).detail;
+      if (!documentCategories.some((item) => item.id === selected)) return;
+      setQuery("");
+      setCategory(selected);
+      setPendingSection(selected);
+    }
+
+    window.addEventListener(DOCUMENTS_SECTION_EVENT, revealSection);
+    return () => window.removeEventListener(DOCUMENTS_SECTION_EVENT, revealSection);
+  }, []);
 
   const groups = useMemo(() => {
     const needle = normalize(query);
@@ -29,6 +44,15 @@ export function DocumentsCatalogue() {
   }, [category, query]);
 
   const count = groups.reduce((sum, group) => sum + group.documents.length, 0);
+
+  useEffect(() => {
+    if (!pendingSection) return;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(pendingSection)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setPendingSection(null);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [groups, pendingSection]);
 
   return <section className="documents-catalogue" id="catalogue"><div className="wrap">
     <div className="documents-catalogue-head">

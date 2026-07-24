@@ -3,7 +3,8 @@ import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { DocumentsCatalogue } from "./DocumentsCatalogue";
 import { DocumentsAssistant } from "./DocumentsAssistant";
-import { documentCategories, documentStats } from "@/lib/official-documents";
+import { DocumentsMap } from "./DocumentsMap";
+import { documentStats } from "@/lib/official-documents";
 
 export const metadata: Metadata = {
   title: "Документи",
@@ -30,10 +31,7 @@ export default function Page() {
     </section>
     <div className="phero-rule" />
 
-    <section className="documents-map"><div className="wrap">
-      <div className="documents-map-head"><div className="idx">01 / Структура</div><h2>Оберіть напрям</h2></div>
-      <div className="documents-map-grid">{documentCategories.map((category) => <a href={`#${category.id}`} key={category.id}><span>{category.number}</span><div><b>{category.title}</b><p>{category.description}</p></div><i>↓</i></a>)}</div>
-    </div></section>
+    <DocumentsMap />
 
     <DocumentsCatalogue />
     <DocumentsAssistant />
