@@ -109,7 +109,6 @@ export function TuitionPaymentAssistant() {
             <input id="payment-contract" value={contract} onChange={(event) => setContract(event.target.value)} placeholder="Якщо вже відомий" />
           </div>
         </div>
-        <p className="payment-privacy"><b>Жодних карткових даних.</b> Сайт не просить номер картки, CVV, пароль або SMS-код і не проводить платіж.</p>
       </div>
 
       <div className="payment-receipt" aria-live="polite">

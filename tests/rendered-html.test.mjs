@@ -244,6 +244,10 @@ test("publishes official 2026 tuition, secure bank details and local contracts",
   }
   assert.doesNotMatch(html,/Тарифи у валютному еквіваленті|\$415|\$500|\$1 500/);
   assert.doesNotMatch(html,/Скопіюйте\.|31\.08\.2023|від 30 900/);
+  assert.doesNotMatch(html,/Оберіть свою<br\/>траєкторію|Жодних карткових даних|Локальна копія документа Академії/);
+  assert.match(html,/Рівень і програма/);
+  assert.match(html,/Форма навчання/);
+  assert.match(html,/Навчальний рік/);
   assert.match(html,/Банківські реквізити для оплати навчання/);
   assert.match(html,/UA673052990000026005006704535/);
   assert.match(html,/04641405/);
@@ -255,7 +259,6 @@ test("publishes official 2026 tuition, secure bank details and local contracts",
   assert.match(html,/portmone\.com\.ua\/r3\/oplata-osvity-akademiia-pratsi-sotsialnykh-vidnosyn-i-turyzmu-kyiv/);
   assert.match(html,/Оплатити навчання через Portmone/);
   assert.match(html,/Отримувач уже заповнений/);
-  assert.match(html,/Сайт не просить номер картки, CVV, пароль або SMS-код/);
 
   const [pdf,paidContract,educationContract,assistant]=await Promise.all([
     readFile(new URL("../public/documents/tuition/tuition-2026-2027.pdf",import.meta.url)),
@@ -267,7 +270,7 @@ test("publishes official 2026 tuition, secure bank details and local contracts",
   assert.equal(paidContract.subarray(0,2).toString(),"PK");
   assert.equal(educationContract.subarray(0,2).toString(),"PK");
   assert.match(assistant,/navigator\.clipboard\.writeText/);
-  assert.match(assistant,/не проводить платіж/);
+  assert.match(assistant,/Призначення платежу/);
 
   const programmeHtml=await (await render("/programs/psychology")).text();
   assert.match(programmeHtml,/Магістратура, заочна/);

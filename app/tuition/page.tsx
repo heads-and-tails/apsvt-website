@@ -51,9 +51,12 @@ export default function Page() {
       <a href="#contracts"><span>04</span><b>Договори</b></a>
     </div></nav>
 
-    <section id="prices"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">01 / Вступникам 2026 року</div><h2>Оберіть свою<br />траєкторію</h2></div><p>Суми затверджені для 2026/27 навчального року. У кожній картці: навчальний рік / семестр / місяць.</p></div>
-      <div className="tuition-rate-grid">{entrantRates.map((rate) => <article className="tuition-rate-card" key={rate.title}><span>{rate.number}</span><h3>{rate.title}</h3><p>{rate.note}</p><div className="tuition-rate-columns"><div><small>Денна форма</small><b>{rate.full[0]} ₴</b><dl><div><dt>Семестр</dt><dd>{rate.full[1]} ₴</dd></div><div><dt>Місяць</dt><dd>{rate.full[2]} ₴</dd></div></dl></div><div><small>Заочна форма</small><b>{rate.part[0]} ₴</b><dl><div><dt>Семестр</dt><dd>{rate.part[1]} ₴</dd></div><div><dt>Місяць</dt><dd>{rate.part[2]} ₴</dd></div></dl></div></div></article>)}</div>
-      <div className="tuition-source-note"><span>PDF · 4 сторінки</span><div><b>Офіційний наказ про вартість 2026/27</b><p>Локальна копія документа Академії. У ній наведені всі програми, курси, форми та періоди оплати.</p></div><a href="/documents/tuition/tuition-2026-2027.pdf" target="_blank" rel="noreferrer">Відкрити PDF ↗</a></div>
+    <section id="prices"><div className="wrap"><div className="tuition-section-head single"><div><div className="idx">01 / Вступникам 2026 року</div><h2>Вартість навчання<br />для вступників</h2></div></div>
+      <div className="tuition-applicant-table-wrap"><table className="tuition-applicant-table"><thead><tr><th>Рівень і програма</th><th>Форма навчання</th><th>Навчальний рік</th><th>Семестр</th><th>Місяць</th></tr></thead><tbody>{entrantRates.flatMap((rate) => [
+        <tr key={`${rate.title}-full`}><th rowSpan={2} scope="rowgroup"><span>{rate.number}</span><b>{rate.title}</b><small>{rate.note}</small></th><td>Денна</td><td><b>{rate.full[0]} ₴</b></td><td>{rate.full[1]} ₴</td><td>{rate.full[2]} ₴</td></tr>,
+        <tr key={`${rate.title}-part`}><td>Заочна</td><td><b>{rate.part[0]} ₴</b></td><td>{rate.part[1]} ₴</td><td>{rate.part[2]} ₴</td></tr>,
+      ])}</tbody></table></div>
+      <div className="tuition-source-note compact"><span>PDF · 4 сторінки</span><div><b>Офіційний наказ про вартість 2026/27</b></div><a href="/documents/tuition/tuition-2026-2027.pdf" target="_blank" rel="noreferrer">Відкрити PDF ↗</a></div>
     </div></section>
 
     <section className="tuition-continuing" id="continuing"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">02 / Для тих, хто вже навчається</div><h2>Вартість старших<br />курсів</h2></div><p>Річна оплата у 2026/27 році залежить від року вступу. Значення нижче відтворюють додатки 1–2 офіційного документа.</p></div>
