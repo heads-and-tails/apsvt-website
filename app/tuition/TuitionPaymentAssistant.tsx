@@ -72,9 +72,9 @@ export function TuitionPaymentAssistant() {
   return (
     <div className="payment-assistant" id="calculator">
       <div className="payment-assistant-form">
-        <span className="mono">Безпечний помічник оплати</span>
+        <span className="mono">Дані платежу</span>
         <h3>Підготуйте реквізити</h3>
-        <p>Оберіть тариф — сайт сформує суму й призначення платежу для копіювання у ваш банківський застосунок.</p>
+        <p>Оберіть тариф, форму навчання та період. Сайт сформує суму й призначення платежу для вашого банку.</p>
 
         <div className="payment-field">
           <label htmlFor="payment-program">Рівень і програма</label>

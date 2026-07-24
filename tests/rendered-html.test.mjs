@@ -239,9 +239,12 @@ test("publishes the applicant hub and official 2026 admission documents",async()
 test("publishes official 2026 tuition, secure bank details and local contracts",async()=>{
   const html=await (await render("/tuition")).text();
   assert.match(html,/Вартість<br\/>навчання/);
-  for(const value of ["38 600","30 900","43 500","34 800","36 300","23 500","20 400","$415","$500","$1 500"]){
+  for(const value of ["38 600","30 900","43 500","34 800","36 300","23 500","20 400"]){
     assert.match(html,new RegExp(value.replace("$","\\$")));
   }
+  assert.doesNotMatch(html,/Тарифи у валютному еквіваленті|\$415|\$500|\$1 500/);
+  assert.doesNotMatch(html,/Скопіюйте\.|31\.08\.2023|від 30 900/);
+  assert.match(html,/Банківські реквізити для оплати навчання/);
   assert.match(html,/UA673052990000026005006704535/);
   assert.match(html,/04641405/);
   assert.match(html,/\+38 096 450 85 04/);

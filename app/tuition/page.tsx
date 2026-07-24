@@ -42,14 +42,13 @@ const continuingRates = [
 
 export default function Page() {
   return <main id="top"><SiteHeader />
-    <section className="tuition-hero"><div className="wrap tuition-hero-grid"><div><div className="crumb">Головна / Вартість та оплата</div><span className="tuition-kicker">Офіційні тарифи · 2026/27</span><h1>Вартість<br />навчання<br /><em>2026 / 27</em></h1><p className="lead">Ціни за рік, семестр і місяць, реквізити для безпечної оплати та шаблони договорів — в одному місці.</p></div><aside><span className="mono">Для вступників 2026 року</span><b>від 30 900 <i>₴ / рік</i></b><p>Заочний бакалаврат на більшості програм.</p><div className="tuition-hero-links"><a href="#prices">Усі тарифи ↓</a><a href="#payment">Перейти до оплати →</a></div></aside></div></section>
+    <section className="tuition-hero"><div className="wrap tuition-hero-grid"><div><div className="crumb">Головна / Вартість та оплата</div><span className="tuition-kicker">2026/27 навчальний рік</span><h1>Вартість<br />навчання</h1><p className="lead">Офіційні суми для вступників і студентів — за навчальний рік, семестр та місяць.</p><div className="tuition-hero-actions"><a href="#prices">Переглянути тарифи ↓</a><a href="#payment">Оплата навчання →</a></div></div></div></section>
 
     <nav className="tuition-page-nav" aria-label="Навігація сторінкою вартості"><div className="wrap">
       <a href="#prices"><span>01</span><b>Вступникам 2026</b></a>
       <a href="#continuing"><span>02</span><b>Старші курси</b></a>
-      <a href="#international-tuition"><span>03</span><b>Іноземним студентам</b></a>
-      <a href="#payment"><span>04</span><b>Оплата</b></a>
-      <a href="#contracts"><span>05</span><b>Договори</b></a>
+      <a href="#payment"><span>03</span><b>Оплата</b></a>
+      <a href="#contracts"><span>04</span><b>Договори</b></a>
     </div></nav>
 
     <section id="prices"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">01 / Вступникам 2026 року</div><h2>Оберіть свою<br />траєкторію</h2></div><p>Суми затверджені для 2026/27 навчального року. У кожній картці: навчальний рік / семестр / місяць.</p></div>
@@ -61,14 +60,11 @@ export default function Page() {
       <div className="tuition-table-wrap"><table className="tuition-table"><thead><tr><th>Курс</th><th>Рік вступу</th><th>Денна / рік</th><th>Заочна / рік</th></tr></thead><tbody>{continuingRates.map((row) => <tr key={row[0]}><td data-label="Курс">{row[0]}</td><td data-label="Рік вступу">{row[1]}</td><td data-label="Денна / рік"><b>{row[2]} ₴</b></td><td data-label="Заочна / рік"><b>{row[3]} ₴</b></td></tr>)}</tbody></table></div>
     </div></section>
 
-    <section id="international-tuition"><div className="wrap tuition-international-grid"><div><div className="idx">03 / Іноземним студентам</div><h2>Тарифи у валютному еквіваленті</h2><p className="lead">Додаток 3 містить тарифи для іноземних студентів, які вступили з 2025 року. Оплата в Україні здійснюється у гривнях за офіційним курсом НБУ на дату платежу.</p><Link className="cta dark" href="/international#foreign-applicants"><span>Гід для іноземних вступників</span></Link></div><div className="foreign-tuition-cards"><article><span>Бакалаврат · I–IV курс</span><b>$415 <i>/ рік</i></b><small>$207,50 / семестр · $41,50 / місяць</small></article><article><span>Магістратура · I курс</span><b>$500 <i>/ рік</i></b><small>$250 / семестр · $50 / місяць</small></article><article><span>Підготовче відділення</span><b>$1 500 <i>/ рік</i></b><small>$750 / семестр · $150 / місяць</small></article></div></div>
-    </section>
-
-    <section className="tuition-payment-section" id="payment"><div className="wrap"><div className="tuition-section-head inverse"><div><div className="idx">04 / Безпечна оплата</div><h2>Скопіюйте.<br />Звірте. Сплатіть.</h2></div><p>Помічник готує реквізити, але не приймає гроші й не бачить дані картки. Платіж завершується тільки у вашому банківському застосунку.</p></div><TuitionPaymentAssistant />
-      <div className="payment-verification"><span>!</span><div><b>Реквізити опубліковані Академією станом на 31.08.2023</b><p>Перед першим або великим платежем підтвердьте актуальність рахунку та призначення платежу у бухгалтерії.</p></div><a href="tel:+380964508504">Світлана Василівна<br /><b>+38 096 450 85 04</b></a></div>
+    <section className="tuition-payment-section" id="payment"><div className="wrap"><div className="tuition-section-head inverse"><div><div className="idx">03 / Оплата навчання</div><h2>Оплата<br />навчання</h2></div><p>Сформуйте суму й призначення платежу, а потім перевірте реквізити перед підтвердженням у банку.</p></div><TuitionPaymentAssistant />
+      <div className="payment-verification"><span>!</span><div><b>Банківські реквізити для оплати навчання</b><p>Перед першим або великим платежем підтвердьте IBAN і призначення платежу у бухгалтерії Академії.</p></div><a href="tel:+380964508504">Світлана Василівна<br /><b>+38 096 450 85 04</b></a></div>
     </div></section>
 
-    <section id="contracts"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">05 / Документи</div><h2>Договори<br />для навчання</h2></div><p>Офіційні шаблони, опубліковані Академією. Приймальна комісія заповнює остаточний договір; він набирає чинності після зарахування.</p></div>
+    <section id="contracts"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">04 / Документи</div><h2>Договори<br />для навчання</h2></div><p>Офіційні шаблони, опубліковані Академією. Приймальна комісія заповнює остаточний договір; він набирає чинності після зарахування.</p></div>
       <div className="tuition-contract-grid"><a href="/documents/tuition/contract-paid-educational-service.docx" download><span>DOCX · шаблон 2025</span><div><b>Договір про надання платної освітньої послуги</b><p>Для підготовки фахівців за кошти фізичної або юридичної особи.</p></div><strong>Завантажити ↓</strong></a><a href="/documents/tuition/contract-education.docx" download><span>DOCX · шаблон 2025</span><div><b>Договір про навчання в Академії</b><p>Основний договір між Академією та здобувачем освіти.</p></div><strong>Завантажити ↓</strong></a></div>
       <p className="tuition-contract-note">Не підписуйте порожній шаблон і не надсилайте персональні дані через невідомі форми. Остаточну версію та порядок підписання погоджуйте з Приймальною комісією.</p>
     </div></section>
