@@ -183,6 +183,7 @@ test("publishes the official documents hub in the footer",async()=>{
   assert.match(documentsHtml,/Ліцензії та акредитація/);
   assert.match(documentsHtml,/<b>27<\/b><p>ключових офіційних документів<\/p>/);
   assert.match(documentsHtml,/438 фрагментів/);
+  assert.doesNotMatch(documentsHtml,/Джерело добірки|Перенесено з офіційного сайту/);
 });
 
 test("answers document questions from the curated RAG index with sources",async()=>{

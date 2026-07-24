@@ -37,8 +37,6 @@ export default function Page() {
 
     <DocumentsCatalogue />
     <DocumentsAssistant />
-
-    <section className="documents-source-note"><div className="wrap"><div><span>Джерело добірки</span><h2>Перенесено з офіційного сайту.<br />Збережено прямі посилання.</h2></div><div><p>Каталог сформовано за розділами «Освітня діяльність», «Запобігання та протидія корупції», «Ліцензія та акредитація» і «Вступ 2026» старого сайту АПСВТ.</p><a href="https://www.socosvita.kiev.ua" target="_blank" rel="noreferrer">Відкрити офіційне першоджерело ↗</a></div></div></section>
     <SiteFooter />
   </main>;
 }
