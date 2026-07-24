@@ -132,6 +132,45 @@ test("publishes international partnerships and the foreign applicant guide",asyn
   assert.match(html,/inz@sococvita\.kiev\.ua/);
 });
 
+test("publishes the Academy licence, accreditation scans and verification links",async()=>{
+  const html=await (await render("/about/licenses")).text();
+  assert.match(html,/Ліцензії\.<br\/>Акредитація\./);
+  assert.match(html,/17/);
+  assert.match(html,/license-educational-activity-2021\.pdf/);
+  assert.match(html,/Сертифікат № 1498/);
+  assert.match(html,/Серія АП № 11009149/);
+  assert.match(html,/registry\.edbo\.gov\.ua\/university\/53/);
+  assert.match(html,/registry\.naqa\.gov\.ua/);
+  assert.match(html,/Архів попередніх сертифікатів/);
+
+  const licence=await readFile(new URL("../public/documents/licenses/license-educational-activity-2021.pdf",import.meta.url));
+  assert.equal(licence.subarray(0,4).toString(),"%PDF");
+
+  const scans=[
+    "01-marketing-bachelor.jpg",
+    "02-social-work-master.jpg",
+    "03-social-work-bachelor.jpg",
+    "04-management-bachelor.jpg",
+    "05-finance-bachelor.jpg",
+    "06-law-bachelor.jpg",
+    "07-sociology-bachelor.jpg",
+    "08-finance-master.jpg",
+    "09-law-master.jpg",
+    "10-marketing-master.jpg",
+    "11-entrepreneurship-bachelor.jpg",
+    "12-tourism-bachelor.jpg",
+    "13-management-master.jpg",
+    "14-entrepreneurship-master.jpg",
+    "15-finance-bachelor-archive.jpg",
+    "16-bachelor-archive.jpg",
+  ];
+  for(const scan of scans){
+    const image=await readFile(new URL(`../public/documents/licenses/${scan}`,import.meta.url));
+    assert.equal(image[0],0xff,`${scan} should remain a JPEG`);
+    assert.equal(image[1],0xd8,`${scan} should remain a JPEG`);
+  }
+});
+
 test("publishes the applicant hub and official 2026 admission documents",async()=>{
   const html=await (await render("/admissions")).text();
   assert.match(html,/Вступнику 2026/);
