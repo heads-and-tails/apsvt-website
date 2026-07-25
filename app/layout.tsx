@@ -4,7 +4,7 @@ import "./expanded.css";
 import { SiteMotion } from "./components/SiteMotion";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://apsvt-academy-website.vercel.app"),
+  metadataBase: new URL("https://www.socosvita.kiev.ua"),
   title: {
     default: "АПСВТ — освіта з людським виміром",
     template: "%s · АПСВТ",

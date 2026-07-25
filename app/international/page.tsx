@@ -139,11 +139,12 @@ export default function Page() {
 
     <nav className="intl-page-nav" aria-label="Навігація міжнародною сторінкою"><div className="wrap">
       <a href="#partners"><span>01</span><b>Партнери</b></a>
-      <a href="#cooperation"><span>02</span><b>Напрями співпраці</b></a>
-      <a href="#foreign-applicants"><span>03</span><b>Іноземним вступникам</b></a>
-      <a href="#legal"><span>04</span><b>Офіційні джерела</b></a>
-      <a href="#international-faq"><span>05</span><b>Запитання й відповіді</b></a>
-      <a href="#international-contact"><span>06</span><b>Контакти</b></a>
+      <a href="#partnerships-in-action"><span>02</span><b>Події</b></a>
+      <a href="#cooperation"><span>03</span><b>Напрями співпраці</b></a>
+      <a href="#foreign-applicants"><span>04</span><b>Іноземним вступникам</b></a>
+      <a href="#legal"><span>05</span><b>Офіційні джерела</b></a>
+      <a href="#international-faq"><span>06</span><b>Запитання й відповіді</b></a>
+      <a href="#international-contact"><span>07</span><b>Контакти</b></a>
     </div></nav>
 
     <section id="partners"><div className="wrap">
@@ -157,14 +158,59 @@ export default function Page() {
       <div className="erasmus-note"><span>ERASMUS+</span><div><b>Cooperation Partnerships · KA220-HED</b><p>Академія готує спільну заявку з європейськими партнерами, спрямовану на інтеграцію сталого розвитку та цифрових технологій у вищу освіту.</p></div></div>
     </div></section>
 
+    <section className="international-stories" id="partnerships-in-action"><div className="wrap">
+      <div className="international-stories-head">
+        <div><div className="idx">02 / Міжнародне партнерство в дії</div><h2>Діалог, що стає спільною роботою</h2></div>
+        <p>Зустрічі, домовленості та підписані угоди перетворюють міжнародні контакти на нові освітні й наукові можливості.</p>
+      </div>
+
+      <article className="international-story guliyev-story">
+        <div className="international-story-copy">
+          <span className="international-story-kicker">Україна ↔ Азербайджан</span>
+          <small>Стратегічний діалог</small>
+          <h3>Зустріч з академіком Аріфом Гулієвим</h3>
+          <p>Під час зустрічі з головою Ради азербайджанських учених України, академіком <strong>Аріфом Гулієвим</strong>, сторони обговорили ключові напрями партнерства та спільної діяльності.</p>
+          <p>Розмова була присвячена зміцненню наукових і міждержавних зв’язків України та Азербайджану, а також розвитку нових форматів академічної співпраці.</p>
+          <div className="international-story-points">
+            <span>Науковий обмін</span><span>Спільні ініціативи</span><span>Міждержавні зв’язки</span>
+          </div>
+        </div>
+        <div className="international-story-gallery gallery-three" aria-label="Фотогалерея зустрічі з академіком Аріфом Гулієвим">
+          <figure><img src="/international-guliyev-01.jpg" alt="Академік Аріф Гулієв і представник АПСВТ під час зустрічі" loading="lazy" /></figure>
+          <figure><img src="/international-guliyev-02.jpg" alt="Обговорення співпраці з академіком Аріфом Гулієвим" loading="lazy" /></figure>
+          <figure><img src="/international-guliyev-03.jpg" alt="Пам’ятний обмін під час зустрічі Україна — Азербайджан" loading="lazy" /></figure>
+        </div>
+      </article>
+
+      <article className="international-story headway-story">
+        <div className="international-story-copy">
+          <span className="international-story-kicker">АПСВТ × Headway</span>
+          <small>Офіційне підписання угоди</small>
+          <h3>АПСВТ поглиблює міжнародну співпрацю</h3>
+          <p>Під час міжнародного відрядження ректор АПСВТ <strong>Віктор Сухомлин</strong> та проректор <strong>Наталія Гончаренко</strong> провели зустріч і підписали угоду про партнерство з організацією <strong>Headway</strong>.</p>
+          <p>Спільна робота буде спрямована на розвиток зв’язків Україна — Азербайджан через доступ студентів до передових курсів, стажування та реалізацію спільних наукових проєктів.</p>
+          <div className="international-story-points">
+            <span>Передові курси</span><span>Стажування</span><span>Спільні проєкти</span>
+          </div>
+        </div>
+        <div className="international-story-gallery gallery-five" aria-label="Фотогалерея підписання угоди АПСВТ з Headway">
+          <figure><img src="/international-headway-01.jpg" alt="Представники АПСВТ під час міжнародної зустрічі" loading="lazy" /></figure>
+          <figure><img src="/international-headway-02.jpg" alt="Робоча зустріч представників АПСВТ і міжнародних партнерів" loading="lazy" /></figure>
+          <figure><img src="/international-headway-03.jpg" alt="Підготовка до підписання угоди з Headway" loading="lazy" /></figure>
+          <figure><img src="/international-headway-04.jpg" alt="Офіційне підписання партнерської угоди" loading="lazy" /></figure>
+          <figure><img src="/international-headway-05.jpg" alt="Представники АПСВТ і Headway з підписаною угодою" loading="lazy" /></figure>
+        </div>
+      </article>
+    </div></section>
+
     <section className="intl-band" id="cooperation"><div className="wrap">
-      <div><div className="idx">02 / Напрями співпраці</div><h2>Працюємо разом</h2><p className="intl-band-lead">Від мобільності до спільних досліджень — міжнародне партнерство має давати практичний результат.</p></div>
+      <div><div className="idx">03 / Напрями співпраці</div><h2>Працюємо разом</h2><p className="intl-band-lead">Від мобільності до спільних досліджень — міжнародне партнерство має давати практичний результат.</p></div>
       <div className="intl-directions">{cooperationAreas.map((area, index) => <p key={area}><b>{String(index + 1).padStart(2, "0")}</b>{area}<span>↗</span></p>)}</div>
     </div></section>
 
     <section className="foreign-applicants" id="foreign-applicants"><div className="wrap">
       <div className="foreign-applicants-head">
-        <div><div className="idx">03 / International applicants</div><h2>Вступ іноземних громадян</h2></div>
+        <div><div className="idx">04 / International applicants</div><h2>Вступ іноземних громадян</h2></div>
         <p>Офіційний маршрут від електронної заяви до зарахування — без посередників і неперевірених інструкцій.</p>
       </div>
 
@@ -187,7 +233,7 @@ export default function Page() {
 
     <section className="soft"><div className="wrap foreign-documents-layout">
       <div>
-        <div className="idx">04 / Що підготувати</div><h2>Типовий пакет документів</h2>
+        <div className="idx">04.1 / Що підготувати</div><h2>Типовий пакет документів</h2>
         <div className="foreign-checklist">{typicalDocuments.map((document, index) => <div key={document}><span>{String(index + 1).padStart(2, "0")}</span><p>{document}</p></div>)}</div>
       </div>
       <aside className="foreign-deadlines">
