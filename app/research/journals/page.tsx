@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "Науковий вісник АПСВТ, міжнародні партнерські видання та інформація для авторів.",
 };
 
-const journalUrl = "https://visnyk-apsvt-journal.vercel.app/";
+const journalUrl = "/research/journals/visnyk";
 
 const specialties = [
   "D1 Облік і оподаткування",
@@ -45,17 +45,15 @@ export default function Page() {
       <section>
         <div className="wrap">
           <article className="journal-feature">
-            <a
+            <Link
               className="journal-cover"
               href={journalUrl}
-              target="_blank"
-              rel="noreferrer"
               aria-label="Відкрити сайт Наукового вісника АПСВТ"
             >
               <span>НАУКОВИЙ ВІСНИК</span>
               <b>АПСВТ</b>
               <small>Економіка · психологія · управління</small>
-            </a>
+            </Link>
             <div>
               <div className="idx">Фахове видання · категорія Б</div>
               <h2>Науковий вісник Академії</h2>
@@ -70,18 +68,16 @@ export default function Page() {
                 досліджень.
               </p>
               <p>
-                На окремому сайті Вісника доступні архів випусків, повні PDF,
-                вимоги для авторів та електронне подання рукописів.
+                У розділі Вісника на сайті Академії доступні архів випусків,
+                повні PDF, вимоги для авторів та електронне подання рукописів.
               </p>
               <div className="journal-actions">
-                <a
+                <Link
                   className="cta dark"
                   href={journalUrl}
-                  target="_blank"
-                  rel="noreferrer"
                 >
-                  <span>Відкрити Вісник ↗</span>
-                </a>
+                  <span>Відкрити Вісник →</span>
+                </Link>
                 <Link className="sec-link" href="/research">
                   Знайти публікацію →
                 </Link>

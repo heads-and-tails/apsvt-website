@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/research/journals/visnyk",
+        destination: "https://visnyk-apsvt-journal.ikucha.chatgpt.site/",
+      },
+      {
+        source: "/research/journals/visnyk/:path*",
+        destination:
+          "https://visnyk-apsvt-journal.ikucha.chatgpt.site/:path*",
+      },
+    ];
+  },
   async redirects() {
     return [
       {

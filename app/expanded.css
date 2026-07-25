@@ -575,6 +575,24 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .student-app-hero{padding-bottom:78px}.student-app-hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.55fr);gap:clamp(40px,7vw,110px);align-items:end}.student-app-beta{display:inline-block;background:var(--gold);color:var(--ink);font:700 9px var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:8px 10px;margin-bottom:18px}.student-app-hero .lead{margin-bottom:0}.student-app-hero-note{border-top:2px solid var(--gold);padding-top:17px}.student-app-hero-note span{font:600 28px var(--disp);color:var(--gold)}.student-app-hero-note p{color:var(--sky);font-size:13px;margin-top:10px}.student-app-demo-section{background:#f0f1f3}.student-app-flow .sec-head>p{max-width:430px;color:rgba(9,14,24,.65)}.student-app-steps{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink);border-left:1px solid var(--ink)}.student-app-steps article{min-height:270px;padding:28px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);display:flex;flex-direction:column}.student-app-steps article>span{font:10px var(--mono);color:var(--cobalt)}.student-app-steps h3{font-size:21px;margin-top:auto}.student-app-steps p{font-size:13px;color:rgba(9,14,24,.62);margin-top:12px}.student-app-cta{background:var(--cobalt);color:#fff}.student-app-cta .wrap{display:flex;align-items:end;justify-content:space-between;gap:35px}.student-app-cta span{font:10px var(--mono);color:var(--gold);letter-spacing:.13em;text-transform:uppercase}.student-app-cta h2{font-size:clamp(40px,6vw,82px);margin-top:10px}.student-app-cta .cta span{color:var(--ink)}
 @media(max-width:850px){.student-app-hero-grid{grid-template-columns:1fr}.student-app-hero-note{max-width:520px}.student-app-steps{grid-template-columns:1fr}.student-app-steps article{min-height:220px}.student-app-cta .wrap{display:block}.student-app-cta .cta{margin-top:28px}}
 
+/* Editorial corrections: safe Academy intro, complete dividers and legible programme CTA. */
+.about-identity .split{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(56px,7vw,100px);align-items:start}
+.about-identity .copy{min-width:0}
+.about-identity .copy h2{font-size:clamp(38px,3.8vw,56px);line-height:.96;max-width:100%;overflow-wrap:normal;word-break:normal;text-wrap:balance}
+.about-identity .ph{border-left:1px solid var(--ink)}
+.deep-grid{gap:1px;border:1px solid var(--ink);background:var(--ink)}
+.deep-card{border:0}
+.program-facts .cta{background:var(--gold)!important;color:var(--ink)!important;border:1px solid var(--gold)}
+.program-facts .cta span{color:var(--ink)!important;font-weight:700}
+.program-facts .cta:hover{color:var(--paper)!important}
+.program-facts .cta:hover span{color:var(--paper)!important}
+.leader-surname{white-space:nowrap}
+@media(max-width:700px){
+  .about-identity .split{grid-template-columns:1fr;gap:34px}
+  .about-identity .copy h2{font-size:clamp(34px,10.5vw,48px);overflow-wrap:break-word}
+  .about-identity .ph{border-left:0;border-top:1px solid var(--ink)}
+}
+
 /* International cooperation and foreign applicants */
 .international-hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.international-hero-actions .cta.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6)}.international-hero-actions .cta.ghost:hover{background:#fff;color:var(--ink)}
 .intl-page-nav{padding:0;background:#fff;border-bottom:1px solid var(--line)}.intl-page-nav .wrap{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));padding-block:0}.intl-page-nav a{min-height:88px;padding:17px 14px;display:flex;flex-direction:column;justify-content:space-between;border-left:1px solid var(--line);transition:background-color .2s,color .2s}.intl-page-nav a:last-child{border-right:1px solid var(--line)}.intl-page-nav span{font:9px var(--mono);color:var(--cobalt)}.intl-page-nav b{font:600 11px/1.2 var(--disp);text-transform:uppercase}.intl-page-nav a:hover{background:var(--navy);color:#fff}.intl-page-nav a:hover span{color:var(--gold)}
