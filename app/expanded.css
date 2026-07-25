@@ -676,3 +676,57 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .payment-verification{padding:18px}.payment-verification>a{text-align:left;overflow-wrap:anywhere}
   .tuition-contract-grid b{font-size:clamp(20px,6vw,27px)}
 }
+
+/* Editorial refinements: single-row applicant navigation and open news photography. */
+.applicant-section-nav .wrap{grid-template-columns:repeat(8,minmax(0,1fr))}
+.documents-catalogue-head-simple{display:block}
+.documents-catalogue-head-simple h2{max-width:13ch}
+.international-story{display:block;border:0;border-top:5px solid var(--ink);background:transparent;color:var(--ink);margin-top:clamp(58px,8vw,108px);overflow:visible}
+.international-news-header{display:grid;grid-template-columns:minmax(210px,.48fr) minmax(0,1.52fr);gap:clamp(32px,6vw,92px);align-items:start;padding:26px 0 30px}
+.international-news-header>div{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.international-news-header small{font:9px var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--cobalt)}
+.international-news-header h3{font-size:clamp(38px,5.4vw,76px);line-height:.92;letter-spacing:-.04em;text-wrap:balance;max-width:16ch}
+.international-news-body{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);padding:0 0 34px;margin-left:min(27vw,300px)}
+.international-news-body p{font-size:15px;line-height:1.7;color:#596474}
+.international-news-body p strong{color:var(--ink)}
+.international-news-body .international-story-points{grid-column:1/-1;margin-top:0}
+.international-story-points span{background:#fff;border-color:#c9cdd4}
+.international-story-gallery{padding:0;background:transparent;gap:12px}
+.international-story-gallery figure{background:#d8d9d6;border:0;box-shadow:none}
+.international-story-gallery img{filter:none;opacity:1}
+.gallery-three{grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);grid-template-rows:280px 280px;min-height:0}
+.gallery-five{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:520px 260px;min-height:0}
+.gallery-five figure:nth-child(1){grid-column:1/-1;grid-row:1}
+.gallery-five figure:nth-child(2){grid-column:1;grid-row:2}
+.gallery-five figure:nth-child(3){grid-column:2;grid-row:2}
+.gallery-five figure:nth-child(4){grid-column:3;grid-row:2}
+.gallery-five figure:nth-child(5){grid-column:4;grid-row:2}
+.headway-story{background:transparent;color:var(--ink)}
+.headway-story .international-story-gallery,.headway-story .international-news-header,.headway-story .international-news-body{order:initial}
+.headway-story .international-news-body p,.headway-story .international-news-body p strong{color:inherit}
+.headway-story .international-story-points span{border-color:#c9cdd4;color:var(--ink)}
+@media(max-width:1000px){
+  .applicant-section-nav .wrap{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .applicant-section-nav a:nth-child(4n){border-right:1px solid var(--line)}
+  .international-news-header{grid-template-columns:1fr;gap:22px}
+  .international-news-body{margin-left:0}
+  .gallery-three{grid-template-columns:1fr 1fr;grid-template-rows:430px 220px;min-height:0}
+  .gallery-three figure:first-child{grid-column:1/-1;grid-row:1}
+  .gallery-three figure:nth-child(2){grid-column:1;grid-row:2}
+  .gallery-three figure:nth-child(3){grid-column:2;grid-row:2}
+  .gallery-five{grid-template-columns:1fr 1fr;grid-template-rows:430px 230px 230px;min-height:0}
+  .gallery-five figure:nth-child(1){grid-column:1/-1;grid-row:1}
+  .gallery-five figure:nth-child(2){grid-column:1;grid-row:2}
+  .gallery-five figure:nth-child(3){grid-column:2;grid-row:2}
+  .gallery-five figure:nth-child(4){grid-column:1;grid-row:3}
+  .gallery-five figure:nth-child(5){grid-column:2;grid-row:3}
+}
+@media(max-width:700px){
+  .applicant-section-nav .wrap{grid-template-columns:1fr 1fr}
+  .international-news-header h3{font-size:clamp(36px,11vw,50px)}
+  .international-news-body{grid-template-columns:1fr;gap:16px}
+  .international-news-body .international-story-points{grid-column:auto;margin-top:10px}
+  .international-story-gallery{gap:7px;margin-inline:-18px}
+  .gallery-three{grid-template-rows:300px 170px}
+  .gallery-five{grid-template-rows:300px 180px 180px}
+}

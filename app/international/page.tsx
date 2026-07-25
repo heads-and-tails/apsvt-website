@@ -165,10 +165,11 @@ export default function Page() {
       </div>
 
       <article className="international-story guliyev-story">
-        <div className="international-story-copy">
-          <span className="international-story-kicker">Україна ↔ Азербайджан</span>
-          <small>Стратегічний діалог</small>
+        <header className="international-news-header">
+          <div><span className="international-story-kicker">Україна ↔ Азербайджан</span><small>Стратегічний діалог · 2026</small></div>
           <h3>Зустріч з академіком Аріфом Гулієвим</h3>
+        </header>
+        <div className="international-news-body">
           <p>Під час зустрічі з головою Ради азербайджанських учених України, академіком <strong>Аріфом Гулієвим</strong>, сторони обговорили ключові напрями партнерства та спільної діяльності.</p>
           <p>Розмова була присвячена зміцненню наукових і міждержавних зв’язків України та Азербайджану, а також розвитку нових форматів академічної співпраці.</p>
           <div className="international-story-points">
@@ -183,10 +184,11 @@ export default function Page() {
       </article>
 
       <article className="international-story headway-story">
-        <div className="international-story-copy">
-          <span className="international-story-kicker">АПСВТ × Headway</span>
-          <small>Офіційне підписання угоди</small>
+        <header className="international-news-header">
+          <div><span className="international-story-kicker">АПСВТ × Headway</span><small>Офіційне підписання угоди · 2026</small></div>
           <h3>АПСВТ поглиблює міжнародну співпрацю</h3>
+        </header>
+        <div className="international-news-body">
           <p>Під час міжнародного відрядження ректор АПСВТ <strong>Віктор Сухомлин</strong> та проректор <strong>Наталія Гончаренко</strong> провели зустріч і підписали угоду про партнерство з організацією <strong>Headway</strong>.</p>
           <p>Спільна робота буде спрямована на розвиток зв’язків Україна — Азербайджан через доступ студентів до передових курсів, стажування та реалізацію спільних наукових проєктів.</p>
           <div className="international-story-points">

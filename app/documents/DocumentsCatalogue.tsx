@@ -55,9 +55,8 @@ export function DocumentsCatalogue() {
   }, [groups, pendingSection]);
 
   return <section className="documents-catalogue" id="catalogue"><div className="wrap">
-    <div className="documents-catalogue-head">
+    <div className="documents-catalogue-head documents-catalogue-head-simple">
       <div><div className="idx">02 / Каталог</div><h2>Знайдіть потрібне<br />без пошуку навмання</h2></div>
-      <p>Відібрані ключові документи зі старого офіційного сайту Академії, локального архіву вступної кампанії та чинних публічних розділів.</p>
     </div>
 
     <div className="documents-controls">
