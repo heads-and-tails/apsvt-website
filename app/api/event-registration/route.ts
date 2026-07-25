@@ -9,7 +9,8 @@ export async function POST(request:Request){
     if(!name||!email.includes("@")||!phone||!event)return NextResponse.json({error:"Перевірте обов’язкові поля"},{status:400});
     const payload={_subject:`Реєстрація на подію АПСВТ: ${event}`,_replyto:email,_template:"table",Подія:event,"Ім’я":name,Email:email,"Телефон":phone,"Статус":String(body.role||""),"Формат":String(body.format||""),"Побажання":String(body.note||"")};
     const response=await fetch(target,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload)});
-    if(!response.ok)return NextResponse.json({error:"Сервіс реєстрації тимчасово недоступний"},{status:502});
+    const result=await response.json().catch(()=>null) as {success?:boolean|string}|null;
+    if(!response.ok||result?.success===false||result?.success==="false")return NextResponse.json({error:"Сервіс реєстрації тимчасово недоступний"},{status:502});
     return NextResponse.json({ok:true});
   }catch{return NextResponse.json({error:"Некоректний запит"},{status:400})}
 }
