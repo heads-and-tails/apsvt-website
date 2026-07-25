@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const target="https://formsubmit.co/ajax/info@socosvita.kiev.ua";
+const target="https://formsubmit.co/ajax/events@socosvita.kiev.ua";
 
 export async function POST(request:Request){
   try{
