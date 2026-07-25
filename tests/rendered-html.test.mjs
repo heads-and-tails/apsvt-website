@@ -319,6 +319,9 @@ test("ships the complete mobile layout system",async()=>{
   assert.match(css,/\.auth-card\{width:100%;max-width:100%/);
   assert.match(css,/input,select,textarea\{font-size:16px!important/);
   assert.match(css,/@media\(max-width:360px\)/);
+  assert.match(css,/\.tuition-applicant-table tbody\{display:grid/);
+  assert.match(css,/\.tuition-applicant-table tbody td:before\{content:attr\(data-label\)/);
+  assert.match(css,/#prices,#continuing,#payment,#contracts,#english-rates,#english-payment\{scroll-margin-top:/);
   assert.match(css,/\.contact-grid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
   assert.match(css,/\.ct\{min-width:0;overflow:hidden\}/);
   assert.match(schedule,/data-label="Дисципліна"/);

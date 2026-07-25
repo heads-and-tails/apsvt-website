@@ -53,8 +53,8 @@ export default function Page() {
 
     <section id="prices"><div className="wrap"><div className="tuition-section-head single"><div><div className="idx">01 / Вступникам 2026 року</div><h2>Вартість навчання<br />для вступників</h2></div></div>
       <div className="tuition-applicant-table-wrap"><table className="tuition-applicant-table"><thead><tr><th>Рівень і програма</th><th>Форма навчання</th><th>Навчальний рік</th><th>Семестр</th><th>Місяць</th></tr></thead><tbody>{entrantRates.flatMap((rate) => [
-        <tr key={`${rate.title}-full`}><th rowSpan={2} scope="rowgroup"><span>{rate.number}</span><b>{rate.title}</b><small>{rate.note}</small></th><td>Денна</td><td><b>{rate.full[0]} ₴</b></td><td>{rate.full[1]} ₴</td><td>{rate.full[2]} ₴</td></tr>,
-        <tr key={`${rate.title}-part`}><td>Заочна</td><td><b>{rate.part[0]} ₴</b></td><td>{rate.part[1]} ₴</td><td>{rate.part[2]} ₴</td></tr>,
+        <tr key={`${rate.title}-full`}><th rowSpan={2} scope="rowgroup"><span>{rate.number}</span><b>{rate.title}</b><small>{rate.note}</small></th><td data-label="Форма">Денна</td><td data-label="Навчальний рік"><b>{rate.full[0]} ₴</b></td><td data-label="Семестр">{rate.full[1]} ₴</td><td data-label="Місяць">{rate.full[2]} ₴</td></tr>,
+        <tr key={`${rate.title}-part`}><td data-label="Форма">Заочна</td><td data-label="Навчальний рік"><b>{rate.part[0]} ₴</b></td><td data-label="Семестр">{rate.part[1]} ₴</td><td data-label="Місяць">{rate.part[2]} ₴</td></tr>,
       ])}</tbody></table></div>
       <div className="tuition-source-note compact"><span>PDF · 4 сторінки</span><div><b>Офіційний наказ про вартість 2026/27</b></div><a href="/documents/tuition/tuition-2026-2027.pdf" target="_blank" rel="noreferrer">Відкрити PDF ↗</a></div>
     </div></section>

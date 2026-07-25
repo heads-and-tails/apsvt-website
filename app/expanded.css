@@ -600,3 +600,60 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .tuition-contract-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}.tuition-contract-grid>a{min-height:290px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:28px;display:flex;flex-direction:column}.tuition-contract-grid>a>span{font:8px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}.tuition-contract-grid>a>div{margin:auto 0}.tuition-contract-grid b{font:600 clamp(22px,2.7vw,34px)/1.05 var(--disp);text-transform:uppercase}.tuition-contract-grid p{font-size:12px;color:#687181;margin-top:12px}.tuition-contract-grid strong{border-top:1px solid var(--ink);padding-top:14px;font:700 9px var(--mono);text-transform:uppercase}.tuition-contract-grid>a:hover{background:var(--gold)}.tuition-contract-note{font-size:10px;color:#657080;border-left:4px solid var(--gold);padding-left:15px;margin-top:22px}
 @media(max-width:1000px){.tuition-section-head,.tuition-international-grid{grid-template-columns:1fr}.tuition-page-nav .wrap{grid-template-columns:repeat(2,1fr)}.tuition-rate-grid{grid-template-columns:1fr 1fr}.tuition-rate-card:last-child{grid-column:1/-1}.payment-assistant{grid-template-columns:1fr}.payment-verification{grid-template-columns:58px 1fr}.payment-verification>a{grid-column:2;text-align:left}.tuition-source-note{grid-template-columns:90px 1fr}.tuition-source-note>a{grid-column:2;justify-self:start}}
 @media(max-width:700px){.tuition-hero{padding:70px 0 50px}.tuition-kicker{margin-top:38px}.tuition-hero h1{font-size:clamp(42px,13.2vw,58px)}.tuition-hero-actions{display:grid}.tuition-hero-actions>a{min-width:0}.tuition-page-nav .wrap{grid-template-columns:1fr 1fr;padding-inline:0}.tuition-page-nav a{min-height:76px}.tuition-section-head{gap:24px}.tuition-section-head h2{font-size:43px}.tuition-rate-grid,.tuition-contract-grid{grid-template-columns:1fr}.tuition-rate-card,.tuition-rate-card:last-child{grid-column:auto;min-height:530px;padding:22px}.tuition-applicant-table-wrap{margin-inline:-18px;border-left:0;border-right:0}.tuition-applicant-table{min-width:860px}.tuition-applicant-table th,.tuition-applicant-table td{padding:15px}.tuition-source-note{grid-template-columns:1fr}.tuition-source-note>a{grid-column:1}.tuition-source-note.compact{grid-template-columns:1fr}.tuition-table thead{display:none}.tuition-table,.tuition-table tbody,.tuition-table tr,.tuition-table td{display:block}.tuition-table tr{border:1px solid var(--ink);margin-bottom:12px;padding:12px}.tuition-table td{display:grid;grid-template-columns:115px 1fr;gap:10px;border-bottom:1px solid var(--line);padding:10px}.tuition-table td:before{content:attr(data-label);font:8px var(--mono);text-transform:uppercase;color:#6c7480}.tuition-table td:first-child{font-size:15px}.foreign-tuition-cards article{grid-template-columns:1fr;min-height:190px}.foreign-tuition-cards b{grid-column:1;grid-row:auto}.foreign-tuition-cards b i{text-align:left}.payment-assistant-form,.payment-receipt{padding:22px}.payment-field-row{grid-template-columns:1fr}.payment-amount{display:block}.payment-amount b{display:block;margin-top:12px}.payment-receipt dl>div{grid-template-columns:1fr auto}.payment-receipt dt{grid-column:1/-1}.payment-receipt dd{font-size:11px}.payment-verification{grid-template-columns:1fr}.payment-verification>a{grid-column:1}.tuition-contract-grid>a{min-height:260px;padding:22px}}
+
+/* Tuition responsive safety: no horizontal table or fixed-header overlaps on tablet and phone. */
+#prices,#continuing,#payment,#contracts,#english-rates,#english-payment{scroll-margin-top:96px}
+@media(max-width:1100px){
+  .tuition-section-head,.tuition-international-grid{grid-template-columns:1fr}
+  .tuition-page-nav .wrap{grid-template-columns:repeat(2,1fr)}
+  .payment-assistant{grid-template-columns:1fr}
+  .payment-verification{grid-template-columns:58px minmax(0,1fr)}
+  .payment-verification>a{grid-column:2;text-align:left}
+  .tuition-source-note{grid-template-columns:90px minmax(0,1fr)}
+  .tuition-source-note>a{grid-column:2;justify-self:start}
+  .tuition-hero-grid>div,.tuition-section-head>*,.payment-assistant>*,.payment-receipt dl>div>*,.payment-verification>*,.tuition-contract-grid>*{min-width:0}
+  .tuition-hero h1,.tuition-section-head h2{max-width:100%;overflow-wrap:break-word;word-break:normal;text-wrap:balance}
+  .tuition-section-head{gap:26px}
+  .tuition-applicant-table-wrap{overflow:visible;border:0;background:transparent}
+  .tuition-applicant-table{display:block;width:100%;min-width:0;table-layout:auto}
+  .tuition-applicant-table thead{display:none}
+  .tuition-applicant-table tbody{display:grid;gap:0}
+  .tuition-applicant-table tbody tr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#fff;border:1px solid var(--ink)}
+  .tuition-applicant-table tbody tr:nth-child(odd){border-bottom:0}
+  .tuition-applicant-table tbody tr:nth-child(even){margin-bottom:18px}
+  .tuition-applicant-table tbody tr>*{min-width:0;border:0;border-right:1px solid var(--line);padding:16px}
+  .tuition-applicant-table tbody tr>*:last-child{border-right:0}
+  .tuition-applicant-table tbody th{grid-column:1/-1;width:auto;border-bottom:1px solid var(--ink);background:#eeece6}
+  .tuition-applicant-table tbody th>b{font-size:clamp(18px,3vw,24px)}
+  .tuition-applicant-table tbody th>small{max-width:75ch;font-size:11px}
+  .tuition-applicant-table tbody td{display:flex;min-height:86px;flex-direction:column;justify-content:space-between;gap:8px;font-size:12px;background:#fff}
+  .tuition-applicant-table tbody td:before{content:attr(data-label);display:block;font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#687181}
+  .tuition-applicant-table tbody td>b{font-size:clamp(17px,2.7vw,23px);white-space:normal;overflow-wrap:anywhere}
+  .tuition-source-note.compact{grid-template-columns:90px minmax(0,1fr)}
+  .tuition-source-note.compact>a{grid-column:2;justify-self:start}
+  .payment-amount b{max-width:100%;overflow-wrap:anywhere}
+  .payment-receipt dd,.payment-verification a,.tuition-contract-grid b{overflow-wrap:anywhere}
+}
+@media(max-width:700px){
+  #prices,#continuing,#payment,#contracts,#english-rates,#english-payment{scroll-margin-top:78px}
+  .tuition-hero{padding:105px 0 50px}
+  .tuition-hero .crumb{font-size:10px;overflow-wrap:anywhere}
+  .tuition-section-head h2{font-size:clamp(33px,10.8vw,43px);line-height:.96;letter-spacing:-.035em}
+  .tuition-page-nav b{font-size:10px;overflow-wrap:anywhere}
+  .tuition-applicant-table-wrap{margin-inline:0}
+  .tuition-applicant-table tbody tr{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tuition-applicant-table tbody tr>*{padding:14px}
+  .tuition-applicant-table tbody tr:nth-child(odd)>td:nth-child(3),
+  .tuition-applicant-table tbody tr:nth-child(odd)>td:nth-child(5),
+  .tuition-applicant-table tbody tr:nth-child(even)>td:nth-child(2),
+  .tuition-applicant-table tbody tr:nth-child(even)>td:nth-child(4){border-right:0}
+  .tuition-applicant-table tbody td{min-height:82px}
+  .tuition-applicant-table tbody td>b{font-size:clamp(17px,5.5vw,22px)}
+  .tuition-source-note,.tuition-source-note.compact{grid-template-columns:1fr;padding:20px}
+  .tuition-source-note>a,.tuition-source-note.compact>a{grid-column:1;width:100%;white-space:normal;text-align:center;overflow-wrap:anywhere}
+  .payment-amount b{font-size:clamp(31px,10vw,43px);line-height:.95;white-space:normal}
+  .payment-pay-now,.payment-bank-link{display:flex;align-items:center;justify-content:center;min-height:48px;white-space:normal;overflow-wrap:anywhere}
+  .payment-receipt dl button{justify-self:end}
+  .payment-verification{padding:18px}.payment-verification>a{text-align:left;overflow-wrap:anywhere}
+  .tuition-contract-grid b{font-size:clamp(20px,6vw,27px)}
+}
