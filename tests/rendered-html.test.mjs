@@ -90,10 +90,10 @@ test("opens the dedicated Scientific Bulletin website from both languages",async
     (await render("/research/journals")).text(),
     (await render("/en/research/journals")).text(),
   ]);
-  assert.match(ukHtml,/href="https:\/\/visnyk-apsvt-journal\.vercel\.app\/"/);
+  assert.match(ukHtml,/href="\/research\/journals\/visnyk"/);
   assert.match(ukHtml,/Відкрити Вісник/);
   assert.doesNotMatch(ukHtml,/alsrt\.com\.ua/);
-  assert.match(enHtml,/href="https:\/\/visnyk-apsvt-journal\.vercel\.app\/en"/);
+  assert.match(enHtml,/href="\/research\/journals\/visnyk\/en"/);
   assert.match(enHtml,/Open journal/);
 });
 
