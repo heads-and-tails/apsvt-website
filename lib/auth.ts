@@ -31,6 +31,14 @@ type ProfileRow = {
   approved_at: string | null;
 };
 
+const preapprovedDepartmentEditors = new Map<string, { displayName: string; accessScopes: string[] }>([
+  ["nadezda_pisarenko@ukr.net", { displayName: "Писаренко Надія", accessScopes: ["/programs/marketing"] }],
+  ["tkachenko.ys@socosvita.kiev.ua", { displayName: "Ткаченко Яніна", accessScopes: ["/programs/finance"] }],
+  ["natalya.balashova75@gmail.com", { displayName: "Балашова Наталія", accessScopes: ["/programs/social-work"] }],
+  ["kim2505@ukr.net", { displayName: "Бондар Світлана", accessScopes: ["/departments/languages-humanities"] }],
+  ["markovec28@gmail.com", { displayName: "Неля Василець", accessScopes: ["/programs/management", "/programs/trade"] }],
+]);
+
 function profileFromRow(row: ProfileRow): EditorialProfile {
   return {
     id: row.id,
@@ -86,6 +94,20 @@ export async function getPublisher(): Promise<Publisher | null> {
       approved_at: new Date().toISOString(),
       approved_by: user.id,
     }, { onConflict: "id" });
+  } else {
+    const departmentEditor = preapprovedDepartmentEditors.get(normalizedEmail);
+    if (departmentEditor) {
+      await admin.from("editorial_profiles").upsert({
+        id: user.id,
+        email: normalizedEmail,
+        display_name: departmentEditor.displayName,
+        role: "editor",
+        status: "approved",
+        access_scope: serializeEditorialAccessScopes(departmentEditor.accessScopes),
+        approved_at: new Date().toISOString(),
+        approved_by: null,
+      }, { onConflict: "id" });
+    }
   }
 
   const { data } = await admin

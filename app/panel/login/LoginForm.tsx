@@ -26,11 +26,33 @@ export function LoginForm() {
     router.refresh();
   }
 
+  async function activate() {
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      setMessage("Спочатку введіть робочу електронну пошту.");
+      return;
+    }
+    setBusy(true);
+    setMessage("");
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/panel`,
+      },
+    });
+    setMessage(error
+      ? "Не вдалося надіслати посилання. Зачекайте кілька хвилин і спробуйте ще раз."
+      : "Перевірте пошту: ми надіслали безпечне посилання для активації та входу.");
+    setBusy(false);
+  }
+
   return <form className="editorial-login" onSubmit={submit}>
     <label>Робоча електронна пошта<input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="name@apsvt.edu.ua" /></label>
     <label>Пароль<input type="password" autoComplete="current-password" required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Ваш пароль" /></label>
     {message && <p className="auth-error" role="alert">{message}</p>}
     <button disabled={busy} type="submit">{busy ? "Перевіряємо…" : "Увійти до панелі →"}</button>
+    <button className="auth-activate" disabled={busy || !email} type="button" onClick={() => void activate()}>Активувати доступ через пошту</button>
     <a className="forgot-password-link" href="/panel/forgot-password">Забули пароль?</a>
   </form>;
 }
