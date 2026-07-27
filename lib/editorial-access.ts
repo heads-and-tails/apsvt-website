@@ -32,6 +32,7 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/programs/law", label: "Юридичний факультет", group: "department" },
   { value: "/programs/social-work", label: "Кафедра соціальної роботи", group: "department" },
   { value: "/programs/tourism", label: "Кафедра туристичних дисциплін", group: "department" },
+  { value: "/departments/languages-humanities", label: "Кафедра іноземних мов та гуманітарних дисциплін", group: "department" },
 ];
 
 const validScopes = new Set(editorialAccessOptions.map((option) => option.value));
