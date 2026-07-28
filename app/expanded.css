@@ -887,18 +887,18 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 /* Student qualification theses */
 .theses-hero{min-height:760px;padding:164px 0 78px;background:var(--navy);color:var(--paper);overflow:hidden}
 .theses-hero .crumb{margin-bottom:56px;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#aebbd6}
-.theses-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:clamp(50px,9vw,140px);align-items:end}
+.theses-hero-grid{display:grid;grid-template-columns:1fr;gap:48px}
 .theses-hero-grid>div{min-width:0}
 .theses-kicker{display:block;margin-bottom:24px;font:10px var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--gold)}
-.theses-hero h1{max-width:10ch;font-size:clamp(56px,8.2vw,116px);line-height:.85;letter-spacing:-.055em;text-transform:uppercase;overflow-wrap:normal}
+.theses-hero h1{max-width:100%;font-size:clamp(50px,5.6vw,92px);line-height:.88;letter-spacing:-.055em;text-transform:uppercase;white-space:nowrap}
 .theses-hero-grid>div>p{max-width:62ch;margin-top:30px;color:#cbd6ea;font-size:17px;line-height:1.62}
 .theses-hero-grid>div>a{display:inline-flex;margin-top:30px;padding:14px 18px;background:var(--gold);color:var(--ink);font-weight:800;font-size:11px;text-transform:uppercase}
-.theses-hero aside{padding:30px;background:var(--gold);color:var(--ink);box-shadow:18px 18px var(--cobalt)}
+.theses-hero aside{display:grid;grid-template-columns:220px minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:40px;width:100%;padding:30px;background:var(--gold);color:var(--ink);box-shadow:18px 18px var(--cobalt)}
 .theses-hero aside>span{font:10px var(--mono);letter-spacing:.14em;text-transform:uppercase}
 .theses-hero aside>b{display:block;margin:26px 0 0;font:700 96px/.8 var(--disp)}
 .theses-hero aside>p{margin-top:12px;font:600 15px var(--disp);text-transform:uppercase}
-.theses-hero dl{margin-top:32px;border-top:1px solid rgba(9,14,24,.38)}
-.theses-hero dl>div{padding:13px 0;border-bottom:1px solid rgba(9,14,24,.38)}
+.theses-hero dl{grid-column:2;grid-row:1/4;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-self:stretch;margin:0;border-left:1px solid rgba(9,14,24,.38)}
+.theses-hero dl>div{display:flex;flex-direction:column;justify-content:center;padding:16px 24px;border-right:1px solid rgba(9,14,24,.38)}
 .theses-hero dt{font:9px var(--mono);letter-spacing:.09em;text-transform:uppercase}
 .theses-hero dd{margin-top:4px;font-weight:700;font-size:12px}
 
@@ -960,7 +960,8 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 @media(max-width:1100px){
   .portal-grid{grid-template-columns:1fr}
   .portal-grid>a{min-height:240px}
-  .theses-hero-grid{grid-template-columns:minmax(0,1fr) 300px;gap:45px}
+  .theses-hero-grid{grid-template-columns:1fr;gap:45px}
+  .theses-hero aside{width:100%}
   .theses-filters{grid-template-columns:repeat(3,minmax(0,1fr))}
   .theses-search{grid-column:span 2}
   .theses-filter-result{min-height:92px}
@@ -971,10 +972,12 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .theses-hero{min-height:auto;padding:122px 0 60px}
   .theses-hero .crumb{margin-bottom:38px;line-height:1.5}
   .theses-hero-grid{grid-template-columns:1fr}
-  .theses-hero h1{max-width:100%;font-size:clamp(43px,13vw,66px);line-height:.9;overflow-wrap:break-word}
+  .theses-hero h1{max-width:100%;font-size:clamp(43px,13vw,66px);line-height:.9;white-space:normal;overflow-wrap:break-word}
   .theses-hero-grid>div>p{font-size:15px}
-  .theses-hero aside{max-width:none;box-shadow:10px 10px var(--cobalt)}
+  .theses-hero aside{display:block;max-width:none;box-shadow:10px 10px var(--cobalt)}
   .theses-hero aside>b{font-size:76px}
+  .theses-hero dl{display:block;margin-top:32px;border-top:1px solid rgba(9,14,24,.38);border-left:0}
+  .theses-hero dl>div{display:block;padding:13px 0;border-right:0;border-bottom:1px solid rgba(9,14,24,.38)}
   .theses-catalogue-head{grid-template-columns:1fr;gap:22px}
   .theses-catalogue-head h2{font-size:clamp(36px,11vw,54px)}
   .theses-filters{grid-template-columns:1fr}
