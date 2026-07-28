@@ -69,7 +69,7 @@ export function ThesesCatalogue({ items }: { items: PublicContentItem[] }) {
         {filtered.map(({ id, payload }, index) => <article className="thesis-card" key={id}>
           <span className="thesis-number">{String(index + 1).padStart(2, "0")}</span>
           <div className="thesis-main">
-            <div className="thesis-meta"><span>{payload.level}</span><span>{payload.program}</span><span>{payload.year}</span></div>
+            <div className="thesis-meta">{payload.demo === "true" && <span className="demo">Демонстраційний приклад</span>}<span>{payload.level}</span><span>{payload.program}</span><span>{payload.year}</span></div>
             <h3>{payload.title}</h3>
             <p>{payload.abstract}</p>
             {payload.keywords && <small>Ключові слова: {payload.keywords}</small>}
@@ -78,7 +78,9 @@ export function ThesesCatalogue({ items }: { items: PublicContentItem[] }) {
             <div><dt>Автор</dt><dd>{payload.student}</dd></div>
             <div><dt>Науковий керівник</dt><dd>{payload.supervisor}</dd></div>
           </dl>
-          <a className="thesis-open" href={payload.fileUrl} target="_blank" rel="noreferrer"><span>Відкрити роботу</span><b>↗</b></a>
+          {payload.fileUrl
+            ? <a className="thesis-open" href={payload.fileUrl} target="_blank" rel="noreferrer"><span>Відкрити роботу</span><b>↗</b></a>
+            : <span className="thesis-open disabled" aria-disabled="true"><span>Файл буде додано</span><b>—</b></span>}
         </article>)}
       </div> : <div className="theses-empty">
         <span>АП</span>
