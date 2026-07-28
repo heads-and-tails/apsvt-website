@@ -854,7 +854,8 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .entrance-program-head,.entrance-program-row{grid-template-columns:64px minmax(180px,.8fr) minmax(220px,1.2fr) 96px}
 }
 @media(max-width:850px){
-  .entrance-exams-head,.entrance-level>header,.entrance-level-grid{grid-template-columns:1fr}
+  .entrance-exams-head,.entrance-level>header,.entrance-level-grid{grid-template-columns:minmax(0,1fr)}
+  .entrance-exams-head>*,.entrance-level>header>*,.entrance-level-grid>*{min-width:0}
   .entrance-pdf-button{min-height:120px}
   .entrance-level-nav{grid-template-columns:1fr}
   .entrance-level-nav a{min-height:120px}
@@ -867,11 +868,11 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 }
 @media(max-width:700px){
   .applicant-section-nav .wrap{grid-template-columns:1fr 1fr}
-  .entrance-exams-head h2{font-size:clamp(39px,12vw,53px)}
+  .entrance-exams-head h2{max-width:100%;font-size:clamp(34px,9.4vw,42px);overflow-wrap:break-word}
   .entrance-level-nav{margin-bottom:50px}
   .entrance-level{margin-top:62px}
   .entrance-level>header{gap:24px}
-  .entrance-level>header h3{font-size:clamp(34px,10.5vw,47px)}
+  .entrance-level>header h3{max-width:100%;font-size:clamp(32px,9.6vw,42px);overflow-wrap:break-word}
   .entrance-schedule-rows article{grid-template-columns:28px minmax(0,1fr);gap:10px;padding:20px 2px}
   .entrance-schedule-date{grid-column:2}
   .entrance-schedule-event{grid-column:2}
