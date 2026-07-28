@@ -11,6 +11,7 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/admissions", label: "Вступ", group: "page" },
   { value: "/students", label: "Студентам", group: "page" },
   { value: "/research", label: "Наука", group: "page" },
+  { value: "/research/theses", label: "Кваліфікаційні роботи", group: "page" },
   { value: "/international", label: "Міжнародне", group: "page" },
   { value: "/events", label: "Події", group: "page" },
   { value: "/schedule", label: "Розклад занять", group: "page" },
@@ -43,6 +44,7 @@ export const contentKindPagePath: Record<string, string> = {
   library_book: "/facilities/library",
   event: "/events",
   research_resource: "/research",
+  student_thesis: "/research/theses",
   admission_timeline: "/admissions",
 };
 

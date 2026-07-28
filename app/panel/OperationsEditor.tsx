@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import type { ContentItem, ContentKind, ContentPayload } from "@/lib/content";
 import { ScheduleImporter } from "./ScheduleImporter";
 
-type Field = { key: string; label: string; placeholder?: string; type?: "text" | "date" | "url" | "textarea"; options?: string[]; required?: boolean };
+type Field = { key: string; label: string; placeholder?: string; type?: "text" | "date" | "url" | "textarea" | "document"; options?: string[]; required?: boolean };
 
 const sections: { kind: ContentKind; label: string; singular: string; description: string; publicHref: string; fields: Field[] }[] = [
   { kind: "lesson", label: "Розклад занять", singular: "заняття", description: "Пари, викладачі, групи та аудиторії", publicHref: "/schedule", fields: [
@@ -27,6 +27,13 @@ const sections: { kind: ContentKind; label: string; singular: string; descriptio
   ] },
   { kind: "research_resource", label: "Наукові ресурси", singular: "ресурс", description: "Журнали, репозитарії, бази й збірники", publicHref: "/research", fields: [
     { key: "title", label: "Назва" }, { key: "category", label: "Категорія" }, { key: "year", label: "Рік" }, { key: "url", label: "Посилання", type: "url" }, { key: "description", label: "Опис", type: "textarea" },
+  ] },
+  { kind: "student_thesis", label: "Кваліфікаційні роботи", singular: "роботу", description: "Бакалаврські й магістерські роботи студентів", publicHref: "/research/theses", fields: [
+    { key: "title", label: "Назва роботи" }, { key: "student", label: "Студент / студентка" },
+    { key: "level", label: "Рівень", options: ["Бакалавр", "Магістр"] }, { key: "program", label: "Освітня програма", placeholder: "Наприклад, Маркетинг" },
+    { key: "year", label: "Рік захисту", placeholder: "2026" }, { key: "supervisor", label: "Науковий керівник", placeholder: "ПІБ, науковий ступінь" },
+    { key: "abstract", label: "Коротка анотація", type: "textarea" }, { key: "keywords", label: "Ключові слова", placeholder: "через кому", required: false },
+    { key: "fileUrl", label: "Файл роботи", type: "document", required: false },
   ] },
   { kind: "admission_timeline", label: "Вступ", singular: "дату вступу", description: "Ключові етапи та дедлайни кампанії", publicHref: "/admissions", fields: [
     { key: "dateLabel", label: "Дата або період", placeholder: "19 липня — 1 серпня, 18:00" }, { key: "title", label: "Етап" }, { key: "status", label: "Позначка", placeholder: "Ключовий етап" }, { key: "description", label: "Що потрібно зробити", type: "textarea" },
@@ -72,8 +79,30 @@ export function OperationsEditor({ initialContent, allowedKinds }: { initialCont
     setMessage(`${importedItems.length} записів додано з Word.`);
   }
 
+  async function uploadDocument(file: File) {
+    setBusy(true); setMessage("Завантажуємо роботу…");
+    const data = new FormData();
+    data.append("file", file);
+    data.append("purpose", "document");
+    const response = await fetch("/api/uploads", { method: "POST", body: data });
+    const result = await response.json() as { url?: string; fileName?: string; error?: string };
+    if (!response.ok || !result.url) {
+      setMessage(result.error || "Не вдалося завантажити файл");
+      setBusy(false);
+      return;
+    }
+    setPayload((current) => ({ ...current, fileUrl: result.url || "", fileName: result.fileName || file.name }));
+    setMessage("Файл завантажено. Тепер збережіть запис.");
+    setBusy(false);
+  }
+
   async function save(event: React.FormEvent) {
     event.preventDefault(); setBusy(true); setMessage("Зберігаємо…");
+    if (active === "student_thesis" && !payload.fileUrl) {
+      setMessage("Завантажте файл роботи або вставте пряме посилання.");
+      setBusy(false);
+      return;
+    }
     const response = await fetch(editing ? `/api/content/${editing.id}` : "/api/content", {
       method: editing ? "PATCH" : "POST",
       headers: { "content-type": "application/json" },
@@ -94,12 +123,35 @@ export function OperationsEditor({ initialContent, allowedKinds }: { initialCont
     setBusy(false);
   }
 
+  function renderField(field: Field) {
+    if (field.type === "document") return <div className="wide operations-file-control" key={field.key}>
+      <b>{field.label}</b>
+      <div className="operations-document-field">
+        <span className={payload[field.key] ? "ready" : ""}>
+          <b>{payload.fileName || (payload[field.key] ? "Файл готовий" : "Обрати PDF або Word")}</b>
+          <i>{payload[field.key] ? "Можна замінити іншим файлом" : "До 20 МБ"}</i>
+          <input type="file" disabled={busy} accept=".pdf,.doc,.docx" aria-label="Завантажити файл роботи" onChange={(event) => { const file = event.target.files?.[0]; if (file) void uploadDocument(file); }} />
+        </span>
+        <label>Пряме посилання<input type="url" value={payload[field.key] || ""} placeholder="https://…" onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))} /></label>
+      </div>
+    </div>;
+
+    return <label className={field.type === "textarea" ? "wide" : ""} key={field.key}>
+      {field.label}{field.required === false && <small>необов’язково</small>}
+      {field.options
+        ? <select required={field.required !== false} value={payload[field.key] || ""} onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))}><option value="">Оберіть</option>{field.options.map((option) => <option key={option}>{option}</option>)}</select>
+        : field.type === "textarea"
+          ? <textarea required={field.required !== false} rows={4} value={payload[field.key] || ""} placeholder={field.placeholder} onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))} />
+          : <input required={field.required !== false} type={field.type || "text"} value={payload[field.key] || ""} placeholder={field.placeholder} onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))} />}
+    </label>;
+  }
+
   return <section className="operations" id="operations">
     <div className="materials-head operations-heading"><div><span>Операційний контент</span><h2>Керування сайтом</h2><p>Зміни одразу використовуються у відповідних публічних розділах.</p></div><a href={section.publicHref} target="_blank">Перевірити розділ ↗</a></div>
     <div className="operations-tabs" role="tablist" aria-label="Розділи сайту">{availableSections.map((entry) => <button type="button" role="tab" aria-selected={active === entry.kind} className={active === entry.kind ? "active" : ""} onClick={() => choose(entry.kind)} key={entry.kind}><b>{entry.label}</b><span>{items.filter((item) => item.kind === entry.kind).length}</span></button>)}</div>
     {active === "lesson" && <ScheduleImporter allowedKinds={allowedKinds} onImported={imported} />}
     <div className="operations-layout">
-      <form className="operations-form" id="operations-editor" onSubmit={save}><div className="operations-form-head"><div><small>{section.description}</small><h3>{editing ? `Редагувати ${section.singular}` : `Додати ${section.singular}`}</h3></div>{editing && <button type="button" onClick={reset}>Скасувати</button>}</div><div className="operations-fields">{section.fields.map((field) => <label className={field.type === "textarea" ? "wide" : ""} key={field.key}>{field.label}{field.required === false && <small>необов’язково</small>}{field.options ? <select required={field.required !== false} value={payload[field.key] || ""} onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))}><option value="">Оберіть</option>{field.options.map((option) => <option key={option}>{option}</option>)}</select> : field.type === "textarea" ? <textarea required={field.required !== false} rows={4} value={payload[field.key] || ""} placeholder={field.placeholder} onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))} /> : <input required={field.required !== false} type={field.type || "text"} value={payload[field.key] || ""} placeholder={field.placeholder} onChange={(event) => setPayload((current) => ({ ...current, [field.key]: event.target.value }))} />}</label>)}</div><div className="operations-save"><p>{message || "Заповніть поля та збережіть запис."}</p><button disabled={busy} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити запис" : "Додати на сайт"}</button></div></form>
+      <form className="operations-form" id="operations-editor" onSubmit={save}><div className="operations-form-head"><div><small>{section.description}</small><h3>{editing ? `Редагувати ${section.singular}` : `Додати ${section.singular}`}</h3></div>{editing && <button type="button" onClick={reset}>Скасувати</button>}</div><div className="operations-fields">{section.fields.map(renderField)}</div><div className="operations-save"><p>{message || "Заповніть поля та збережіть запис."}</p><button disabled={busy} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити запис" : "Додати на сайт"}</button></div></form>
       <div className="operations-list"><div className="operations-list-head"><div><small>Опубліковано</small><h3>{section.label}</h3></div><b>{visible.length}</b></div>{visible.map((item) => <article key={item.id}><div><small>{item.payload.dateLabel || item.payload.date || item.payload.year || item.payload.time}</small><h4>{itemTitle(item)}</h4><p>{item.payload.description || [item.payload.time, item.payload.teacher, item.payload.author, item.payload.place].filter(Boolean).join(" · ")}</p></div><div><button type="button" onClick={() => startEdit(item)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => void remove(item)}>Видалити</button></div></article>)}</div>
     </div>
   </section>;

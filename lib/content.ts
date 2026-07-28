@@ -4,6 +4,7 @@ export type ContentKind =
   | "library_book"
   | "event"
   | "research_resource"
+  | "student_thesis"
   | "admission_timeline";
 
 export type ContentPayload = Record<string, string>;
@@ -97,7 +98,7 @@ export const seedContent: ContentItem[] = [
   seed("admission-06", "admission_timeline", { dateLabel: "7–22 серпня 2026", title: "Подання заяв до магістратури", description: "Вступники на магістерські програми подають заяви через електронний кабінет.", status: "Магістратура" }, 60),
 ];
 
-const validKinds = new Set<ContentKind>(["lesson", "exam", "library_book", "event", "research_resource", "admission_timeline"]);
+const validKinds = new Set<ContentKind>(["lesson", "exam", "library_book", "event", "research_resource", "student_thesis", "admission_timeline"]);
 
 export function isContentKind(value: unknown): value is ContentKind {
   return typeof value === "string" && validKinds.has(value as ContentKind);
