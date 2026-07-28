@@ -801,3 +801,84 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .department-directory>a{grid-template-columns:38px minmax(0,1fr) 28px;gap:12px;padding-block:22px}
   .department-directory h2{font-size:clamp(22px,7vw,32px)}
 }
+
+/* Admissions: official entrance-examination schedule extracted from the 2026 PDFs. */
+.applicant-section-nav .wrap{grid-template-columns:repeat(9,minmax(0,1fr))}
+.entrance-exams{background:#e9e7e1;scroll-margin-top:88px}
+.entrance-exams-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(270px,.55fr);gap:clamp(42px,8vw,105px);align-items:end;margin-bottom:42px}
+.entrance-exams-head h2{font-size:clamp(42px,6.4vw,88px);line-height:.9;letter-spacing:-.045em;margin-top:14px;text-wrap:balance}
+.entrance-exams-note{border-left:5px solid var(--gold);padding:4px 0 4px 22px}
+.entrance-exams-note b{font:700 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cobalt)}
+.entrance-exams-note p{font-size:13px;line-height:1.6;color:#5f6878;margin:11px 0}
+.entrance-exams-note span{font:9px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.entrance-level-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink);margin-bottom:68px}
+.entrance-level-nav a{min-height:170px;padding:24px;display:flex;flex-direction:column;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);background:#f7f6f1;transition:background-color .2s,color .2s}
+.entrance-level-nav span{font:10px var(--mono);color:var(--cobalt)}
+.entrance-level-nav b{font:600 clamp(23px,2.6vw,36px) var(--disp);text-transform:uppercase;margin-top:auto}
+.entrance-level-nav small{font:9px var(--mono);text-transform:uppercase;color:#687181;margin-top:8px}
+.entrance-level-nav a:hover{background:var(--navy);color:#fff}.entrance-level-nav a:hover span,.entrance-level-nav a:hover small{color:var(--gold)}
+.entrance-level{scroll-margin-top:92px;border-top:7px solid var(--ink);padding-top:34px;margin-top:82px}
+.entrance-level>header{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:50px;align-items:end;margin-bottom:38px}
+.entrance-level>header>div>span{font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cobalt)}
+.entrance-level>header h3{font-size:clamp(38px,5vw,68px);line-height:.94;letter-spacing:-.035em;margin:13px 0 18px;text-transform:uppercase;text-wrap:balance}
+.entrance-level>header p{max-width:76ch;font-size:14px;line-height:1.65;color:#606a79}
+.entrance-pdf-button{min-height:150px;background:var(--gold);color:var(--ink);padding:22px;display:flex;flex-direction:column;align-items:flex-start}
+.entrance-pdf-button span,.entrance-pdf-button small{font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase}.entrance-pdf-button b{font:600 20px/1.05 var(--disp);text-transform:uppercase;margin:auto 0}.entrance-pdf-button small{color:#555d69}
+.entrance-level-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr);gap:22px;align-items:stretch}
+.entrance-schedule-rows{border-top:1px solid var(--ink)}
+.entrance-schedule-rows article{display:grid;grid-template-columns:42px 150px minmax(0,1fr);gap:18px;align-items:start;padding:23px 7px;border-bottom:1px solid var(--ink);background:transparent}
+.entrance-schedule-rows article>span{font:9px var(--mono);color:var(--cobalt)}
+.entrance-schedule-date b{display:block;font:600 22px var(--disp);text-transform:uppercase}.entrance-schedule-date small{display:block;font:8px var(--mono);color:#6a7380;text-transform:uppercase;margin-top:5px}
+.entrance-schedule-event h4{font:600 17px/1.2 var(--disp);text-transform:uppercase;margin-bottom:9px}.entrance-schedule-event p{display:inline-block;font:9px var(--mono);text-transform:uppercase;background:#fff;border:1px solid #c4c8cd;padding:8px 9px;margin:4px 5px 0 0}
+.entrance-subjects{background:var(--navy);color:#fff;padding:30px;display:flex;flex-direction:column}
+.entrance-subjects>span{font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.entrance-subjects h4{font-size:clamp(25px,3vw,40px);line-height:.98;text-transform:uppercase;margin:50px 0 20px}
+.entrance-subjects p{font-size:14px;line-height:1.65;color:#d3dced}
+.entrance-subjects small{font:9px/1.55 var(--mono);color:#9eabc0;margin-top:auto;padding-top:36px}
+.entrance-program-table{border-top:1px solid var(--ink);border-left:1px solid var(--ink);margin-top:26px}
+.entrance-program-head,.entrance-program-row{display:grid;grid-template-columns:70px minmax(210px,.9fr) minmax(240px,1.1fr) 105px}
+.entrance-program-head{background:var(--navy);color:var(--gold)}
+.entrance-program-head span{font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:13px;border-right:1px solid #3b465b}
+.entrance-program-row>*{min-width:0;padding:17px 13px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.entrance-program-row b{font:700 18px var(--disp);color:var(--cobalt)}
+.entrance-program-row strong{font:600 14px/1.35 var(--disp);text-transform:uppercase}
+.entrance-program-row span{font-size:12px;line-height:1.5;color:#616b79}
+.entrance-program-row em{font:700 10px var(--mono);font-style:normal;text-transform:uppercase;white-space:nowrap}
+.entrance-program-table.compact .entrance-program-head,.entrance-program-table.compact .entrance-program-row{grid-template-columns:70px minmax(0,1fr) 105px}
+.entrance-format-note{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:18px;align-items:center;margin-top:38px;background:#fff;padding:22px 24px;border-left:5px solid var(--gold)}
+.entrance-format-note>span{width:46px;height:46px;display:grid;place-items:center;background:var(--cobalt);color:#fff;font:700 18px var(--disp)}
+.entrance-format-note b{font:600 15px var(--disp);text-transform:uppercase}.entrance-format-note p{font-size:11px;line-height:1.55;color:#667083;margin-top:4px}.entrance-format-note a{font:700 9px var(--mono);letter-spacing:.05em;text-transform:uppercase;border-bottom:2px solid var(--gold);padding-bottom:5px}
+
+@media(max-width:1100px){
+  .applicant-section-nav .wrap{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .entrance-program-head,.entrance-program-row{grid-template-columns:64px minmax(180px,.8fr) minmax(220px,1.2fr) 96px}
+}
+@media(max-width:850px){
+  .entrance-exams-head,.entrance-level>header,.entrance-level-grid{grid-template-columns:1fr}
+  .entrance-pdf-button{min-height:120px}
+  .entrance-level-nav{grid-template-columns:1fr}
+  .entrance-level-nav a{min-height:120px}
+  .entrance-program-head{display:none}
+  .entrance-program-table,.entrance-program-table.compact{border-left:0}
+  .entrance-program-row,.entrance-program-table.compact .entrance-program-row{grid-template-columns:60px minmax(0,1fr) 90px;border-left:1px solid var(--ink)}
+  .entrance-program-row span{grid-column:2/4;border-top:1px solid var(--line)}
+  .entrance-program-table.compact .entrance-program-row strong{grid-column:2}
+  .entrance-format-note{grid-template-columns:54px 1fr}.entrance-format-note a{grid-column:2;justify-self:start}
+}
+@media(max-width:700px){
+  .applicant-section-nav .wrap{grid-template-columns:1fr 1fr}
+  .entrance-exams-head h2{font-size:clamp(39px,12vw,53px)}
+  .entrance-level-nav{margin-bottom:50px}
+  .entrance-level{margin-top:62px}
+  .entrance-level>header{gap:24px}
+  .entrance-level>header h3{font-size:clamp(34px,10.5vw,47px)}
+  .entrance-schedule-rows article{grid-template-columns:28px minmax(0,1fr);gap:10px;padding:20px 2px}
+  .entrance-schedule-date{grid-column:2}
+  .entrance-schedule-event{grid-column:2}
+  .entrance-schedule-event p{display:block;width:max-content;max-width:100%;white-space:normal}
+  .entrance-subjects{padding:24px 21px}
+  .entrance-program-row,.entrance-program-table.compact .entrance-program-row{grid-template-columns:48px minmax(0,1fr)}
+  .entrance-program-row em,.entrance-program-table.compact .entrance-program-row em{grid-column:2;white-space:normal;border-top:1px solid var(--line)}
+  .entrance-program-row span{grid-column:2}
+  .entrance-format-note{grid-template-columns:1fr;padding:20px}.entrance-format-note a{grid-column:1;overflow-wrap:anywhere}
+}

@@ -147,7 +147,7 @@ export async function ApplicantDocumentLibrary() {
 
   return <section className="admission-rules" id="admission-rules"><div className="wrap">
     <div className="admission-rules-head">
-      <div><div className="idx">04 / Офіційні документи</div><h2>Правила прийому<br />та нормативні документи</h2></div>
+      <div><div className="idx">06 / Офіційні документи</div><h2>Правила прийому<br />та нормативні документи</h2></div>
       <div className="admission-rules-note"><b>Вступ 2026</b><p>Документи розміщено в офіційній послідовності: правила, положення, порядки та додаток.</p><span>11 PDF · 150 сторінок</span></div>
     </div>
     <div className="admission-document-list">
