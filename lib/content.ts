@@ -99,7 +99,7 @@ export const seedContent: ContentItem[] = [
     supervisor: "Науковий керівник · демонстраційний запис",
     abstract: "Приклад картки кваліфікаційної роботи про використання цифрових каналів комунікації, дослідження аудиторії та оцінювання ефективності маркетингової стратегії.",
     keywords: "цифровий маркетинг, освітні послуги, комунікації",
-    fileUrl: "",
+    fileUrl: "/documents/examples/qualification-thesis-marketing-demo.pdf",
     demo: "true",
   }, 10),
   seed("thesis-demo-02", "student_thesis", {
