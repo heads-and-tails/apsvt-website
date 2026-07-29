@@ -179,8 +179,16 @@ export async function createEditorialDraft(input: {
   const config = draftTargetConfigs.find((entry) => entry.id === input.target);
   if (!config) throw new Error("UNKNOWN_TARGET");
   const extractedText = extractEditorialFileText(input.file, input.bytes);
-  const apiKey = process.env.OPENAI_API_KEY;
+  const directApiKey = process.env.OPENAI_API_KEY;
+  const gatewayApiKey = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN;
+  const apiKey = directApiKey || gatewayApiKey;
   if (!apiKey) return fallbackDraft(input.target, input.file.name, extractedText);
+  const apiUrl = directApiKey
+    ? "https://api.openai.com/v1/responses"
+    : "https://ai-gateway.vercel.sh/v1/responses";
+  const model = directApiKey
+    ? process.env.OPENAI_EDITORIAL_MODEL || "gpt-5.6-sol"
+    : process.env.AI_GATEWAY_EDITORIAL_MODEL || "openai/gpt-5.6-sol";
 
   const allowedFields = config.fields.map((field) => `${field.key} (${field.label})`).join(", ");
   const instructions = [
@@ -219,11 +227,11 @@ export async function createEditorialDraft(input: {
     });
   }
 
-  const response = await fetch("https://api.openai.com/v1/responses", {
+  const response = await fetch(apiUrl, {
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${apiKey}` },
     body: JSON.stringify({
-      model: process.env.OPENAI_EDITORIAL_MODEL || "gpt-5.6-sol",
+      model,
       reasoning: { effort: "medium" },
       store: false,
       instructions,
