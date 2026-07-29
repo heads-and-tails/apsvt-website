@@ -123,23 +123,40 @@ export const seedContent: ContentItem[] = [
   seed("admission-05", "admission_timeline", { dateLabel: "До 13 серпня", title: "Зарахування", description: "Завершення зарахування на бюджет і контракт для заяв із пріоритетом.", status: "Фініш" }, 50),
   seed("admission-06", "admission_timeline", { dateLabel: "7–22 серпня 2026", title: "Подання заяв до магістратури", description: "Вступники на магістерські програми подають заяви через електронний кабінет.", status: "Магістратура" }, 60),
 
-  seed("vacancy-01", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра цивільного, трудового та господарського права", title: "Доцент", count: "3", deadline: "2025-08-24", status: "Архів", note: "Термін у наданому конкурсному оголошенні завершився. Перед поданням уточніть актуальність у навчально-методичному відділі." }, 10),
-  seed("vacancy-02", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра конституційного, адміністративного та фінансового права", title: "Завідувач кафедри", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 20),
-  seed("vacancy-03", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра конституційного, адміністративного та фінансового права", title: "Доцент", count: "2", deadline: "2025-08-24", status: "Архів", note: "" }, 30),
-  seed("vacancy-04", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра кримінального права, процесу та криміналістики", title: "Професор", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 40),
-  seed("vacancy-05", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра кримінального права, процесу та криміналістики", title: "Доцент", count: "2", deadline: "2025-08-24", status: "Архів", note: "" }, 50),
-  seed("vacancy-06", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра економіки підприємства та менеджменту", title: "Доцент", count: "4", deadline: "2025-08-24", status: "Архів", note: "" }, 60),
-  seed("vacancy-07", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра економіки підприємства та менеджменту", title: "Старший викладач", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 70),
-  seed("vacancy-08", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра економіки підприємства та менеджменту", title: "Викладач", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 80),
-  seed("vacancy-09", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра фінансів", title: "Завідувач кафедри", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 90),
-  seed("vacancy-10", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра фінансів", title: "Доцент", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 100),
-  seed("vacancy-11", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра маркетингу", title: "Доцент", count: "3", deadline: "2025-08-24", status: "Архів", note: "" }, 110),
-  seed("vacancy-12", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра інтелектуальних систем та цифрових технологій", title: "Професор", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 120),
-  seed("vacancy-13", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра інтелектуальних систем та цифрових технологій", title: "Доцент", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 130),
-  seed("vacancy-14", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра психології", title: "Доцент", count: "2", deadline: "2025-08-24", status: "Архів", note: "" }, 140),
-  seed("vacancy-15", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра соціально-трудових відносин та соціальної роботи", title: "Завідувач кафедри", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 150),
-  seed("vacancy-16", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра соціально-трудових відносин та соціальної роботи", title: "Доцент", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 160),
+  seed("vacancy-01", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра цивільного, трудового та господарського права", title: "Доцент", count: "3", deadline: "2026-08-24", status: "Відкрито", note: "" }, 10),
+  seed("vacancy-02", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра конституційного, адміністративного та фінансового права", title: "Завідувач кафедри", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 20),
+  seed("vacancy-03", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра конституційного, адміністративного та фінансового права", title: "Доцент", count: "2", deadline: "2026-08-24", status: "Відкрито", note: "" }, 30),
+  seed("vacancy-04", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра кримінального права, процесу та криміналістики", title: "Професор", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 40),
+  seed("vacancy-05", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра кримінального права, процесу та криміналістики", title: "Доцент", count: "2", deadline: "2026-08-24", status: "Відкрито", note: "" }, 50),
+  seed("vacancy-06", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра економіки підприємства та менеджменту", title: "Доцент", count: "4", deadline: "2026-08-24", status: "Відкрито", note: "" }, 60),
+  seed("vacancy-07", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра економіки підприємства та менеджменту", title: "Старший викладач", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 70),
+  seed("vacancy-08", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра економіки підприємства та менеджменту", title: "Викладач", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 80),
+  seed("vacancy-09", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра фінансів", title: "Завідувач кафедри", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 90),
+  seed("vacancy-10", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра фінансів", title: "Доцент", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 100),
+  seed("vacancy-11", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра маркетингу", title: "Доцент", count: "3", deadline: "2026-08-24", status: "Відкрито", note: "" }, 110),
+  seed("vacancy-12", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра інтелектуальних систем та цифрових технологій", title: "Професор", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 120),
+  seed("vacancy-13", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра інтелектуальних систем та цифрових технологій", title: "Доцент", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 130),
+  seed("vacancy-14", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра психології", title: "Доцент", count: "2", deadline: "2026-08-24", status: "Відкрито", note: "" }, 140),
+  seed("vacancy-15", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра соціально-трудових відносин та соціальної роботи", title: "Завідувач кафедри", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 150),
+  seed("vacancy-16", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра соціально-трудових відносин та соціальної роботи", title: "Доцент", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 160),
 ];
+
+function applyPublishedCorrections(item: ContentItem): ContentItem {
+  const isOriginalVacancy =
+    item.kind === "vacancy" &&
+    /^vacancy-(0[1-9]|1[0-6])$/.test(item.id) &&
+    item.payload.deadline === "2025-08-24";
+  if (!isOriginalVacancy) return item;
+  return {
+    ...item,
+    payload: {
+      ...item.payload,
+      deadline: "2026-08-24",
+      status: "Відкрито",
+      note: item.payload.note.includes("завершився") ? "" : item.payload.note,
+    },
+  };
+}
 
 const validKinds = new Set<ContentKind>(["lesson", "exam", "library_book", "event", "research_resource", "student_thesis", "admission_timeline", "vacancy"]);
 
@@ -223,7 +240,7 @@ export async function getContentItems(kind: ContentKind): Promise<ContentItem[]>
     try {
       const { data, error } = await createSupabasePublicClient().from("editorial_content_items").select("*").eq("kind", kind).order("sort_order", { ascending: true });
       if (error) throw error;
-      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>));
+      if (data?.length) return data.map((row) => applyPublishedCorrections(fromRow(row as Record<string, unknown>)));
     } catch {
       // Keep public schedules and catalogues available with bundled data.
     }
@@ -233,9 +250,9 @@ export async function getContentItems(kind: ContentKind): Promise<ContentItem[]>
     const database = await db();
     if (!database) throw new Error("D1_UNAVAILABLE");
     const result = await database.prepare("SELECT * FROM content_items WHERE kind = ? ORDER BY sort_order ASC, created_at ASC").bind(kind).all<Record<string, unknown>>();
-    return result.results.map(fromRow);
+    return result.results.map(fromRow).map(applyPublishedCorrections);
   } catch {
-    return seedContent.filter((item) => item.kind === kind);
+    return seedContent.filter((item) => item.kind === kind).map(applyPublishedCorrections);
   }
 }
 
@@ -249,7 +266,7 @@ export async function getAllContent(): Promise<ContentItem[]> {
       await ensureSupabaseContent();
       const { data, error } = await createSupabaseAdmin().from("editorial_content_items").select("*").order("kind").order("sort_order");
       if (error) throw error;
-      return (data || []).map((row) => fromRow(row as Record<string, unknown>));
+      return (data || []).map((row) => applyPublishedCorrections(fromRow(row as Record<string, unknown>)));
     } catch {
       // Fall through to the existing storage or seed content.
     }
@@ -259,9 +276,9 @@ export async function getAllContent(): Promise<ContentItem[]> {
     const database = await db();
     if (!database) throw new Error("D1_UNAVAILABLE");
     const result = await database.prepare("SELECT * FROM content_items ORDER BY kind ASC, sort_order ASC, created_at ASC").all<Record<string, unknown>>();
-    return result.results.map(fromRow);
+    return result.results.map(fromRow).map(applyPublishedCorrections);
   } catch {
-    return seedContent;
+    return seedContent.map(applyPublishedCorrections);
   }
 }
 

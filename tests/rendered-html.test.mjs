@@ -112,6 +112,10 @@ test("renders editorially managed public information",async()=>{
   const eventsHtml=await (await render("/events")).text();
   assert.match(eventsHtml,/Міжнародний день Академії/);
 
+  const vacanciesHtml=await (await render("/vacancies")).text();
+  assert.match(vacanciesHtml,/24 серпня 2026 р\./);
+  assert.doesNotMatch(vacanciesHtml,/24 серпня 2025 р\./);
+
   const researchHtml=await (await render("/research")).text();
   assert.match(researchHtml,/Ресурси Академії/);
   assert.match(researchHtml,/Повний випуск наукового журналу Академії у форматі PDF/);
