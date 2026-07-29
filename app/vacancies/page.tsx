@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
+import { getPublicContent } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Вакансії та конкурси",
   description:
     "Конкурс на заміщення посад науково-педагогічних працівників Академії праці, соціальних відносин і туризму.",
 };
+export const dynamic = "force-dynamic";
 
 const faculties = [
   {
@@ -95,7 +97,44 @@ const internalDocuments = [
   "Комплексний звіт визначеної форми про роботу протягом терміну попереднього контракту.",
 ];
 
-export default function VacanciesPage() {
+type VacancyFaculty = {
+  name: string;
+  departments: { name: string; roles: { title: string; count: number }[] }[];
+};
+
+function groupVacancies(items: Awaited<ReturnType<typeof getPublicContent>>): VacancyFaculty[] {
+  const grouped = new Map<string, Map<string, { title: string; count: number }[]>>();
+  for (const item of items) {
+    const faculty = item.payload.faculty?.trim();
+    const department = item.payload.department?.trim();
+    const title = item.payload.title?.trim();
+    if (!faculty || !department || !title) continue;
+    if (!grouped.has(faculty)) grouped.set(faculty, new Map());
+    const departments = grouped.get(faculty)!;
+    if (!departments.has(department)) departments.set(department, []);
+    departments.get(department)!.push({ title, count: Math.max(1, Number(item.payload.count) || 1) });
+  }
+  return [...grouped].map(([name, departments]) => ({
+    name,
+    departments: [...departments].map(([department, roles]) => ({ name: department, roles })),
+  }));
+}
+
+function formatDeadline(value: string): string {
+  const date = new Date(`${value}T12:00:00Z`);
+  return Number.isNaN(date.getTime())
+    ? value
+    : new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(date);
+}
+
+export default async function VacanciesPage() {
+  const vacancyItems = await getPublicContent("vacancy");
+  const groupedVacancies = groupVacancies(vacancyItems);
+  const departmentCount = groupedVacancies.reduce((total, faculty) => total + faculty.departments.length, 0);
+  const openItems = vacancyItems.filter((item) => item.payload.status === "Відкрито");
+  const currentItems = openItems.length ? openItems : vacancyItems;
+  const deadline = currentItems.map((item) => item.payload.deadline).filter(Boolean).sort().at(-1) || "";
+  const statusNote = currentItems.find((item) => item.payload.note)?.payload.note || "";
   return (
     <main id="top">
       <SiteHeader />
@@ -125,7 +164,7 @@ export default function VacanciesPage() {
 
             <aside aria-label="Коротко про конкурс">
               <span>У конкурсному оголошенні</span>
-              <b>9</b>
+              <b>{departmentCount}</b>
               <strong>кафедр</strong>
               <dl>
                 <div>
@@ -146,10 +185,13 @@ export default function VacanciesPage() {
         <div className="wrap">
           <span>Важливо</span>
           <div>
-            <b>Термін, зазначений у наданому оголошенні: до 24.08.2025 включно.</b>
+            <b>
+              {openItems.length
+                ? `Прийом заяв відкрито${deadline ? ` до ${formatDeadline(deadline)} включно` : ""}.`
+                : `Термін у розміщеному оголошенні${deadline ? ` — до ${formatDeadline(deadline)} включно` : ""}.`}
+            </b>
             <p>
-              Перед поданням документів уточніть актуальність прийому заяв у
-              навчально-методичному відділі Академії.
+              {statusNote || "Перед поданням документів уточніть актуальність прийому заяв у навчально-методичному відділі Академії."}
             </p>
           </div>
           <a href="mailto:info@socosvita.kiev.ua">Уточнити інформацію →</a>
@@ -170,7 +212,7 @@ export default function VacanciesPage() {
             </p>
           </header>
 
-          {faculties.map((faculty, facultyIndex) => (
+          {groupedVacancies.map((faculty, facultyIndex) => (
             <section className="vacancy-faculty" key={faculty.name}>
               <header>
                 <span>{String(facultyIndex + 1).padStart(2, "0")}</span>

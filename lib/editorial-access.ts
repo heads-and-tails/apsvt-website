@@ -24,6 +24,7 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/academic-calendar", label: "Навчальний календар", group: "page" },
   { value: "/contacts", label: "Контакти", group: "page" },
   { value: "/faq", label: "FAQ", group: "page" },
+  { value: "/vacancies", label: "Вакансії та конкурси", group: "page" },
   { value: "/programs/psychology", label: "Кафедра психології", group: "department" },
   { value: "/programs/finance", label: "Кафедра фінансів", group: "department" },
   { value: "/programs/management", label: "Кафедра економіки та менеджменту", group: "department" },
@@ -46,6 +47,7 @@ export const contentKindPagePath: Record<string, string> = {
   research_resource: "/research",
   student_thesis: "/research/theses",
   admission_timeline: "/admissions",
+  vacancy: "/vacancies",
 };
 
 export function isEditorialAccessScope(value: unknown): value is string {

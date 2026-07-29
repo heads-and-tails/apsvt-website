@@ -38,6 +38,12 @@ const sections: { kind: ContentKind; label: string; singular: string; descriptio
   { kind: "admission_timeline", label: "Вступ", singular: "дату вступу", description: "Ключові етапи та дедлайни кампанії", publicHref: "/admissions", fields: [
     { key: "dateLabel", label: "Дата або період", placeholder: "19 липня — 1 серпня, 18:00" }, { key: "title", label: "Етап" }, { key: "status", label: "Позначка", placeholder: "Ключовий етап" }, { key: "description", label: "Що потрібно зробити", type: "textarea" },
   ] },
+  { kind: "vacancy", label: "Вакансії", singular: "вакансію", description: "Факультет, кафедра, посада, кількість і термін конкурсу", publicHref: "/vacancies", fields: [
+    { key: "faculty", label: "Факультет" }, { key: "department", label: "Кафедра" },
+    { key: "title", label: "Посада" }, { key: "count", label: "Кількість посад", placeholder: "1" },
+    { key: "deadline", label: "Кінцевий термін", type: "date" }, { key: "status", label: "Статус", options: ["Відкрито", "Незабаром", "Архів"] },
+    { key: "note", label: "Примітка для кандидатів", type: "textarea", required: false },
+  ] },
 ];
 
 function blank(fields: Field[]): ContentPayload {

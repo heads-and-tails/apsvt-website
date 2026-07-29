@@ -5,7 +5,8 @@ export type ContentKind =
   | "event"
   | "research_resource"
   | "student_thesis"
-  | "admission_timeline";
+  | "admission_timeline"
+  | "vacancy";
 
 export type ContentPayload = Record<string, string>;
 
@@ -121,9 +122,26 @@ export const seedContent: ContentItem[] = [
   seed("admission-04", "admission_timeline", { dateLabel: "До 11 серпня, 18:00", title: "Підтвердження вибору", description: "Підтвердьте місце навчання електронно та надайте потрібні документи.", status: "Обов’язково" }, 40),
   seed("admission-05", "admission_timeline", { dateLabel: "До 13 серпня", title: "Зарахування", description: "Завершення зарахування на бюджет і контракт для заяв із пріоритетом.", status: "Фініш" }, 50),
   seed("admission-06", "admission_timeline", { dateLabel: "7–22 серпня 2026", title: "Подання заяв до магістратури", description: "Вступники на магістерські програми подають заяви через електронний кабінет.", status: "Магістратура" }, 60),
+
+  seed("vacancy-01", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра цивільного, трудового та господарського права", title: "Доцент", count: "3", deadline: "2025-08-24", status: "Архів", note: "Термін у наданому конкурсному оголошенні завершився. Перед поданням уточніть актуальність у навчально-методичному відділі." }, 10),
+  seed("vacancy-02", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра конституційного, адміністративного та фінансового права", title: "Завідувач кафедри", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 20),
+  seed("vacancy-03", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра конституційного, адміністративного та фінансового права", title: "Доцент", count: "2", deadline: "2025-08-24", status: "Архів", note: "" }, 30),
+  seed("vacancy-04", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра кримінального права, процесу та криміналістики", title: "Професор", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 40),
+  seed("vacancy-05", "vacancy", { faculty: "Юридичний факультет", department: "Кафедра кримінального права, процесу та криміналістики", title: "Доцент", count: "2", deadline: "2025-08-24", status: "Архів", note: "" }, 50),
+  seed("vacancy-06", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра економіки підприємства та менеджменту", title: "Доцент", count: "4", deadline: "2025-08-24", status: "Архів", note: "" }, 60),
+  seed("vacancy-07", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра економіки підприємства та менеджменту", title: "Старший викладач", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 70),
+  seed("vacancy-08", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра економіки підприємства та менеджменту", title: "Викладач", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 80),
+  seed("vacancy-09", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра фінансів", title: "Завідувач кафедри", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 90),
+  seed("vacancy-10", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра фінансів", title: "Доцент", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 100),
+  seed("vacancy-11", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра маркетингу", title: "Доцент", count: "3", deadline: "2025-08-24", status: "Архів", note: "" }, 110),
+  seed("vacancy-12", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра інтелектуальних систем та цифрових технологій", title: "Професор", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 120),
+  seed("vacancy-13", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра інтелектуальних систем та цифрових технологій", title: "Доцент", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 130),
+  seed("vacancy-14", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра психології", title: "Доцент", count: "2", deadline: "2025-08-24", status: "Архів", note: "" }, 140),
+  seed("vacancy-15", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра соціально-трудових відносин та соціальної роботи", title: "Завідувач кафедри", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 150),
+  seed("vacancy-16", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра соціально-трудових відносин та соціальної роботи", title: "Доцент", count: "1", deadline: "2025-08-24", status: "Архів", note: "" }, 160),
 ];
 
-const validKinds = new Set<ContentKind>(["lesson", "exam", "library_book", "event", "research_resource", "student_thesis", "admission_timeline"]);
+const validKinds = new Set<ContentKind>(["lesson", "exam", "library_book", "event", "research_resource", "student_thesis", "admission_timeline", "vacancy"]);
 
 export function isContentKind(value: unknown): value is ContentKind {
   return typeof value === "string" && validKinds.has(value as ContentKind);
@@ -189,10 +207,12 @@ let supabaseContentSeeded = false;
 async function ensureSupabaseContent(): Promise<void> {
   if (supabaseContentSeeded || !isSupabaseConfigured()) return;
   const admin = createSupabaseAdmin();
-  const { data, error } = await admin.from("editorial_content_items").select("id").limit(1);
+  const { data, error } = await admin.from("editorial_content_items").select("id");
   if (error) throw error;
-  if (!data?.length) {
-    const inserted = await admin.from("editorial_content_items").upsert(seedContent.map(toSupabaseRow), { onConflict: "id" });
+  const existingIds = new Set((data || []).map((item) => String(item.id)));
+  const missingSeeds = seedContent.filter((item) => !existingIds.has(item.id));
+  if (missingSeeds.length) {
+    const inserted = await admin.from("editorial_content_items").insert(missingSeeds.map(toSupabaseRow));
     if (inserted.error) throw inserted.error;
   }
   supabaseContentSeeded = true;
