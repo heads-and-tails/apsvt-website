@@ -220,6 +220,13 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   assert.ok(html.indexOf("Правила прийому на навчання")<html.indexOf("Положення про Приймальну комісію"));
   assert.ok(html.indexOf("Положення про Приймальну комісію")<html.indexOf("Дії Приймальної комісії"));
   assert.ok(html.indexOf("Дії Приймальної комісії")<html.indexOf("Додаток 8"));
+  assert.match(html,/Результати вступних<br\/>випробувань/);
+  assert.match(html,/Результати вступних випробувань від 29 липня 2026 року/);
+  assert.match(html,/results\/2026-07-29\/ukrainian-language\.pdf/);
+  assert.match(html,/results\/2026-07-29\/mathematics\.pdf/);
+  assert.match(html,/results\/2026-07-29\/history-of-ukraine\.pdf/);
+  assert.match(html,/results\/2026-07-29\/english-language\.pdf/);
+  assert.match(html,/02 \/ Магістратура/);
 
   const files=[
     "01-pravyla-pryiomu-apsvt-2026.pdf",
@@ -237,6 +244,30 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   for(const file of files){
     const pdf=await readFile(new URL(`../public/documents/admissions/${file}`,import.meta.url));
     assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
+
+  const resultFiles=[
+    "ukrainian-language.pdf",
+    "mathematics.pdf",
+    "history-of-ukraine.pdf",
+    "english-language.pdf",
+  ];
+  for(const file of resultFiles){
+    const pdf=await readFile(new URL(`../public/documents/admissions/results/2026-07-29/${file}`,import.meta.url));
+    assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
+});
+
+test("announces and duplicates the published entrance results in news",async()=>{
+  const [newsHtml,articleHtml]=await Promise.all([
+    (await render("/news")).text(),
+    (await render("/news/rezultaty-vstupnykh-vyprobuvan-29-lypnia-2026")).text(),
+  ]);
+  assert.match(newsHtml,/Оприлюднено результати вступних випробувань від 29 липня 2026 року/);
+  assert.match(articleHtml,/Результати за предметами/);
+  assert.match(articleHtml,/href="\/admissions#entrance-results"/);
+  for(const file of ["ukrainian-language","mathematics","history-of-ukraine","english-language"]){
+    assert.match(articleHtml,new RegExp(`results/2026-07-29/${file}\\.pdf`));
   }
 });
 

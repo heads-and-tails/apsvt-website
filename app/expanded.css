@@ -98,9 +98,11 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .detail-hero h1{font-size:clamp(32px,5.1vw,70px);max-width:19ch;text-wrap:balance}
 .detail-deck{font-size:clamp(16px,1.55vw,21px);max-width:60ch}
 .article-section{padding-top:85px}
+.news-result-files{margin:40px 0;border-top:5px solid var(--cobalt);background:#fff;padding:24px}.news-result-files>span{display:block;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}.news-result-files>a:not(:last-child){display:grid;grid-template-columns:35px minmax(0,1fr) auto;gap:14px;align-items:center;padding:17px 2px;border-bottom:1px solid var(--line)}.news-result-files>a>b{font:10px var(--mono);color:var(--cobalt)}.news-result-files>a>strong{font:600 15px/1.3 var(--disp);text-transform:uppercase}.news-result-files>a>small{font:8px var(--mono);text-transform:uppercase;color:#657084}.news-result-files>a:last-child{display:inline-block;margin-top:22px;border-bottom:2px solid var(--gold);padding-bottom:5px;font:700 9px var(--mono);letter-spacing:.05em;text-transform:uppercase}
 .journal-feature h2{font-size:clamp(28px,3.8vw,52px)}
 .journal-cover{transition:transform .4s ease,box-shadow .4s ease}.journal-cover:hover{transform:translateY(-7px);box-shadow:26px 26px var(--gold)}.journal-cover:focus-visible{outline:4px solid var(--gold);outline-offset:7px}
 @media(max-width:700px){.phero h1{font-size:clamp(32px,9.5vw,50px)}.program-hero h1{font-size:clamp(32px,9vw,48px)}.detail-hero.image{min-height:72svh;padding:126px 0 44px}.detail-hero h1{font-size:clamp(30px,9vw,46px)}.detail-hero-bg img{object-position:center}.article-section{padding-top:58px}}
+@media(max-width:700px){.news-result-files{padding:20px 16px}.news-result-files>a:not(:last-child){grid-template-columns:28px minmax(0,1fr)}.news-result-files>a>small{grid-column:2}}
 
 /* Cinematic motion and resilient faculty layouts */
 .loader{background:
@@ -794,7 +796,7 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 }
 
 /* Admissions: official entrance-examination schedule extracted from the 2026 PDFs. */
-.applicant-section-nav .wrap{grid-template-columns:repeat(9,minmax(0,1fr))}
+.applicant-section-nav .wrap{grid-template-columns:repeat(10,minmax(0,1fr))}
 .entrance-exams{background:#e9e7e1;scroll-margin-top:88px}
 .entrance-exams-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(270px,.55fr);gap:clamp(42px,8vw,105px);align-items:end;margin-bottom:42px}
 .entrance-exams-head h2{font-size:clamp(42px,6.4vw,88px);line-height:.9;letter-spacing:-.045em;margin-top:14px;text-wrap:balance}
@@ -840,13 +842,46 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .entrance-format-note>span{width:46px;height:46px;display:grid;place-items:center;background:var(--cobalt);color:#fff;font:700 18px var(--disp)}
 .entrance-format-note b{font:600 15px var(--disp);text-transform:uppercase}.entrance-format-note p{font-size:11px;line-height:1.55;color:#667083;margin-top:4px}.entrance-format-note a{font:700 9px var(--mono);letter-spacing:.05em;text-transform:uppercase;border-bottom:2px solid var(--gold);padding-bottom:5px}
 
+/* Admissions: published entrance-examination results. */
+.entrance-results{background:var(--navy);color:#fff;scroll-margin-top:88px}
+.entrance-results-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(270px,.55fr);gap:clamp(42px,8vw,105px);align-items:end;margin-bottom:42px}
+.entrance-results-head h2{font-size:clamp(42px,6.4vw,88px);line-height:.9;letter-spacing:-.045em;margin-top:14px;text-wrap:balance}
+.entrance-results-head .idx{color:var(--gold)}
+.entrance-results-note{border-left:5px solid var(--gold);padding:4px 0 4px 22px}
+.entrance-results-note b{font:700 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.entrance-results-note p{font-size:13px;line-height:1.6;color:#bdc8db;margin:11px 0}
+.entrance-results-note span{font:9px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.entrance-results-level-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid #62708b;border-left:1px solid #62708b;margin-bottom:68px}
+.entrance-results-level-nav a{min-height:170px;padding:24px;display:flex;flex-direction:column;border-right:1px solid #62708b;border-bottom:1px solid #62708b;transition:background-color .2s,color .2s}
+.entrance-results-level-nav span{font:10px var(--mono);color:var(--gold)}
+.entrance-results-level-nav b{font:600 clamp(23px,2.6vw,36px) var(--disp);text-transform:uppercase;margin-top:auto}
+.entrance-results-level-nav small{font:9px var(--mono);text-transform:uppercase;color:#9eabc0;margin-top:8px}
+.entrance-results-level-nav a:hover{background:var(--gold);color:var(--ink)}.entrance-results-level-nav a:hover span,.entrance-results-level-nav a:hover small{color:var(--cobalt)}
+.entrance-results-level{scroll-margin-top:92px;border-top:7px solid var(--gold);padding-top:34px;margin-top:82px}
+.entrance-results-level>header>span{font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.entrance-results-level>header h3{font-size:clamp(32px,4.7vw,64px);line-height:.96;letter-spacing:-.035em;max-width:20ch;margin:13px 0 18px;text-transform:uppercase;text-wrap:balance}
+.entrance-results-level>header p{font-size:13px;color:#aebbd1}
+.entrance-result-documents{border-top:1px solid #62708b;margin-top:38px}
+.entrance-result-documents>a,.entrance-result-documents>div{display:grid;grid-template-columns:54px minmax(0,1fr) 180px;gap:18px;align-items:center;min-height:132px;padding:20px 12px;border-bottom:1px solid #62708b;transition:background-color .2s,color .2s,padding .2s}
+.entrance-result-documents>a>span,.entrance-result-documents>div>span{align-self:start;font:9px var(--mono);color:var(--gold)}
+.entrance-result-documents small{font:8px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#9eabc0}
+.entrance-result-documents h4{font:600 clamp(19px,2.2vw,30px)/1.08 var(--disp);text-transform:uppercase;margin-top:8px}
+.entrance-result-documents>a:hover{background:#fff;color:var(--ink);padding-inline:20px}.entrance-result-documents>a:hover small{color:#667083}
+.entrance-result-action{height:100%;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;text-align:right}
+.entrance-result-action b{font:700 9px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.entrance-result-documents>a:hover .entrance-result-action b{color:var(--cobalt)}
+.entrance-result-documents>.missing{color:#8794aa}.entrance-result-documents>.missing h4{text-decoration:line-through;text-decoration-thickness:1px}.entrance-result-documents>.missing .entrance-result-action b{color:#9eabc0}
+.entrance-results-empty{display:grid;grid-template-columns:54px minmax(0,1fr);gap:18px;align-items:center;margin-top:38px;padding:25px;background:#111d36;border-left:5px solid var(--gold)}
+.entrance-results-empty>span{width:46px;height:46px;display:grid;place-items:center;background:var(--gold);color:var(--ink);font:700 18px var(--disp)}
+.entrance-results-empty b{font:600 16px var(--disp);text-transform:uppercase}.entrance-results-empty p{font-size:12px;color:#aebbd1;margin-top:5px}
+
 @media(max-width:1100px){
   .applicant-section-nav .wrap{grid-template-columns:repeat(3,minmax(0,1fr))}
   .entrance-program-head,.entrance-program-row{grid-template-columns:64px minmax(180px,.8fr) minmax(220px,1.2fr) 96px}
 }
 @media(max-width:850px){
-  .entrance-exams-head,.entrance-level>header,.entrance-level-grid{grid-template-columns:minmax(0,1fr)}
-  .entrance-exams-head>*,.entrance-level>header>*,.entrance-level-grid>*{min-width:0}
+  .entrance-exams-head,.entrance-results-head,.entrance-level>header,.entrance-level-grid{grid-template-columns:minmax(0,1fr)}
+  .entrance-exams-head>*,.entrance-results-head>*,.entrance-level>header>*,.entrance-level-grid>*{min-width:0}
   .entrance-pdf-button{min-height:120px}
   .entrance-level-nav{grid-template-columns:1fr}
   .entrance-level-nav a{min-height:120px}
@@ -860,6 +895,7 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 @media(max-width:700px){
   .applicant-section-nav .wrap{grid-template-columns:1fr 1fr}
   .entrance-exams-head h2{max-width:100%;font-size:clamp(34px,9.4vw,42px);overflow-wrap:break-word}
+  .entrance-results-head h2{max-width:100%;font-size:clamp(34px,9.4vw,42px);overflow-wrap:break-word}
   .entrance-level-nav{margin-bottom:50px}
   .entrance-level{margin-top:62px}
   .entrance-level>header{gap:24px}
@@ -873,6 +909,10 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .entrance-program-row em,.entrance-program-table.compact .entrance-program-row em{grid-column:2;white-space:normal;border-top:1px solid var(--line)}
   .entrance-program-row span{grid-column:2}
   .entrance-format-note{grid-template-columns:1fr;padding:20px}.entrance-format-note a{grid-column:1;overflow-wrap:anywhere}
+  .entrance-results-level-nav{grid-template-columns:1fr;margin-bottom:50px}.entrance-results-level-nav a{min-height:120px}
+  .entrance-results-level{margin-top:62px}.entrance-results-level>header h3{max-width:100%;font-size:clamp(29px,8.8vw,40px);overflow-wrap:break-word}
+  .entrance-result-documents>a,.entrance-result-documents>div{grid-template-columns:32px minmax(0,1fr);gap:10px;padding:20px 2px}.entrance-result-action{grid-column:2;align-items:flex-start;text-align:left;gap:12px}
+  .entrance-results-empty{grid-template-columns:1fr;padding:20px}
 }
 
 /* Student qualification theses */

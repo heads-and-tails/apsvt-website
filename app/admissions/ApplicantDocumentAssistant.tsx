@@ -58,7 +58,7 @@ export function ApplicantDocumentAssistant() {
 
   return <section className="applicant-rag" id="document-assistant"><div className="wrap">
     <div className="applicant-rag-intro">
-      <div><div className="idx">07 / Помічник за документами</div><h2>Запитайте.<br />Отримайте джерело.</h2></div>
+      <div><div className="idx">08 / Помічник за документами</div><h2>Запитайте.<br />Отримайте джерело.</h2></div>
       <div className="applicant-rag-explainer"><b>RAG · 11 документів · 150 сторінок</b><p>Помічник шукає тільки в опублікованих правилах, положеннях і порядках. Кожна відповідь веде на сторінку офіційного PDF.</p></div>
     </div>
 

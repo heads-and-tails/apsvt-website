@@ -22,10 +22,27 @@ export type PostInput = Omit<Post, "id" | "slug" | "createdAt" | "updatedAt" | "
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { entranceResultsNewsSlug } from "@/lib/entrance-results";
 
 const IMG = "https://images.unsplash.com";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-entrance-results-2026-07-29",
+    slug: entranceResultsNewsSlug,
+    title: "Оприлюднено результати вступних випробувань від 29 липня 2026 року",
+    excerpt: "Приймальна комісія опублікувала результати співбесід для вступників на бакалаврат.",
+    body: "На сайті Академії оприлюднено результати вступних випробувань для вступників на бакалаврат, проведених 29 липня 2026 року. Доступні окремі відомості зі співбесід з української мови, математики, історії України та англійської мови.\n\nПереглянути й завантажити документи можна безпосередньо нижче або у розділі «Вступнику» — «Результати вступних випробувань». Для кожного предмета розміщено окремий офіційний PDF.",
+    category: "Вступ",
+    imageUrl: "/apsvt-regional-students.png",
+    imageAlt: "Вступники Академії під час вступної кампанії",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-07-31T12:00:00.000Z",
+    createdAt: "2026-07-31T12:00:00.000Z",
+    updatedAt: "2026-07-31T12:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-open-day",
     slug: "open-day-2026",
@@ -206,6 +223,10 @@ async function ensureSupabasePosts(): Promise<void> {
   if (!data?.length) {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
+  } else {
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug);
+    const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
+    if (inserted.error) throw inserted.error;
   }
   supabaseSeeded = true;
 }
@@ -213,7 +234,7 @@ async function ensureSupabasePosts(): Promise<void> {
 export async function getPosts(options: { includeDrafts?: boolean; limit?: number } = {}): Promise<Post[]> {
   if (isSupabaseConfigured()) {
     try {
-      if (options.includeDrafts) await ensureSupabasePosts();
+      await ensureSupabasePosts();
       const client = options.includeDrafts ? createSupabaseAdmin() : createSupabasePublicClient();
       const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
       let query = client.from("editorial_posts").select("*");

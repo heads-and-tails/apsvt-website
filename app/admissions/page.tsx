@@ -7,6 +7,7 @@ import { ApplicantConsultationForm } from "./ApplicantConsultationForm";
 import { ApplicantDocumentAssistant } from "./ApplicantDocumentAssistant";
 import { ApplicantDocumentLibrary } from "./ApplicantDocumentLibrary";
 import { EntranceExamSchedule } from "./EntranceExamSchedule";
+import { EntranceExamResults } from "./EntranceExamResults";
 import { getPublicContent as getContentItems } from "@/lib/content";
 
 export const metadata: Metadata = { title: "Вступ 2026", description: "Маршрут вступу до АПСВТ у 2026 році: вибір програми, документи та персональна консультація." };
@@ -30,10 +31,11 @@ export default async function Page() {
       <a href="#tuition"><span>03</span><b>Вартість і оплата</b></a>
       <a href="#documents"><span>04</span><b>Що підготувати</b></a>
       <a href="#entrance-exams"><span>05</span><b>Розклад випробувань</b></a>
-      <a href="#admission-rules"><span>06</span><b>Правила і документи</b></a>
-      <a href="#document-assistant"><span>07</span><b>Запитати помічника</b></a>
-      <a href="#test"><span>08</span><b>Обрати програму</b></a>
-      <a href="#consultation"><span>09</span><b>Консультація</b></a>
+      <a href="#entrance-results"><span>06</span><b>Результати випробувань</b></a>
+      <a href="#admission-rules"><span>07</span><b>Правила і документи</b></a>
+      <a href="#document-assistant"><span>08</span><b>Запитати помічника</b></a>
+      <a href="#test"><span>09</span><b>Обрати програму</b></a>
+      <a href="#consultation"><span>10</span><b>Консультація</b></a>
     </div></nav>
 
     <section id="route"><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Чотири кроки</div><h2>Від вибору до зарахування</h2></div></div><div className="steps">{steps.map(([number, title, description]) => <article className="step" key={number}><span>{number}</span><h3>{title}</h3><p>{description}</p></article>)}</div></div></section>
@@ -46,13 +48,15 @@ export default async function Page() {
 
     <EntranceExamSchedule />
 
+    <EntranceExamResults />
+
     <ApplicantDocumentLibrary />
 
     <ApplicantDocumentAssistant />
 
-    <ProgramFinder index="08 / Тест на програму" />
+    <ProgramFinder index="09 / Тест на програму" />
 
-    <section id="consultation" className="admission-consultation"><div className="wrap admission-consultation-grid"><div className="admission-consultation-copy"><div className="idx">09 / Персональна консультація</div><h2>Розкажіть, що плануєте</h2><p className="lead">Три короткі кроки — і команда вступу підготує відповідь саме для вашого рівня, програми та ситуації.</p><div className="consultation-benefits"><div><span>01</span><p><b>Без листування навмання</b>Оберіть зручний канал і час відповіді.</p></div><div><span>02</span><p><b>Персональний маршрут</b>Отримайте перелік документів і наступних дій.</p></div><div><span>03</span><p><b>Спокійний вибір</b>Порівняйте програми до подання заяви.</p></div></div></div><ApplicantConsultationForm /></div></section>
+    <section id="consultation" className="admission-consultation"><div className="wrap admission-consultation-grid"><div className="admission-consultation-copy"><div className="idx">10 / Персональна консультація</div><h2>Розкажіть, що плануєте</h2><p className="lead">Три короткі кроки — і команда вступу підготує відповідь саме для вашого рівня, програми та ситуації.</p><div className="consultation-benefits"><div><span>01</span><p><b>Без листування навмання</b>Оберіть зручний канал і час відповіді.</p></div><div><span>02</span><p><b>Персональний маршрут</b>Отримайте перелік документів і наступних дій.</p></div><div><span>03</span><p><b>Спокійний вибір</b>Порівняйте програми до подання заяви.</p></div></div></div><ApplicantConsultationForm /></div></section>
 
     <SiteFooter />
   </main>;
