@@ -27,6 +27,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     {slug === "marketing" && <MarketingTeam />}
     <ProgramEntranceExams slug={slug} />
     <ProgramDoctoralResources slug={slug} />
+    {slug === "law" && <section className="soft research-resources"><div className="wrap"><div className="sec-head"><div><div className="idx">Навчально-практичні підрозділи</div><h2>Юридична практика</h2></div><p>Відновлені зі старої версії сайту положення про підрозділи юридичного факультету.</p></div><div className="research-resource-grid"><a href="/documents/archive/old-site/legal-clinic-regulation.pdf" target="_blank" rel="noreferrer"><span>PDF</span><small>Юридична клініка</small><h3>Положення про юридичну клініку</h3><p>Організація навчально-практичної роботи та надання правової допомоги.</p><b>↗</b></a><a href="/documents/archive/old-site/forensic-lab-regulation.pdf" target="_blank" rel="noreferrer"><span>PDF</span><small>Криміналістика</small><h3>Положення про навчальну лабораторію</h3><p>Завдання, структура та організація роботи лабораторії криміналістики.</p><b>↗</b></a></div></div></section>}
     <section className="intl-band"><div className="wrap"><div><div className="idx">{slug === "marketing" ? "05" : "04"} / Міжнародний горизонт</div><h2>Навчайтеся ширше</h2></div><div>{program.international.map(item=><p key={item}>{item}<span>↗</span></p>)}<Link className="cta" href="/international"><span>Усі можливості</span></Link></div></div></section>
     <PageDocuments pagePath={`/programs/${slug}`} />
     <SiteFooter /></main>;

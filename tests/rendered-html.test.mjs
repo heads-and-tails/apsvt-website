@@ -185,11 +185,55 @@ test("publishes the official documents hub in the footer",async()=>{
   assert.match(documentsHtml,/Положення про організацію освітнього процесу/);
   assert.match(documentsHtml,/Запобігання корупції/);
   assert.match(documentsHtml,/Ліцензії та акредитація/);
-  assert.match(documentsHtml,/<b>44<\/b><p>ключових офіційних документів<\/p>/);
+  assert.match(documentsHtml,/<b>57<\/b><p>ключових офіційних документів<\/p>/);
   assert.match(documentsHtml,/438 фрагментів/);
   assert.match(documentsHtml,/href="#catalogue"/);
   assert.match(documentsHtml,/href="#admissions"/);
   assert.doesNotMatch(documentsHtml,/Джерело добірки|Перенесено з офіційного сайту/);
+});
+
+test("publishes a curated archive restored from the former Academy website",async()=>{
+  const [documentsHtml,archiveHtml]=await Promise.all([
+    (await render("/documents")).text(),
+    (await render("/documents/archive")).text(),
+  ]);
+  assert.match(documentsHtml,/href="\/documents\/archive"/);
+  assert.match(documentsHtml,/Методичні та наукові матеріали/);
+  assert.match(archiveHtml,/Важливі файли\.<br\/><em>Знову доступні\.<\/em>/);
+  assert.match(archiveHtml,/<b>21<\/b><p>важливий файл<\/p>/);
+  assert.match(archiveHtml,/Відновлено зі старої версії сайту|Архів старої версії/);
+  assert.match(archiveHtml,/internal-quality-system\.pdf/);
+  assert.match(archiveHtml,/conference-proceedings-2025\.pdf/);
+  assert.match(archiveHtml,/legal-clinic-regulation\.pdf/);
+  assert.match(archiveHtml,/forensic-lab-regulation\.pdf/);
+
+  const restoredFiles=[
+    "academic-staff-development-2025.pdf",
+    "academic-status-2025.pdf",
+    "anti-bullying-harassment-2023.pdf",
+    "anti-bullying-measures-2025.pdf",
+    "anticorruption-report-2023.pdf",
+    "conference-proceedings-2025.pdf",
+    "educational-programme-approval-stages.pdf",
+    "ethics-code.pdf",
+    "forensic-lab-regulation.pdf",
+    "individual-study-plan-2024.pdf",
+    "internal-investigation-2021.pdf",
+    "internal-quality-system.pdf",
+    "legal-clinic-regulation.pdf",
+    "pedagogical-practice-guidelines.pdf",
+    "plagiarism-check-2025.pdf",
+    "professional-qualifications-regulation.pdf",
+    "programme-guarantor.pdf",
+    "reduced-mobility-support.pdf",
+    "research-report-2017-2018.pdf",
+    "social-scholarship-2025.pdf",
+    "statute-amendments-2022.pdf",
+  ];
+  for(const file of restoredFiles){
+    const bytes=await readFile(new URL(`../public/documents/archive/old-site/${file}`,import.meta.url));
+    assert.equal(bytes.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
 });
 
 test("publishes curated Academy, doctoral and GreenFinEDU resources in their relevant sections",async()=>{
@@ -223,8 +267,12 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
   assert.match(documents,/Міжнародні освітні проєкти/);
   assert.match(programs,/Освітньо-наукові програми/);
   assert.match(programs,/educational-facilities\.pdf/);
+  assert.match(programs,/programme-guarantor\.pdf/);
+  assert.match(programs,/professional-qualifications-regulation\.pdf/);
   assert.match(departments,/Програми кафедр для підготовки докторів філософії/);
   assert.match(research,/Програми докторів філософії/);
+  assert.match(research,/conference-proceedings-2025\.pdf/);
+  assert.match(research,/research-report-2017-2018\.pdf/);
   assert.match(international,/GreenFinEDU/);
   assert.match(international,/Проєкт № 101126681/);
   assert.match(international,/project-presentation\.pptx/);
@@ -388,6 +436,8 @@ test("publishes entrance-examination programmes and duplicates doctoral files on
   ]);
   assert.match(psychology,/exam-programs\/2026\/phd\/psychology\.pdf/);
   assert.match(law,/exam-programs\/2026\/phd\/law\.pdf/);
+  assert.match(law,/legal-clinic-regulation\.pdf/);
+  assert.match(law,/forensic-lab-regulation\.pdf/);
   assert.match(publicAdministration,/exam-programs\/2026\/phd\/public-administration\.pdf/);
   for(const html of [psychology,law,publicAdministration]){
     assert.match(html,/foreign-language-english\.pdf/);

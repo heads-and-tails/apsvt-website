@@ -18,7 +18,7 @@ export default function Page() {
       <div className="wrap">
         <div className="crumb">Головна / Документи</div>
         <div className="documents-hero-grid">
-          <div><span className="documents-kicker">Офіційний каталог АПСВТ</span><h1>Документи.<br /><em>Зрозуміло.</em></h1><p>Вступ, навчання, права студентів, доброчесність, ліцензії та оплата — у впорядкованому каталозі з пошуком за змістом.</p><div className="documents-hero-actions"><a className="cta" href="#catalogue"><span>Перейти до каталогу</span></a><a className="cta ghost" href="#assistant"><span>Запитати помічника</span></a></div></div>
+          <div><span className="documents-kicker">Офіційний каталог АПСВТ</span><h1>Документи.<br /><em>Зрозуміло.</em></h1><p>Вступ, навчання, права студентів, доброчесність, ліцензії та оплата — у впорядкованому каталозі з пошуком за змістом.</p><div className="documents-hero-actions"><a className="cta" href="#catalogue"><span>Перейти до каталогу</span></a><a className="cta ghost" href="#assistant"><span>Запитати помічника</span></a><a className="cta ghost" href="/documents/archive"><span>Відновлений архів</span></a></div></div>
           <aside>
             <span>У каталозі</span>
             <b>{documentStats.documents}</b>
