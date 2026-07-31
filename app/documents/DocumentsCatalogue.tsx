@@ -81,7 +81,8 @@ export function DocumentsCatalogue() {
         <div className="documents-list">
           {group.documents.map((document, index) => {
             const external = document.href.startsWith("http");
-            return <a className="document-card" href={document.href} target="_blank" rel="noreferrer" key={document.id}>
+            const internalPage = document.format === "WEB" && !external;
+            return <a className="document-card" href={document.href} target={internalPage ? undefined : "_blank"} rel={internalPage ? undefined : "noreferrer"} key={document.id}>
               <span className="document-card-number">{String(index + 1).padStart(2, "0")}</span>
               <div>
                 <div className="document-card-meta">
@@ -93,7 +94,7 @@ export function DocumentsCatalogue() {
                 <h4>{document.title}</h4>
                 <p>{document.description}</p>
               </div>
-              <span className="document-card-action">{external ? "Офіційне джерело" : "Відкрити"} <b>↗</b></span>
+              <span className="document-card-action">{external ? "Офіційне джерело" : internalPage ? "Перейти на сторінку" : "Відкрити"} <b>{internalPage ? "→" : "↗"}</b></span>
             </a>;
           })}
         </div>

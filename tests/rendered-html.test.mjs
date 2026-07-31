@@ -193,7 +193,7 @@ test("publishes the official documents hub in the footer",async()=>{
 });
 
 test("publishes curated Academy, doctoral and GreenFinEDU resources in their relevant sections",async()=>{
-  const [home,about,documents,programs,departments,international,research,psychology,management,publicAdministration]=await Promise.all([
+  const [home,about,documents,programs,departments,international,research,psychology,management,publicAdministration,studentGuide,regulations,individualPlan,teacherOfYear,graduation]=await Promise.all([
     (await render("/")).text(),
     (await render("/about")).text(),
     (await render("/documents")).text(),
@@ -204,11 +204,17 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
     (await render("/programs/psychology")).text(),
     (await render("/programs/management")).text(),
     (await render("/programs/public-administration")).text(),
+    (await render("/students/guide")).text(),
+    (await render("/documents/regulations")).text(),
+    (await render("/documents/regulations/individual-study-plan")).text(),
+    (await render("/documents/regulations/teacher-of-year")).text(),
+    (await render("/events/graduation-2026")).text(),
   ]);
 
   assert.match(home,/Документи й ресурси Академії/);
-  assert.match(home,/first-year-guide-2024\.pdf/);
+  assert.match(home,/href="\/students\/guide"/);
   assert.match(home,/Свято вручення дипломів/);
+  assert.match(home,/href="\/events\/graduation-2026"/);
   assert.match(about,/Від соціально-трудової освіти до міждисциплінарної Академії/);
   assert.match(about,/Як пов’язані підрозділи/);
   assert.match(about,/statute-2017\.pdf/);
@@ -226,6 +232,18 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
   assert.match(psychology,/c4-psychology\.pdf/);
   assert.match(management,/c1-economics\.pdf/);
   assert.match(publicAdministration,/d4-public-administration\.pdf/);
+  assert.match(studentGuide,/Що зробити насамперед/);
+  assert.match(studentGuide,/first-year-guide-2024\.pdf/);
+  assert.match(regulations,/Оберіть положення/);
+  assert.match(individualPlan,/Індивідуальний навчальний план/);
+  assert.match(individualPlan,/individual-study-plan-2019\.pdf/);
+  assert.match(teacherOfYear,/Професійна майстерність і визнання/);
+  assert.match(teacherOfYear,/best-teacher-competition\.pdf/);
+  assert.match(graduation,/Моменти свята/);
+  assert.match(graduation,/Google Drive/);
+  assert.match(documents,/href="\/students\/guide"/);
+  assert.match(documents,/href="\/documents\/regulations\/individual-study-plan"/);
+  assert.match(documents,/href="\/documents\/regulations\/teacher-of-year"/);
 
   const pdfs=[
     "academy/statute-2017.pdf",
