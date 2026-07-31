@@ -113,8 +113,8 @@ test("renders editorially managed public information",async()=>{
   assert.match(eventsHtml,/Міжнародний день Академії/);
 
   const vacanciesHtml=await (await render("/vacancies")).text();
-  assert.match(vacanciesHtml,/24 серпня 2026 р\./);
-  assert.doesNotMatch(vacanciesHtml,/24 серпня 2025 р\./);
+  assert.doesNotMatch(vacanciesHtml,/vacancy-status/);
+  assert.doesNotMatch(vacanciesHtml,/Термін у розміщеному оголошенні/);
 
   const researchHtml=await (await render("/research")).text();
   assert.match(researchHtml,/Ресурси Академії/);
@@ -185,7 +185,7 @@ test("publishes the official documents hub in the footer",async()=>{
   assert.match(documentsHtml,/Положення про організацію освітнього процесу/);
   assert.match(documentsHtml,/Запобігання корупції/);
   assert.match(documentsHtml,/Ліцензії та акредитація/);
-  assert.match(documentsHtml,/<b>27<\/b><p>ключових офіційних документів<\/p>/);
+  assert.match(documentsHtml,/<b>30<\/b><p>ключових офіційних документів<\/p>/);
   assert.match(documentsHtml,/438 фрагментів/);
   assert.match(documentsHtml,/href="#catalogue"/);
   assert.match(documentsHtml,/href="#admissions"/);
@@ -415,14 +415,15 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(multiAccessMigration,/string_to_array\(access_scope, ','\)/);
 });
 
-test("imports and normalizes sets of Word schedules before publishing",async()=>{
-  const [importer,parser,route,content,styles]=await Promise.all([
+test("keeps Word schedule import out of the Academy panel",async()=>{
+  const [operations,importer,parser,route,content]=await Promise.all([
+    readFile(new URL("../app/panel/OperationsEditor.tsx",import.meta.url),"utf8"),
     readFile(new URL("../app/panel/ScheduleImporter.tsx",import.meta.url),"utf8"),
     readFile(new URL("../lib/schedule-import.ts",import.meta.url),"utf8"),
     readFile(new URL("../app/api/content/import-schedule/route.ts",import.meta.url),"utf8"),
     readFile(new URL("../lib/content.ts",import.meta.url),"utf8"),
-    readFile(new URL("../app/expanded.css",import.meta.url),"utf8"),
   ]);
+  assert.doesNotMatch(operations,/ScheduleImporter/);
   assert.match(importer,/multiple/);
   assert.match(importer,/parseScheduleDocx/);
   assert.match(importer,/Попередній перегляд/);
@@ -434,7 +435,6 @@ test("imports and normalizes sets of Word schedules before publishing",async()=>
   assert.match(route,/requirePagePublisher/);
   assert.match(content,/replaceImportedSchedule/);
   assert.match(content,/json_extract\(payload, '\$\.sourceId'\)/);
-  assert.match(styles,/\.schedule-import-table-wrap/);
 });
 
 test("ships the public BytesLab Academy workspace with protected management",async()=>{

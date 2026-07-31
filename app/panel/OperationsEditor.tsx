@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import type { ContentItem, ContentKind, ContentPayload } from "@/lib/content";
-import { ScheduleImporter } from "./ScheduleImporter";
 
 type Field = { key: string; label: string; placeholder?: string; type?: "text" | "date" | "url" | "textarea" | "document"; options?: string[]; required?: boolean };
 
@@ -77,14 +76,6 @@ export function OperationsEditor({ initialContent, allowedKinds }: { initialCont
 
   function reset() { setEditing(null); setPayload(blank(section.fields)); setMessage(""); }
 
-  function imported(importedItems: ContentItem[], replacedSourceIds: string[]) {
-    setItems((current) => [
-      ...current.filter((item) => !replacedSourceIds.includes(item.payload.sourceId || "")),
-      ...importedItems,
-    ]);
-    setMessage(`${importedItems.length} записів додано з Word.`);
-  }
-
   async function uploadDocument(file: File) {
     setBusy(true); setMessage("Завантажуємо роботу…");
     const data = new FormData();
@@ -155,7 +146,6 @@ export function OperationsEditor({ initialContent, allowedKinds }: { initialCont
   return <section className="operations" id="operations">
     <div className="materials-head operations-heading"><div><span>Операційний контент</span><h2>Керування сайтом</h2><p>Зміни одразу використовуються у відповідних публічних розділах.</p></div><a href={section.publicHref} target="_blank">Перевірити розділ ↗</a></div>
     <div className="operations-tabs" role="tablist" aria-label="Розділи сайту">{availableSections.map((entry) => <button type="button" role="tab" aria-selected={active === entry.kind} className={active === entry.kind ? "active" : ""} onClick={() => choose(entry.kind)} key={entry.kind}><b>{entry.label}</b><span>{items.filter((item) => item.kind === entry.kind).length}</span></button>)}</div>
-    {active === "lesson" && <ScheduleImporter allowedKinds={allowedKinds} onImported={imported} />}
     <div className="operations-layout">
       <form className="operations-form" id="operations-editor" onSubmit={save}><div className="operations-form-head"><div><small>{section.description}</small><h3>{editing ? `Редагувати ${section.singular}` : `Додати ${section.singular}`}</h3></div>{editing && <button type="button" onClick={reset}>Скасувати</button>}</div><div className="operations-fields">{section.fields.map(renderField)}</div><div className="operations-save"><p>{message || "Заповніть поля та збережіть запис."}</p><button disabled={busy} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити запис" : "Додати на сайт"}</button></div></form>
       <div className="operations-list"><div className="operations-list-head"><div><small>Опубліковано</small><h3>{section.label}</h3></div><b>{visible.length}</b></div>{visible.map((item) => <article key={item.id}><div><small>{item.payload.dateLabel || item.payload.date || item.payload.year || item.payload.time}</small><h4>{itemTitle(item)}</h4><p>{item.payload.description || [item.payload.time, item.payload.teacher, item.payload.author, item.payload.place].filter(Boolean).join(" · ")}</p></div><div><button type="button" onClick={() => startEdit(item)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => void remove(item)}>Видалити</button></div></article>)}</div>

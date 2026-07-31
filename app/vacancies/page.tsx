@@ -120,21 +120,10 @@ function groupVacancies(items: Awaited<ReturnType<typeof getPublicContent>>): Va
   }));
 }
 
-function formatDeadline(value: string): string {
-  const date = new Date(`${value}T12:00:00Z`);
-  return Number.isNaN(date.getTime())
-    ? value
-    : new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(date);
-}
-
 export default async function VacanciesPage() {
   const vacancyItems = await getPublicContent("vacancy");
   const groupedVacancies = groupVacancies(vacancyItems);
   const departmentCount = groupedVacancies.reduce((total, faculty) => total + faculty.departments.length, 0);
-  const openItems = vacancyItems.filter((item) => item.payload.status === "Відкрито");
-  const currentItems = openItems.length ? openItems : vacancyItems;
-  const deadline = currentItems.map((item) => item.payload.deadline).filter(Boolean).sort().at(-1) || "";
-  const statusNote = currentItems.find((item) => item.payload.note)?.payload.note || "";
   return (
     <main id="top">
       <SiteHeader />
@@ -178,23 +167,6 @@ export default async function VacanciesPage() {
               </dl>
             </aside>
           </div>
-        </div>
-      </section>
-
-      <section className="vacancy-status">
-        <div className="wrap">
-          <span>Важливо</span>
-          <div>
-            <b>
-              {openItems.length
-                ? `Прийом заяв відкрито${deadline ? ` до ${formatDeadline(deadline)} включно` : ""}.`
-                : `Термін у розміщеному оголошенні${deadline ? ` — до ${formatDeadline(deadline)} включно` : ""}.`}
-            </b>
-            <p>
-              {statusNote || "Перед поданням документів уточніть актуальність прийому заяв у навчально-методичному відділі Академії."}
-            </p>
-          </div>
-          <a href="mailto:info@socosvita.kiev.ua">Уточнити інформацію →</a>
         </div>
       </section>
 
