@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { PageDocuments } from "../components/PageDocuments";
+import { GreenFinEduResources } from "./GreenFinEduResources";
 
 export const metadata: Metadata = {
   title: "Міжнародне співробітництво та вступ іноземців",
@@ -139,12 +140,13 @@ export default function Page() {
 
     <nav className="intl-page-nav" aria-label="Навігація міжнародною сторінкою"><div className="wrap">
       <a href="#partners"><span>01</span><b>Партнери</b></a>
-      <a href="#partnerships-in-action"><span>02</span><b>Події</b></a>
-      <a href="#cooperation"><span>03</span><b>Напрями співпраці</b></a>
-      <a href="#foreign-applicants"><span>04</span><b>Іноземним вступникам</b></a>
-      <a href="#legal"><span>05</span><b>Офіційні джерела</b></a>
-      <a href="#international-faq"><span>06</span><b>Запитання й відповіді</b></a>
-      <a href="#international-contact"><span>07</span><b>Контакти</b></a>
+      <a href="#greenfinedu"><span>02</span><b>GreenFinEDU</b></a>
+      <a href="#partnerships-in-action"><span>03</span><b>Події</b></a>
+      <a href="#cooperation"><span>04</span><b>Напрями співпраці</b></a>
+      <a href="#foreign-applicants"><span>05</span><b>Іноземним вступникам</b></a>
+      <a href="#legal"><span>06</span><b>Офіційні джерела</b></a>
+      <a href="#international-faq"><span>07</span><b>Запитання й відповіді</b></a>
+      <a href="#international-contact"><span>08</span><b>Контакти</b></a>
     </div></nav>
 
     <section id="partners"><div className="wrap">
@@ -158,9 +160,11 @@ export default function Page() {
       <div className="erasmus-note"><span>ERASMUS+</span><div><b>Cooperation Partnerships · KA220-HED</b><p>Академія готує спільну заявку з європейськими партнерами, спрямовану на інтеграцію сталого розвитку та цифрових технологій у вищу освіту.</p></div></div>
     </div></section>
 
+    <GreenFinEduResources />
+
     <section className="international-stories" id="partnerships-in-action"><div className="wrap">
       <div className="international-stories-head">
-        <div><div className="idx">02 / Міжнародне партнерство в дії</div><h2>Діалог, що стає спільною роботою</h2></div>
+        <div><div className="idx">03 / Міжнародне партнерство в дії</div><h2>Діалог, що стає спільною роботою</h2></div>
         <p>Зустрічі, домовленості та підписані угоди перетворюють міжнародні контакти на нові освітні й наукові можливості.</p>
       </div>
 
@@ -206,13 +210,13 @@ export default function Page() {
     </div></section>
 
     <section className="intl-band" id="cooperation"><div className="wrap">
-      <div><div className="idx">03 / Напрями співпраці</div><h2>Працюємо разом</h2><p className="intl-band-lead">Від мобільності до спільних досліджень — міжнародне партнерство має давати практичний результат.</p></div>
+      <div><div className="idx">04 / Напрями співпраці</div><h2>Працюємо разом</h2><p className="intl-band-lead">Від мобільності до спільних досліджень — міжнародне партнерство має давати практичний результат.</p></div>
       <div className="intl-directions">{cooperationAreas.map((area, index) => <p key={area}><b>{String(index + 1).padStart(2, "0")}</b>{area}<span>↗</span></p>)}</div>
     </div></section>
 
     <section className="foreign-applicants" id="foreign-applicants"><div className="wrap">
       <div className="foreign-applicants-head">
-        <div><div className="idx">04 / International applicants</div><h2>Вступ іноземних громадян</h2></div>
+        <div><div className="idx">05 / International applicants</div><h2>Вступ іноземних громадян</h2></div>
         <p>Офіційний маршрут від електронної заяви до зарахування — без посередників і неперевірених інструкцій.</p>
       </div>
 
@@ -235,7 +239,7 @@ export default function Page() {
 
     <section className="soft"><div className="wrap foreign-documents-layout">
       <div>
-        <div className="idx">04.1 / Що підготувати</div><h2>Типовий пакет документів</h2>
+        <div className="idx">05.1 / Що підготувати</div><h2>Типовий пакет документів</h2>
         <div className="foreign-checklist">{typicalDocuments.map((document, index) => <div key={document}><span>{String(index + 1).padStart(2, "0")}</span><p>{document}</p></div>)}</div>
       </div>
       <aside className="foreign-deadlines">
@@ -249,7 +253,7 @@ export default function Page() {
     </div></section>
 
     <section className="international-legal" id="legal"><div className="wrap">
-      <div className="international-legal-head"><div><div className="idx">05 / Перевірені посилання</div><h2>Офіційні джерела</h2></div><p>Посилання ведуть безпосередньо на чинні документи Верховної Ради України, державну систему Study in Ukraine та нормативні документи Академії.</p></div>
+      <div className="international-legal-head"><div><div className="idx">06 / Перевірені посилання</div><h2>Офіційні джерела</h2></div><p>Посилання ведуть безпосередньо на чинні документи Верховної Ради України, державну систему Study in Ukraine та нормативні документи Академії.</p></div>
       <div className="international-source-groups">{legalGroups.map((group, groupIndex) => <details key={group.title} open={groupIndex === 0}>
         <summary><span>{String(groupIndex + 1).padStart(2, "0")}</span><b>{group.title}</b><i>+</i></summary>
         <div>{group.links.map(([title, href]) => <a href={href} target="_blank" rel="noreferrer" key={title}><span>{title}</span><b>Відкрити ↗</b></a>)}</div>
@@ -262,12 +266,12 @@ export default function Page() {
     </div></section>
 
     <section id="international-faq"><div className="wrap">
-      <div className="sec-head"><div><div className="idx">06 / FAQ</div><h2>Запитання й відповіді</h2></div><p>Короткі пояснення перед поданням документів. У складній ситуації зверніться до міжнародного відділу.</p></div>
+      <div className="sec-head"><div><div className="idx">07 / FAQ</div><h2>Запитання й відповіді</h2></div><p>Короткі пояснення перед поданням документів. У складній ситуації зверніться до міжнародного відділу.</p></div>
       <div className="faq-list international-faq-list">{faq.map(({ question, answer }, index) => <details key={question} open={index === 0}><summary><span>{String(index + 1).padStart(2, "0")}</span>{question}<b>+</b></summary><p>{answer}</p>{index === 1 && <a href="https://apply.studyinukraine.gov.ua/home" target="_blank" rel="noreferrer">Перейти до офіційного кабінету ↗</a>}</details>)}</div>
     </div></section>
 
     <section className="international-contact" id="international-contact"><div className="wrap international-contact-card">
-      <div><div className="idx">07 / Міжнародний відділ</div><h2>Допоможемо пройти маршрут</h2><p>Перевіримо вашу ситуацію, підкажемо щодо документів, освітньої пропозиції та електронного запрошення.</p></div>
+      <div><div className="idx">08 / Міжнародний відділ</div><h2>Допоможемо пройти маршрут</h2><p>Перевіримо вашу ситуацію, підкажемо щодо документів, освітньої пропозиції та електронного запрошення.</p></div>
       <div className="international-contact-person"><small>Проректор з міжнародного співробітництва</small><h3>Н. М. Гончаренко</h3><a href="mailto:inz@sococvita.kiev.ua">inz@sococvita.kiev.ua</a><a href="tel:+380506073117">+380 50 607 31 17</a></div>
     </div></section>
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
+import { doctoralProgrammes } from "@/lib/academy-resources";
 
 export const metadata: Metadata = {
   title: "Кафедри Академії",
@@ -24,6 +25,11 @@ export default function Page() {
     <section className="phero"><div className="wrap"><div className="crumb">Головна / Кафедри</div><h1>Кафедри<br />Академії</h1><p className="lead">Освітні та наукові команди, що відповідають за зміст програм, якість викладання і зв’язок навчання з практикою.</p></div></section><div className="phero-rule" />
     <section><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Підрозділи</div><h2>Знайдіть свою кафедру</h2></div><p>На сторінках кафедр зібрані програми, команда, дослідницькі напрями та документи, які публікує редакція.</p></div>
       <div className="department-directory">{departments.map((department) => <Link href={department.href} key={department.title}><span>{department.n}</span><div><h2>{department.title}</h2><p>{department.text}</p></div><b>↗</b></Link>)}</div>
+    </div></section>
+    <section className="department-doctoral"><div className="wrap">
+      <div className="department-doctoral-head"><div><div className="idx">02 / Аспірантура</div><h2>Програми кафедр для підготовки докторів філософії</h2></div><p>Документи 2025 року продубльовано тут, у каталозі освітніх програм і на сторінках відповідних напрямів.</p></div>
+      <div className="department-doctoral-grid">{doctoralProgrammes.map((programme) => <a href={programme.href} target="_blank" rel="noreferrer" key={programme.code}><span>{programme.code}</span><small>{programme.department}</small><h3>{programme.title}</h3><b>PDF · {programme.pages} сторінок ↗</b></a>)}</div>
+      <Link className="department-doctoral-all" href="/programs#doctoral-programmes">Усі освітньо-наукові програми →</Link>
     </div></section>
     <SiteFooter />
   </main>;

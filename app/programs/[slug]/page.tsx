@@ -7,6 +7,7 @@ import { PageDocuments } from "../../components/PageDocuments";
 import { getProgram, programs } from "@/lib/programs";
 import { MarketingTeam } from "./MarketingTeam";
 import { ProgramEntranceExams } from "./ProgramEntranceExams";
+import { ProgramDoctoralResources } from "./ProgramDoctoralResources";
 
 export const dynamic = "force-dynamic";
 export function generateStaticParams(){return programs.map((program)=>({slug:program.slug}));}
@@ -25,6 +26,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <section><div className="wrap career-layout"><div><div className="idx">03 / Після випуску</div><h2>Кар’єрні можливості</h2><div className="career-list">{program.careers.map((career,i)=><div key={career}><span>0{i+1}</span><b>{career}</b></div>)}</div></div><div className="faculty-card"><span className="mono">Команда програми</span><h3>{program.faculty}</h3><div className="faculty-avatar">{program.lead.split(" ").map(n=>n[0]).join("")}</div><b>{program.lead}</b><p>{program.leadRole}</p><Link href="/people">Усі викладачі →</Link></div></div></section>
     {slug === "marketing" && <MarketingTeam />}
     <ProgramEntranceExams slug={slug} />
+    <ProgramDoctoralResources slug={slug} />
     <section className="intl-band"><div className="wrap"><div><div className="idx">{slug === "marketing" ? "05" : "04"} / Міжнародний горизонт</div><h2>Навчайтеся ширше</h2></div><div>{program.international.map(item=><p key={item}>{item}<span>↗</span></p>)}<Link className="cta" href="/international"><span>Усі можливості</span></Link></div></div></section>
     <PageDocuments pagePath={`/programs/${slug}`} />
     <SiteFooter /></main>;

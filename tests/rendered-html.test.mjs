@@ -185,11 +185,80 @@ test("publishes the official documents hub in the footer",async()=>{
   assert.match(documentsHtml,/Положення про організацію освітнього процесу/);
   assert.match(documentsHtml,/Запобігання корупції/);
   assert.match(documentsHtml,/Ліцензії та акредитація/);
-  assert.match(documentsHtml,/<b>30<\/b><p>ключових офіційних документів<\/p>/);
+  assert.match(documentsHtml,/<b>44<\/b><p>ключових офіційних документів<\/p>/);
   assert.match(documentsHtml,/438 фрагментів/);
   assert.match(documentsHtml,/href="#catalogue"/);
   assert.match(documentsHtml,/href="#admissions"/);
   assert.doesNotMatch(documentsHtml,/Джерело добірки|Перенесено з офіційного сайту/);
+});
+
+test("publishes curated Academy, doctoral and GreenFinEDU resources in their relevant sections",async()=>{
+  const [home,about,documents,programs,departments,international,research,psychology,management,publicAdministration]=await Promise.all([
+    (await render("/")).text(),
+    (await render("/about")).text(),
+    (await render("/documents")).text(),
+    (await render("/programs")).text(),
+    (await render("/departments")).text(),
+    (await render("/international")).text(),
+    (await render("/research")).text(),
+    (await render("/programs/psychology")).text(),
+    (await render("/programs/management")).text(),
+    (await render("/programs/public-administration")).text(),
+  ]);
+
+  assert.match(home,/Документи й ресурси Академії/);
+  assert.match(home,/first-year-guide-2024\.pdf/);
+  assert.match(home,/Свято вручення дипломів/);
+  assert.match(about,/Від соціально-трудової освіти до міждисциплінарної Академії/);
+  assert.match(about,/Як пов’язані підрозділи/);
+  assert.match(about,/statute-2017\.pdf/);
+  assert.match(documents,/Установчі документи/);
+  assert.match(documents,/Аспірантура та освітньо-наукові програми/);
+  assert.match(documents,/Міжнародні освітні проєкти/);
+  assert.match(programs,/Освітньо-наукові програми/);
+  assert.match(programs,/educational-facilities\.pdf/);
+  assert.match(departments,/Програми кафедр для підготовки докторів філософії/);
+  assert.match(research,/Програми докторів філософії/);
+  assert.match(international,/GreenFinEDU/);
+  assert.match(international,/Проєкт № 101126681/);
+  assert.match(international,/project-presentation\.pptx/);
+  assert.match(international,/Архів навчальних матеріалів/);
+  assert.match(psychology,/c4-psychology\.pdf/);
+  assert.match(management,/c1-economics\.pdf/);
+  assert.match(publicAdministration,/d4-public-administration\.pdf/);
+
+  const pdfs=[
+    "academy/statute-2017.pdf",
+    "education/individual-study-plan-2019.pdf",
+    "education/best-teacher-competition.pdf",
+    "students/first-year-guide-2024.pdf",
+    "programmes/phd/2025/a5-professional-education.pdf",
+    "programmes/phd/2025/c1-economics.pdf",
+    "programmes/phd/2025/c4-psychology.pdf",
+    "programmes/phd/2025/d4-public-administration.pdf",
+    "programmes/phd/2025/educational-facilities.pdf",
+  ];
+  for(const file of pdfs){
+    const bytes=await readFile(new URL(`../public/documents/${file}`,import.meta.url));
+    assert.equal(bytes.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
+
+  const officeFiles=[
+    "project-presentation.pptx",
+    "project-launch-agenda.docx",
+    "intensive-course-programme.docx",
+    "advanced-online-course-programme.docx",
+    "summer-school-programme.docx",
+  ];
+  for(const file of officeFiles){
+    const bytes=await readFile(new URL(`../public/documents/international/greenfinedu/${file}`,import.meta.url));
+    assert.equal(bytes.subarray(0,2).toString(),"PK",`${file} should remain a valid Office archive`);
+  }
+
+  const structure=await readFile(new URL("../app/about/AcademyStructure.tsx",import.meta.url),"utf8");
+  assert.match(structure,/useState/);
+  assert.match(structure,/aria-live="polite"/);
+  assert.match(structure,/aria-pressed/);
 });
 
 test("answers document questions from the curated RAG index with sources",async()=>{
