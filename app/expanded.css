@@ -796,7 +796,7 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 }
 
 /* Admissions: official entrance-examination schedule extracted from the 2026 PDFs. */
-.applicant-section-nav .wrap{grid-template-columns:repeat(10,minmax(0,1fr))}
+.applicant-section-nav .wrap{grid-template-columns:repeat(11,minmax(0,1fr))}
 .entrance-exams{background:#e9e7e1;scroll-margin-top:88px}
 .entrance-exams-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(270px,.55fr);gap:clamp(42px,8vw,105px);align-items:end;margin-bottom:42px}
 .entrance-exams-head h2{font-size:clamp(42px,6.4vw,88px);line-height:.9;letter-spacing:-.045em;margin-top:14px;text-wrap:balance}
@@ -842,6 +842,33 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .entrance-format-note>span{width:46px;height:46px;display:grid;place-items:center;background:var(--cobalt);color:#fff;font:700 18px var(--disp)}
 .entrance-format-note b{font:600 15px var(--disp);text-transform:uppercase}.entrance-format-note p{font-size:11px;line-height:1.55;color:#667083;margin-top:4px}.entrance-format-note a{font:700 9px var(--mono);letter-spacing:.05em;text-transform:uppercase;border-bottom:2px solid var(--gold);padding-bottom:5px}
 
+/* Admissions: entrance-examination programmes. */
+.exam-programs{background:#f2eedf;color:var(--ink);scroll-margin-top:88px;overflow:hidden}
+.exam-programs-head{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(270px,.46fr);gap:clamp(42px,8vw,105px);align-items:end;margin-bottom:48px}
+.exam-programs-head h2{font-size:clamp(42px,6.4vw,88px);line-height:.9;letter-spacing:-.045em;margin-top:14px;text-wrap:balance}
+.exam-programs-head aside{min-height:215px;padding:24px;background:var(--gold);box-shadow:18px 18px var(--cobalt);display:grid;grid-template-columns:1fr auto;align-content:space-between}
+.exam-programs-head aside span{font:10px var(--mono);letter-spacing:.13em}.exam-programs-head aside b{font:700 74px/.78 var(--disp)}
+.exam-programs-head aside p{grid-column:1/-1;max-width:24ch;font:600 15px/1.25 var(--disp);text-transform:uppercase}
+.exam-program-level-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink);margin:66px 0 82px}
+.exam-program-level-nav a{min-height:170px;padding:24px;display:flex;flex-direction:column;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);transition:background-color .2s,color .2s}
+.exam-program-level-nav span{font:10px var(--mono);color:var(--cobalt)}.exam-program-level-nav b{font:600 clamp(22px,2.5vw,34px) var(--disp);text-transform:uppercase;margin-top:auto}
+.exam-program-level-nav small{font:9px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#687181;margin-top:8px}.exam-program-level-nav a:hover{background:var(--navy);color:#fff}.exam-program-level-nav a:hover small{color:#bbc6da}.exam-program-level-nav a:hover span{color:var(--gold)}
+.exam-program-level{scroll-margin-top:92px;border-top:7px solid var(--cobalt);padding-top:34px;margin-top:92px}
+.exam-program-level>header{display:grid;grid-template-columns:190px minmax(0,1fr);gap:34px;align-items:start}.exam-program-level>header>span{font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cobalt);padding-top:9px}
+.exam-program-level>header h3{font-size:clamp(31px,4.2vw,58px);line-height:.96;letter-spacing:-.035em;max-width:19ch;text-transform:uppercase;text-wrap:balance}.exam-program-level>header p{max-width:62ch;margin-top:15px;color:#626b78;font-size:13px;line-height:1.55}
+.exam-program-documents{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink);margin-top:42px}
+.exam-program-documents>a,.exam-program-documents>div{min-height:172px;padding:22px;display:grid;grid-template-columns:38px minmax(0,1fr);gap:12px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);transition:background-color .2s,color .2s}
+.exam-program-documents>a>span,.exam-program-documents>div>span{font:9px var(--mono);color:var(--cobalt)}.exam-program-documents small{font:8px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#687181}
+.exam-program-documents h4{font:600 clamp(18px,2vw,27px)/1.05 var(--disp);text-transform:uppercase;margin-top:9px}.exam-program-action{grid-column:2;align-self:end;display:flex;justify-content:space-between;align-items:end;gap:14px}.exam-program-action b{font:700 9px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--cobalt);white-space:nowrap}
+.exam-program-documents>a:hover{background:var(--navy);color:#fff}.exam-program-documents>a:hover small{color:#b7c3d8}.exam-program-documents>a:hover .exam-program-action b{color:var(--gold)}
+.exam-program-documents>.pending{background:rgba(255,255,255,.36);color:#89909a}.exam-program-documents>.pending h4{text-decoration:line-through;text-decoration-thickness:1px}.exam-program-documents>.pending .exam-program-action b{color:#89909a}
+.exam-program-supplement{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:24px;align-items:center;margin-top:22px;padding:24px;background:#fff;border-left:7px solid var(--gold)}.exam-program-supplement>span{font:700 10px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--cobalt)}.exam-program-supplement small{font:8px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#687181}.exam-program-supplement h4{font:600 20px var(--disp);text-transform:uppercase;margin-top:7px}.exam-program-supplement a{font:700 9px var(--mono);letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid var(--gold);padding-bottom:5px}
+.exam-program-empty{display:grid;grid-template-columns:58px minmax(0,1fr);gap:20px;align-items:center;margin-top:38px;padding:28px;background:var(--navy);color:#fff;border-left:7px solid var(--gold)}.exam-program-empty>span{width:50px;height:50px;display:grid;place-items:center;background:var(--gold);color:var(--ink);font:700 20px var(--disp)}.exam-program-empty b{font:600 17px var(--disp);text-transform:uppercase}.exam-program-empty p{font-size:12px;color:#afbbcf;margin-top:6px}
+
+/* Programme pages: relevant doctoral entrance programmes. */
+.program-entrance-exams{background:var(--navy);color:#fff}.program-entrance-exams-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(270px,.52fr);gap:70px;align-items:end;margin-bottom:42px}.program-entrance-exams-head .idx{color:var(--gold)}.program-entrance-exams-head h2{font-size:clamp(36px,5.3vw,72px);line-height:.94;letter-spacing:-.04em;margin-top:12px;max-width:15ch}.program-entrance-exams-head>p{border-left:5px solid var(--gold);padding-left:20px;color:#b6c2d8;font-size:14px;line-height:1.6}
+.program-entrance-exam-list{border-top:1px solid #62708b}.program-entrance-exam-list>a,.program-entrance-exam-list>div{display:grid;grid-template-columns:45px minmax(0,1fr) 105px;gap:18px;align-items:center;min-height:104px;padding:18px 10px;border-bottom:1px solid #62708b;transition:background-color .2s,color .2s,padding .2s}.program-entrance-exam-list span{font:9px var(--mono);color:var(--gold)}.program-entrance-exam-list small{display:block;font:8px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#9eabc0;margin-bottom:7px}.program-entrance-exam-list b{font:600 clamp(17px,2vw,25px) var(--disp);text-transform:uppercase}.program-entrance-exam-list strong{font:700 9px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--gold);text-align:right}.program-entrance-exam-list>a:hover{background:#fff;color:var(--ink);padding-inline:18px}.program-entrance-exam-list>a:hover small{color:#687181}.program-entrance-exam-list>a:hover strong{color:var(--cobalt)}.program-entrance-exam-list>.pending{color:#8794aa}.program-entrance-exam-list>.pending b{text-decoration:line-through;text-decoration-thickness:1px}.program-entrance-all{display:inline-block;margin-top:30px;font:700 10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--gold);border-bottom:2px solid var(--gold);padding-bottom:6px}
+
 /* Admissions: published entrance-examination results. */
 .entrance-results{background:var(--navy);color:#fff;scroll-margin-top:88px}
 .entrance-results-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(270px,.55fr);gap:clamp(42px,8vw,105px);align-items:end;margin-bottom:42px}
@@ -880,8 +907,8 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .entrance-program-head,.entrance-program-row{grid-template-columns:64px minmax(180px,.8fr) minmax(220px,1.2fr) 96px}
 }
 @media(max-width:850px){
-  .entrance-exams-head,.entrance-results-head,.entrance-level>header,.entrance-level-grid{grid-template-columns:minmax(0,1fr)}
-  .entrance-exams-head>*,.entrance-results-head>*,.entrance-level>header>*,.entrance-level-grid>*{min-width:0}
+  .entrance-exams-head,.exam-programs-head,.program-entrance-exams-head,.entrance-results-head,.entrance-level>header,.entrance-level-grid{grid-template-columns:minmax(0,1fr)}
+  .entrance-exams-head>*,.exam-programs-head>*,.program-entrance-exams-head>*,.entrance-results-head>*,.entrance-level>header>*,.entrance-level-grid>*{min-width:0}
   .entrance-pdf-button{min-height:120px}
   .entrance-level-nav{grid-template-columns:1fr}
   .entrance-level-nav a{min-height:120px}
@@ -909,6 +936,12 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .entrance-program-row em,.entrance-program-table.compact .entrance-program-row em{grid-column:2;white-space:normal;border-top:1px solid var(--line)}
   .entrance-program-row span{grid-column:2}
   .entrance-format-note{grid-template-columns:1fr;padding:20px}.entrance-format-note a{grid-column:1;overflow-wrap:anywhere}
+  .exam-programs-head h2{max-width:100%;font-size:clamp(34px,9.4vw,42px);overflow-wrap:break-word}.exam-programs-head aside{min-height:180px;box-shadow:10px 10px var(--cobalt)}
+  .exam-program-level-nav{grid-template-columns:1fr;margin:50px 0 62px}.exam-program-level-nav a{min-height:116px}
+  .exam-program-level{margin-top:62px}.exam-program-level>header{grid-template-columns:1fr;gap:15px}.exam-program-level>header h3{max-width:100%;font-size:clamp(29px,8.8vw,40px);overflow-wrap:break-word}
+  .exam-program-documents{grid-template-columns:1fr}.exam-program-documents>a,.exam-program-documents>div{min-height:150px;padding:19px}.exam-program-action{display:grid;justify-content:start}.exam-program-supplement{grid-template-columns:1fr;gap:10px}.exam-program-supplement a{justify-self:start}
+  .exam-program-empty{grid-template-columns:1fr;padding:20px}.program-entrance-exams-head{gap:26px}.program-entrance-exams-head h2{max-width:100%;font-size:clamp(32px,9vw,42px)}
+  .program-entrance-exam-list>a,.program-entrance-exam-list>div{grid-template-columns:32px minmax(0,1fr);gap:10px;padding:18px 2px}.program-entrance-exam-list strong{grid-column:2;text-align:left;margin-top:8px}
   .entrance-results-level-nav{grid-template-columns:1fr;margin-bottom:50px}.entrance-results-level-nav a{min-height:120px}
   .entrance-results-level{margin-top:62px}.entrance-results-level>header h3{max-width:100%;font-size:clamp(29px,8.8vw,40px);overflow-wrap:break-word}
   .entrance-result-documents>a,.entrance-result-documents>div{grid-template-columns:32px minmax(0,1fr);gap:10px;padding:20px 2px}.entrance-result-action{grid-column:2;align-items:flex-start;text-align:left;gap:12px}

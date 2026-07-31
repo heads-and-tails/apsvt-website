@@ -271,6 +271,45 @@ test("announces and duplicates the published entrance results in news",async()=>
   }
 });
 
+test("publishes entrance-examination programmes and duplicates doctoral files on programme pages",async()=>{
+  const admissionsHtml=await (await render("/admissions")).text();
+  assert.match(admissionsHtml,/Програми вступних<br\/>випробувань/);
+  assert.match(admissionsHtml,/01 \/ Бакалаврат/);
+  assert.match(admissionsHtml,/02 \/ Магістратура/);
+  assert.match(admissionsHtml,/03 \/ Доктор філософії/);
+  assert.match(admissionsHtml,/Українська мова як іноземна/);
+  assert.match(admissionsHtml,/Англійська мова/);
+  assert.match(admissionsHtml,/Географія/);
+  assert.match(admissionsHtml,/Методологія наукових досліджень/);
+
+  const programmeFiles={
+    bachelor:["ukrainian-language","mathematics","history-of-ukraine","german-language","biology","physics","chemistry","ukrainian-literature","ukrainian-as-foreign-language"],
+    phd:["professional-education","law","public-administration","economics-international-relations","psychology","foreign-language-english","foreign-language-german"],
+  };
+  for(const [level,files] of Object.entries(programmeFiles)){
+    for(const file of files){
+      assert.match(admissionsHtml,new RegExp(`exam-programs/2026/${level}/${file}\\.pdf`));
+      const pdf=await readFile(new URL(`../public/documents/admissions/exam-programs/2026/${level}/${file}.pdf`,import.meta.url));
+      assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+    }
+  }
+
+  const [psychology,law,publicAdministration]=await Promise.all([
+    (await render("/programs/psychology")).text(),
+    (await render("/programs/law")).text(),
+    (await render("/programs/public-administration")).text(),
+  ]);
+  assert.match(psychology,/exam-programs\/2026\/phd\/psychology\.pdf/);
+  assert.match(law,/exam-programs\/2026\/phd\/law\.pdf/);
+  assert.match(publicAdministration,/exam-programs\/2026\/phd\/public-administration\.pdf/);
+  for(const html of [psychology,law,publicAdministration]){
+    assert.match(html,/foreign-language-english\.pdf/);
+    assert.match(html,/foreign-language-german\.pdf/);
+    assert.match(html,/Методологія наукових досліджень/);
+    assert.match(html,/href="\/admissions#entrance-programs"/);
+  }
+});
+
 test("publishes official 2026 tuition, secure bank details and local contracts",async()=>{
   const html=await (await render("/tuition")).text();
   assert.match(html,/Вартість<br\/>навчання/);
