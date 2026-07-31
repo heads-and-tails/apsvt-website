@@ -185,10 +185,16 @@ test("publishes the official documents hub in the footer",async()=>{
   assert.match(documentsHtml,/Положення про організацію освітнього процесу/);
   assert.match(documentsHtml,/Запобігання корупції/);
   assert.match(documentsHtml,/Ліцензії та акредитація/);
+  assert.match(documentsHtml,/Інклюзивність і безбар’єрність/);
+  assert.match(documentsHtml,/Якість освіти/);
   assert.match(documentsHtml,/<b>57<\/b><p>ключових офіційних документів<\/p>/);
   assert.match(documentsHtml,/438 фрагментів/);
   assert.match(documentsHtml,/href="#catalogue"/);
   assert.match(documentsHtml,/href="#admissions"/);
+  assert.match(documentsHtml,/href="#quality"/);
+  assert.match(documentsHtml,/href="#accreditation"/);
+  assert.match(documentsHtml,/href="#inclusiveness"/);
+  assert.match(homeHtml,/href="\/documents#anticorruption"[^>]*>Запобігання корупції<\/a>/);
   assert.doesNotMatch(documentsHtml,/Джерело добірки|Перенесено з офіційного сайту/);
 });
 
@@ -197,7 +203,7 @@ test("publishes a curated archive restored from the former Academy website",asyn
     (await render("/documents")).text(),
     (await render("/documents/archive")).text(),
   ]);
-  assert.match(documentsHtml,/href="\/documents\/archive"/);
+  assert.doesNotMatch(documentsHtml,/href="\/documents\/archive"/);
   assert.match(documentsHtml,/Методичні та наукові матеріали/);
   assert.match(archiveHtml,/Важливі файли\.<br\/><em>Знову доступні\.<\/em>/);
   assert.match(archiveHtml,/<b>21<\/b><p>важливий файл<\/p>/);
@@ -260,7 +266,8 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
   assert.match(home,/Свято вручення дипломів/);
   assert.match(home,/href="\/events\/graduation-2026"/);
   assert.match(about,/Від соціально-трудової освіти до міждисциплінарної Академії/);
-  assert.match(about,/Як пов’язані підрозділи/);
+  assert.match(about,/Дослідіть систему,/);
+  assert.match(about,/17(?:<!-- -->)? вузлів у схемі/);
   assert.match(about,/statute-2017\.pdf/);
   assert.match(documents,/Установчі документи/);
   assert.match(documents,/Аспірантура та освітньо-наукові програми/);
@@ -325,6 +332,39 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
   assert.match(structure,/useState/);
   assert.match(structure,/aria-live="polite"/);
   assert.match(structure,/aria-pressed/);
+});
+
+test("enriches programme pages with departments, practice partners, people and legal clinic",async()=>{
+  const [finance,management,tourism,law,clinic,departments,marketing]=await Promise.all([
+    (await render("/programs/finance")).text(),
+    (await render("/programs/management")).text(),
+    (await render("/programs/tourism")).text(),
+    (await render("/programs/law")).text(),
+    (await render("/programs/law/legal-clinic")).text(),
+    (await render("/departments")).text(),
+    (await render("/programs/marketing")).text(),
+  ]);
+
+  for(const html of [finance,management,tourism,law,marketing]){
+    assert.match(html,/Кафедра і академічне середовище/);
+    assert.match(html,/Практика і професійне середовище/);
+    assert.match(html,/Документи програми/);
+  }
+  assert.match(finance,/Райффайзен Банк/);
+  assert.match(finance,/CFA Institute Research Challenge/);
+  assert.match(management,/Сільпо Food/);
+  assert.match(management,/Ігор Чорнодід/);
+  assert.match(tourism,/Join UP!/);
+  assert.match(tourism,/Pegas Touristik/);
+  assert.match(law,/Юридична клініка «Феміда»/);
+  assert.match(law,/href="\/programs\/law\/legal-clinic"/);
+  assert.match(clinic,/Право, яке допомагає людям/);
+  assert.match(clinic,/Опубліковані тоді години прийому й телефон є історичними/);
+  assert.match(clinic,/legalaid\.gov\.ua/);
+  assert.match(departments,/13(?:<!-- -->)? кафедр і навчальних осередків/);
+  assert.match(departments,/Кафедра кримінального права, процесу та криміналістики/);
+  assert.match(departments,/Кафедра інтелектуальних систем та цифрових технологій/);
+  assert.match(marketing,/nadiia-pysarenko\.webp/);
 });
 
 test("answers document questions from the curated RAG index with sources",async()=>{

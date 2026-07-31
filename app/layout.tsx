@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     description: "Обирай програму, знайомся з Академією та плануй вступ.",
     locale: "uk_UA",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "АПСВТ — знання для людей і змін" }],
+    images: [{ url: "/og-academy-2026.png", width: 1200, height: 630, alt: "АПСВТ — сучасна освіта, дослідження і професійна спільнота" }],
   },
-  twitter: { card: "summary_large_image", title: "АПСВТ — освіта з людським виміром", description: "Знання для людей і змін.", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", title: "АПСВТ — освіта з людським виміром", description: "Знання для людей і змін.", images: ["/og-academy-2026.png"] },
 };
 
 export default function RootLayout({

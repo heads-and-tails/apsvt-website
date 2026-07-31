@@ -12,52 +12,64 @@ export const documentCategories = [
     description: "Організація навчання, індивідуальна траєкторія, академічний статус і студентське самоврядування.",
   },
   {
-    id: "integrity",
+    id: "inclusiveness",
     number: "03",
+    title: "Інклюзивність і безбар’єрність",
+    description: "Доступність навчального середовища, підтримка вступників і здобувачів з особливими освітніми потребами.",
+  },
+  {
+    id: "quality",
+    number: "04",
+    title: "Якість освіти",
+    description: "Внутрішня система якості, гаранти програм, професійний розвиток викладачів і процедури оновлення програм.",
+  },
+  {
+    id: "integrity",
+    number: "05",
     title: "Доброчесність і безпека",
     description: "Етика, перевірка на плагіат, запобігання булінгу, мобінгу, кібербулінгу та харасменту.",
   },
   {
     id: "anticorruption",
-    number: "04",
+    number: "06",
     title: "Запобігання корупції",
     description: "Чинний план заходів, порядок внутрішнього розслідування та канали конфіденційного повідомлення.",
   },
   {
-    id: "licenses",
-    number: "05",
+    id: "accreditation",
+    number: "07",
     title: "Ліцензії та акредитація",
     description: "Право Академії провадити освітню діяльність і архів сертифікатів освітніх програм.",
   },
   {
     id: "payment",
-    number: "06",
+    number: "08",
     title: "Вартість, оплата й договори",
     description: "Офіційна вартість навчання 2026/27 та шаблони договорів про освітні послуги.",
   },
   {
     id: "governance",
-    number: "07",
+    number: "09",
     title: "Установчі документи",
     description: "Статут Академії та ключові положення про внутрішню організацію й академічну спільноту.",
   },
   {
     id: "doctoral",
-    number: "08",
+    number: "10",
     title: "Аспірантура та освітньо-наукові програми",
     description: "Програми підготовки докторів філософії та відомості про забезпечення освітньої діяльності.",
   },
   {
     id: "international-projects",
-    number: "09",
+    number: "11",
     title: "Міжнародні освітні проєкти",
     description: "Програми курсів, презентації та офіційні матеріали Erasmus+ і модуля Жан Моне GreenFinEDU.",
   },
   {
-    id: "research-archive",
-    number: "10",
+    id: "research",
+    number: "12",
     title: "Методичні та наукові матеріали",
-    description: "Відновлені зі старої версії сайту збірники, звіти та положення навчально-практичних підрозділів.",
+    description: "Збірники конференцій, звіти про наукову роботу та методичні матеріали для навчання й досліджень.",
   },
 ] as const;
 
@@ -187,7 +199,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "social-scholarship",
-    category: "education",
+    category: "inclusiveness",
     title: "Положення про персональну соціальну стипендію",
     description: "Умови призначення персональної соціальної стипендії Фонду мерії Барселони.",
     href: "/documents/archive/old-site/social-scholarship-2025.pdf",
@@ -199,7 +211,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "internal-quality-system",
-    category: "education",
+    category: "quality",
     title: "Система внутрішнього забезпечення якості вищої освіти",
     description: "Положення про внутрішні процедури забезпечення та вдосконалення якості освіти в Академії.",
     href: "/documents/archive/old-site/internal-quality-system.pdf",
@@ -210,7 +222,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "academic-staff-development",
-    category: "education",
+    category: "quality",
     title: "Підвищення кваліфікації педагогічних і науково-педагогічних працівників",
     description: "Положення про професійний розвиток і визнання результатів підвищення кваліфікації працівників Академії.",
     href: "/documents/archive/old-site/academic-staff-development-2025.pdf",
@@ -221,7 +233,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "programme-guarantor",
-    category: "education",
+    category: "quality",
     title: "Положення про гаранта освітньої програми",
     description: "Повноваження, відповідальність і порядок призначення гаранта освітньої програми.",
     href: "/documents/archive/old-site/programme-guarantor.pdf",
@@ -232,7 +244,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "professional-qualifications",
-    category: "education",
+    category: "quality",
     title: "Здобуття та присвоєння професійних кваліфікацій",
     description: "Положення про порядок здобуття і присвоєння професійних кваліфікацій в Академії.",
     href: "/documents/archive/old-site/professional-qualifications-regulation.pdf",
@@ -254,7 +266,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "educational-programme-approval-stages",
-    category: "education",
+    category: "quality",
     title: "Етапи затвердження нової редакції освітньої програми",
     description: "Графік обговорення, перегляду та затвердження програми «Професійна освіта (Цифрові технології)».",
     href: "/documents/archive/old-site/educational-programme-approval-stages.pdf",
@@ -265,7 +277,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "reduced-mobility-support",
-    category: "education",
+    category: "inclusiveness",
     title: "Висновок щодо доступності для маломобільних груп населення",
     description: "Оцінка доступності навчального корпусу Академії для осіб з інвалідністю та інших маломобільних груп.",
     href: "/documents/archive/old-site/reduced-mobility-support.pdf",
@@ -357,7 +369,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "educational-license",
-    category: "licenses",
+    category: "accreditation",
     title: "Ліцензія на провадження освітньої діяльності",
     description: "Офіційні відомості про право Академії здійснювати освітню діяльність.",
     href: "/documents/licenses/license-educational-activity-2021.pdf",
@@ -369,7 +381,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "accreditation-archive",
-    category: "licenses",
+    category: "accreditation",
     title: "Архів сертифікатів освітніх програм",
     description: "16 сканів акредитаційних сертифікатів із переходом до державних реєстрів.",
     href: "/about/licenses#certificates",
@@ -520,7 +532,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "conference-proceedings-2025",
-    category: "research-archive",
+    category: "research",
     title: "Збірник міжнародної науково-практичної конференції 2025",
     description: "Матеріали конференції про економічні, фінансові, управлінські, маркетингові та правові моделі розвитку України.",
     href: "/documents/archive/old-site/conference-proceedings-2025.pdf",
@@ -531,7 +543,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "research-report-2017-2018",
-    category: "research-archive",
+    category: "research",
     title: "Звіт з наукової роботи Академії за 2017/18 навчальний рік",
     description: "Архівний огляд напрямів досліджень, публікацій і наукових заходів Академії.",
     href: "/documents/archive/old-site/research-report-2017-2018.pdf",
@@ -542,7 +554,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "legal-clinic-regulation",
-    category: "research-archive",
+    category: "education",
     title: "Положення про юридичну клініку Академії",
     description: "Організація навчально-практичної роботи юридичної клініки та надання правової допомоги.",
     href: "/documents/archive/old-site/legal-clinic-regulation.pdf",
@@ -553,7 +565,7 @@ export const officialDocuments: OfficialDocument[] = [
   },
   {
     id: "forensic-lab-regulation",
-    category: "research-archive",
+    category: "education",
     title: "Положення про навчальну лабораторію криміналістики",
     description: "Завдання, структура та організація роботи навчальної лабораторії юридичного факультету.",
     href: "/documents/archive/old-site/forensic-lab-regulation.pdf",

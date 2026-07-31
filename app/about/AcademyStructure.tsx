@@ -1,109 +1,70 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
+type BranchId = "governance" | "education" | "science" | "support";
 type StructureNode = {
   id: string;
+  branch: BranchId;
   eyebrow: string;
   title: string;
   description: string;
+  path: string;
+  facts: string[];
   href: string;
   linkLabel: string;
 };
 
 const nodes: StructureNode[] = [
-  {
-    id: "governance",
-    eyebrow: "Управління",
-    title: "Ректорат і Вчена рада",
-    description: "Формують стратегію Академії, забезпечують академічне управління, якість освіти та виконання рішень колегіальних органів.",
-    href: "/people",
-    linkLabel: "Керівництво і команда",
-  },
-  {
-    id: "economic-faculty",
-    eyebrow: "Факультет",
-    title: "Економіки, соціальних технологій і туризму",
-    description: "Об’єднує кафедри психології, фінансів, економіки та менеджменту, маркетингу, публічного управління, соціальної роботи й туризму.",
-    href: "/departments",
-    linkLabel: "Переглянути кафедри",
-  },
-  {
-    id: "law-faculty",
-    eyebrow: "Факультет",
-    title: "Юридичний факультет",
-    description: "Готує правників, поєднуючи фундаментальну юридичну освіту з клінічною практикою, дослідженнями та роботою з реальними кейсами.",
-    href: "/programs/law",
-    linkLabel: "Програма «Право»",
-  },
-  {
-    id: "languages",
-    eyebrow: "Загальноакадемічна кафедра",
-    title: "Іноземних мов і гуманітарних дисциплін",
-    description: "Забезпечує мовну, гуманітарну й міжкультурну підготовку студентів усіх програм, а також навчання української мови іноземців.",
-    href: "/departments/languages-humanities",
-    linkLabel: "Сторінка кафедри",
-  },
-  {
-    id: "doctoral",
-    eyebrow: "Наука",
-    title: "Аспірантура та освітньо-наукові програми",
-    description: "Координує підготовку докторів філософії, вступні випробування, освітню складову та індивідуальні дослідницькі траєкторії.",
-    href: "/programs#doctoral-programmes",
-    linkLabel: "Програми PhD",
-  },
-  {
-    id: "international",
-    eyebrow: "Міжнародна діяльність",
-    title: "Міжнародний відділ",
-    description: "Партнерства, академічна мобільність, міжнародні проєкти, робота з іноземними вступниками та участь у програмах Erasmus+.",
-    href: "/international",
-    linkLabel: "Міжнародні можливості",
-  },
-  {
-    id: "services",
-    eyebrow: "Освітня інфраструктура",
-    title: "Бібліотека, кампус і центр розвитку освіти",
-    description: "Підтримують навчання, підвищення кваліфікації, доступ до інформаційних ресурсів і повсякденне життя академічної спільноти.",
-    href: "/facilities",
-    linkLabel: "Інфраструктура Академії",
-  },
+  { id: "rectorate", branch: "governance", eyebrow: "Управління", title: "Ректорат", description: "Забезпечує стратегічне й операційне управління Академією, виконання рішень колегіальних органів і розвиток освітнього середовища.", path: "Академія / Управління", facts: ["ректор", "три проректорські напрями", "відкрита команда"], href: "/people", linkLabel: "Керівництво Академії" },
+  { id: "academic-council", branch: "governance", eyebrow: "Колегіальний орган", title: "Вчена рада", description: "Розглядає освітню, наукову, кадрову й організаційну політику та ухвалює ключові академічні рішення.", path: "Академія / Управління", facts: ["освітні програми", "наукова політика", "кадрові рішення"], href: "/people", linkLabel: "Академічна команда" },
+  { id: "quality", branch: "governance", eyebrow: "Якість освіти", title: "Внутрішня система якості", description: "Координує перегляд програм, опитування учасників освітнього процесу, роботу гарантів і підготовку до акредитації.", path: "Академія / Управління / Якість", facts: ["гаранти програм", "опитування", "акредитації"], href: "/documents#quality", linkLabel: "Документи з якості" },
+  { id: "economic-faculty", branch: "education", eyebrow: "Факультет", title: "Економіки, соціальних технологій і туризму", description: "Об’єднує економічні, управлінські, психологічні, соціальні, цифрові, туристичні та сервісні напрями.", path: "Академія / Освіта", facts: ["8 кафедр", "8 програм сайту", "практичні лабораторії"], href: "/departments", linkLabel: "Кафедри факультету" },
+  { id: "law-faculty", branch: "education", eyebrow: "Факультет", title: "Юридичний факультет", description: "Готує правників і публічних управлінців, поєднуючи фундаментальні дисципліни з клінічною та криміналістичною практикою.", path: "Академія / Освіта", facts: ["4 кафедри", "клініка «Феміда»", "лабораторія криміналістики"], href: "/programs/law", linkLabel: "Юридична освіта" },
+  { id: "departments", branch: "education", eyebrow: "Академічні команди", title: "Кафедри Академії", description: "Кафедри відповідають за зміст дисциплін, викладацькі команди, практику, дослідження та зв’язок із роботодавцями.", path: "Академія / Освіта", facts: ["13 кафедр і осередків", "команди програм", "партнери практики"], href: "/departments", linkLabel: "Повна мапа кафедр" },
+  { id: "languages", branch: "education", eyebrow: "Загальноакадемічна кафедра", title: "Іноземних мов і гуманітарних дисциплін", description: "Забезпечує мовну, гуманітарну й міжкультурну підготовку всіх студентів, а також українську мову для іноземців.", path: "Академія / Освіта", facts: ["професійна англійська", "українська для іноземців", "критичне мислення"], href: "/departments/languages-humanities", linkLabel: "Профіль кафедри" },
+  { id: "doctoral", branch: "science", eyebrow: "Третій рівень освіти", title: "Аспірантура", description: "Координує вступ, освітню складову, індивідуальні плани та дослідницькі траєкторії майбутніх докторів філософії.", path: "Академія / Наука", facts: ["A5", "C1", "C4", "D4"], href: "/programs#doctoral-programmes", linkLabel: "Програми PhD" },
+  { id: "research", branch: "science", eyebrow: "Дослідження", title: "Наукова робота й видання", description: "Конференції, фахові публікації, репозитарій кваліфікаційних робіт та підтримка студентських досліджень.", path: "Академія / Наука", facts: ["Вісник АПСВТ", "конференції", "репозитарій"], href: "/research", linkLabel: "Науковий портал" },
+  { id: "international", branch: "science", eyebrow: "Міжнародна діяльність", title: "Міжнародний відділ", description: "Розвиває мобільність, інституційні партнерства, міжнародні освітні проєкти та супровід іноземних вступників.", path: "Академія / Міжнародність", facts: ["Erasmus+", "подвійні дипломи", "іноземні студенти"], href: "/international", linkLabel: "Міжнародні можливості" },
+  { id: "greenfinedu", branch: "science", eyebrow: "Проєкт Erasmus+", title: "GreenFinEDU", description: "Освітній модуль Жан Моне про Європейську зелену угоду, сталі фінанси й політику Європейського Союзу.", path: "Академія / Міжнародність / Проєкти", facts: ["2023–2026", "базовий курс", "літня школа"], href: "/international#greenfinedu", linkLabel: "Сторінка проєкту" },
+  { id: "admissions", branch: "support", eyebrow: "Сервіс", title: "Приймальна комісія", description: "Супроводжує вступників від вибору програми й подання документів до вступних випробувань та зарахування.", path: "Академія / Сервіси", facts: ["вступ 2026", "результати випробувань", "програми іспитів"], href: "/admissions", linkLabel: "Вступ до Академії" },
+  { id: "library", branch: "support", eyebrow: "Освітня інфраструктура", title: "Бібліотека", description: "Забезпечує доступ до навчальної, наукової та правничої літератури, каталогів і цифрових ресурсів.", path: "Академія / Сервіси", facts: ["70 000+ одиниць", "електронний каталог", "читальні місця"], href: "/facilities/library", linkLabel: "Бібліотека Академії" },
+  { id: "clinic", branch: "support", eyebrow: "Практичний підрозділ", title: "Юридична клініка «Феміда»", description: "Навчально-практичний простір первинної правової допомоги, правопросвітництва та супервізованої роботи студентів.", path: "Академія / Юридичний факультет", facts: ["клінічна освіта", "етика", "правопросвіта"], href: "/programs/law/legal-clinic", linkLabel: "Юридична клініка" },
+  { id: "travel-lab", branch: "support", eyebrow: "Навчальна лабораторія", title: "«Академія подорожей»", description: "Модель туристичного підприємства, де студенти створюють маршрути, розраховують продукт і проєктують сервіс.", path: "Академія / ФЕСТТ / Туризм", facts: ["маршрути", "туристичний продукт", "сервіс"], href: "/materials/tourism-lab-533745080.html", linkLabel: "Лабораторія туризму" },
+  { id: "campus", branch: "support", eyebrow: "Інфраструктура", title: "Кампус і гуртожиток", description: "Аудиторії, простори для навчання й подій, бібліотека, укриття, харчування та проживання студентів.", path: "Академія / Сервіси", facts: ["навчальний корпус", "гуртожиток", "студентські простори"], href: "/facilities", linkLabel: "Кампус і сервіси" },
+  { id: "student-government", branch: "support", eyebrow: "Студентська участь", title: "Студентське самоврядування", description: "Представляє інтереси студентів, розвиває ініціативи, культурні події та участь здобувачів в управлінні якістю освіти.", path: "Академія / Спільнота", facts: ["представництво", "ініціативи", "зворотний зв’язок"], href: "/students", linkLabel: "Студентський простір" },
 ];
 
-const branches = [
-  { label: "Управління", ids: ["governance"] },
-  { label: "Освіта", ids: ["economic-faculty", "law-faculty", "languages"] },
-  { label: "Наука й міжнародність", ids: ["doctoral", "international"] },
-  { label: "Підтримка", ids: ["services"] },
+const branches: { id: BranchId; label: string; short: string }[] = [
+  { id: "governance", label: "Управління і якість", short: "Стратегія, рішення, якість" },
+  { id: "education", label: "Освіта", short: "Факультети й кафедри" },
+  { id: "science", label: "Наука й міжнародність", short: "Дослідження, PhD, Erasmus+" },
+  { id: "support", label: "Сервіси й практика", short: "Вступ, кампус, лабораторії" },
 ];
 
 export function AcademyStructure() {
+  const [branchId, setBranchId] = useState<BranchId>("education");
+  const branchNodes = useMemo(() => nodes.filter((node) => node.branch === branchId), [branchId]);
   const [activeId, setActiveId] = useState("economic-faculty");
-  const active = nodes.find((node) => node.id === activeId) || nodes[0];
+  const active = nodes.find((node) => node.id === activeId) || branchNodes[0];
+
+  function selectBranch(id: BranchId) {
+    setBranchId(id);
+    setActiveId(nodes.find((node) => node.branch === id)?.id || nodes[0].id);
+  }
 
   return <section className="academy-structure" id="structure"><div className="wrap">
     <div className="academy-structure-head">
-      <div><div className="idx">04 / Структура Академії</div><h2>Як пов’язані підрозділи</h2></div>
-      <p>Оберіть вузол схеми, щоб побачити його роль і перейти до відповідного розділу сайту.</p>
+      <div><div className="idx">04 / Структура Академії</div><h2>Дослідіть систему,<br />а не просто список</h2></div>
+      <p>Оберіть гілку й підрозділ. Схема покаже його місце, функцію, ключові напрями та пряме посилання на відповідний розділ.</p>
     </div>
+    <div className="structure-root-line"><button type="button" onClick={() => selectBranch("governance")}><small>АПСВТ · 1993</small><b>Академія праці, соціальних відносин і туризму</b><span>{nodes.length} вузлів у схемі</span></button></div>
+    <div className="structure-branch-tabs" role="tablist" aria-label="Гілки структури Академії">{branches.map((branch) => <button role="tab" aria-selected={branchId === branch.id} className={branchId === branch.id ? "active" : ""} onClick={() => selectBranch(branch.id)} type="button" key={branch.id}><span>{String(branches.indexOf(branch) + 1).padStart(2, "0")}</span><b>{branch.label}</b><small>{branch.short}</small></button>)}</div>
     <div className="structure-layout">
-      <div className="structure-tree" aria-label="Інтерактивна організаційна структура Академії">
-        <button className="structure-root" type="button" onClick={() => setActiveId("governance")} aria-pressed={activeId === "governance"}>
-          <small>АПСВТ</small><b>Академія праці, соціальних відносин і туризму</b>
-        </button>
-        <div className="structure-branches">
-          {branches.map((branch) => <div className="structure-branch" key={branch.label}>
-            <span>{branch.label}</span>
-            <div>{branch.ids.map((id) => {
-              const node = nodes.find((item) => item.id === id)!;
-              return <button className={activeId === id ? "active" : ""} type="button" onClick={() => setActiveId(id)} aria-pressed={activeId === id} key={id}>{node.title}</button>;
-            })}</div>
-          </div>)}
-        </div>
-      </div>
+      <div className="structure-node-grid" role="tabpanel">{branchNodes.map((node, index) => <button className={active.id === node.id ? "active" : ""} type="button" onClick={() => setActiveId(node.id)} aria-pressed={active.id === node.id} key={node.id}><span>{String(index + 1).padStart(2, "0")}</span><small>{node.eyebrow}</small><b>{node.title}</b><i>→</i></button>)}</div>
       <aside className="structure-detail" aria-live="polite">
-        <span>{active.eyebrow}</span><h3>{active.title}</h3><p>{active.description}</p><Link href={active.href}>{active.linkLabel} →</Link>
+        <small>{active.path}</small><span>{active.eyebrow}</span><h3>{active.title}</h3><p>{active.description}</p><div>{active.facts.map((fact) => <b key={fact}>{fact}</b>)}</div><Link href={active.href}>{active.linkLabel} →</Link>
       </aside>
     </div>
   </div></section>;
