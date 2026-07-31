@@ -4,7 +4,9 @@ import { MarketingTeam } from "./MarketingTeam";
 
 function PartnerCard({ partner }: { partner: ProgrammePartner }) {
   const content = <>
-    <div className={`programme-partner-mark ${partner.tone || "cream"}`}><span>{partner.mark}</span></div>
+    <div className={`programme-partner-mark ${partner.tone || "cream"} ${partner.logo ? "has-logo" : "is-format"}`}>
+      {partner.logo ? <img src={partner.logo} alt={partner.logoAlt || `Логотип ${partner.name}`} /> : <><span aria-hidden="true">{partner.mark}</span><small>формат практики</small></>}
+    </div>
     <small>{partner.kind}</small>
     <h3>{partner.name}</h3>
     <p>{partner.note}</p>

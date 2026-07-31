@@ -154,7 +154,7 @@ export const programs: Program[] = [
     ],
     careers:["Адвокат / помічник адвоката","Юрисконсульт","Фахівець органів влади","Комплаєнс-менеджер","Правозахисник"],
     international:["Подвійний диплом у Польщі","LLM та міжнародне право","Міжнародні правничі проєкти"],
-    materials:[{label:"Юридичний факультет",href:"/materials/faculty-of-law-62def8b34.html"},{label:"Юридична клініка",href:"/materials/legal-487307445.html"}],
+    materials:[{label:"Юридичний факультет",href:"/departments/law-faculty"},{label:"Юридична клініка",href:"/programs/law/legal-clinic"}],
     tags:["справедливість","аргументація","люди","держава"],
   },
   {

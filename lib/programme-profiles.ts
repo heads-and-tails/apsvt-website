@@ -1,6 +1,8 @@
 export type ProgrammePartner = {
   name: string;
   mark: string;
+  logo?: string;
+  logoAlt?: string;
   kind: string;
   note: string;
   href?: string;
@@ -77,9 +79,9 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
     practiceSource: "Новина про партнерство · 17.03.2026",
     practiceSourceHref: "https://www.socosvita.kiev.ua/node/3295",
     partners: [
-      { name: "Райффайзен Банк", mark: "RB", kind: "Стажування · 2026", note: "Практика у фінансовій установі з можливістю подальшого працевлаштування.", href: "https://raiffeisen.ua/", tone: "gold" },
-      { name: "CIMA", mark: "CIMA", kind: "Професійний стандарт", note: "Звірка змісту магістерських фінансових модулів із міжнародними вимогами.", href: "https://myfuture.cimaglobal.com/", tone: "blue" },
-      { name: "CFA Institute Research Challenge", mark: "CFA", kind: "Студентський кейс", note: "Командне інвестиційне дослідження та презентація аналітичного звіту.", href: "https://www.cfainstitute.org/insights/events/research-challenge", tone: "ink" },
+      { name: "Райффайзен Банк", mark: "RB", logo: "/partners/raiffeisen.svg", logoAlt: "Логотип Райффайзен Банку", kind: "Стажування · 2026", note: "Практика у фінансовій установі з можливістю подальшого працевлаштування.", href: "https://raiffeisen.ua/", tone: "gold" },
+      { name: "CIMA", mark: "CIMA", logo: "/partners/cima.png", logoAlt: "Логотип CIMA", kind: "Професійний стандарт", note: "Звірка змісту магістерських фінансових модулів із міжнародними вимогами.", href: "https://myfuture.cimaglobal.com/", tone: "blue" },
+      { name: "CFA Institute Research Challenge", mark: "CFA", logo: "/partners/cfa-institute.svg", logoAlt: "Логотип CFA Institute", kind: "Студентський кейс", note: "Командне інвестиційне дослідження та презентація аналітичного звіту.", href: "https://www.cfainstitute.org/insights/events/research-challenge", tone: "ink" },
     ],
     team: [
       { name: "Яніна Ткаченко", role: "завідувачка кафедри, кандидатка економічних наук, доцентка", summary: "Понад 20 років викладає банківські дисципліни, працює з проєктним фінансуванням, зеленим банкінгом і фінансовою освітою.", interests: ["банківництво", "проєктне фінансування", "зелений банкінг"] },
@@ -102,9 +104,9 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
     practiceSource: "Перелік практик і баз Академії",
     practiceSourceHref: "https://www.socosvita.kiev.ua/node/2550",
     partners: [
-      { name: "Сільпо Food", mark: "СІЛЬПО", kind: "Оприлюднена база практики", note: "Операційні процеси, торгівля, клієнтський досвід і управління командами.", href: "https://silpo.ua/", tone: "gold" },
-      { name: "Київський БКК", mark: "БКК", kind: "Оприлюднена база практики", note: "Виробництво, планування, маркетинг і ланцюги постачання.", href: "https://kyivbkk.com/", tone: "blue" },
-      { name: "Four Gates Ukraine", mark: "4G", kind: "Оприлюднена база практики", note: "Управління туристичним продуктом і сервісними операціями.", tone: "ink" },
+      { name: "Сільпо Food", mark: "СІЛЬПО", logo: "/partners/silpo.png", logoAlt: "Логотип Сільпо", kind: "Оприлюднена база практики", note: "Операційні процеси, торгівля, клієнтський досвід і управління командами.", href: "https://silpo.ua/", tone: "gold" },
+      { name: "Київський БКК", mark: "БКК", logo: "/partners/kyiv-bkk.png", logoAlt: "Логотип Київського БКК", kind: "Оприлюднена база практики", note: "Виробництво, планування, маркетинг і ланцюги постачання.", href: "https://kyivbkk.com/", tone: "blue" },
+      { name: "Four Gates Ukraine", mark: "4G", logo: "/partners/four-gates.png", logoAlt: "Логотип Four Gates Ukraine", kind: "Оприлюднена база практики", note: "Управління туристичним продуктом і сервісними операціями.", href: "https://4gates.com.ua/", tone: "ink" },
     ],
     team: [
       { name: "Неля Василець", role: "завідувачка кафедри, кандидатка економічних наук, доцентка", summary: "Координує програми менеджменту та торгівлі, практичну підготовку й дослідження ринку праці та розвитку підприємств.", interests: ["менеджмент", "ринок праці", "підприємництво"] },
@@ -152,7 +154,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
     practiceSource: "Практика й професійні кейси кафедри",
     practiceSourceHref: "https://www.socosvita.kiev.ua/node/3120",
     partners: [
-      { name: "SKELAR", mark: "SKELAR", kind: "Гостьовий бізнес-кейс · 2026", note: "Amazon, глобальна e-commerce екосистема і робота marketplace brand manager.", href: "https://skelar.tech/", tone: "ink" },
+      { name: "SKELAR", mark: "SKELAR", logo: "/partners/skelar.svg", logoAlt: "Логотип SKELAR", kind: "Гостьовий бізнес-кейс · 2026", note: "Amazon, глобальна e-commerce екосистема і робота marketplace brand manager.", href: "https://skelar.tech/", tone: "ink" },
       { name: "Підприємства Київської області", mark: "KYIV", kind: "Практичні виїзди · 2025", note: "Знайомство з бізнес-процесами, клієнтським досвідом і роботою стейкхолдерів.", tone: "gold" },
       { name: "ДТЕУ", mark: "ДТЕУ", kind: "Академічна співпраця · 2026", note: "Круглий стіл про digital-маркетинг та e-commerce, студентські дослідження.", href: "https://knute.edu.ua/", tone: "blue" },
     ],
@@ -173,9 +175,9 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
     practiceSource: "Перелік практик і баз Академії",
     practiceSourceHref: "https://www.socosvita.kiev.ua/node/2550",
     partners: [
-      { name: "Сільпо Food", mark: "СІЛЬПО", kind: "Оприлюднена база практики", note: "Категорійний менеджмент, торгівля, сервіс і логістика.", href: "https://silpo.ua/", tone: "gold" },
-      { name: "Велика Кишеня", mark: "ВК", kind: "Оприлюднена база практики", note: "Роздрібні операції, асортимент, продажі та клієнтський досвід.", href: "https://kishenya.ua/", tone: "blue" },
-      { name: "Київський БКК", mark: "БКК", kind: "Оприлюднена база практики", note: "Виробництво, збут, постачання й просування товарів.", href: "https://kyivbkk.com/", tone: "ink" },
+      { name: "Сільпо Food", mark: "СІЛЬПО", logo: "/partners/silpo.png", logoAlt: "Логотип Сільпо", kind: "Оприлюднена база практики", note: "Категорійний менеджмент, торгівля, сервіс і логістика.", href: "https://silpo.ua/", tone: "gold" },
+      { name: "Велика Кишеня", mark: "ВК", logo: "/partners/velyka-kyshenya.png", logoAlt: "Логотип Великої Кишені", kind: "Оприлюднена база практики", note: "Роздрібні операції, асортимент, продажі та клієнтський досвід.", href: "https://kishenya.ua/", tone: "blue" },
+      { name: "Київський БКК", mark: "БКК", logo: "/partners/kyiv-bkk.png", logoAlt: "Логотип Київського БКК", kind: "Оприлюднена база практики", note: "Виробництво, збут, постачання й просування товарів.", href: "https://kyivbkk.com/", tone: "ink" },
     ],
     team: [
       { name: "Неля Василець", role: "завідувачка кафедри, кандидатка економічних наук, доцентка", summary: "Координує програми менеджменту та торгівлі, практичну підготовку й зв’язки зі стейкхолдерами.", interests: ["підприємництво", "управління", "ринок праці"] },
@@ -191,12 +193,12 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   law: {
     department: "Три кафедри юридичного факультету",
     faculty: "Юридичний факультет",
-    departmentHref: "/departments#law-faculty",
+    departmentHref: "/departments/law-faculty",
     departmentSummary: "Програму спільно забезпечують кафедри публічного права; кримінального права, процесу та криміналістики; цивільного, трудового та господарського права.",
     departmentFocus: ["публічне право", "кримінальна юстиція", "приватне і трудове право", "юридична практика"],
     practiceNote: "Підготовка включає юридичну клініку «Феміда», криміналістичну лабораторію, моделювання судових засідань і практику в судах, адвокатських бюро, правоохоронних та публічних установах.",
     practiceSource: "Офіційний профіль юридичного факультету",
-    practiceSourceHref: "/materials/faculty-of-law-62def8b34.html",
+    practiceSourceHref: "/departments/law-faculty",
     partners: [
       { name: "Юридична клініка «Феміда»", mark: "ФЕМІДА", kind: "Внутрішня база практики", note: "Первинна правова допомога, інтерв’ювання клієнта, правова позиція і професійна етика.", href: "/programs/law/legal-clinic", tone: "gold" },
       { name: "Лабораторія криміналістики", mark: "LAB", kind: "Навчальна лабораторія", note: "Технічна фотолабораторія, кабінет слідчого та криміналістичний майданчик.", tone: "ink" },
@@ -249,12 +251,12 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
     practiceSource: "Партнери кафедри спеціальних туристичних дисциплін",
     practiceSourceHref: "https://www.socosvita.kiev.ua/node/2763",
     partners: [
-      { name: "Join UP!", mark: "JOIN UP!", kind: "Партнер кафедри", note: "Туроператорська діяльність, створення продукту й сервісні процеси.", href: "https://joinup.ua/", tone: "blue" },
-      { name: "ANEX Tour", mark: "ANEX", kind: "Партнер кафедри", note: "Організація подорожей, продажі, приймаючі компанії та робота з клієнтом.", href: "https://www.anextour.com.ua/", tone: "gold" },
-      { name: "Pegas Touristik", mark: "PEGAS", kind: "Партнер кафедри", note: "Практична підготовка у сфері туроператорської та агентської діяльності.", href: "https://pegast.com.ua/", tone: "ink" },
+      { name: "Join UP!", mark: "JOIN UP!", logo: "/partners/join-up.svg", logoAlt: "Логотип Join UP!", kind: "Партнер кафедри", note: "Туроператорська діяльність, створення продукту й сервісні процеси.", href: "https://joinup.ua/", tone: "blue" },
+      { name: "ANEX Tour", mark: "ANEX", logo: "/partners/anex-tour.svg", logoAlt: "Логотип ANEX Tour", kind: "Партнер кафедри", note: "Організація подорожей, продажі, приймаючі компанії та робота з клієнтом.", href: "https://www.anextour.com.ua/", tone: "gold" },
+      { name: "Pegas Touristik", mark: "PEGAS", logo: "/partners/pegas-touristik.png", logoAlt: "Логотип PEGAS Touristik", kind: "Партнер кафедри", note: "Практична підготовка у сфері туроператорської та агентської діяльності.", href: "https://pegast.com.ua/", tone: "ink" },
       { name: "ПрАТ «Укрпрофтур»", mark: "УПТ", kind: "Партнер кафедри", note: "Внутрішній туризм, курортно-рекреаційні послуги та гостинність.", href: "https://ukrproftour.ua/", tone: "cream" },
-      { name: "Аккорд-тур", mark: "АККОРД", kind: "Партнер кафедри", note: "Автобусні тури, маршрутне планування та супровід туристів.", href: "https://www.accordtour.com/", tone: "blue" },
-      { name: "TPG", mark: "TPG", kind: "Партнер кафедри", note: "Туристичний продукт, операційна діяльність і клієнтський сервіс.", href: "https://www.tpg.ua/", tone: "gold" },
+      { name: "Аккорд-тур", mark: "АККОРД", logo: "/partners/accord-tour.png", logoAlt: "Логотип Аккорд-тур", kind: "Партнер кафедри", note: "Автобусні тури, маршрутне планування та супровід туристів.", href: "https://www.accordtour.com/", tone: "blue" },
+      { name: "TPG", mark: "TPG", logo: "/partners/tpg.svg", logoAlt: "Логотип TPG", kind: "Партнер кафедри", note: "Туристичний продукт, операційна діяльність і клієнтський сервіс.", href: "https://www.tpg.ua/", tone: "gold" },
     ],
     team: [
       { name: "Олена Міхо", role: "керівниця навчальної лабораторії «Академія подорожей»", summary: "Поєднує викладання з розробленням маршрутів, практичними кейсами туроператорської діяльності та організацією студентської практики.", interests: ["туристичний продукт", "маршрути", "гостинність"] },

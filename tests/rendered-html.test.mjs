@@ -267,7 +267,8 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
   assert.match(home,/href="\/events\/graduation-2026"/);
   assert.match(about,/Від соціально-трудової освіти до міждисциплінарної Академії/);
   assert.match(about,/Дослідіть систему,/);
-  assert.match(about,/17(?:<!-- -->)? вузлів у схемі/);
+  assert.match(about,/Рівень 1/);
+  assert.match(about,/Рівень 3/);
   assert.match(about,/statute-2017\.pdf/);
   assert.match(documents,/Установчі документи/);
   assert.match(documents,/Аспірантура та освітньо-наукові програми/);
@@ -703,4 +704,25 @@ test("ships the public BytesLab Academy workspace with protected management",asy
   assert.match(storage,/__byteslab_workspace__/);
   assert.match(storage,/workspace_items/);
   assert.match(styles,/@media\(max-width:720px\)/);
+});
+
+test("renders verified partner marks, the official emblem and the designed law faculty page",async()=>{
+  const [finance,tourism,about,faculty,profiles,structure]=await Promise.all([
+    (await render("/programs/finance")).text(),
+    (await render("/programs/tourism")).text(),
+    (await render("/about")).text(),
+    (await render("/departments/law-faculty")).text(),
+    readFile(new URL("../lib/programme-profiles.ts",import.meta.url),"utf8"),
+    readFile(new URL("../app/about/AcademyStructure.tsx",import.meta.url),"utf8"),
+  ]);
+  assert.match(finance,/partners\/raiffeisen\.svg/);
+  assert.match(finance,/partners\/cfa-institute\.svg/);
+  assert.match(tourism,/partners\/join-up\.svg/);
+  assert.match(tourism,/partners\/pegas-touristik\.png/);
+  assert.match(about,/brand\/apsvt-official-logo\.png/);
+  assert.match(faculty,/Від першого набору/);
+  assert.match(faculty,/Юридична клініка/);
+  assert.match(profiles,/departmentHref: "\/departments\/law-faculty"/);
+  assert.match(structure,/structure-current-path/);
+  assert.match(structure,/Рівень 3/);
 });
