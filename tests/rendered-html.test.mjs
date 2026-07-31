@@ -266,7 +266,7 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
   assert.match(home,/Свято вручення дипломів/);
   assert.match(home,/href="\/events\/graduation-2026"/);
   assert.match(about,/Від соціально-трудової освіти до міждисциплінарної Академії/);
-  assert.match(about,/Дослідіть систему,/);
+  assert.match(about,/Зрозуміла мапа/);
   assert.match(about,/Рівень 1/);
   assert.match(about,/Рівень 3/);
   assert.match(about,/statute-2017\.pdf/);
@@ -706,12 +706,13 @@ test("ships the public BytesLab Academy workspace with protected management",asy
   assert.match(styles,/@media\(max-width:720px\)/);
 });
 
-test("renders verified partner marks, the official emblem and the designed law faculty page",async()=>{
-  const [finance,tourism,about,faculty,profiles,structure]=await Promise.all([
+test("renders verified partner marks, the official emblem and designed faculty pages",async()=>{
+  const [finance,tourism,about,lawFaculty,economicFaculty,profiles,structure]=await Promise.all([
     (await render("/programs/finance")).text(),
     (await render("/programs/tourism")).text(),
     (await render("/about")).text(),
     (await render("/departments/law-faculty")).text(),
+    (await render("/departments/economics-social-tourism-faculty")).text(),
     readFile(new URL("../lib/programme-profiles.ts",import.meta.url),"utf8"),
     readFile(new URL("../app/about/AcademyStructure.tsx",import.meta.url),"utf8"),
   ]);
@@ -720,9 +721,14 @@ test("renders verified partner marks, the official emblem and the designed law f
   assert.match(tourism,/partners\/join-up\.svg/);
   assert.match(tourism,/partners\/pegas-touristik\.png/);
   assert.match(about,/brand\/apsvt-official-logo\.png/);
-  assert.match(faculty,/Від першого набору/);
-  assert.match(faculty,/Юридична клініка/);
-  assert.match(profiles,/departmentHref: "\/departments\/law-faculty"/);
+  assert.match(lawFaculty,/Від першого набору/);
+  assert.match(lawFaculty,/Юридична клініка/);
+  assert.match(economicFaculty,/Вісім напрямів/);
+  assert.match(economicFaculty,/«Академія/);
+  assert.match(economicFaculty,/Освітні траєкторії/);
+  assert.match(profiles,/departmentHref: "\/departments\/law-faculty#departments"/);
+  assert.match(profiles,/departmentHref: "\/departments\/economics-social-tourism-faculty#departments"/);
   assert.match(structure,/structure-current-path/);
+  assert.match(structure,/structure-summary/);
   assert.match(structure,/Рівень 3/);
 });

@@ -47,7 +47,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   psychology: {
     department: "Кафедра психології",
     faculty: "Факультет економіки, соціальних технологій і туризму",
-    departmentHref: "/departments#psychology",
+    departmentHref: "/departments/economics-social-tourism-faculty#departments",
     departmentSummary: "Кафедру засновано у 2022 році. Вона об’єднує бакалаврську, магістерські траєкторії з клінічної та бізнес-психології і підготовку докторів філософії.",
     departmentFocus: ["психічне здоров’я", "психодіагностика", "організаційна психологія", "доказова практика"],
     practiceNote: "Практична підготовка охоплює психологічне консультування, діагностику, роботу з групами та організаціями. Конкретну базу практики студент погоджує з кафедрою відповідно до траєкторії.",
@@ -72,7 +72,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   finance: {
     department: "Кафедра фінансів",
     faculty: "Факультет економіки, соціальних технологій і туризму",
-    departmentHref: "/departments#finance",
+    departmentHref: "/departments/economics-social-tourism-faculty#departments",
     departmentSummary: "Кафедра готує фахівців з банківської справи, страхування, корпоративних і сталих фінансів. Магістерські модулі проходили професійну звірку з вимогами CIMA.",
     departmentFocus: ["банківська справа", "корпоративні фінанси", "страхування", "сталі фінанси"],
     practiceNote: "У березні 2026 року Академія та Райффайзен Банк узгодили напрям стажувань із перспективою працевлаштування. Дослідницьку складову підсилюють CFA Research Challenge і проєкти Жан Моне.",
@@ -97,7 +97,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   management: {
     department: "Кафедра економіки підприємства та менеджменту",
     faculty: "Факультет економіки, соціальних технологій і туризму",
-    departmentHref: "/departments#economics-management",
+    departmentHref: "/departments/economics-social-tourism-faculty#departments",
     departmentSummary: "Випускова кафедра для менеджменту, економіки та торгівлі. Поєднує організацію бізнесу, управління змінами, економічну безпеку й підприємницьке проєктування.",
     departmentFocus: ["управління організаціями", "проєктний менеджмент", "економіка підприємства", "бізнес-аналітика"],
     practiceNote: "Академія оприлюднювала бази практики для менеджменту й підприємництва: ритейл, виробництво, туроператорів, будівельні та сервісні компанії. Актуальне місце кафедра підтверджує перед направленням.",
@@ -122,7 +122,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   "public-administration": {
     department: "Кафедра публічного управління та публічної служби",
     faculty: "Юридичний факультет",
-    departmentHref: "/departments#public-administration",
+    departmentHref: "/departments/law-faculty#departments",
     departmentSummary: "Науковий і навчально-методичний осередок підготовки керівників та фахівців для органів влади, місцевого самоврядування, профспілок і громадських інституцій.",
     departmentFocus: ["публічна політика", "місцеве самоврядування", "публічна служба", "соціальний діалог"],
     practiceNote: "Практика орієнтована на реальні завдання органів влади, громад і громадських інституцій: аналіз політик, адміністративні процедури, проєкти розвитку та комунікацію зі стейкхолдерами.",
@@ -147,7 +147,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   marketing: {
     department: "Кафедра маркетингу",
     faculty: "Факультет економіки, соціальних технологій і туризму",
-    departmentHref: "/departments#marketing",
+    departmentHref: "/departments/economics-social-tourism-faculty#departments",
     departmentSummary: "Освітній простір для ринкової аналітики, digital, бренд-стратегії й комунікацій. Студенти працюють з кейсами, тренінгами, бізнес-проєктами та науковим гуртком MARKETHINK.",
     departmentFocus: ["маркетингова аналітика", "digital та e-commerce", "бренд-стратегія", "поведінка споживачів"],
     practiceNote: "У 2025 році студенти проходили практичні виїзди на підприємства Київщини, а у 2026 — працювали з кейсом глобальної e-commerce екосистеми разом із запрошеною експерткою SKELAR.",
@@ -168,7 +168,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   trade: {
     department: "Кафедра економіки підприємства та менеджменту",
     faculty: "Факультет економіки, соціальних технологій і туризму",
-    departmentHref: "/departments#economics-management",
+    departmentHref: "/departments/economics-social-tourism-faculty#departments",
     departmentSummary: "Кафедра відповідає за економічну й управлінську основу програми: підприємництво, торгівлю, логістику, продажі та бізнес-планування.",
     departmentFocus: ["комерційна діяльність", "логістика", "ритейл", "підприємницькі проєкти"],
     practiceNote: "Студенти проходять практичну підготовку у ритейлі, виробничих, будівельних і сервісних компаніях. Оприлюднений Академією перелік є довідковим; кафедра підтверджує актуальну базу перед практикою.",
@@ -193,7 +193,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   law: {
     department: "Три кафедри юридичного факультету",
     faculty: "Юридичний факультет",
-    departmentHref: "/departments/law-faculty",
+    departmentHref: "/departments/law-faculty#departments",
     departmentSummary: "Програму спільно забезпечують кафедри публічного права; кримінального права, процесу та криміналістики; цивільного, трудового та господарського права.",
     departmentFocus: ["публічне право", "кримінальна юстиція", "приватне і трудове право", "юридична практика"],
     practiceNote: "Підготовка включає юридичну клініку «Феміда», криміналістичну лабораторію, моделювання судових засідань і практику в судах, адвокатських бюро, правоохоронних та публічних установах.",
@@ -219,7 +219,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   "social-work": {
     department: "Кафедра соціально-трудових відносин та соціальної роботи",
     faculty: "Факультет економіки, соціальних технологій і туризму",
-    departmentHref: "/departments#social-work",
+    departmentHref: "/departments/economics-social-tourism-faculty#departments",
     departmentSummary: "Міждисциплінарна команда з соціальної роботи, консультування, психології та соціальної політики. Навчання спирається на кейс-менеджмент і роботу з громадами.",
     departmentFocus: ["кейс-менеджмент", "робота з громадами", "соціальна профілактика", "супервізія"],
     practiceNote: "Викладачі мають досвід соціальних служб, громадського здоров’я та міжнародних проєктів. Програма подвійного диплома передбачає очні заняття й стажування в Польщі.",
@@ -244,7 +244,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   tourism: {
     department: "Кафедра спеціальних туристичних дисциплін",
     faculty: "Факультет економіки, соціальних технологій і туризму",
-    departmentHref: "/departments#tourism",
+    departmentHref: "/departments/economics-social-tourism-faculty#departments",
     departmentSummary: "Кафедра розвиває туризм, рекреацію та гостинність через маршрути, події, бізнес-кейси й роботу навчальної лабораторії «Академія подорожей».",
     departmentFocus: ["туроператорська діяльність", "гостинність", "активний туризм", "івент-менеджмент"],
     practiceNote: "На офіційній сторінці партнерів кафедри оприлюднені туроператори, готельні та сервісні компанії. Студенти проходять виїзну практику в Україні та, за окремими програмами, за кордоном.",

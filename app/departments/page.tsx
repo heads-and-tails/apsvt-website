@@ -14,6 +14,7 @@ const facultyGroups = [
     code: "ФЕСТТ",
     name: "Факультет економіки, соціальних технологій і туризму",
     description: "Економіка, управління, поведінкові та соціальні науки, цифрові технології, туризм і гостинність.",
+    profileHref: "/departments/economics-social-tourism-faculty",
     departments: [
       { id: "psychology", title: "Кафедра психології", text: "Психічне здоров’я, консультування, дослідження та психологія організацій.", href: "/programs/psychology", programmes: "C4 Психологія" },
       { id: "finance", title: "Кафедра фінансів", text: "Фінансовий аналіз, банківська справа, страхування та сталі фінанси.", href: "/programs/finance", programmes: "D2 Фінанси" },
@@ -29,6 +30,7 @@ const facultyGroups = [
     code: "ЮФ",
     name: "Юридичний факультет",
     description: "Публічне, приватне й кримінальне право, юридична клініка, криміналістика та публічне управління.",
+    profileHref: "/departments/law-faculty",
     departments: [
       { id: "law-faculty", title: "Юридичний факультет і кафедри права", text: "Публічне, кримінальне, приватне й трудове право, клінічна освіта та криміналістична практика.", href: "/departments/law-faculty", programmes: "D8 Право · D4 Публічне управління" },
       { id: "criminal-law", title: "Кафедра кримінального права, процесу та криміналістики", text: "Кримінальна юстиція, захист прав людини, судові симуляції та криміналістична лабораторія.", href: "/programs/law#practice", programmes: "D8 Право" },
@@ -40,6 +42,7 @@ const facultyGroups = [
     code: "ЗАК",
     name: "Загальноакадемічна підготовка",
     description: "Мовні, гуманітарні та міжкультурні компетентності для студентів усіх освітніх програм.",
+    profileHref: "/departments/languages-humanities",
     departments: [
       { id: "languages", title: "Кафедра іноземних мов та гуманітарних дисциплін", text: "Професійна іноземна мова, українська для іноземців, критичне мислення та гуманітарна освіта.", href: "/departments/languages-humanities", programmes: "Усі освітні програми" },
     ],
@@ -51,7 +54,7 @@ export default function Page() {
   return <main id="top"><SiteHeader />
     <section className="phero department-hero"><div className="wrap"><div className="crumb">Головна / Кафедри</div><span>{count} кафедр і навчальних осередків</span><h1>Кафедри<br />Академії</h1><p className="lead">Повна академічна структура: команди, які відповідають за зміст програм, якість викладання, дослідження і зв’язок навчання з практикою.</p></div></section><div className="phero-rule" />
     <section className="department-map"><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Академічні підрозділи</div><h2>Від факультету<br />до програми</h2></div><p>Кожна картка веде на програму або профіль кафедри, де зібрані викладачі, практика, партнери й документи.</p></div>
-      <div className="department-faculties">{facultyGroups.map((group, groupIndex) => <section className="department-faculty" key={group.code}><header><span>{String(groupIndex + 1).padStart(2, "0")}</span><div><small>{group.code}</small><h2>{group.name}</h2><p>{group.description}</p></div><b>{group.departments.length}</b></header><div className="department-directory">{group.departments.map((department, index) => <Link id={department.id} href={department.href} key={department.title}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{department.programmes}</small><h3>{department.title}</h3><p>{department.text}</p></div><b>↗</b></Link>)}</div></section>)}</div>
+      <div className="department-faculties">{facultyGroups.map((group, groupIndex) => <section className="department-faculty" key={group.code}><header><span>{String(groupIndex + 1).padStart(2, "0")}</span><div><small>{group.code}</small><h2>{group.name}</h2><p>{group.description}</p><Link className="department-faculty-profile" href={group.profileHref}>Відкрити сторінку підрозділу →</Link></div><b>{group.departments.length}</b></header><div className="department-directory">{group.departments.map((department, index) => <Link id={department.id} href={department.href} key={department.title}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{department.programmes}</small><h3>{department.title}</h3><p>{department.text}</p></div><b>↗</b></Link>)}</div></section>)}</div>
     </div></section>
     <section className="department-practice-band"><div className="wrap"><div><div className="idx">02 / Навчально-практичні осередки</div><h2>Практика всередині Академії</h2></div><div className="department-practice-links"><Link href="/programs/law/legal-clinic"><span>Юридична клініка «Феміда»</span><b>Первинна правова допомога й супервізія →</b></Link><Link href="/programs/law#practice"><span>Лабораторія криміналістики</span><b>Кабінет слідчого та криміналістичний майданчик →</b></Link><Link href="/materials/tourism-lab-533745080.html"><span>«Академія подорожей»</span><b>Модель реального туристичного підприємства →</b></Link></div></div></section>
     <section className="department-doctoral"><div className="wrap">
