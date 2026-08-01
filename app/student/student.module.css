@@ -1,0 +1,83 @@
+.portal{min-height:100svh;background:#f1f0eb;color:#09101d;padding-bottom:90px}
+.portalHeader{height:82px;background:#f7f6f2;border-bottom:1px solid #c9c7c0;display:grid;grid-template-columns:280px 1fr 280px;align-items:center;padding:0 clamp(20px,4vw,64px);position:sticky;top:0;z-index:20}
+.portalHeader>a{display:flex;align-items:center;gap:12px;color:inherit}
+.portalHeader>a>span{width:42px;height:42px;display:grid;place-items:center;background:#2448ff;color:#fff;box-shadow:inset -9px -9px #ffd13b;font-weight:900}
+.portalHeader>a>b{display:flex;flex-direction:column;font:800 15px var(--disp)}
+.portalHeader>a small{font:7px var(--mono);letter-spacing:.1em;color:#687186;text-transform:uppercase;margin-top:3px}
+.portalHeader nav{display:flex;justify-content:center;gap:27px}
+.portalHeader nav a{font-size:11px;font-weight:800;color:#4a5364}
+.portalHeader>div{display:flex;align-items:center;justify-content:flex-end;gap:15px}
+.portalHeader>div>span{max-width:155px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;font-weight:800}
+.portalHeader form button,.unavailable form button{border:1px solid #09101d;background:transparent;padding:8px 12px;font-size:9px;font-weight:800;cursor:pointer}
+.hero{min-height:420px;background:#081329;color:#fff;padding:75px clamp(20px,8vw,130px);display:grid;grid-template-columns:1fr 380px;align-items:center;gap:70px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;width:620px;height:620px;border:1px solid rgba(89,121,255,.18);border-radius:50%;right:-170px;bottom:-410px}
+.heroCopy>span{font:8px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#ffd13b}
+.heroCopy h1{font:700 clamp(55px,7vw,100px)/.88 var(--disp);letter-spacing:-.07em;text-transform:uppercase;margin:17px 0 25px;max-width:900px}
+.heroCopy p{font-size:14px;color:#b3bfd3}
+.studentCard{background:#ffd13b;color:#09101d;padding:28px;min-height:220px;display:flex;flex-direction:column;position:relative;z-index:2;box-shadow:18px 18px #2448ff}
+.studentCard small{font:8px var(--mono);letter-spacing:.13em;text-transform:uppercase}
+.studentCard>b{font:700 38px var(--disp);margin:auto 0 4px}
+.studentCard>span{font-size:10px}
+.studentCard>i{font:normal 800 8px var(--mono);text-transform:uppercase;border-top:1px solid rgba(9,16,29,.35);margin-top:22px;padding-top:15px}
+.summary{max-width:1500px;margin:-35px auto 0;padding:0 clamp(20px,4vw,64px);display:grid;grid-template-columns:repeat(4,1fr);position:relative;z-index:5}
+.summary article{min-height:155px;background:#fff;border:1px solid #d5d4ce;padding:23px;display:flex;flex-direction:column}
+.summary article+article{border-left:0}
+.summary small{font:8px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:#687186}
+.summary b{font:700 35px var(--disp);margin:auto 0 5px}
+.summary b i{font:normal 10px var(--mono)}
+.summary span{font-size:9px;color:#687186}
+.summary .summaryAttention{background:#fff4cb;border-color:#d8b933}
+.summaryAttention b,.summaryAttention span{color:#a03030}
+.contentGrid{max-width:1500px;margin:70px auto 0;padding:0 clamp(20px,4vw,64px);display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:34px;align-items:start}
+.mainColumn{min-width:0}
+.sideColumn{display:grid;gap:20px;position:sticky;top:105px}
+.sideColumn>section{background:#fff;border:1px solid #d5d4ce;padding:22px}
+.sectionHead{display:grid;grid-template-columns:1fr minmax(260px,.7fr);gap:35px;align-items:end;margin:70px 0 22px;padding-top:25px;border-top:2px solid #09101d;scroll-margin-top:105px}
+.sectionHead:first-child{margin-top:0}
+.sectionHead span{font:8px var(--mono);letter-spacing:.12em;color:#2448ff;text-transform:uppercase}
+.sectionHead h2{font:700 clamp(32px,4vw,55px)/.98 var(--disp);text-transform:uppercase;margin-top:8px}
+.sectionHead p{font-size:12px;line-height:1.65;color:#687186}
+.chargeList{display:grid;gap:10px}
+.chargeList>article{background:#fff;border:1px solid #d5d4ce;padding:22px;display:grid;grid-template-columns:minmax(230px,1fr) minmax(300px,.9fr) 220px;gap:25px;align-items:center}
+.chargeList>article.overdueCharge{border-left:7px solid #c83d3d;background:#fffafa}
+.chargeList h3{font:700 21px var(--disp);margin:10px 0 5px}
+.chargeList p{font-size:10px;color:#687186}
+.status{display:inline-flex;width:max-content;padding:5px 7px;font:700 7px var(--mono);letter-spacing:.06em;text-transform:uppercase;background:#eef0f4;color:#4a5364}
+.status.paid{background:#dff5e9;color:#147047}.status.overdue{background:#fde1e1;color:#a82929}.status.due{background:#fff0bd;color:#785800}.status.scheduled{background:#e4ebff;color:#2448ff}.status.cancelled{background:#ececec;color:#717171}
+.chargeList dl{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.chargeList dl div{border-left:1px solid #d5d4ce;padding-left:12px;display:flex;flex-direction:column}
+.chargeList dt{font:7px var(--mono);text-transform:uppercase;color:#687186}
+.chargeList dd{font-size:11px;margin-top:6px}.chargeList dd b{font-size:15px}
+.chargeAction{display:flex;flex-direction:column;gap:8px}
+.payButton{border:0;background:#2448ff;color:#fff;padding:13px 15px;font-size:9px;font-weight:900;cursor:pointer}
+.chargeAction small{font-size:7px;line-height:1.45;color:#687186}
+.historyTable{background:#fff;border:1px solid #d5d4ce}
+.historyHeader,.historyTable article{display:grid;grid-template-columns:1fr 1fr 1fr 120px;gap:20px;align-items:center;padding:16px 20px}
+.historyHeader{background:#081329;color:#fff;font:7px var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.historyTable article{border-top:1px solid #deddd7;font-size:10px}
+.historyTable article>b{font-size:14px}.historyTable article>span{display:flex;flex-direction:column}.historyTable article small{font-size:7px;color:#687186;margin-top:3px}
+.contractGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.contractGrid>article{background:#fff;border:1px solid #d5d4ce;padding:22px;min-height:280px;display:flex;flex-direction:column}
+.contractGrid>article>span{font:8px var(--mono);text-transform:uppercase;color:#2448ff}
+.contractGrid h3{font:700 24px/1.05 var(--disp);text-transform:uppercase;margin:18px 0 24px}
+.contractGrid dl{display:grid;gap:9px;margin-bottom:25px}
+.contractGrid dl div{display:flex;justify-content:space-between;gap:15px;border-top:1px solid #deddd7;padding-top:8px;font-size:9px}
+.contractGrid dt{color:#687186}.contractGrid a{margin-top:auto;background:#081329;color:#fff;padding:12px 14px;font-size:9px;font-weight:900;text-align:center}.contractGrid>article>small{margin-top:auto;color:#687186;font-size:9px}
+.sideHead{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #09101d;padding-bottom:15px}
+.sideHead span{font:700 17px var(--disp);text-transform:uppercase}.sideHead b{width:28px;height:28px;display:grid;place-items:center;background:#ffd13b;font:700 12px var(--disp)}
+.notificationList{display:grid}
+.notificationList article{display:grid;grid-template-columns:31px 1fr;gap:10px;padding:17px 0;border-bottom:1px solid #deddd7;position:relative}
+.notificationList article:last-child{border-bottom:0}
+.notificationList article.readNotice{opacity:.55}
+.noticeIcon{width:31px;height:31px;display:grid;place-items:center;background:#e5ebff;color:#2448ff;font:800 12px var(--disp)}
+.noticeIcon.overdue{background:#fde1e1;color:#a82929}.noticeIcon.contract{background:#fff0bd;color:#785800}.noticeIcon.payment{background:#dff5e9;color:#147047}
+.notificationList small{font:7px var(--mono);color:#687186}.notificationList h3{font:700 12px var(--disp);margin:5px 0}.notificationList p{font-size:9px;line-height:1.5;color:#596273}.notificationList a{display:inline-block;color:#2448ff;font-size:8px;font-weight:800;margin-top:6px}
+.notificationList article>button{grid-column:2;border:0;background:none;color:#2448ff;text-align:left;padding:5px 0 0;font-size:7px;font-weight:800;cursor:pointer}
+.support{background:#081329!important;color:#fff!important;border-color:#081329!important}
+.support>span{font:8px var(--mono);text-transform:uppercase;color:#ffd13b}.support h3{font:700 24px var(--disp);text-transform:uppercase;margin:13px 0}.support p{font-size:10px;line-height:1.6;color:#aeb9cf}.support>a{display:block;color:#ffd13b;font:700 17px var(--disp);margin-top:20px}.support>small{display:block;font-size:8px;color:#aeb9cf;margin-top:5px}.support>a:last-child{font:800 8px var(--mono);border-top:1px solid rgba(255,255,255,.2);padding-top:15px;text-transform:uppercase}
+.empty{padding:25px!important;color:#687186;font-size:11px}
+.unavailable{min-height:100svh;background:#081329;display:grid;place-items:center;padding:20px;color:#fff}
+.unavailable>div{max-width:680px;background:#f1f0eb;color:#09101d;padding:clamp(35px,6vw,70px);box-shadow:18px 18px #2448ff}
+.unavailable>div>span{font:8px var(--mono);text-transform:uppercase;color:#2448ff}.unavailable h1{font:700 clamp(40px,6vw,68px)/.95 var(--disp);text-transform:uppercase;margin:18px 0}.unavailable p{font-size:14px;line-height:1.7;color:#687186}.unavailable a{display:inline-block;background:#2448ff;color:#fff;padding:13px 16px;font-size:10px;font-weight:900;margin:22px 12px 0 0}.unavailable form{display:inline-block;margin-top:22px}
+@media(max-width:1100px){.portalHeader{grid-template-columns:1fr auto}.portalHeader nav{display:none}.portalHeader>div>span{display:none}.hero{grid-template-columns:1fr 320px;padding-inline:35px}.summary{grid-template-columns:repeat(2,1fr);margin-top:0;padding-top:20px}.summary article:nth-child(3){border-left:1px solid #d5d4ce}.summary article:nth-child(n+3){border-top:0}.contentGrid{grid-template-columns:1fr}.sideColumn{position:static;grid-template-columns:1fr 1fr}.chargeList>article{grid-template-columns:1fr 1fr}.chargeAction{grid-column:1/3}.sectionHead{margin-top:55px}}
+@media(max-width:700px){.portalHeader{height:68px;padding-inline:14px}.portalHeader>a small{display:none}.hero{grid-template-columns:1fr;gap:35px;padding:55px 18px 70px}.heroCopy h1{font-size:54px}.studentCard{min-height:175px;box-shadow:9px 9px #2448ff}.summary{grid-template-columns:1fr;padding:0 14px;margin-top:-20px}.summary article+article,.summary article:nth-child(3){border-left:1px solid #d5d4ce;border-top:0}.contentGrid{padding-inline:14px;margin-top:45px}.sectionHead{grid-template-columns:1fr;gap:12px;scroll-margin-top:78px}.chargeList>article{grid-template-columns:1fr;padding:17px}.chargeList dl{grid-template-columns:1fr 1fr 1fr}.chargeAction{grid-column:auto}.historyTable{overflow-x:auto}.historyHeader,.historyTable article{min-width:620px}.contractGrid{grid-template-columns:1fr}.sideColumn{grid-template-columns:1fr}.portalHeader form button{padding:7px 9px}.portalHeader>div{gap:0}}

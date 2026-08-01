@@ -65,6 +65,7 @@ export default function Page() {
 
     <section className="tuition-payment-section" id="payment"><div className="wrap"><div className="tuition-section-head inverse"><div><div className="idx">03 / Оплата навчання</div><h2>Оплата<br />навчання</h2></div><p>Сформуйте суму й призначення платежу, а потім перевірте реквізити перед підтвердженням у банку.</p></div><TuitionPaymentAssistant />
       <div className="payment-verification"><span>!</span><div><b>Банківські реквізити для оплати навчання</b><p>Перед першим або великим платежем підтвердьте IBAN і призначення платежу у бухгалтерії Академії.</p></div><a href="tel:+380964508504">Світлана Василівна<br /><b>+38 096 450 85 04</b></a></div>
+      <div className="tuition-portal-link"><div><span>Для студентів Академії</span><h3>Перевірте, чи зараховано платіж</h3><p>В особистому кабінеті видно актуальний залишок, прострочення, підтверджені оплати та договори.</p></div><Link href="/student">Відкрити особистий кабінет →</Link></div>
     </div></section>
 
     <section id="contracts"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">04 / Документи</div><h2>Договори<br />для навчання</h2></div><p>Офіційні шаблони, опубліковані Академією. Приймальна комісія заповнює остаточний договір; він набирає чинності після зарахування.</p></div>

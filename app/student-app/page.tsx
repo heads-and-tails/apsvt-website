@@ -39,7 +39,8 @@ export default async function Page() {
           <div>
             <span className="student-app-beta">Interactive demo · iOS + Android</span>
             <h1>Розклад<br />у кишені.</h1>
-            <p className="lead">Оберіть групу, перегляньте день і протестуйте нагадування. Дані надходять із тієї самої редакційної панелі, що й розклад на сайті.</p>
+            <p className="lead">Оберіть групу, перегляньте день і протестуйте нагадування. Для персональних нарахувань, оплат і договорів використовуйте захищений особистий кабінет.</p>
+            <Link className="cta" href="/student"><span>Увійти до особистого кабінету</span></Link>
           </div>
           <div className="student-app-hero-note">
             <span>01</span>
@@ -72,8 +73,8 @@ export default async function Page() {
 
     <section className="student-app-cta">
       <div className="wrap">
-        <div><span>Актуальні дані</span><h2>Потрібен звичайний<br />розклад?</h2></div>
-        <Link className="cta" href="/schedule"><span>Відкрити розклад</span></Link>
+        <div><span>Особисті сервіси</span><h2>Оплата, договори<br />та розклад.</h2></div>
+        <div className="student-app-cta-actions"><Link className="cta" href="/student"><span>Особистий кабінет</span></Link><Link className="cta ghost" href="/schedule"><span>Відкрити розклад</span></Link></div>
       </div>
     </section>
     <SiteFooter />

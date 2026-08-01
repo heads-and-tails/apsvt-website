@@ -18,7 +18,8 @@ export async function GET(request: Request) {
       : { error: new Error("Missing authentication code") };
 
   if (result.error) {
-    const retry = new URL("/panel/forgot-password", request.url);
+    const retryPath = next.startsWith("/student") ? "/student/login" : "/panel/forgot-password";
+    const retry = new URL(retryPath, request.url);
     retry.searchParams.set("error", "invalid-link");
     return NextResponse.redirect(retry);
   }

@@ -7,6 +7,7 @@ import { getAllContent } from "@/lib/content";
 import { getAllDocuments } from "@/lib/documents";
 import { canEditPage, contentKindPagePath } from "@/lib/editorial-access";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { getStudentFinanceAdminData } from "@/lib/student-finance";
 import { PanelEditor } from "./PanelEditor";
 
 export const metadata: Metadata = { title: "Редакційна панель" };
@@ -31,15 +32,16 @@ export default async function PanelPage() {
     return <main className="auth-page"><div className="auth-card"><span className="auth-mark">АП</span><span className="kicker blue">Очікує погодження</span><h1>Запит отримано</h1><p>Акаунт <b>{user?.email}</b> успішно створено, але ще не має доступу до редакційної панелі. Адміністратор має погодити його та призначити роль.</p><SignOutButton/><Link className="back-home" href="/">← Повернутися на сайт</Link></div></main>;
   }
 
-  const [allPosts, allContent, allDocuments, profiles] = await Promise.all([
+  const [allPosts, allContent, allDocuments, profiles, studentFinance] = await Promise.all([
     getPosts({ includeDrafts: true, limit: 100 }),
     getAllContent(),
     getAllDocuments(),
     publisher.role === "admin" ? getEditorialProfiles() : Promise.resolve([]),
+    publisher.role === "admin" ? getStudentFinanceAdminData() : Promise.resolve({ available: false, profiles: [], contracts: [], charges: [], payments: [], notifications: [] }),
   ]);
   const posts = canEditPage(publisher, "/news") ? allPosts : [];
   const content = allContent.filter((item) => canEditPage(publisher, contentKindPagePath[item.kind]));
   const documents = allDocuments.filter((document) => canEditPage(publisher, document.pagePath));
 
-  return <PanelEditor initialPosts={posts} initialContent={content} initialDocuments={documents} publisher={publisher} initialProfiles={profiles} />;
+  return <PanelEditor initialPosts={posts} initialContent={content} initialDocuments={documents} publisher={publisher} initialProfiles={profiles} initialStudentFinance={studentFinance} />;
 }

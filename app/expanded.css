@@ -1603,6 +1603,21 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .law-faculty-source{display:flex;justify-content:space-between;gap:20px;margin-top:25px;padding-top:18px;border-top:1px solid var(--line);font:8px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:rgba(9,14,24,.5)}
 .law-faculty-source a{color:var(--cobalt)}
 
+/* Student finance entry points. */
+.tuition-portal-link{display:flex;align-items:center;justify-content:space-between;gap:35px;margin-top:28px;padding:25px 28px;background:var(--gold);color:var(--ink);border:1px solid var(--ink)}
+.tuition-portal-link span{font:8px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.tuition-portal-link h3{font:700 clamp(20px,2.7vw,34px) var(--disp);text-transform:uppercase;margin:7px 0}
+.tuition-portal-link p{font-size:11px;max-width:740px}
+.tuition-portal-link>a{flex:0 0 auto;background:var(--navy);color:#fff;padding:14px 17px;font-size:10px;font-weight:900}
+.student-app-cta-actions{display:flex;gap:10px;flex-wrap:wrap}
+.student-app-hero .cta{margin-top:24px}
+
+@media(max-width:700px){
+  .tuition-portal-link{align-items:flex-start;flex-direction:column;padding:20px}
+  .tuition-portal-link>a{width:100%;text-align:center}
+  .student-app-cta-actions{width:100%}.student-app-cta-actions .cta{width:100%;justify-content:center}
+}
+
 /* A unified editorial faculty system for every faculty profile. */
 .festt-hero{background:#102b28}
 .festt-hero .law-faculty-hero-image{inset:0 0 0 46%}
