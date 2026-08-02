@@ -732,3 +732,17 @@ test("renders verified partner marks, the official emblem and designed faculty p
   assert.match(structure,/structure-summary/);
   assert.match(structure,/Рівень 3/);
 });
+
+test("publishes Moodle and the student council across student resources",async()=>{
+  const [students,facilities,council]=await Promise.all([
+    (await render("/students")).text(),
+    (await render("/facilities")).text(),
+    (await render("/students/council")).text(),
+  ]);
+  assert.match(students,/https:\/\/moodle\.socosvita\.kiev\.ua\//);
+  assert.match(students,/Студентська рада/);
+  assert.match(facilities,/href="\/students\/council"/);
+  assert.match(council,/Ваш голос/);
+  assert.match(council,/Положення про самоврядування/);
+  assert.match(council,/info@socosvita\.kiev\.ua/);
+});
