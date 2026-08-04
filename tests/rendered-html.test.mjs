@@ -771,3 +771,25 @@ test("publishes source-based law course annotations and the updated faculty team
   assert.match(faculty,/people\/law\/yaroslav-zhuravel\.webp/);
   assert.doesNotMatch(faculty,/Домашня адреса|Телефон 096/);
 });
+
+test("publishes document-based curriculum sections for every bachelor programme",async()=>{
+  const routes=[
+    ["psychology","Психодіагностика"],
+    ["finance","Корпоративні фінанси"],
+    ["management","Операційний менеджмент"],
+    ["public-administration","Електронне урядування"],
+    ["marketing","Маркетингові дослідження"],
+    ["trade","Електронна комерція"],
+    ["social-work","Кейс-менеджмент"],
+    ["tourism","Туроперейтинг"],
+  ];
+  for(const [slug,course] of routes){
+    const html=await (await render(`/programs/${slug}`)).text();
+    assert.match(html,/Навчальний план ·/);
+    assert.match(html,new RegExp("240</b><span>кредитів ЄКТС"));
+    assert.match(html,new RegExp("60</b><span>кредитів на вибір"));
+    assert.match(html,new RegExp(course));
+    assert.match(html,/Практична підготовка та атестація/);
+    assert.doesNotMatch(html,/class="study-plan"/);
+  }
+});
