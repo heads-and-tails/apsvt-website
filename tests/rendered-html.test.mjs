@@ -746,3 +746,21 @@ test("publishes Moodle and the student council across student resources",async()
   assert.match(council,/Положення про самоврядування/);
   assert.match(council,/info@socosvita\.kiev\.ua/);
 });
+
+test("publishes source-based law course annotations and the updated faculty team",async()=>{
+  const [law,faculty]=await Promise.all([
+    (await render("/programs/law")).text(),
+    (await render("/departments/law-faculty")).text(),
+  ]);
+  assert.match(law,/Відкрийте зміст/);
+  assert.match(law,/Адміністративне право/);
+  assert.match(law,/Право європейського союзу/i);
+  assert.match(law,/12<\/b><small>кредитів ЄКТС/);
+  assert.match(law,/theory-state-law\.docx/);
+  assert.match(law,/people\/law\/tetiana-lebid\.webp/);
+  assert.match(faculty,/Тетяна Лебідь/);
+  assert.match(faculty,/Оксана Домбровська/);
+  assert.match(faculty,/Олександра Спінчевська/);
+  assert.match(faculty,/people\/law\/yaroslav-zhuravel\.webp/);
+  assert.doesNotMatch(faculty,/Домашня адреса|Телефон 096/);
+});
