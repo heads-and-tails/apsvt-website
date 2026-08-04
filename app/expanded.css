@@ -1603,6 +1603,63 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .law-faculty-source{display:flex;justify-content:space-between;gap:20px;margin-top:25px;padding-top:18px;border-top:1px solid var(--line);font:8px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:rgba(9,14,24,.5)}
 .law-faculty-source a{color:var(--cobalt)}
 
+/* Law programme: official 2025 curriculum. */
+.law-curriculum{overflow:hidden}
+.law-curriculum-head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(310px,.9fr);gap:clamp(45px,8vw,120px);align-items:end;margin-bottom:48px}
+.law-curriculum-head h2{margin-top:14px;font-size:clamp(52px,7vw,96px);line-height:.86}
+.law-curriculum-head>div:last-child{padding-bottom:7px}
+.law-curriculum-head p{max-width:59ch;color:rgba(9,14,24,.7);font-size:15px;line-height:1.72}
+.law-curriculum-head a{display:inline-block;margin-top:20px;padding-bottom:4px;border-bottom:2px solid var(--gold);color:var(--cobalt);font:700 9px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.law-curriculum-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--ink);background:var(--ink);gap:1px;margin-bottom:48px}
+.law-curriculum-stats>div{min-height:168px;padding:22px;background:#fff;display:flex;flex-direction:column;justify-content:flex-end}
+.law-curriculum-stats b{color:var(--cobalt);font:700 clamp(48px,6vw,82px)/.8 var(--disp);letter-spacing:-.06em}
+.law-curriculum-stats span{margin-top:20px;font:700 10px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.law-curriculum-groups{border-top:1px solid var(--ink)}
+.law-curriculum-groups>details{border-bottom:1px solid var(--ink)}
+.law-curriculum-groups>details>summary{list-style:none;display:grid;grid-template-columns:58px minmax(0,1fr) 120px 30px;gap:22px;align-items:center;min-height:130px;padding:22px 8px;cursor:pointer;transition:background .2s,padding .2s}
+.law-curriculum-groups>details>summary::-webkit-details-marker{display:none}
+.law-curriculum-groups>details>summary:hover{padding-inline:20px;background:#fff}
+.law-curriculum-groups>details>summary>span{color:var(--cobalt);font:10px var(--mono)}
+.law-curriculum-groups>details>summary small{display:block;color:rgba(9,14,24,.52);font:8px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.law-curriculum-groups>details>summary h3{margin-top:8px;font-size:clamp(24px,3.4vw,45px);line-height:.95}
+.law-curriculum-groups>details>summary>b{padding-left:20px;border-left:1px solid var(--line);color:var(--cobalt);font:700 22px var(--disp)}
+.law-curriculum-groups>details>summary>i{display:grid;width:28px;height:28px;place-items:center;background:var(--gold);font-style:normal;font-size:21px;transition:transform .2s}
+.law-curriculum-groups>details[open]>summary{padding-inline:20px;background:var(--navy);color:#fff}
+.law-curriculum-groups>details[open]>summary small{color:#aeb9ce}
+.law-curriculum-groups>details[open]>summary>b{border-color:rgba(255,255,255,.22);color:var(--gold)}
+.law-curriculum-groups>details[open]>summary>i{color:var(--ink);transform:rotate(45deg)}
+.law-curriculum-table{border-inline:1px solid var(--ink);background:#fff}
+.law-curriculum-table-head,.law-curriculum-row{display:grid;grid-template-columns:58px minmax(0,1fr) 100px 150px;gap:18px;align-items:center}
+.law-curriculum-table-head{min-height:44px;padding:10px 20px;background:var(--gold);font:700 8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.law-curriculum-row{min-height:66px;padding:13px 20px;border-top:1px solid var(--line)}
+.law-curriculum-row>span{color:var(--cobalt);font:9px var(--mono)}
+.law-curriculum-row>b{font:600 14px/1.35 var(--disp);text-transform:uppercase}
+.law-curriculum-row>strong{color:var(--cobalt);font:700 25px/1 var(--disp)}
+.law-curriculum-row>small{font:8px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.law-curriculum-choice{display:grid;grid-template-columns:minmax(320px,.72fr) minmax(0,1.28fr);gap:1px;margin-top:64px;border:1px solid var(--ink);background:var(--ink)}
+.law-curriculum-choice-intro{padding:clamp(30px,4vw,55px);background:var(--gold)}
+.law-curriculum-choice-intro h3{margin:34px 0 28px;font-size:clamp(38px,5vw,68px);line-height:.9}
+.law-curriculum-choice-intro h3 em{color:var(--cobalt);font-style:normal}
+.law-curriculum-choice-intro p{max-width:45ch;font-size:13px;line-height:1.65}
+.law-curriculum-track-list{background:#fff}
+.law-curriculum-track-list article{display:grid;grid-template-columns:58px 1fr;gap:18px;min-height:116px;padding:22px 28px;border-bottom:1px solid var(--line);align-items:start}
+.law-curriculum-track-list article:last-child{border-bottom:0}
+.law-curriculum-track-list span{color:var(--cobalt);font:9px var(--mono)}
+.law-curriculum-track-list h4{margin-bottom:9px;font:700 18px/1.1 var(--disp);text-transform:uppercase}
+.law-curriculum-track-list p{color:rgba(9,14,24,.62);font-size:11px;line-height:1.55}
+.law-curriculum-practice{margin-top:64px;padding:clamp(30px,5vw,62px);background:var(--navy);color:#fff}
+.law-curriculum-practice>header{display:grid;grid-template-columns:1fr 1.25fr;gap:40px;align-items:end;margin-bottom:42px}
+.law-curriculum-practice .idx{color:var(--gold)}
+.law-curriculum-practice h3{font-size:clamp(38px,5.5vw,72px);line-height:.9}
+.law-curriculum-practice>div{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(255,255,255,.32);gap:1px;background:rgba(255,255,255,.32)}
+.law-curriculum-practice article{min-height:250px;padding:22px;background:var(--navy);display:flex;flex-direction:column}
+.law-curriculum-practice article>span{color:var(--gold);font:9px var(--mono)}
+.law-curriculum-practice h4{margin:35px 0 auto;font:700 19px/1.15 var(--disp);text-transform:uppercase}
+.law-curriculum-practice article>b{margin-top:35px;color:var(--gold);font:700 45px/1 var(--disp)}
+.law-curriculum-practice article>b small{font-size:12px}
+.law-curriculum-practice article>p{margin-top:8px;color:#aeb9ce;font:8px var(--mono);text-transform:uppercase}
+.law-curriculum-note{max-width:92ch;margin-top:23px;color:rgba(9,14,24,.6);font-size:11px;line-height:1.6}
+
 /* Law programme: source-based course annotations and faculty profiles. */
 .law-annotations{background:#fff}
 .law-annotations-head{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(45px,8vw,115px);align-items:end;margin-bottom:48px}
@@ -1763,6 +1820,9 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
   .law-practice-grid{grid-template-columns:1fr}
   .law-practice-grid>a,.law-practice-grid>article{min-height:310px}
   .law-teacher-grid{grid-template-columns:1fr 1fr}
+  .law-curriculum-stats{grid-template-columns:1fr 1fr}
+  .law-curriculum-choice{grid-template-columns:1fr}
+  .law-curriculum-practice>div{grid-template-columns:1fr 1fr}
 }
 @media(max-width:700px){
   .about-official-signature{grid-template-columns:75px 1fr;padding:14px;box-shadow:6px 6px var(--gold)}
@@ -1780,6 +1840,14 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
   .law-faculty-intro-grid,.law-practice-head{grid-template-columns:1fr;gap:30px}.law-faculty-milestones{grid-template-columns:1fr}.law-faculty-milestones span{min-height:auto}
   .law-department-grid,.law-team-grid{grid-template-columns:1fr}
   .law-annotations-head,.law-annotation-body{grid-template-columns:1fr}
+  .law-curriculum-head,.law-curriculum-practice>header{grid-template-columns:1fr;gap:28px}
+  .law-curriculum-head h2{font-size:clamp(48px,15vw,70px)}
+  .law-curriculum-stats{grid-template-columns:1fr 1fr;margin-bottom:36px}.law-curriculum-stats>div{min-height:125px;padding:16px}.law-curriculum-stats b{font-size:45px}.law-curriculum-stats span{margin-top:14px;font-size:8px}
+  .law-curriculum-groups>details>summary{grid-template-columns:32px minmax(0,1fr) 25px;gap:10px;min-height:108px;padding-inline:4px}
+  .law-curriculum-groups>details>summary>b{grid-column:2;padding:0;border:0;font-size:17px}.law-curriculum-groups>details>summary>i{grid-column:3;grid-row:1/3}
+  .law-curriculum-table-head{display:none}.law-curriculum-row{grid-template-columns:30px minmax(0,1fr) 42px;gap:9px;padding:13px 12px}.law-curriculum-row>small{grid-column:2}.law-curriculum-row>strong{text-align:right;font-size:21px}
+  .law-curriculum-choice{margin-top:42px}.law-curriculum-track-list article{grid-template-columns:34px 1fr;padding:20px 16px}
+  .law-curriculum-practice{margin-top:42px;padding:26px 16px}.law-curriculum-practice>div{grid-template-columns:1fr}.law-curriculum-practice article{min-height:195px}
   .law-annotation-list>details>summary{grid-template-columns:34px minmax(0,1fr) 25px;gap:10px;min-height:105px;padding-inline:4px}
   .law-annotation-credit{grid-column:2;padding:0;border:0;display:flex;gap:6px;align-items:baseline}.law-annotation-credit b{font-size:22px}.law-annotation-credit small{display:inline!important}
   .law-annotation-list>details>summary>i{grid-column:3;grid-row:1/3}.law-annotation-copy{padding:24px 18px}.law-annotation-copy ol li{grid-template-columns:1fr;gap:9px}

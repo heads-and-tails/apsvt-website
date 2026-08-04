@@ -756,6 +756,13 @@ test("publishes source-based law course annotations and the updated faculty team
   assert.match(law,/Адміністративне право/);
   assert.match(law,/Право європейського союзу/i);
   assert.match(law,/12<\/b><small>кредитів ЄКТС/);
+  assert.match(law,/Навчальний план · редакція 2025/);
+  assert.match(law,/240<\/b><span>кредитів ЄКТС/);
+  assert.match(law,/33<\/b><span>обов’язкові дисципліни/);
+  assert.match(law,/Теорія держави і права/);
+  assert.match(law,/Прокуратура в Україні/);
+  assert.match(law,/Виробнича практика · 4 курс/);
+  assert.doesNotMatch(law,/Кваліфікаційна робота/);
   assert.match(law,/theory-state-law\.docx/);
   assert.match(law,/people\/law\/tetiana-lebid\.webp/);
   assert.match(faculty,/Тетяна Лебідь/);
