@@ -2001,3 +2001,19 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
   .publication-list>a{grid-template-columns:70px minmax(0,1fr)}
   .publication-list>article{grid-template-columns:70px minmax(0,1fr)}
 }
+
+/* Editorial long-form text: turns plain CMS copy into a calm, scannable reading flow. */
+.editorial-richtext{margin:40px 0 46px;border-top:1px solid var(--ink)}
+.editorial-paragraph{display:grid;grid-template-columns:108px minmax(0,1fr);gap:30px;padding:28px 6px;border-bottom:1px solid var(--line);transition:background .25s,padding .25s}
+.editorial-paragraph:hover{padding-inline:18px;background:#fff}
+.editorial-paragraph>span{padding-top:5px;color:#748096;font:8px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.editorial-paragraph>span b{display:block;margin-bottom:6px;color:var(--cobalt);font:700 22px var(--disp)}
+.detail-copy .editorial-paragraph>p{max-width:64ch;margin:0;color:rgba(9,14,24,.78);font-size:17px;line-height:1.78}
+.editorial-richtext>h2{margin:48px 0 0;padding:24px 6px;border-bottom:4px solid var(--ink);font-size:clamp(28px,3.7vw,50px);line-height:1;text-wrap:balance}
+.editorial-list{display:grid;grid-template-columns:108px minmax(0,1fr);gap:30px;padding:28px 6px;border-bottom:1px solid var(--line)}
+.editorial-list>span{color:var(--cobalt);font:700 22px var(--disp)}
+.editorial-list ul{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.editorial-list li{padding:15px 0 15px 24px;border-bottom:1px solid var(--line);position:relative;font-size:16px;line-height:1.6}
+.editorial-list li:last-child{border-bottom:0}
+.editorial-list li:before{content:"";position:absolute;left:0;top:25px;width:8px;height:8px;background:var(--gold);box-shadow:5px -5px 0 var(--cobalt)}
+@media(max-width:700px){.editorial-richtext{margin-top:28px}.editorial-paragraph,.editorial-list{grid-template-columns:34px minmax(0,1fr);gap:12px;padding:22px 2px}.editorial-paragraph:hover{padding-inline:7px}.editorial-paragraph>span{font-size:0}.editorial-paragraph>span b,.editorial-list>span{font-size:15px}.detail-copy .editorial-paragraph>p{font-size:15px;line-height:1.72}.editorial-richtext>h2{font-size:clamp(27px,9vw,40px);overflow-wrap:anywhere}}

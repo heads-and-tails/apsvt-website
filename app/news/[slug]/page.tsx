@@ -7,6 +7,7 @@ import { getPostBySlug, getPosts } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { bachelorEntranceResults, entranceResultsNewsSlug } from "@/lib/entrance-results";
 import { NewsCard } from "../../components/NewsCard";
+import { EditorialRichText } from "../../components/EditorialRichText";
 
 export const dynamic = "force-dynamic";
 
@@ -44,7 +45,7 @@ export default async function Page({ params }: Props) {
     <section className="article-section"><div className="wrap detail-layout">
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
-        {post.body.split(/\n\n+/).map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+        <EditorialRichText text={post.body} />
         {post.slug === entranceResultsNewsSlug && <div className="news-result-files">
           <span>Результати за предметами</span>
           {bachelorEntranceResults.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
