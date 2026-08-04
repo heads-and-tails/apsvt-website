@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getProgrammeProfile, type ProgrammePartner } from "@/lib/programme-profiles";
+import { AcademicProfileCard } from "@/app/components/AcademicProfileCard";
 import { MarketingTeam } from "./MarketingTeam";
 
 function PartnerCard({ partner }: { partner: ProgrammePartner }) {
@@ -44,13 +45,19 @@ export function ProgrammeEcosystem({ slug }: { slug: string }) {
 
     {profile.team.length > 0 && <section className="programme-team" id="team"><div className="wrap">
       <div className="sec-head programme-team-head"><div><div className="idx">06 / Люди програми</div><h2>Викладачі й практики</h2></div><p>Короткі професійні профілі команди, яка формує зміст навчання, супроводжує практику та студентські дослідження.</p></div>
-      <div className="programme-team-grid">{profile.team.map((person, index) => <article key={person.name}>
-        <div className="programme-person-visual">
-          {person.image ? <img src={person.image} alt={person.name} /> : <span aria-label={`Фото ${person.name} готується до публікації`}>{person.name.split(" ").map((part) => part[0]).join("")}</span>}
-          <b>{String(index + 1).padStart(2, "0")}</b>
-        </div>
-        <div className="programme-person-copy"><h3>{person.name}</h3><strong>{person.role}</strong><p>{person.summary}</p><div>{person.interests.map((interest) => <span key={interest}>{interest}</span>)}</div>{person.href && <a href={person.href} target="_blank" rel="noreferrer">Науковий профіль ↗</a>}</div>
-      </article>)}</div>
+      <div className="academic-profile-grid">{profile.team.map((person, index) => <AcademicProfileCard
+        key={person.name}
+        index={index}
+        badge={person.role.toLowerCase().includes("завідувач") ? "Керівник кафедри" : undefined}
+        person={{
+          name: person.name,
+          role: person.role,
+          summary: person.summary,
+          image: person.image,
+          tags: person.interests,
+          links: person.href ? [{ label: "Науковий профіль", href: person.href }] : [],
+        }}
+      />)}</div>
     </div></section>}
 
     {slug === "marketing" && <MarketingTeam />}

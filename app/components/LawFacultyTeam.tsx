@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AcademicProfileCard } from "./AcademicProfileCard";
 
 type Teacher = {
   name: string;
@@ -92,16 +93,23 @@ export function LawFacultyTeam({ compact = false }: { compact?: boolean }) {
   return <section className="law-faculty-team" id="law-teachers">
     <div className="wrap">
       <div className="sec-head"><div><div className="idx">{compact ? "05" : "04"} / Люди кафедри</div><h2>Викладачі<br />та практики</h2></div><p>Професійні профілі, дисципліни та наукові напрями викладачів кафедри конституційного, адміністративного та фінансового права.</p></div>
-      <div className="law-teacher-grid">{displayed.map((teacher, index) => <article key={teacher.name}>
-        <div className={`law-teacher-photo${teacher.image ? " has-image" : ""}`}>
-          {teacher.image ? <img src={teacher.image} alt={teacher.name} /> : <span>{teacher.name.split(" ").map(part => part[0]).join("")}</span>}
-          <b>{String(index + 1).padStart(2, "0")}</b>
-        </div>
-        <small>{teacher.role}</small>
-        <h3>{teacher.name}</h3>
-        <p>{teacher.summary}</p>
-        <details><summary>Дисципліни та профілі <i>+</i></summary><ul>{teacher.courses.map(course => <li key={course}>{course}</li>)}</ul><div>{teacher.orcid && <a href={teacher.orcid} target="_blank" rel="noreferrer">ORCID ↗</a>}{teacher.scholar && <a href={teacher.scholar} target="_blank" rel="noreferrer">Google Scholar ↗</a>}</div></details>
-      </article>)}</div>
+      <div className="academic-profile-grid">{displayed.map((teacher, index) => <AcademicProfileCard
+        key={teacher.name}
+        index={index}
+        badge={teacher.role.toLowerCase().includes("завідувач") ? "Керівник кафедри" : undefined}
+        detailsLabel="Дисципліни та профілі"
+        person={{
+          name: teacher.name,
+          role: teacher.role,
+          summary: teacher.summary,
+          image: teacher.image,
+          tags: teacher.courses,
+          links: [
+            ...(teacher.orcid ? [{ label: "ORCID", href: teacher.orcid }] : []),
+            ...(teacher.scholar ? [{ label: "Google Scholar", href: teacher.scholar }] : []),
+          ],
+        }}
+      />)}</div>
       {compact && <Link className="law-team-more" href="/departments/law-faculty#law-teachers">Повний склад кафедри →</Link>}
     </div>
   </section>;

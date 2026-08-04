@@ -14,6 +14,7 @@ const revealSelectors = [
   ".story",
   ".evt",
   ".leader-card",
+  ".academic-profile-card",
   ".faculty-group-head",
   ".professor-list article",
   ".faculty-card",
