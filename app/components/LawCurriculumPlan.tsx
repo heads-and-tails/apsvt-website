@@ -95,7 +95,7 @@ export function LawCurriculumPlan() {
         </div>
         <div>
           <p>Реальна структура бакалаврської програми D8 «Право» за офіційною освітньо-професійною програмою Академії. Для кожної обов’язкової дисципліни вказано обсяг у кредитах ЄКТС і форму підсумкового контролю.</p>
-          <a href="https://www.socosvita.kiev.ua/node/2501/print" target="_blank" rel="noreferrer">Перелік офіційних навчальних планів ↗</a>
+          <span className="law-curriculum-source">Джерело · офіційна ОПП D8 «Право» · 2025</span>
         </div>
       </header>
 
