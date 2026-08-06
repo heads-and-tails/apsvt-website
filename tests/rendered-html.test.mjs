@@ -485,7 +485,10 @@ test("publishes entrance-examination programmes and duplicates doctoral files on
   for(const name of ["Кафедра конституційного, адміністративного та фінансового права","Кафедра публічного управління та адміністрування","Кафедра цивільного, трудового та господарського права","Кафедра кримінального права, процесу та криміналістики"]){
     assert.match(lawFaculty,new RegExp(name));
   }
-  assert.match(forensicLaboratory,/Лабораторія<br\/><em>криміналістики/);
+  assert.match(forensicLaboratory,/Лабораторія[\s\S]{0,180}криміналістики/);
+  assert.match(forensicLaboratory,/Фото- й відеофіксація/);
+  assert.match(forensicLaboratory,/Засоби роботи з речовими доказами/);
+  assert.match(forensicLaboratory,/Організація освітньої діяльності на засадах академічної доброчесності/);
   assert.match(forensicLaboratory,/forensic-lab-regulation\.pdf/);
   for(const html of [psychology,law,publicAdministration]){
     assert.match(html,/foreign-language-english\.pdf/);

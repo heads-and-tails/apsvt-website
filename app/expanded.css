@@ -1485,6 +1485,32 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .clinic-contact aside p{font-size:13px;line-height:1.6}
 .clinic-contact aside a{display:inline-block;margin-top:26px;border-bottom:2px solid var(--ink);font:700 9px var(--mono);text-transform:uppercase}
 
+/* Forensic laboratory: restored official content and safe typography. */
+.forensic-page h1,.forensic-page h2,.forensic-page h3,.forensic-page h4,.forensic-page b{overflow-wrap:normal;word-break:normal;hyphens:none;text-wrap:balance}
+.forensic-hero h1{display:flex;flex-direction:column;align-items:flex-start;max-width:min(100%,920px);font-size:clamp(54px,7.7vw,116px);line-height:.84}
+.forensic-hero h1 span,.forensic-hero h1 em{display:block;max-width:100%}
+.forensic-intro h2{max-width:11.5ch;font-size:clamp(42px,5.35vw,74px);line-height:.94}
+.forensic-section-head h2{max-width:14ch;line-height:.94}
+.forensic-equipment{background:var(--navy);color:#fff}
+.forensic-equipment-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(50px,9vw,130px);align-items:start}
+.forensic-equipment .idx{color:var(--gold)}
+.forensic-equipment h2{max-width:12ch;margin:14px 0 25px;font-size:clamp(44px,5.8vw,79px);line-height:.92}
+.forensic-equipment-grid>div:first-child>p{max-width:58ch;color:#cbd4e4;font-size:16px;line-height:1.7}
+.forensic-equipment-list{border-top:1px solid rgba(255,255,255,.45)}
+.forensic-equipment-list>div{display:grid;grid-template-columns:46px minmax(0,1fr);gap:16px;align-items:center;min-height:100px;border-bottom:1px solid rgba(255,255,255,.28)}
+.forensic-equipment-list span{color:var(--gold);font:10px var(--mono)}
+.forensic-equipment-list b{font:700 clamp(19px,2vw,27px)/1.08 var(--disp);text-transform:uppercase}
+.forensic-functions-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.55fr);gap:clamp(45px,8vw,110px);align-items:end;margin-bottom:48px}
+.forensic-functions-head h2{max-width:13ch;margin-top:14px;font-size:clamp(44px,5.8vw,79px);line-height:.92}
+.forensic-functions-head>p{max-width:54ch;font-size:15px;line-height:1.65}
+.forensic-function-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--ink);border-left:1px solid var(--ink)}
+.forensic-function-list li{display:grid;grid-template-columns:42px minmax(0,1fr);gap:13px;min-height:145px;padding:23px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.forensic-function-list span{font:10px var(--mono);color:var(--cobalt)}
+.forensic-function-list p{font-size:14px;line-height:1.58}
+.forensic-page .clinic-step-grid h3{font-size:clamp(21px,2vw,27px);line-height:1.06}
+.forensic-page .clinic-contact h2{max-width:11ch;font-size:clamp(43px,5.5vw,75px);line-height:.93}
+.forensic-page .clinic-contact aside h3{font-size:clamp(25px,2.6vw,30px);line-height:1.05}
+
 /* Expanded department directory. */
 .department-hero .wrap>span{display:block;margin-bottom:18px;color:var(--cobalt);font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .department-map{background:#e8e5dd}
@@ -1556,6 +1582,9 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
   .academy-structure .structure-layout{grid-template-columns:1fr}
   .clinic-contact-grid{grid-template-columns:1fr}
   .clinic-contact aside{max-width:520px}
+  .forensic-hero h1{font-size:clamp(48px,7.4vw,68px)}
+  .forensic-equipment-grid,.forensic-functions-head{grid-template-columns:1fr;gap:34px}
+  .forensic-equipment h2,.forensic-functions-head h2{max-width:15ch}
 }
 @media(max-width:700px){
   .programme-department-grid,.clinic-intro,.clinic-principles-grid,.department-practice-band>.wrap,.academy-structure-head{grid-template-columns:1fr;gap:30px}
@@ -1577,6 +1606,12 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
   .clinic-hero-copy{padding-top:125px;padding-bottom:55px}
   .clinic-hero-copy>a{margin-bottom:38px}
   .clinic-hero h1{font-size:clamp(51px,15vw,72px)}
+  .forensic-hero h1{font-size:clamp(27px,7.2vw,44px);line-height:.92;letter-spacing:-.04em}
+  .forensic-intro h2,.forensic-section-head h2,.forensic-equipment h2,.forensic-functions-head h2,.forensic-page .clinic-contact h2{max-width:100%;font-size:clamp(34px,9.6vw,47px);line-height:.98}
+  .forensic-function-list{grid-template-columns:1fr}
+  .forensic-function-list li{min-height:0;padding:20px 16px}
+  .forensic-equipment-list>div{min-height:82px}
+  .forensic-page .clinic-contact aside{margin-right:10px;box-shadow:10px 10px var(--cobalt)}
   .clinic-principle-list{grid-template-columns:1fr}
   .clinic-principle-list>div:nth-child(even){padding-left:0;border-left:0}
   .clinic-contact-grid>div>div{display:grid}
