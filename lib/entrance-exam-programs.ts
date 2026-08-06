@@ -13,7 +13,7 @@ export const bachelorEntranceExamPrograms: EntranceExamProgram[] = [
   { title: "Українська мова", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/ukrainian-language.pdf`, pages: 15 },
   { title: "Математика", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/mathematics.pdf`, pages: 9 },
   { title: "Історія України", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/history-of-ukraine.pdf`, pages: 12 },
-  { title: "Англійська мова", meta: "Файл буде додано після надходження" },
+  { title: "Англійська мова", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/english-language.pdf`, pages: 9 },
   { title: "Німецька мова", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/german-language.pdf`, pages: 8 },
   { title: "Біологія", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/biology.pdf`, pages: 12 },
   { title: "Фізика", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/physics.pdf`, pages: 10 },
@@ -37,7 +37,7 @@ export const phdEntranceExamPrograms: EntranceExamProgram[] = [
   { title: "C4 Психологія", meta: "Фахове вступне випробування", href: `${phdBase}/psychology.pdf`, pages: 27, programSlug: "psychology" },
   { title: "Іноземна мова (англійська)", meta: "Програма співбесіди", href: `${phdBase}/foreign-language-english.pdf`, pages: 9 },
   { title: "Іноземна мова (німецька)", meta: "Програма співбесіди", href: `${phdBase}/foreign-language-german.pdf`, pages: 8 },
-  { title: "Методологія наукових досліджень", meta: "Файл очікується від Приймальної комісії" },
+  { title: "Методологія наукових досліджень", meta: "Програма для спеціальності C1", href: `${phdBase}/research-methodology-economics.pdf`, pages: 18 },
 ];
 
 const sharedPhdPrograms = phdEntranceExamPrograms.filter((item) =>

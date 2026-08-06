@@ -459,8 +459,8 @@ test("publishes entrance-examination programmes and duplicates doctoral files on
   assert.match(admissionsHtml,/Методологія наукових досліджень/);
 
   const programmeFiles={
-    bachelor:["ukrainian-language","mathematics","history-of-ukraine","german-language","biology","physics","chemistry","ukrainian-literature","ukrainian-as-foreign-language"],
-    phd:["professional-education","law","public-administration","economics-international-relations","psychology","foreign-language-english","foreign-language-german"],
+    bachelor:["ukrainian-language","mathematics","history-of-ukraine","english-language","german-language","biology","physics","chemistry","ukrainian-literature","ukrainian-as-foreign-language"],
+    phd:["professional-education","law","public-administration","economics-international-relations","psychology","foreign-language-english","foreign-language-german","research-methodology-economics"],
   };
   for(const [level,files] of Object.entries(programmeFiles)){
     for(const file of files){
@@ -470,16 +470,23 @@ test("publishes entrance-examination programmes and duplicates doctoral files on
     }
   }
 
-  const [psychology,law,publicAdministration]=await Promise.all([
+  const [psychology,law,publicAdministration,lawFaculty,forensicLaboratory]=await Promise.all([
     (await render("/programs/psychology")).text(),
     (await render("/programs/law")).text(),
     (await render("/programs/public-administration")).text(),
+    (await render("/departments/law-faculty")).text(),
+    (await render("/programs/law/forensic-laboratory")).text(),
   ]);
   assert.match(psychology,/exam-programs\/2026\/phd\/psychology\.pdf/);
   assert.match(law,/exam-programs\/2026\/phd\/law\.pdf/);
   assert.match(law,/legal-clinic-regulation\.pdf/);
   assert.match(law,/forensic-lab-regulation\.pdf/);
   assert.match(publicAdministration,/exam-programs\/2026\/phd\/public-administration\.pdf/);
+  for(const name of ["Кафедра конституційного, адміністративного та фінансового права","Кафедра публічного управління та адміністрування","Кафедра цивільного, трудового та господарського права","Кафедра кримінального права, процесу та криміналістики"]){
+    assert.match(lawFaculty,new RegExp(name));
+  }
+  assert.match(forensicLaboratory,/Лабораторія<br\/><em>криміналістики/);
+  assert.match(forensicLaboratory,/forensic-lab-regulation\.pdf/);
   for(const html of [psychology,law,publicAdministration]){
     assert.match(html,/foreign-language-english\.pdf/);
     assert.match(html,/foreign-language-german\.pdf/);

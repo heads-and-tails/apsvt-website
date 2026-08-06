@@ -24,7 +24,7 @@ export function EntranceExamPrograms() {
   return <section className="exam-programs" id="entrance-programs"><div className="wrap">
     <div className="exam-programs-head">
       <div><div className="idx">06 / Підготовка до вступу</div><h2>Програми вступних<br />випробувань</h2></div>
-      <aside><span>2026</span><b>16</b><p>офіційних програм уже доступні для перегляду</p></aside>
+      <aside><span>2026</span><b>18</b><p>офіційних програм уже доступні для перегляду</p></aside>
     </div>
 
     <nav className="exam-program-level-nav" aria-label="Програми вступних випробувань за рівнями освіти">
@@ -50,7 +50,7 @@ export function EntranceExamPrograms() {
     </article>
 
     <article className="exam-program-level" id="programs-phd">
-      <header><span>03 / Доктор філософії</span><div><h3>Фахові вступні випробування та іноземні мови</h3><p>Програми за спеціальностями й мовні співбесіди для вступу до аспірантури.</p></div></header>
+      <header><span>03 / Доктор філософії</span><div><h3>Фахові випробування, мови та методологія</h3><p>Програми за спеціальностями, мовні співбесіди й методологія наукових досліджень для вступу до аспірантури.</p></div></header>
       <div className="exam-program-documents phd">
         {phdEntranceExamPrograms.map((document, index) => <ProgramDocument document={document} index={index} key={document.title} />)}
       </div>

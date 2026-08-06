@@ -41,7 +41,7 @@ export const doctoralProgrammes: DoctoralProgramme[] = [
     description: "Освітньо-наукова програма третього рівня вищої освіти, започаткована у 2025 році.",
     href: "/documents/programmes/phd/2025/d4-public-administration.pdf",
     pages: 17,
-    department: "Кафедра публічного управління та публічної служби",
+    department: "Кафедра публічного управління та адміністрування",
     relatedProgramSlug: "public-administration",
   },
 ];

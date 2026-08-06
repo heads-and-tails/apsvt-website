@@ -120,7 +120,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
     ],
   },
   "public-administration": {
-    department: "Кафедра публічного управління та публічної служби",
+    department: "Кафедра публічного управління та адміністрування",
     faculty: "Юридичний факультет",
     departmentHref: "/departments/law-faculty#departments",
     departmentSummary: "Освітній, науковий і навчально-методичний осередок, що готує фахівців для органів державної влади, місцевого самоврядування, профспілок, громадських інституцій та соціальної сфери. Кафедра забезпечує бакалаврську й магістерську підготовку за спеціальністю D4.",
@@ -206,7 +206,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
     practiceSourceHref: "/departments/law-faculty",
     partners: [
       { name: "Юридична клініка «Феміда»", mark: "ФЕМІДА", kind: "Внутрішня база практики", note: "Первинна правова допомога, інтерв’ювання клієнта, правова позиція і професійна етика.", href: "/programs/law/legal-clinic", tone: "gold" },
-      { name: "Лабораторія криміналістики", mark: "LAB", kind: "Навчальна лабораторія", note: "Технічна фотолабораторія, кабінет слідчого та криміналістичний майданчик.", tone: "ink" },
+      { name: "Лабораторія криміналістики", mark: "LAB", kind: "Навчальна лабораторія", note: "Технічна фотолабораторія, кабінет слідчого та криміналістичний майданчик.", href: "/programs/law/forensic-laboratory", tone: "ink" },
       { name: "Суди й адвокатські бюро", mark: "LAW", kind: "Зовнішні бази практики", note: "Судова, правоохоронна, адвокатська та нотаріальна практика за погодженням факультету.", tone: "blue" },
     ],
     team: [
