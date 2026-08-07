@@ -19,6 +19,25 @@ type Certificate = {
   image: string;
 };
 
+type CurrentCertificate = {
+  title: string;
+  level: string;
+  specialty: string;
+  number: string;
+  issued: string;
+  validUntil: string;
+  href: string;
+};
+
+const currentCertificates: CurrentCertificate[] = [
+  { title: "Фінанси, банківська справа, страхування та фондовий ринок", level: "Магістр", specialty: "072", number: "№ 19421", issued: "23.12.2025", validUntil: "23.12.2026", href: "/documents/accreditation/2026/finance-insurance-master-19421.pdf" },
+  { title: "Професійна освіта (за спеціалізаціями)", level: "Магістр", specialty: "015", number: "№ 19390", issued: "23.12.2025", validUntil: "23.12.2026", href: "/documents/accreditation/2026/professional-education-master-19390.pdf" },
+  { title: "Психологія", level: "Бакалавр", specialty: "053", number: "№ 21114", issued: "13.05.2026", validUntil: "12.05.2027", href: "/documents/accreditation/2026/psychology-bachelor-21114.pdf" },
+  { title: "Психологія бізнесу та управління", level: "Магістр", specialty: "053", number: "№ 10064", issued: "15.01.2025", validUntil: "01.07.2030", href: "/documents/accreditation/2026/business-management-psychology-master-10064.pdf" },
+  { title: "Публічне управління та адміністрування", level: "Бакалавр", specialty: "281", number: "№ 20649", issued: "22.04.2026", validUntil: "21.04.2027", href: "/documents/accreditation/2026/public-administration-bachelor-20649.pdf" },
+  { title: "Клінічна психологія", level: "Магістр", specialty: "053", number: "№ 6698", issued: "26.12.2023", validUntil: "01.07.2029", href: "/documents/accreditation/2026/clinical-psychology-master-6698.pdf" },
+];
+
 const programmeCertificates: Certificate[] = [
   {
     title: "Маркетинг",
@@ -154,6 +173,15 @@ function CertificateCard({ certificate, index }: { certificate: Certificate; ind
   );
 }
 
+function CurrentCertificateCard({ certificate, index }: { certificate: CurrentCertificate; index: number }) {
+  return <a className="current-certificate-card" href={certificate.href} target="_blank" rel="noreferrer">
+    <div><span>{String(index + 1).padStart(2, "0")}</span><small>{certificate.level} · спеціальність {certificate.specialty}</small></div>
+    <h3>{certificate.title}</h3>
+    <dl><div><dt>Сертифікат</dt><dd>{certificate.number}</dd></div><div><dt>Видано</dt><dd>{certificate.issued}</dd></div><div><dt>Діє до</dt><dd>{certificate.validUntil}</dd></div></dl>
+    <b>Відкрити офіційний PDF ↗</b>
+  </a>;
+}
+
 export default function LicensesPage() {
   return (
     <main id="top">
@@ -169,8 +197,8 @@ export default function LicensesPage() {
           </div>
           <aside className="license-hero-card">
             <span>Документи у розділі</span>
-            <b>17</b>
-            <p>1 ліцензійний документ<br />16 сканів сертифікатів</p>
+            <b>23</b>
+            <p>1 ліцензійний документ<br />22 сертифікати та архівні скани</p>
             <a href="#license-document">Перейти до ліцензії ↓</a>
           </aside>
         </div>
@@ -179,8 +207,8 @@ export default function LicensesPage() {
       <nav className="license-page-nav" aria-label="Навігація сторінкою">
         <div className="wrap">
           <a href="#license-document"><span>01</span><b>Ліцензія</b></a>
-          <a href="#certificates"><span>02</span><b>Сертифікати</b></a>
-          <a href="#archive"><span>03</span><b>Архів</b></a>
+          <a href="#current-certificates"><span>02</span><b>Нові сертифікати</b></a>
+          <a href="#certificates"><span>03</span><b>Попередні скани</b></a>
           <a href="#verification"><span>04</span><b>Перевірити статус</b></a>
         </div>
       </nav>
@@ -206,12 +234,24 @@ export default function LicensesPage() {
         </div>
       </section>
 
+      <section className="current-certificates-section" id="current-certificates">
+        <div className="wrap">
+          <div className="license-section-head">
+            <div><div className="idx">02 / Додано у 2026 році</div><h2>Сертифікати та акредитація</h2></div>
+            <p>Офіційні PDF-сертифікати з номером, датою видачі та строком дії. Для перевірки поточного статусу скористайтеся державними реєстрами наприкінці сторінки.</p>
+          </div>
+          <div className="current-certificate-grid">
+            {currentCertificates.map((certificate, index) => <CurrentCertificateCard certificate={certificate} index={index} key={certificate.number} />)}
+          </div>
+        </div>
+      </section>
+
       <section className="license-certificates-section" id="certificates">
         <div className="wrap">
           <div className="license-section-head">
             <div>
-              <div className="idx">02 / Освітні програми</div>
-              <h2>Сертифікати акредитації</h2>
+              <div className="idx">03 / Попередня добірка</div>
+              <h2>Скани сертифікатів</h2>
             </div>
             <p>Це скани, перенесені з попередньої офіційної сторінки Академії. Зазначені строки відтворено як історичні дані джерела; актуальний статус потрібно перевіряти в державних реєстрах нижче.</p>
           </div>
@@ -227,7 +267,7 @@ export default function LicensesPage() {
         <div className="wrap">
           <details className="license-archive" open>
             <summary>
-              <span>03 / Повний комплект</span>
+              <span>04 / Повний комплект</span>
               <b>Архів попередніх сертифікатів</b>
               <i>+</i>
             </summary>
@@ -245,7 +285,7 @@ export default function LicensesPage() {
         <div className="wrap">
           <div className="license-section-head light">
             <div>
-              <div className="idx">04 / Актуальний статус</div>
+              <div className="idx">05 / Актуальний статус</div>
               <h2>Перевірте в офіційному реєстрі</h2>
             </div>
             <p>Державні реєстри є джерелом актуальної інформації про видані, переоформлені, розширені, звужені або анульовані ліцензії та сертифікати.</p>

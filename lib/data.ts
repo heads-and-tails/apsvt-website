@@ -22,11 +22,27 @@ export type PostInput = Omit<Post, "id" | "slug" | "createdAt" | "updatedAt" | "
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { entranceResultsNewsSlug } from "@/lib/entrance-results";
+import { entranceResultsNewsSlug, entranceResultsNewsSlugJuly31 } from "@/lib/entrance-results";
 
 const IMG = "https://images.unsplash.com";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-entrance-results-2026-07-31",
+    slug: entranceResultsNewsSlugJuly31,
+    title: "Оприлюднено результати вступних випробувань від 31 липня 2026 року",
+    excerpt: "Приймальна комісія опублікувала п’ять офіційних відомостей зі співбесід для вступників.",
+    body: "Приймальна комісія Академії оприлюднила результати вступних випробувань, проведених 31 липня 2026 року. На сторінці доступні окремі PDF-відомості зі співбесід з української мови, української літератури, математики, історії України та англійської мови.\n\nВідкрити документи можна безпосередньо в цій новині або у розділі «Вступнику» — «Результати вступних випробувань». Попередні офіційні записи залишаються доступними на сторінці Приймальної комісії.",
+    category: "Вступ",
+    imageUrl: "/apsvt-regional-students.png",
+    imageAlt: "Вступники Академії під час вступної кампанії 2026 року",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-08-03T12:30:00.000Z",
+    createdAt: "2026-08-03T12:30:00.000Z",
+    updatedAt: "2026-08-03T12:30:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-entrance-results-2026-07-29",
     slug: entranceResultsNewsSlug,
@@ -224,7 +240,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }

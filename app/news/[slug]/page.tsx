@@ -5,7 +5,7 @@ import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { getPostBySlug, getPosts } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
-import { bachelorEntranceResults, entranceResultsNewsSlug } from "@/lib/entrance-results";
+import { getEntranceResultDocumentsForNews } from "@/lib/entrance-results";
 import { NewsCard } from "../../components/NewsCard";
 import { EditorialRichText } from "../../components/EditorialRichText";
 
@@ -34,6 +34,7 @@ export default async function Page({ params }: Props) {
   const related = (await getPosts({ limit: 6 })).filter((item) => item.id !== post.id).slice(0, 3);
   const date = new Intl.DateTimeFormat("uk-UA", { day: "2-digit", month: "long", year: "numeric" }).format(new Date(post.publishedAt || post.createdAt));
   const heroImage = getEditorialImage(post);
+  const entranceResultDocuments = getEntranceResultDocumentsForNews(post.slug);
 
   return <main id="top">
     <SiteHeader />
@@ -46,9 +47,9 @@ export default async function Page({ params }: Props) {
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
         <EditorialRichText text={post.body} />
-        {post.slug === entranceResultsNewsSlug && <div className="news-result-files">
+        {entranceResultDocuments && <div className="news-result-files">
           <span>Результати за предметами</span>
-          {bachelorEntranceResults.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
+          {entranceResultDocuments.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
             <b>{String(index + 1).padStart(2, "0")}</b><strong>{document.title}</strong><small>PDF · відкрити ↗</small>
           </a>)}
           <Link href="/admissions#entrance-results">Усі результати у розділі «Вступнику» →</Link>

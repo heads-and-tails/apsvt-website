@@ -1,4 +1,18 @@
-import { bachelorEntranceResults } from "@/lib/entrance-results";
+import { bachelorEntranceResults, bachelorEntranceResultsJuly31, type EntranceResultDocument } from "@/lib/entrance-results";
+
+function ResultBatch({ date, documents }: { date: string; documents: EntranceResultDocument[] }) {
+  return <div className="entrance-result-batch">
+    <h4>{`Результати вступних випробувань від ${date} 2026 року`}</h4>
+    <p>Кожен документ відкривається окремо у форматі PDF.</p>
+    <div className="entrance-result-documents">
+      {documents.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <div><small>Бакалаврат · {date} 2026</small><h5>{document.title}</h5></div>
+        <div className="entrance-result-action"><small>PDF · {document.pages} {document.pages === 1 ? "сторінка" : "сторінки"}</small><b>Відкрити ↗</b></div>
+      </a>)}
+    </div>
+  </div>;
+}
 
 export function EntranceExamResults() {
   return <section className="entrance-results" id="entrance-results"><div className="wrap">
@@ -13,15 +27,9 @@ export function EntranceExamResults() {
     </nav>
 
     <article className="entrance-results-level" id="results-bachelor">
-      <header><span>01 / Бакалаврат</span><h3>Результати вступних випробувань від 29 липня 2026 року</h3><p>Кожен документ відкривається окремо у форматі PDF.</p></header>
-      <div className="entrance-result-documents">
-        {bachelorEntranceResults.map((document, index) =>
-            <a href={document.href} target="_blank" rel="noreferrer" key={document.title}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <div><small>Бакалаврат · 29 липня 2026</small><h4>{document.title}</h4></div>
-              <div className="entrance-result-action"><small>PDF · {document.pages} {document.pages === 1 ? "сторінка" : "сторінки"}</small><b>Відкрити ↗</b></div>
-            </a>)}
-      </div>
+      <header><span>01 / Бакалаврат</span><h3>Офіційні відомості за датами проведення</h3><p>Нові записи розміщено першими; попередні результати залишаються доступними в архіві сторінки.</p></header>
+      <ResultBatch date="31 липня" documents={bachelorEntranceResultsJuly31} />
+      <ResultBatch date="29 липня" documents={bachelorEntranceResults} />
     </article>
 
     <article className="entrance-results-level" id="results-master">

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 let workerPromise;
@@ -28,7 +28,7 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/news-hospitality-lab\.jpg/);
   assert.match(html,/news-international-workshop\.jpg/);
   assert.match(html,/news-legal-clinic\.jpg/);
-  assert.match(html,/news-marketing-conference\.jpg/);
+  assert.match(html,/Оприлюднено результати вступних випробувань від 31 липня 2026 року/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
@@ -115,6 +115,7 @@ test("renders editorially managed public information",async()=>{
   const vacanciesHtml=await (await render("/vacancies")).text();
   assert.doesNotMatch(vacanciesHtml,/vacancy-status/);
   assert.doesNotMatch(vacanciesHtml,/Термін у розміщеному оголошенні/);
+  assert.match(vacanciesHtml,/21 липня — 24 серпня 2026 року/);
 
   const researchHtml=await (await render("/research")).text();
   assert.match(researchHtml,/Ресурси Академії/);
@@ -139,13 +140,29 @@ test("publishes international partnerships and the foreign applicant guide",asyn
 test("publishes the Academy licence, accreditation scans and verification links",async()=>{
   const html=await (await render("/about/licenses")).text();
   assert.match(html,/Ліцензії\.<br\/>Акредитація\./);
-  assert.match(html,/17/);
+  assert.match(html,/23/);
   assert.match(html,/license-educational-activity-2021\.pdf/);
   assert.match(html,/Сертифікат № 1498/);
   assert.match(html,/Серія АП № 11009149/);
   assert.match(html,/registry\.edbo\.gov\.ua\/university\/53/);
   assert.match(html,/registry\.naqa\.gov\.ua/);
   assert.match(html,/Архів попередніх сертифікатів/);
+  assert.match(html,/Психологія бізнесу та управління/);
+  assert.match(html,/Сертифікати та акредитація/);
+
+  const currentCertificates=[
+    "finance-insurance-master-19421.pdf",
+    "professional-education-master-19390.pdf",
+    "psychology-bachelor-21114.pdf",
+    "business-management-psychology-master-10064.pdf",
+    "public-administration-bachelor-20649.pdf",
+    "clinical-psychology-master-6698.pdf",
+  ];
+  for(const certificate of currentCertificates){
+    assert.match(html,new RegExp(certificate.replace(".","\\.")));
+    const pdf=await readFile(new URL(`../public/documents/accreditation/2026/${certificate}`,import.meta.url));
+    assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${certificate} should remain a PDF`);
+  }
 
   const licence=await readFile(new URL("../public/documents/licenses/license-educational-activity-2021.pdf",import.meta.url));
   assert.equal(licence.subarray(0,4).toString(),"%PDF");
@@ -398,11 +415,16 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   assert.ok(html.indexOf("Дії Приймальної комісії")<html.indexOf("Додаток 8"));
   assert.match(html,/Результати вступних<br\/>випробувань/);
   assert.match(html,/Результати вступних випробувань від 29 липня 2026 року/);
+  assert.match(html,/Результати вступних випробувань від 31 липня 2026 року/);
   assert.match(html,/results\/2026-07-29\/ukrainian-language\.pdf/);
   assert.match(html,/results\/2026-07-29\/mathematics\.pdf/);
   assert.match(html,/results\/2026-07-29\/history-of-ukraine\.pdf/);
   assert.match(html,/results\/2026-07-29\/english-language\.pdf/);
   assert.match(html,/02 \/ Магістратура/);
+  assert.match(html,/Рейтингові списки<br\/>вступників/);
+  assert.match(html,/25 PDF-документів/);
+  assert.match(html,/rankings\/2026-08-03\/law-full-time-first-year\.pdf/);
+  assert.match(html,/rankings\/2026-08-03\/marketing-full-time-first-year\.pdf/);
 
   const files=[
     "01-pravyla-pryiomu-apsvt-2026.pdf",
@@ -432,18 +454,37 @@ test("publishes the applicant hub and official 2026 admission documents",async()
     const pdf=await readFile(new URL(`../public/documents/admissions/results/2026-07-29/${file}`,import.meta.url));
     assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
   }
+
+  const july31Files=["ukrainian-language.pdf","ukrainian-literature.pdf","mathematics.pdf","history-of-ukraine.pdf","english-language.pdf"];
+  for(const file of july31Files){
+    const pdf=await readFile(new URL(`../public/documents/admissions/results/2026-07-31/${file}`,import.meta.url));
+    assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
+
+  const rankingDir=new URL("../public/documents/admissions/rankings/2026-08-03/",import.meta.url);
+  const rankingFiles=await readdir(rankingDir);
+  assert.equal(rankingFiles.length,25);
+  for(const file of rankingFiles){
+    const pdf=await readFile(new URL(file,rankingDir));
+    assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
 });
 
 test("announces and duplicates the published entrance results in news",async()=>{
-  const [newsHtml,articleHtml]=await Promise.all([
+  const [newsHtml,articleHtml,july31ArticleHtml]=await Promise.all([
     (await render("/news")).text(),
     (await render("/news/rezultaty-vstupnykh-vyprobuvan-29-lypnia-2026")).text(),
+    (await render("/news/rezultaty-vstupnykh-vyprobuvan-31-lypnia-2026")).text(),
   ]);
   assert.match(newsHtml,/Оприлюднено результати вступних випробувань від 29 липня 2026 року/);
+  assert.match(newsHtml,/Оприлюднено результати вступних випробувань від 31 липня 2026 року/);
   assert.match(articleHtml,/Результати за предметами/);
   assert.match(articleHtml,/href="\/admissions#entrance-results"/);
   for(const file of ["ukrainian-language","mathematics","history-of-ukraine","english-language"]){
     assert.match(articleHtml,new RegExp(`results/2026-07-29/${file}\\.pdf`));
+  }
+  for(const file of ["ukrainian-language","ukrainian-literature","mathematics","history-of-ukraine","english-language"]){
+    assert.match(july31ArticleHtml,new RegExp(`results/2026-07-31/${file}\\.pdf`));
   }
 });
 
