@@ -13,6 +13,8 @@ export type ApplicantRankingGroup = {
 
 const root = "/documents/admissions/rankings/2026-08-03";
 
+export const applicantRankingsNewsSlug = "reitynhovi-spysky-vstupnykiv-bakalavrat-2026";
+
 export const bachelorApplicantRankings: ApplicantRankingGroup[] = [
   {
     programme: "Професійна освіта",

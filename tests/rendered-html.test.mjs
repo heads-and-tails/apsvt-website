@@ -27,7 +27,7 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/Освітні траєкторії/);
   assert.match(html,/news-hospitality-lab\.jpg/);
   assert.match(html,/news-international-workshop\.jpg/);
-  assert.match(html,/news-legal-clinic\.jpg/);
+  assert.match(html,/Оприлюднено рейтингові списки вступників на бакалаврат/);
   assert.match(html,/Оприлюднено результати вступних випробувань від 31 липня 2026 року/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
@@ -486,6 +486,18 @@ test("announces and duplicates the published entrance results in news",async()=>
   for(const file of ["ukrainian-language","ukrainian-literature","mathematics","history-of-ukraine","english-language"]){
     assert.match(july31ArticleHtml,new RegExp(`results/2026-07-31/${file}\\.pdf`));
   }
+});
+
+test("publishes the applicant rankings announcement in news",async()=>{
+  const listing=await (await render("/news")).text();
+  assert.match(listing,/Оприлюднено рейтингові списки вступників на бакалаврат/);
+  assert.match(listing,/25 офіційних рейтингових списків/);
+
+  const article=await (await render("/news/reitynhovi-spysky-vstupnykiv-bakalavrat-2026")).text();
+  assert.match(article,/25 рейтингових списків за програмами/);
+  assert.match(article,/Професійна освіта/);
+  assert.match(article,/Публічне управління та адміністрування/);
+  assert.match(article,/href="\/admissions#applicant-rankings"/);
 });
 
 test("publishes entrance-examination programmes and duplicates doctoral files on programme pages",async()=>{

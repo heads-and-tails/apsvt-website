@@ -23,10 +23,27 @@ import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { entranceResultsNewsSlug, entranceResultsNewsSlugJuly31 } from "@/lib/entrance-results";
+import { applicantRankingsNewsSlug } from "@/lib/admissions-rankings";
 
 const IMG = "https://images.unsplash.com";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-applicant-rankings-2026-08-03",
+    slug: applicantRankingsNewsSlug,
+    title: "Оприлюднено рейтингові списки вступників на бакалаврат",
+    excerpt: "Приймальна комісія опублікувала 25 офіційних рейтингових списків вступників за освітніми програмами Академії.",
+    body: "На сайті Академії оприлюднено рейтингові списки вступників на бакалаврат станом на 3 серпня 2026 року. Документи згруповано за освітніми програмами, формами навчання та курсами вступу, щоб кожен вступник міг швидко знайти потрібний список.\n\nУ добірці представлені професійна освіта, економіка та міжнародні економічні відносини, психологія, фінанси, менеджмент, публічне управління та адміністрування, маркетинг, право, соціальна робота та консультування. Усі 25 офіційних PDF доступні без реєстрації у розділі «Вступнику» — «Рейтингові списки вступників».\n\nРекомендуємо перевіряти назву освітньої програми, форму навчання і курс безпосередньо у відповідному PDF. З організаційних питань звертайтеся до Приймальної комісії Академії.",
+    category: "Вступ",
+    imageUrl: "/apsvt-regional-students.png",
+    imageAlt: "Вступники Академії під час вступної кампанії 2026 року",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-08-07T09:00:00.000Z",
+    createdAt: "2026-08-07T09:00:00.000Z",
+    updatedAt: "2026-08-07T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-entrance-results-2026-07-31",
     slug: entranceResultsNewsSlugJuly31,
@@ -240,7 +257,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === applicantRankingsNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }

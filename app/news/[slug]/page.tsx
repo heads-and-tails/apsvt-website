@@ -6,6 +6,7 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { getPostBySlug, getPosts } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { getEntranceResultDocumentsForNews } from "@/lib/entrance-results";
+import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
 import { NewsCard } from "../../components/NewsCard";
 import { EditorialRichText } from "../../components/EditorialRichText";
 
@@ -35,6 +36,7 @@ export default async function Page({ params }: Props) {
   const date = new Intl.DateTimeFormat("uk-UA", { day: "2-digit", month: "long", year: "numeric" }).format(new Date(post.publishedAt || post.createdAt));
   const heroImage = getEditorialImage(post);
   const entranceResultDocuments = getEntranceResultDocumentsForNews(post.slug);
+  const isApplicantRankingsNews = post.slug === applicantRankingsNewsSlug;
 
   return <main id="top">
     <SiteHeader />
@@ -53,6 +55,13 @@ export default async function Page({ params }: Props) {
             <b>{String(index + 1).padStart(2, "0")}</b><strong>{document.title}</strong><small>PDF · відкрити ↗</small>
           </a>)}
           <Link href="/admissions#entrance-results">Усі результати у розділі «Вступнику» →</Link>
+        </div>}
+        {isApplicantRankingsNews && <div className="news-result-files news-ranking-files">
+          <span>{`${bachelorRankingDocumentCount} рейтингових списків за програмами`}</span>
+          {bachelorApplicantRankings.map((group) => <Link href="/admissions#applicant-rankings" key={group.code}>
+            <b>{group.code}</b><strong>{group.programme}</strong><small>{`${group.documents.length} PDF · переглянути →`}</small>
+          </Link>)}
+          <Link href="/admissions#applicant-rankings">Відкрити всі рейтингові списки у розділі «Вступнику» →</Link>
         </div>}
         <blockquote>Освіта стає цінною тоді, коли знання переходить у відповідальну дію.</blockquote>
         <Link className="back-link" href="/news">← До всіх новин</Link>
