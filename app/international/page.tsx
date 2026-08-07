@@ -43,6 +43,29 @@ const cooperationAreas = [
   "Спільні конференції, семінари та тренінги",
 ];
 
+const internationalOpportunities = [
+  {
+    number: "01",
+    provider: "DAAD · Німеччина",
+    title: "Магістерські стипендії на навчання у Німеччині",
+    deadline: "16 листопада 2026 · 23:59 за Києвом",
+    audience: "Для випускників бакалаврату та студентів, які планують магістерське навчання у Німеччині.",
+    support: ["992 євро щомісяця", "460 євро на навчальні матеріали", "Проїзд, страхування та мовний курс"],
+    href: "https://houseofeurope.org.ua/opportunity/947",
+    action: "Умови та подання",
+  },
+  {
+    number: "02",
+    provider: "Chevening · Велика Британія",
+    title: "Стипендії Chevening для громадян України",
+    deadline: "6 жовтня 2026 · 11:00 UTC",
+    audience: "Для майбутніх лідерів з України, які планують однорічну магістерську програму у Великій Британії.",
+    support: ["Навчання у Великій Британії", "Міжнародна спільнота лідерів", "Конкурс на 2027–2028 навчальний рік"],
+    href: "https://www.chevening.org/scholarship/ukraine/",
+    action: "Офіційна сторінка",
+  },
+];
+
 const applicantSteps = [
   ["01", "Створіть кабінет", "Зареєструйтеся в офіційній Єдиній системі для іноземних вступників."],
   ["02", "Оберіть АПСВТ", "Подайте електронну заяву до Академії та завантажте копії документів."],
@@ -143,10 +166,11 @@ export default function Page() {
       <a href="#greenfinedu"><span>02</span><b>GreenFinEDU</b></a>
       <a href="#partnerships-in-action"><span>03</span><b>Події</b></a>
       <a href="#cooperation"><span>04</span><b>Напрями співпраці</b></a>
-      <a href="#foreign-applicants"><span>05</span><b>Іноземним вступникам</b></a>
-      <a href="#legal"><span>06</span><b>Офіційні джерела</b></a>
-      <a href="#international-faq"><span>07</span><b>Запитання й відповіді</b></a>
-      <a href="#international-contact"><span>08</span><b>Контакти</b></a>
+      <a href="#international-opportunities"><span>05</span><b>Можливості</b></a>
+      <a href="#foreign-applicants"><span>06</span><b>Іноземним вступникам</b></a>
+      <a href="#legal"><span>07</span><b>Офіційні джерела</b></a>
+      <a href="#international-faq"><span>08</span><b>Запитання й відповіді</b></a>
+      <a href="#international-contact"><span>09</span><b>Контакти</b></a>
     </div></nav>
 
     <section id="partners"><div className="wrap">
@@ -214,9 +238,25 @@ export default function Page() {
       <div className="intl-directions">{cooperationAreas.map((area, index) => <p key={area}><b>{String(index + 1).padStart(2, "0")}</b>{area}<span>↗</span></p>)}</div>
     </div></section>
 
+    <section className="international-opportunities" id="international-opportunities"><div className="wrap">
+      <div className="international-opportunities-head">
+        <div><div className="idx">05 / Стипендії та мобільність</div><h2>Міжнародні<br />можливості</h2></div>
+        <div><p>Актуальні програми для навчання за кордоном, розвитку лідерства й міжнародного професійного досвіду.</p><span>Перевірено 7 серпня 2026 року</span></div>
+      </div>
+      <div className="international-opportunities-grid">{internationalOpportunities.map((opportunity) => <article key={opportunity.number}>
+        <div className="international-opportunity-top"><span>{opportunity.number}</span><small>{opportunity.provider}</small></div>
+        <h3>{opportunity.title}</h3>
+        <div className="international-opportunity-deadline"><small>Кінцевий термін</small><b>{opportunity.deadline}</b></div>
+        <p>{opportunity.audience}</p>
+        <ul>{opportunity.support.map((item) => <li key={item}>{item}</li>)}</ul>
+        <a href={opportunity.href} target="_blank" rel="noreferrer">{opportunity.action} ↗</a>
+      </article>)}</div>
+      <p className="international-opportunities-note">Умови програм можуть змінюватися. Перед поданням заявки перевірте критерії участі, перелік документів і дату завершення прийому на офіційній сторінці організатора.</p>
+    </div></section>
+
     <section className="foreign-applicants" id="foreign-applicants"><div className="wrap">
       <div className="foreign-applicants-head">
-        <div><div className="idx">05 / International applicants</div><h2>Вступ іноземних громадян</h2></div>
+        <div><div className="idx">06 / International applicants</div><h2>Вступ іноземних громадян</h2></div>
         <p>Офіційний маршрут від електронної заяви до зарахування — без посередників і неперевірених інструкцій.</p>
       </div>
 
@@ -239,7 +279,7 @@ export default function Page() {
 
     <section className="soft"><div className="wrap foreign-documents-layout">
       <div>
-        <div className="idx">05.1 / Що підготувати</div><h2>Типовий пакет документів</h2>
+        <div className="idx">06.1 / Що підготувати</div><h2>Типовий пакет документів</h2>
         <div className="foreign-checklist">{typicalDocuments.map((document, index) => <div key={document}><span>{String(index + 1).padStart(2, "0")}</span><p>{document}</p></div>)}</div>
       </div>
       <aside className="foreign-deadlines">
@@ -253,7 +293,7 @@ export default function Page() {
     </div></section>
 
     <section className="international-legal" id="legal"><div className="wrap">
-      <div className="international-legal-head"><div><div className="idx">06 / Перевірені посилання</div><h2>Офіційні джерела</h2></div><p>Посилання ведуть безпосередньо на чинні документи Верховної Ради України, державну систему Study in Ukraine та нормативні документи Академії.</p></div>
+      <div className="international-legal-head"><div><div className="idx">07 / Перевірені посилання</div><h2>Офіційні джерела</h2></div><p>Посилання ведуть безпосередньо на чинні документи Верховної Ради України, державну систему Study in Ukraine та нормативні документи Академії.</p></div>
       <div className="international-source-groups">{legalGroups.map((group, groupIndex) => <details key={group.title} open={groupIndex === 0}>
         <summary><span>{String(groupIndex + 1).padStart(2, "0")}</span><b>{group.title}</b><i>+</i></summary>
         <div>{group.links.map(([title, href]) => <a href={href} target="_blank" rel="noreferrer" key={title}><span>{title}</span><b>Відкрити ↗</b></a>)}</div>
@@ -266,12 +306,12 @@ export default function Page() {
     </div></section>
 
     <section id="international-faq"><div className="wrap">
-      <div className="sec-head"><div><div className="idx">07 / FAQ</div><h2>Запитання й відповіді</h2></div><p>Короткі пояснення перед поданням документів. У складній ситуації зверніться до міжнародного відділу.</p></div>
+      <div className="sec-head"><div><div className="idx">08 / FAQ</div><h2>Запитання й відповіді</h2></div><p>Короткі пояснення перед поданням документів. У складній ситуації зверніться до міжнародного відділу.</p></div>
       <div className="faq-list international-faq-list">{faq.map(({ question, answer }, index) => <details key={question} open={index === 0}><summary><span>{String(index + 1).padStart(2, "0")}</span>{question}<b>+</b></summary><p>{answer}</p>{index === 1 && <a href="https://apply.studyinukraine.gov.ua/home" target="_blank" rel="noreferrer">Перейти до офіційного кабінету ↗</a>}</details>)}</div>
     </div></section>
 
     <section className="international-contact" id="international-contact"><div className="wrap international-contact-card">
-      <div><div className="idx">08 / Міжнародний відділ</div><h2>Допоможемо пройти маршрут</h2><p>Перевіримо вашу ситуацію, підкажемо щодо документів, освітньої пропозиції та електронного запрошення.</p></div>
+      <div><div className="idx">09 / Міжнародний відділ</div><h2>Допоможемо пройти маршрут</h2><p>Перевіримо вашу ситуацію, підкажемо щодо документів, освітньої пропозиції та електронного запрошення.</p></div>
       <div className="international-contact-person"><small>Проректор з міжнародного співробітництва</small><h3>Н. М. Гончаренко</h3><a href="mailto:inz@sococvita.kiev.ua">inz@sococvita.kiev.ua</a><a href="tel:+380506073117">+380 50 607 31 17</a></div>
     </div></section>
 

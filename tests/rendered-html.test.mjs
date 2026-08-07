@@ -129,6 +129,13 @@ test("publishes international partnerships and the foreign applicant guide",asyn
   assert.match(html,/Studieninstitut POLS/);
   assert.match(html,/Transport and Telecommunication Institute/);
   assert.match(html,/Vysoká škola technická a ekonomická v Prešove/);
+  assert.match(html,/Міжнародні<br\/>можливості/);
+  assert.match(html,/DAAD · Німеччина/);
+  assert.match(html,/16 листопада 2026 · 23:59 за Києвом/);
+  assert.match(html,/houseofeurope\.org\.ua\/opportunity\/947/);
+  assert.match(html,/Chevening · Велика Британія/);
+  assert.match(html,/6 жовтня 2026 · 11:00 UTC/);
+  assert.match(html,/chevening\.org\/scholarship\/ukraine/);
   assert.match(html,/Академія оформлює електронне запрошення на навчання/);
   assert.match(html,/apply\.studyinukraine\.gov\.ua\/home/);
   assert.match(html,/758-2024-%D0%BF#Text/);
