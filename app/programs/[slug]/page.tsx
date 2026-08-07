@@ -14,6 +14,8 @@ import { ProgrammeCurriculumPlan } from "@/app/components/ProgrammeCurriculumPla
 import { AcademicProfileCard } from "@/app/components/AcademicProfileCard";
 import { getProgrammeProfile } from "@/lib/programme-profiles";
 import { marketingTeam } from "@/lib/marketing-team";
+import { getDepartmentEntries } from "@/lib/department-content";
+import { DepartmentEditorialContent } from "@/app/components/DepartmentEditorialContent";
 
 export const dynamic = "force-dynamic";
 export function generateStaticParams(){return programs.map((program)=>({slug:program.slug}));}
@@ -25,6 +27,7 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
 
 export default async function Page({params}:{params:Promise<{slug:string}>}){
   const slug=(await params).slug;const program=getProgram(slug);if(!program)notFound();
+  const departmentEntries = await getDepartmentEntries(`/programs/${slug}`);
   const programmeTeam = slug === "marketing" ? marketingTeam : getProgrammeProfile(slug)?.team || [];
   const programmeLead = programmeTeam.find((person) => person.name === program.lead) || programmeTeam[0];
   const programmeLeadLinks = programmeLead
@@ -41,6 +44,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     {slug === "law" && <LawCourseAnnotations />}
     <section><div className="wrap career-layout"><div><div className="idx">03 / Після випуску</div><h2>Кар’єрні можливості</h2><div className="career-list">{program.careers.map((career,i)=><div key={career}><span>0{i+1}</span><b>{career}</b></div>)}</div></div><aside className="programme-lead-card"><AcademicProfileCard badge="Керівник програми" person={{ name: program.lead, role: program.leadRole, summary: programmeLead?.summary || `Координує освітню траєкторію та академічну якість програми «${program.title}».`, image: programmeLead?.image, tags: programmeLead?.interests, links: programmeLeadLinks }} /></aside></div></section>
     <ProgrammeEcosystem slug={slug} />
+    <DepartmentEditorialContent entries={departmentEntries} />
     <ProgramEntranceExams slug={slug} />
     <ProgramDoctoralResources slug={slug} />
     <section className="intl-band"><div className="wrap"><div><div className="idx">{slug === "marketing" ? "05" : "04"} / Міжнародний горизонт</div><h2>Навчайтеся ширше</h2></div><div>{program.international.map(item=><p key={item}>{item}<span>↗</span></p>)}<Link className="cta" href="/international"><span>Усі можливості</span></Link></div></div></section>

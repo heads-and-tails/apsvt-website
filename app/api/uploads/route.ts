@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requirePagePublisher, requirePublisher } from "@/lib/auth";
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { isDepartmentPagePath } from "@/lib/editorial-access";
 
 const imageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 const documentTypes = new Set([
@@ -19,7 +20,13 @@ export async function POST(request: Request) {
     const data = await request.formData();
     const file = data.get("file");
     const purpose = data.get("purpose") === "document" ? "document" : "image";
-    const publisher = purpose === "document" ? await requirePublisher() : await requirePagePublisher("/news");
+    const requestedPagePath = data.get("pagePath");
+    const pagePath = typeof requestedPagePath === "string" && isDepartmentPagePath(requestedPagePath) ? requestedPagePath : null;
+    const publisher = pagePath
+      ? await requirePagePublisher(pagePath)
+      : purpose === "document"
+        ? await requirePublisher()
+        : await requirePagePublisher("/news");
     if (!(file instanceof File)) return NextResponse.json({ error: "Оберіть файл" }, { status: 400 });
     const allowed = purpose === "document" ? documentTypes : imageTypes;
     const maxSize = purpose === "document" ? 20 * 1024 * 1024 : 8 * 1024 * 1024;

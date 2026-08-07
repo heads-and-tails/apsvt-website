@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
+import { PageDocuments } from "../../components/PageDocuments";
+import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
+import { getDepartmentEntries } from "@/lib/department-content";
 
 export const metadata: Metadata = {
   title: "Факультет економіки, соціальних технологій і туризму",
@@ -30,7 +33,8 @@ const programmes = [
   ["A5", "Професійна освіта", "/programs#doctoral-programmes"],
 ];
 
-export default function Page() {
+export default async function Page() {
+  const departmentEntries = await getDepartmentEntries("/departments/economics-social-tourism-faculty");
   return <main id="top"><SiteHeader />
     <section className="law-faculty-hero festt-hero"><div className="law-faculty-hero-image"><img src="/apsvt-students-real.jpg" alt="Студенти Академії під час навчання" /></div><div className="wrap law-faculty-hero-copy"><Link href="/departments">← Усі кафедри</Link><span>ФЕСТТ · міждисциплінарний факультет</span><h1>Економіка.<br /><em>Людина. Подорож.</em></h1><p>Факультет поєднує бізнес, соціальні науки, цифрові технології, психологію, туризм і гостинність — від фундаментальної підготовки до практики з роботодавцями.</p><div><b>8</b><span>кафедр і напрямів</span><b>8</b><span>освітніх траєкторій</span></div></div></section><div className="hero-rule" />
 
@@ -43,6 +47,8 @@ export default function Page() {
     <section className="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Освітні траєкторії</div><h2>Оберіть свою<br />програму</h2></div><p>Кожна сторінка містить опис навчання, кафедру, практику, партнерів, викладачів і документи програми.</p></div><div className="faculty-programme-grid">{programmes.map(([code, title, href], index) => <Link href={href} key={code}><span>{String(index + 1).padStart(2, "0")}</span><b>{code}</b><h3>{title}</h3><i>→</i></Link>)}</div></div></section>
 
     <section className="programme-documents"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">05 / Якість і документи</div><h2>Головне —<br />у зрозумілих розділах</h2></div><Link href="/documents#quality">Документи з якості →</Link></div><div className="programme-document-list"><Link href="/programs"><span>01</span><div><small>Каталог</small><h3>Освітні програми факультету</h3></div><b>↗</b></Link><Link href="/documents#quality"><span>02</span><div><small>Якість освіти</small><h3>Акредитації, опитування та внутрішні положення</h3></div><b>↗</b></Link><Link href="/admissions#exam-programs"><span>03</span><div><small>Вступ 2026</small><h3>Програми вступних випробувань</h3></div><b>↗</b></Link></div><div className="law-faculty-source"><span>Зміст упорядковано на основі офіційних матеріалів факультету</span><Link href="/materials">Відновлений каталог матеріалів →</Link></div></div></section>
+    <DepartmentEditorialContent entries={departmentEntries} />
+    <PageDocuments pagePath="/departments/economics-social-tourism-faculty" />
     <SiteFooter />
   </main>;
 }

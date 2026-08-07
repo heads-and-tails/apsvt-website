@@ -803,3 +803,22 @@ test("publishes document-based curriculum sections for every bachelor programme"
     assert.doesNotMatch(html,/class="study-plan"/);
   }
 });
+
+test("ships code login and complete department-page editing",async()=>{
+  const [login,manager,publicRenderer,panel,guide]=await Promise.all([
+    readFile(new URL("../app/panel/login/LoginForm.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/panel/DepartmentManager.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/components/DepartmentEditorialContent.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/panel/PanelEditor.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../public/documents/editorial-panel-guide.pdf",import.meta.url)),
+  ]);
+  assert.match(login,/verifyOtp/);
+  assert.match(login,/\[0-9\]\{6\}/);
+  assert.match(login,/Код із пошти/);
+  for(const type of ["Розділи сторінки","Новини","Статті","Матеріали","Фотогалерея","Викладачі"]){assert.match(manager,new RegExp(type));}
+  assert.match(publicRenderer,/department-teacher-grid/);
+  assert.match(publicRenderer,/department-photo-grid/);
+  assert.match(panel,/PDF-інструкція/);
+  assert.ok(guide.length>50000);
+  assert.equal(guide.subarray(0,4).toString(),"%PDF");
+});

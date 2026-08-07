@@ -4,14 +4,66 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+type LoginMode = "code" | "password";
+
 export function LoginForm() {
   const router = useRouter();
+  const [mode, setMode] = useState<LoginMode>("code");
   const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
+  const [codeSent, setCodeSent] = useState(false);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
 
-  async function submit(event: React.FormEvent) {
+  async function requestCode() {
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      setMessage("Введіть робочу електронну пошту.");
+      return;
+    }
+    setBusy(true);
+    setMessage("");
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/panel`,
+      },
+    });
+    if (error) {
+      setMessage("Не вдалося надіслати код. Зачекайте кілька хвилин і спробуйте ще раз.");
+    } else {
+      setCodeSent(true);
+      setMessage("Код входу надіслано на пошту. Він діє один раз і має 6 цифр.");
+    }
+    setBusy(false);
+  }
+
+  async function verifyCode(event: React.FormEvent) {
+    event.preventDefault();
+    if (!codeSent) {
+      await requestCode();
+      return;
+    }
+    if (!/^[0-9]{6}$/.test(code)) {
+      setMessage("Введіть 6 цифр із листа.");
+      return;
+    }
+    setBusy(true);
+    setMessage("");
+    const supabase = createClient();
+    const { error } = await supabase.auth.verifyOtp({ email, token: code, type: "email" });
+    if (error) {
+      setMessage("Код недійсний або вже використаний. Запросіть новий код.");
+      setBusy(false);
+      return;
+    }
+    router.replace("/panel");
+    router.refresh();
+  }
+
+  async function signInWithPassword(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
     setMessage("");
@@ -26,33 +78,28 @@ export function LoginForm() {
     router.refresh();
   }
 
-  async function activate() {
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setMessage("Спочатку введіть робочу електронну пошту.");
-      return;
-    }
-    setBusy(true);
+  function chooseMode(nextMode: LoginMode) {
+    setMode(nextMode);
     setMessage("");
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        shouldCreateUser: true,
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/panel`,
-      },
-    });
-    setMessage(error
-      ? "Не вдалося надіслати посилання. Зачекайте кілька хвилин і спробуйте ще раз."
-      : "Перевірте пошту: ми надіслали безпечне посилання для активації та входу.");
-    setBusy(false);
   }
 
-  return <form className="editorial-login" onSubmit={submit}>
-    <label>Робоча електронна пошта<input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="name@apsvt.edu.ua" /></label>
-    <label>Пароль<input type="password" autoComplete="current-password" required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Ваш пароль" /></label>
-    {message && <p className="auth-error" role="alert">{message}</p>}
-    <button disabled={busy} type="submit">{busy ? "Перевіряємо…" : "Увійти до панелі →"}</button>
-    <button className="auth-activate" disabled={busy || !email} type="button" onClick={() => void activate()}>Активувати доступ через пошту</button>
-    <a className="forgot-password-link" href="/panel/forgot-password">Забули пароль?</a>
-  </form>;
+  return <div className="editorial-login-wrap">
+    <div className="editorial-login-tabs" role="tablist" aria-label="Спосіб входу">
+      <button type="button" role="tab" aria-selected={mode === "code"} className={mode === "code" ? "active" : ""} onClick={() => chooseMode("code")}>Код із пошти</button>
+      <button type="button" role="tab" aria-selected={mode === "password"} className={mode === "password" ? "active" : ""} onClick={() => chooseMode("password")}>Пароль</button>
+    </div>
+    {mode === "code" ? <form className="editorial-login" onSubmit={verifyCode}>
+      <label>Робоча електронна пошта<input type="email" autoComplete="email" required value={email} onChange={(event) => { setEmail(event.target.value); setCodeSent(false); setCode(""); }} placeholder="name@socosvita.kiev.ua" /></label>
+      {codeSent && <label>Одноразовий код<input className="editorial-code-input" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" /></label>}
+      {message && <p className="auth-error" role="status">{message}</p>}
+      <button disabled={busy} type="submit">{busy ? "Зачекайте…" : codeSent ? "Підтвердити код →" : "Отримати код →"}</button>
+      {codeSent && <button className="auth-activate" disabled={busy} type="button" onClick={() => void requestCode()}>Надіслати новий код</button>}
+    </form> : <form className="editorial-login" onSubmit={signInWithPassword}>
+      <label>Робоча електронна пошта<input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="name@socosvita.kiev.ua" /></label>
+      <label>Пароль<input type="password" autoComplete="current-password" required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Ваш пароль" /></label>
+      {message && <p className="auth-error" role="alert">{message}</p>}
+      <button disabled={busy} type="submit">{busy ? "Перевіряємо…" : "Увійти до панелі →"}</button>
+      <a className="forgot-password-link" href="/panel/forgot-password">Забули пароль?</a>
+    </form>}
+  </div>;
 }

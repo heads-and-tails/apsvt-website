@@ -25,6 +25,8 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/contacts", label: "Контакти", group: "page" },
   { value: "/faq", label: "FAQ", group: "page" },
   { value: "/vacancies", label: "Вакансії та конкурси", group: "page" },
+  { value: "/departments/economics-social-tourism-faculty", label: "Факультет економіки, соціальних технологій і туризму", group: "department" },
+  { value: "/departments/law-faculty", label: "Юридичний факультет", group: "department" },
   { value: "/programs/psychology", label: "Кафедра психології", group: "department" },
   { value: "/programs/finance", label: "Кафедра фінансів", group: "department" },
   { value: "/programs/management", label: "Кафедра економіки та менеджменту", group: "department" },
@@ -70,6 +72,10 @@ export function serializeEditorialAccessScopes(value: string[]): string {
 
 export function canEditPage(profile: { role: string; accessScopes: string[] }, pagePath: string): boolean {
   return profile.role === "admin" || profile.accessScopes.includes("*") || profile.accessScopes.includes(pagePath);
+}
+
+export function isDepartmentPagePath(value: unknown): value is string {
+  return typeof value === "string" && editorialAccessOptions.some((option) => option.group === "department" && option.value === value);
 }
 
 export function accessScopeLabel(values: string[]): string {

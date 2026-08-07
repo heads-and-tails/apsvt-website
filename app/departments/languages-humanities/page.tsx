@@ -3,13 +3,16 @@ import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { PageDocuments } from "../../components/PageDocuments";
 import { AcademicProfileCard } from "../../components/AcademicProfileCard";
+import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
+import { getDepartmentEntries } from "@/lib/department-content";
 
 export const metadata: Metadata = {
   title: "Кафедра іноземних мов та гуманітарних дисциплін",
   description: "Мовна, гуманітарна та міжкультурна підготовка студентів АПСВТ.",
 };
 
-export default function Page() {
+export default async function Page() {
+  const departmentEntries = await getDepartmentEntries("/departments/languages-humanities");
   return <main id="top"><SiteHeader />
     <section className="detail-hero image"><div className="detail-hero-bg"><img src="/news-international-workshop.jpg" alt="Міжкультурна навчальна дискусія студентів" /></div><div className="wrap"><div className="crumb">Головна / Кафедри / Іноземні мови та гуманітарні дисципліни</div><span className="detail-kicker">Освітній підрозділ АПСВТ</span><h1>Мова для професії.<br />Гуманітарний погляд.</h1><p className="detail-deck">Кафедра розвиває професійну комунікацію, міжкультурну компетентність, критичне мислення та гуманітарну основу освіти.</p></div></section><div className="hero-rule" />
 
@@ -18,6 +21,7 @@ export default function Page() {
     </div></section>
 
     <section className="soft"><div className="wrap split"><div className="copy"><div className="idx">02 / Для студентів</div><h2>Навички, що працюють у кожній професії</h2><p className="lead">Курси кафедри допомагають читати фахові джерела, презентувати ідеї, працювати в міжнародних командах і відповідально комунікувати у публічному просторі.</p></div><div className="panel"><h3>Основні напрями</h3><ul><li><span className="y">01</span>Англійська мова за професійним спрямуванням</li><li><span className="y">02</span>Українська ділова комунікація</li><li><span className="y">03</span>Філософія та критичне мислення</li><li><span className="y">04</span>Міжкультурний діалог і громадянська культура</li></ul></div></div></section>
+    <DepartmentEditorialContent entries={departmentEntries} />
     <PageDocuments pagePath="/departments/languages-humanities" />
     <SiteFooter />
   </main>;

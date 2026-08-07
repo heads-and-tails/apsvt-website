@@ -42,6 +42,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
     const data = new FormData();
     data.append("file", file);
     data.append("purpose", "document");
+    data.append("pagePath", form.pagePath);
     const response = await fetch("/api/uploads", { method: "POST", body: data });
     const result = await response.json() as { url?: string; fileName?: string; mimeType?: string; fileSize?: number; error?: string };
     if (!response.ok || !result.url) {

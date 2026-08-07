@@ -3,6 +3,9 @@ import Link from "next/link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { LawFacultyTeam } from "../../components/LawFacultyTeam";
+import { PageDocuments } from "../../components/PageDocuments";
+import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
+import { getDepartmentEntries } from "@/lib/department-content";
 
 export const metadata: Metadata = {
   title: "Юридичний факультет",
@@ -16,7 +19,8 @@ const departments = [
   ["04", "Кафедра кримінального права, процесу та криміналістики", "Кримінальне право, процес, захист прав людини та криміналістика.", "/programs/law/forensic-laboratory"],
 ];
 
-export default function Page() {
+export default async function Page() {
+  const departmentEntries = await getDepartmentEntries("/departments/law-faculty");
   return <main id="top"><SiteHeader />
     <section className="law-faculty-hero"><div className="law-faculty-hero-image"><img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1800&q=92&auto=format&fit=crop" alt="Правнича освіта" /></div><div className="wrap law-faculty-hero-copy"><Link href="/departments">← Усі кафедри</Link><span>ЮФ · з 1994 року</span><h1>Юридичний<br /><em>факультет</em></h1><p>Фундаментальна правнича освіта, клінічна практика, криміналістична лабораторія та дослідження, що працюють для людини й держави.</p><div><b>4</b><span>кафедри</span><b>2</b><span>практичні осередки</span></div></div></section><div className="hero-rule" />
 
@@ -29,6 +33,8 @@ export default function Page() {
     <LawFacultyTeam />
 
     <section className="programme-documents"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">05 / Програми й положення</div><h2>Документи без<br />архівного хаосу</h2></div><Link href="/documents#education">Усі документи →</Link></div><div className="programme-document-list"><a href="/documents/admissions/exam-programs/2026/phd/law.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>PDF · вступ 2026</small><h3>Програма вступного випробування D8 «Право»</h3></div><b>↗</b></a><a href="/documents/archive/old-site/legal-clinic-regulation.pdf" target="_blank" rel="noreferrer"><span>02</span><div><small>PDF · навчально-практичний підрозділ</small><h3>Положення про юридичну клініку</h3></div><b>↗</b></a><a href="/documents/archive/old-site/forensic-lab-regulation.pdf" target="_blank" rel="noreferrer"><span>03</span><div><small>PDF · навчальна лабораторія</small><h3>Положення про лабораторію криміналістики</h3></div><b>↗</b></a></div><div className="law-faculty-source"><span>Історична довідка адаптована з офіційних матеріалів Академії</span><Link href="/materials">Відновлений каталог матеріалів →</Link></div></div></section>
+    <DepartmentEditorialContent entries={departmentEntries} />
+    <PageDocuments pagePath="/departments/law-faculty" />
     <SiteFooter />
   </main>;
 }
