@@ -423,6 +423,9 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   assert.match(html,/Результати вступних<br\/>випробувань/);
   assert.match(html,/Результати вступних випробувань від 29 липня 2026 року/);
   assert.match(html,/Результати вступних випробувань від 31 липня 2026 року/);
+  assert.match(html,/Результати вступних випробувань від 6 серпня 2026 року/);
+  assert.match(html,/results\/2026-08-06\/english-interview-master\.pdf/);
+  assert.match(html,/PDF · 2 сторінки/);
   assert.match(html,/results\/2026-07-29\/ukrainian-language\.pdf/);
   assert.match(html,/results\/2026-07-29\/mathematics\.pdf/);
   assert.match(html,/results\/2026-07-29\/history-of-ukraine\.pdf/);

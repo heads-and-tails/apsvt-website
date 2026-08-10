@@ -1,6 +1,7 @@
 import { bachelorEntranceResults, bachelorEntranceResultsJuly31, type EntranceResultDocument } from "@/lib/entrance-results";
 
 const masterInterviewVideo = "https://apsvt-academy.ikucha.chatgpt.site/media/admissions/results/2026-08-06/english-interview.mp4";
+const masterInterviewResults = "/documents/admissions/results/2026-08-06/english-interview-master.pdf";
 
 function ResultBatch({ date, documents }: { date: string; documents: EntranceResultDocument[] }) {
   return <div className="entrance-result-batch">
@@ -21,11 +22,11 @@ function MasterResultBatch() {
     <h4>Результати вступних випробувань від 6 серпня 2026 року</h4>
     <p>Матеріали співбесіди з англійської мови для вступників на магістерські програми.</p>
     <div className="entrance-result-documents">
-      <div className="missing">
+      <a href={masterInterviewResults} target="_blank" rel="noreferrer">
         <span>01</span>
         <div><small>Магістратура · 6 серпня 2026</small><h5>Співбесіда з англійської мови</h5></div>
-        <div className="entrance-result-action"><small>PDF</small><b>Файл очікується</b></div>
-      </div>
+        <div className="entrance-result-action"><small>PDF · 2 сторінки</small><b>Відкрити ↗</b></div>
+      </a>
       <a href={masterInterviewVideo} target="_blank" rel="noreferrer">
         <span>02</span>
         <div><small>Магістратура · 6 серпня 2026</small><h5>Відеозапис співбесіди</h5></div>
