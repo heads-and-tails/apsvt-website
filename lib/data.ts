@@ -22,12 +22,28 @@ export type PostInput = Omit<Post, "id" | "slug" | "createdAt" | "updatedAt" | "
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { entranceResultsNewsSlug, entranceResultsNewsSlugJuly31 } from "@/lib/entrance-results";
+import { entranceResultsNewsSlug, entranceResultsNewsSlugAugust6, entranceResultsNewsSlugJuly31 } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug } from "@/lib/admissions-rankings";
 
 const IMG = "https://images.unsplash.com";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-entrance-results-2026-08-06",
+    slug: entranceResultsNewsSlugAugust6,
+    title: "Оприлюднено результати вступних випробувань від 6 серпня 2026 року",
+    excerpt: "Приймальна комісія опублікувала результати співбесіди з англійської мови для вступників на магістратуру та відеозапис співбесіди.",
+    body: "Приймальна комісія Академії оприлюднила результати вступних випробувань, проведених 6 серпня 2026 року для вступників на магістерські програми. Доступна офіційна PDF-відомість із результатами співбесіди з англійської мови.\n\nРазом із результатами опубліковано відеозапис співбесіди. Переглянути документ і відео можна безпосередньо в цій новині або у розділі «Вступнику» — «Результати вступних випробувань» — «Магістратура».",
+    category: "Вступ",
+    imageUrl: "/apsvt-regional-students.png",
+    imageAlt: "Вступники Академії під час вступної кампанії 2026 року",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-08-10T16:15:00.000Z",
+    createdAt: "2026-08-10T16:15:00.000Z",
+    updatedAt: "2026-08-10T16:15:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-applicant-rankings-2026-08-03",
     slug: applicantRankingsNewsSlug,
@@ -257,7 +273,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === applicantRankingsNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }

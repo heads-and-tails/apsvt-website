@@ -6,6 +6,8 @@ export type EntranceResultDocument = {
 
 export const entranceResultsNewsSlug = "rezultaty-vstupnykh-vyprobuvan-29-lypnia-2026";
 export const entranceResultsNewsSlugJuly31 = "rezultaty-vstupnykh-vyprobuvan-31-lypnia-2026";
+export const entranceResultsNewsSlugAugust6 = "rezultaty-vstupnykh-vyprobuvan-6-serpnia-2026";
+export const masterInterviewVideo = "https://apsvt-academy.ikucha.chatgpt.site/media/admissions/results/2026-08-06/english-interview.mp4";
 
 export const bachelorEntranceResults: EntranceResultDocument[] = [
   {
@@ -58,7 +60,16 @@ export const bachelorEntranceResultsJuly31: EntranceResultDocument[] = [
   },
 ];
 
+export const masterEntranceResultsAugust6: EntranceResultDocument[] = [
+  {
+    title: "Співбесіда з англійської мови",
+    href: "/documents/admissions/results/2026-08-06/english-interview-master.pdf",
+    pages: 2,
+  },
+];
+
 export function getEntranceResultDocumentsForNews(slug: string): EntranceResultDocument[] | null {
+  if (slug === entranceResultsNewsSlugAugust6) return masterEntranceResultsAugust6;
   if (slug === entranceResultsNewsSlugJuly31) return bachelorEntranceResultsJuly31;
   if (slug === entranceResultsNewsSlug) return bachelorEntranceResults;
   return null;

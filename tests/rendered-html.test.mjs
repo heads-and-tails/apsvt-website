@@ -481,13 +481,15 @@ test("publishes the applicant hub and official 2026 admission documents",async()
 });
 
 test("announces and duplicates the published entrance results in news",async()=>{
-  const [newsHtml,articleHtml,july31ArticleHtml]=await Promise.all([
+  const [newsHtml,articleHtml,july31ArticleHtml,august6ArticleHtml]=await Promise.all([
     (await render("/news")).text(),
     (await render("/news/rezultaty-vstupnykh-vyprobuvan-29-lypnia-2026")).text(),
     (await render("/news/rezultaty-vstupnykh-vyprobuvan-31-lypnia-2026")).text(),
+    (await render("/news/rezultaty-vstupnykh-vyprobuvan-6-serpnia-2026")).text(),
   ]);
   assert.match(newsHtml,/Оприлюднено результати вступних випробувань від 29 липня 2026 року/);
   assert.match(newsHtml,/Оприлюднено результати вступних випробувань від 31 липня 2026 року/);
+  assert.match(newsHtml,/Оприлюднено результати вступних випробувань від 6 серпня 2026 року/);
   assert.match(articleHtml,/Результати за предметами/);
   assert.match(articleHtml,/href="\/admissions#entrance-results"/);
   for(const file of ["ukrainian-language","mathematics","history-of-ukraine","english-language"]){
@@ -496,6 +498,9 @@ test("announces and duplicates the published entrance results in news",async()=>
   for(const file of ["ukrainian-language","ukrainian-literature","mathematics","history-of-ukraine","english-language"]){
     assert.match(july31ArticleHtml,new RegExp(`results/2026-07-31/${file}\\.pdf`));
   }
+  assert.match(august6ArticleHtml,/results\/2026-08-06\/english-interview-master\.pdf/);
+  assert.match(august6ArticleHtml,/english-interview\.mp4/);
+  assert.match(august6ArticleHtml,/Відеозапис співбесіди/);
 });
 
 test("publishes the applicant rankings announcement in news",async()=>{

@@ -1,6 +1,5 @@
-import { bachelorEntranceResults, bachelorEntranceResultsJuly31, type EntranceResultDocument } from "@/lib/entrance-results";
+import { bachelorEntranceResults, bachelorEntranceResultsJuly31, masterInterviewVideo, type EntranceResultDocument } from "@/lib/entrance-results";
 
-const masterInterviewVideo = "https://apsvt-academy.ikucha.chatgpt.site/media/admissions/results/2026-08-06/english-interview.mp4";
 const masterInterviewResults = "/documents/admissions/results/2026-08-06/english-interview-master.pdf";
 
 function ResultBatch({ date, documents }: { date: string; documents: EntranceResultDocument[] }) {

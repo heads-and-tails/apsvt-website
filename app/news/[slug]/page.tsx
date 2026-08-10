@@ -5,7 +5,7 @@ import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { getPostBySlug, getPosts } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
-import { getEntranceResultDocumentsForNews } from "@/lib/entrance-results";
+import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
 import { NewsCard } from "../../components/NewsCard";
 import { EditorialRichText } from "../../components/EditorialRichText";
@@ -36,6 +36,7 @@ export default async function Page({ params }: Props) {
   const date = new Intl.DateTimeFormat("uk-UA", { day: "2-digit", month: "long", year: "numeric" }).format(new Date(post.publishedAt || post.createdAt));
   const heroImage = getEditorialImage(post);
   const entranceResultDocuments = getEntranceResultDocumentsForNews(post.slug);
+  const isMasterEntranceResultsNews = post.slug === entranceResultsNewsSlugAugust6;
   const isApplicantRankingsNews = post.slug === applicantRankingsNewsSlug;
 
   return <main id="top">
@@ -55,6 +56,13 @@ export default async function Page({ params }: Props) {
             <b>{String(index + 1).padStart(2, "0")}</b><strong>{document.title}</strong><small>PDF · відкрити ↗</small>
           </a>)}
           <Link href="/admissions#entrance-results">Усі результати у розділі «Вступнику» →</Link>
+        </div>}
+        {isMasterEntranceResultsNews && <div className="entrance-result-video">
+          <video controls preload="metadata" playsInline>
+            <source src={masterInterviewVideo} type="video/mp4" />
+            Ваш браузер не підтримує відтворення відео.
+          </video>
+          <p>Відеозапис співбесіди можна переглянути на сторінці або <a href={masterInterviewVideo} target="_blank" rel="noreferrer">відкрити в окремій вкладці ↗</a>.</p>
         </div>}
         {isApplicantRankingsNews && <div className="news-result-files news-ranking-files">
           <span>{`${bachelorRankingDocumentCount} рейтингових списків за програмами`}</span>
