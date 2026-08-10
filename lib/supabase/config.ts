@@ -14,8 +14,14 @@ export function getSupabaseConfig() {
 }
 
 export function editorialAdminEmails(): Set<string> {
+  const defaultAdminEmails = [
+    "ivan.kucha66@gmail.com",
+    "vportnaia@kse.org.ua",
+    "info@socosvita.kiev.ua",
+  ].join(",");
+
   return new Set(
-    (process.env.EDITORIAL_ADMIN_EMAILS || "vportnaia@kse.org.ua")
+    (process.env.EDITORIAL_ADMIN_EMAILS || defaultAdminEmails)
       .split(",")
       .map((email) => email.trim().toLowerCase())
       .filter(Boolean),

@@ -32,6 +32,7 @@ type ProfileRow = {
 };
 
 const preapprovedDepartmentEditors = new Map<string, { displayName: string; accessScopes: string[] }>([
+  ["chornodid@ukr.net", { displayName: "Чорнодід Ігор", accessScopes: ["*"] }],
   ["nadezda_pisarenko@ukr.net", { displayName: "Писаренко Надія", accessScopes: ["/programs/marketing"] }],
   ["tkachenko.ys@socosvita.kiev.ua", { displayName: "Ткаченко Яніна", accessScopes: ["/programs/finance"] }],
   ["natalya.balashova75@gmail.com", { displayName: "Балашова Наталія", accessScopes: ["/programs/social-work"] }],
