@@ -141,7 +141,7 @@ test("publishes international partnerships and the foreign applicant guide",asyn
   assert.match(html,/758-2024-%D0%BF#Text/);
   assert.match(html,/07-poriadok-pryiomu-inozemtsiv\.pdf/);
   assert.match(html,/Чи оформлює Академія запрошення на навчання/);
-  assert.match(html,/inz@sococvita\.kiev\.ua/);
+  assert.match(html,/inz@socosvita\.kiev\.ua/);
 });
 
 test("publishes the Academy licence, accreditation scans and verification links",async()=>{
@@ -889,4 +889,20 @@ test("ships code login and complete department-page editing",async()=>{
   assert.match(panel,/PDF-інструкція/);
   assert.ok(guide.length>50000);
   assert.equal(guide.subarray(0,4).toString(),"%PDF");
+});
+
+test("publishes the 2026 remote admission route for Ukrainians abroad",async()=>{
+  const [admissions,international]=await Promise.all([
+    (await render("/admissions")).text(),
+    (await render("/international")).text(),
+  ]);
+  for(const html of [admissions,international]){
+    assert.match(html,/id="ukrainians-abroad"/);
+    assert.match(html,/Вступайте/);
+    assert.match(html,/Дія\.Підпис/);
+    assert.match(html,/Посвідчення закордонного українця/);
+    assert.match(html,/https:\/\/cabinet\.edbo\.gov\.ua\//);
+    assert.match(html,/economic-and-business-ethics\.html/);
+    assert.match(html,/inz@socosvita\.kiev\.ua/);
+  }
 });

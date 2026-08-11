@@ -10,6 +10,7 @@ import { EntranceExamSchedule } from "./EntranceExamSchedule";
 import { EntranceExamPrograms } from "./EntranceExamPrograms";
 import { EntranceExamResults } from "./EntranceExamResults";
 import { ApplicantRankings } from "./ApplicantRankings";
+import { UkrainiansAbroadAdmission } from "../components/UkrainiansAbroadAdmission";
 import { getPublicContent as getContentItems } from "@/lib/content";
 
 export const metadata: Metadata = { title: "Вступ 2026", description: "Маршрут вступу до АПСВТ у 2026 році: вибір програми, документи та персональна консультація." };
@@ -32,6 +33,7 @@ export default async function Page() {
       <a href="#dates"><span>02</span><b>Ключові дати</b></a>
       <a href="#tuition"><span>03</span><b>Вартість і оплата</b></a>
       <a href="#documents"><span>04</span><b>Що підготувати</b></a>
+      <a href="#ukrainians-abroad"><span>04.1</span><b>Українцям за кордоном</b></a>
       <a href="#entrance-exams"><span>05</span><b>Розклад випробувань</b></a>
       <a href="#entrance-programs"><span>06</span><b>Програми випробувань</b></a>
       <a href="#entrance-results"><span>07</span><b>Результати випробувань</b></a>
@@ -49,6 +51,8 @@ export default async function Page() {
     <section id="tuition"><div className="wrap split"><div className="copy"><div className="idx">03 / Вартість і оплата</div><h2>Знайте суму до договору</h2><p className="lead">Офіційні тарифи 2026/27 показані за рік, семестр і місяць — для денної та заочної форми.</p><p>Скористайтеся безпечним помічником: він підготує банківські реквізити й призначення платежу, не запитуючи дані картки.</p><Link className="cta dark" href="/tuition"><span>Переглянути тарифи й оплату</span></Link></div><div className="panel"><h3>На сторінці вартості</h3><ul><li><span className="y">01</span>Тарифи для вступників 2026</li><li><span className="y">02</span>Вартість старших курсів</li><li><span className="y">03</span>Оплата для іноземних студентів</li><li><span className="y">04</span>Банківські реквізити</li><li><span className="y">05</span>Офіційні договори DOCX</li></ul></div></div></section>
 
     <section className="soft" id="documents"><div className="wrap detail-layout"><div className="detail-copy"><div className="idx">04 / Документи вступника</div><h2>Підготуйтеся заздалегідь</h2><p className="lede">Точний перелік залежить від освітнього рівня та категорії вступника. Основний пакет можна підготувати онлайн.</p><div className="rows"><div className="row"><span className="rnum">01</span><div><h3>Документ про освіту</h3><p>Атестат або диплом із додатком.</p></div></div><div className="row"><span className="rnum">02</span><div><h3>Документ, що посвідчує особу</h3><p>Паспорт або ID-картка та реєстраційний номер.</p></div></div><div className="row"><span className="rnum">03</span><div><h3>Мотиваційний лист</h3><p>Ваша історія, цілі та причина обрати програму.</p></div></div></div></div><aside className="detail-aside"><div className="panel"><h3>Приймальна комісія</h3><ul><li><span className="y">Тел.</span><a href="tel:+380445260664">+38 (044) 526-06-64</a></li><li><span className="y">Email</span><a href="mailto:pk@socosvita.kiev.ua">pk@socosvita.kiev.ua</a></li><li><span className="y">Адреса</span>Кільцева дорога, 3-А, Київ</li></ul></div><p className="aside-hint">Не впевнені у своєму переліку? Залиште запит нижче — команда перевірить вашу ситуацію.</p></aside></div></section>
+
+    <UkrainiansAbroadAdmission index="04.1" />
 
     <EntranceExamSchedule />
 

@@ -4,6 +4,7 @@ import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { PageDocuments } from "../components/PageDocuments";
 import { GreenFinEduResources } from "./GreenFinEduResources";
+import { UkrainiansAbroadAdmission } from "../components/UkrainiansAbroadAdmission";
 
 export const metadata: Metadata = {
   title: "Міжнародне співробітництво та вступ іноземців",
@@ -167,6 +168,7 @@ export default function Page() {
       <a href="#partnerships-in-action"><span>03</span><b>Події</b></a>
       <a href="#cooperation"><span>04</span><b>Напрями співпраці</b></a>
       <a href="#international-opportunities"><span>05</span><b>Можливості</b></a>
+      <a href="#ukrainians-abroad"><span>05.1</span><b>Українцям за кордоном</b></a>
       <a href="#foreign-applicants"><span>06</span><b>Іноземним вступникам</b></a>
       <a href="#legal"><span>07</span><b>Офіційні джерела</b></a>
       <a href="#international-faq"><span>08</span><b>Запитання й відповіді</b></a>
@@ -254,6 +256,8 @@ export default function Page() {
       <p className="international-opportunities-note">Умови програм можуть змінюватися. Перед поданням заявки перевірте критерії участі, перелік документів і дату завершення прийому на офіційній сторінці організатора.</p>
     </div></section>
 
+    <UkrainiansAbroadAdmission index="05.1" />
+
     <section className="foreign-applicants" id="foreign-applicants"><div className="wrap">
       <div className="foreign-applicants-head">
         <div><div className="idx">06 / International applicants</div><h2>Вступ іноземних громадян</h2></div>
@@ -312,7 +316,7 @@ export default function Page() {
 
     <section className="international-contact" id="international-contact"><div className="wrap international-contact-card">
       <div><div className="idx">09 / Міжнародний відділ</div><h2>Допоможемо пройти маршрут</h2><p>Перевіримо вашу ситуацію, підкажемо щодо документів, освітньої пропозиції та електронного запрошення.</p></div>
-      <div className="international-contact-person"><small>Проректор з міжнародного співробітництва</small><h3>Н. М. Гончаренко</h3><a href="mailto:inz@sococvita.kiev.ua">inz@sococvita.kiev.ua</a><a href="tel:+380506073117">+380 50 607 31 17</a></div>
+      <div className="international-contact-person"><small>Проректор з міжнародного співробітництва</small><h3>Н. М. Гончаренко</h3><a href="mailto:inz@socosvita.kiev.ua">inz@socosvita.kiev.ua</a><a href="tel:+380506073117">+380 50 607 31 17</a></div>
     </div></section>
 
     <PageDocuments pagePath="/international" />
