@@ -9,6 +9,7 @@ import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, mast
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
 import { NewsCard } from "../../components/NewsCard";
 import { EditorialRichText } from "../../components/EditorialRichText";
+import { academicCompetitionDocument, academicCompetitionNewsSlug } from "@/lib/academic-competition";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export default async function Page({ params }: Props) {
   const entranceResultDocuments = getEntranceResultDocumentsForNews(post.slug);
   const isMasterEntranceResultsNews = post.slug === entranceResultsNewsSlugAugust6;
   const isApplicantRankingsNews = post.slug === applicantRankingsNewsSlug;
+  const isAcademicCompetitionNews = post.slug === academicCompetitionNewsSlug;
 
   return <main id="top">
     <SiteHeader />
@@ -70,6 +72,12 @@ export default async function Page({ params }: Props) {
             <b>{group.code}</b><strong>{group.programme}</strong><small>{`${group.documents.length} PDF · переглянути →`}</small>
           </Link>)}
           <Link href="/admissions#applicant-rankings">Відкрити всі рейтингові списки у розділі «Вступнику» →</Link>
+        </div>}
+        {isAcademicCompetitionNews && <div className="news-result-files">
+          <span>Конкурс №2 і №3 · подання до 16 вересня 2026 року</span>
+          <Link href="/vacancies#competition-2-3"><b>01</b><strong>Посади, умови та перелік документів</strong><small>Переглянути →</small></Link>
+          <a href={academicCompetitionDocument} download><b>02</b><strong>Офіційне оголошення</strong><small>DOCX · завантажити ↗</small></a>
+          <Link href="/vacancies#competition-2-3">Перейти до розділу «Вакансії та конкурси» →</Link>
         </div>}
         <blockquote>Освіта стає цінною тоді, коли знання переходить у відповідальну дію.</blockquote>
         <Link className="back-link" href="/news">← До всіх новин</Link>

@@ -24,10 +24,27 @@ import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { entranceResultsNewsSlug, entranceResultsNewsSlugAugust6, entranceResultsNewsSlugJuly31 } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug } from "@/lib/admissions-rankings";
+import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 
 const IMG = "https://images.unsplash.com";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-academic-competition-2-3-2026",
+    slug: academicCompetitionNewsSlug,
+    title: "Оголошено конкурс №2 і №3 на заміщення посад науково-педагогічних працівників",
+    excerpt: "АПСВТ запрошує кандидатів на 18 посад кафедри української та іноземних мов і гуманітарних наук та факультету психології і соціального розвитку.",
+    body: "Академія праці, соціальних відносин і туризму оголосила конкурс №2 і №3 на заміщення посад науково-педагогічних працівників. Заяви приймаються до 16 вересня 2026 року включно.\n\n## Кафедра української та іноземних мов і гуманітарних наук\n\n- Завідувач кафедри — 1 посада\n- Професор — 1 посада\n- Доцент — 1 посада\n- Старший викладач — 2 посади\n\n## Факультет психології та соціального розвитку\n\nКафедра клінічної психології та психотерапії: завідувач кафедри — 1 посада, професор — 3 посади, доцент — 3 посади.\n\nКафедра психології бізнесу та управління: завідувач кафедри — 1 посада, професор — 2 посади, доцент — 3 посади.\n\nДокументи необхідно подати особисто до навчально-методичного відділу Академії за адресою: м. Київ, вул. Кільцева дорога, 3-А, кабінет №216 або №227. Повний перелік документів для зовнішніх кандидатів і працівників Академії розміщено на сторінці «Вакансії та конкурси». Академія житлом не забезпечує.",
+    category: "Оголошення",
+    imageUrl: "/apsvt-students-real.jpg",
+    imageAlt: "Академічна спільнота АПСВТ",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-08-13T09:00:00.000Z",
+    createdAt: "2026-08-13T09:00:00.000Z",
+    updatedAt: "2026-08-13T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-entrance-results-2026-08-06",
     slug: entranceResultsNewsSlugAugust6,
@@ -273,7 +290,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
@@ -311,6 +328,7 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   if (isSupabaseConfigured()) {
     try {
+      await ensureSupabasePosts();
       const { data, error } = await createSupabasePublicClient().from("editorial_posts").select("*").eq("slug", slug).eq("status", "published").maybeSingle();
       if (error) throw error;
       if (data) return fromRow(data as Record<string, unknown>);

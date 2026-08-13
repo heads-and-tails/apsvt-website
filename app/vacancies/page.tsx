@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
 import { getPublicContent } from "@/lib/content";
+import { academicCompetitionDocument, academicCompetitionDeadline } from "@/lib/academic-competition";
 
 export const metadata: Metadata = {
   title: "Вакансії та конкурси",
@@ -10,74 +11,6 @@ export const metadata: Metadata = {
     "Конкурс на заміщення посад науково-педагогічних працівників Академії праці, соціальних відносин і туризму.",
 };
 export const dynamic = "force-dynamic";
-
-const faculties = [
-  {
-    name: "Юридичний факультет",
-    departments: [
-      {
-        name: "Кафедра цивільного, трудового та господарського права",
-        roles: [{ title: "Доцент", count: 3 }],
-      },
-      {
-        name: "Кафедра конституційного, адміністративного та фінансового права",
-        roles: [
-          { title: "Завідувач кафедри", count: 1 },
-          { title: "Доцент", count: 2 },
-        ],
-      },
-      {
-        name: "Кафедра кримінального права, процесу та криміналістики",
-        roles: [
-          { title: "Професор", count: 1 },
-          { title: "Доцент", count: 2 },
-        ],
-      },
-    ],
-  },
-  {
-    name: "Факультет економіки, соціальних технологій та туризму",
-    departments: [
-      {
-        name: "Кафедра економіки підприємства та менеджменту",
-        roles: [
-          { title: "Доцент", count: 4 },
-          { title: "Старший викладач", count: 1 },
-          { title: "Викладач", count: 1 },
-        ],
-      },
-      {
-        name: "Кафедра фінансів",
-        roles: [
-          { title: "Завідувач кафедри", count: 1 },
-          { title: "Доцент", count: 1 },
-        ],
-      },
-      {
-        name: "Кафедра маркетингу",
-        roles: [{ title: "Доцент", count: 3 }],
-      },
-      {
-        name: "Кафедра інтелектуальних систем та цифрових технологій",
-        roles: [
-          { title: "Професор", count: 1 },
-          { title: "Доцент", count: 1 },
-        ],
-      },
-      {
-        name: "Кафедра психології",
-        roles: [{ title: "Доцент", count: 2 }],
-      },
-      {
-        name: "Кафедра соціально-трудових відносин та соціальної роботи",
-        roles: [
-          { title: "Завідувач кафедри", count: 1 },
-          { title: "Доцент", count: 1 },
-        ],
-      },
-    ],
-  },
-] as const;
 
 const externalDocuments = [
   "Заява про участь у конкурсі на ім’я ректора Академії.",
@@ -122,8 +55,12 @@ function groupVacancies(items: Awaited<ReturnType<typeof getPublicContent>>): Va
 
 export default async function VacanciesPage() {
   const vacancyItems = await getPublicContent("vacancy");
-  const groupedVacancies = groupVacancies(vacancyItems);
-  const departmentCount = groupedVacancies.reduce((total, faculty) => total + faculty.departments.length, 0);
+  const currentCompetitionItems = vacancyItems.filter((item) => item.payload.competition === "2-3");
+  const previousCompetitionItems = vacancyItems.filter((item) => item.payload.competition !== "2-3");
+  const currentVacancies = groupVacancies(currentCompetitionItems);
+  const previousVacancies = groupVacancies(previousCompetitionItems);
+  const departmentCount = currentVacancies.reduce((total, faculty) => total + faculty.departments.length, 0);
+  const positionCount = currentVacancies.reduce((total, faculty) => total + faculty.departments.reduce((sum, department) => sum + department.roles.reduce((roleSum, role) => roleSum + role.count, 0), 0), 0);
   return (
     <main id="top">
       <SiteHeader />
@@ -136,14 +73,14 @@ export default async function VacanciesPage() {
               <span className="vacancies-kicker">Приєднуйтеся до команди АПСВТ</span>
               <h1>Шукаємо<br /><em>викладачів</em></h1>
               <p>
-                Академія оголосила конкурс на заміщення посад
-                науково-педагогічних працівників. Оберіть кафедру, перевірте
-                перелік документів і порядок подання заяви.
+                Академія оголосила конкурс №2 і №3 на заміщення посад
+                науково-педагогічних працівників. Оберіть підрозділ, перевірте
+                перелік документів і подайте заяву до 16 вересня.
               </p>
               <div className="vacancies-hero-actions">
-                <a href="#positions">Переглянути посади ↓</a>
+                <a href="#competition-2-3">Переглянути посади ↓</a>
                 <a
-                  href="/documents/vacancies/konkurs-naukovo-pedagogichnyh-pracivnykiv-2025-2026.docx"
+                  href={academicCompetitionDocument}
                   download
                 >
                   Завантажити оголошення ↗
@@ -153,16 +90,20 @@ export default async function VacanciesPage() {
 
             <aside aria-label="Коротко про конкурс">
               <span>У конкурсному оголошенні</span>
-              <b>{departmentCount}</b>
-              <strong>кафедр</strong>
+              <b>{positionCount}</b>
+              <strong>відкритих посад</strong>
               <dl>
                 <div>
                   <dt>Період подання</dt>
-                  <dd>21 липня — 24 серпня 2026 року</dd>
+                  <dd>До {academicCompetitionDeadline} включно</dd>
                 </div>
                 <div>
                   <dt>Напрями</dt>
-                  <dd>Право · економіка · соціальні технології</dd>
+                  <dd>Мови · гуманітарні науки · психологія</dd>
+                </div>
+                <div>
+                  <dt>Підрозділи</dt>
+                  <dd>{departmentCount} кафедри</dd>
                 </div>
                 <div>
                   <dt>Формат подання</dt>
@@ -174,26 +115,25 @@ export default async function VacanciesPage() {
         </div>
       </section>
 
-      <section className="vacancy-board" id="positions">
+      <section className="vacancy-board" id="competition-2-3">
         <div className="wrap">
           <header className="vacancy-board-head">
             <div>
-              <span>01 / Відкриті позиції</span>
-              <h2>Оберіть кафедру</h2>
+              <span>01 / Конкурс №2 і №3</span>
+              <h2>Актуальні позиції</h2>
             </div>
             <p>
-              Посади та кількість штатних одиниць відтворено з наданого
-              конкурсного оголошення. Для участі необхідно подати документи
-              особисто.
+              18 штатних посад у трьох підрозділах. Заяви та документи
+              приймаються особисто до 16 вересня 2026 року включно.
             </p>
           </header>
 
-          {groupedVacancies.map((faculty, facultyIndex) => (
+          {currentVacancies.map((faculty, facultyIndex) => (
             <section className="vacancy-faculty" key={faculty.name}>
               <header>
                 <span>{String(facultyIndex + 1).padStart(2, "0")}</span>
                 <h3>{faculty.name}</h3>
-                <b>{faculty.departments.length} кафедр</b>
+                <b>{faculty.departments.length} {faculty.departments.length === 1 ? "кафедра" : faculty.departments.length < 5 ? "кафедри" : "кафедр"}</b>
               </header>
               <div className="vacancy-departments">
                 {faculty.departments.map((department, departmentIndex) => (
@@ -218,6 +158,45 @@ export default async function VacanciesPage() {
               </div>
             </section>
           ))}
+
+          <div className="vacancy-archive" id="previous-competition">
+            <div>
+              <span>Попереднє оголошення</span>
+              <h2>Конкурс від 21 липня 2026 року</h2>
+              <p>Посади юридичного факультету та факультету економіки, соціальних технологій і туризму. Період подання заяв: 21 липня — 24 серпня 2026 року.</p>
+            </div>
+            <a href="/documents/vacancies/konkurs-naukovo-pedagogichnyh-pracivnykiv-2025-2026.docx" download>Завантажити попереднє оголошення ↗</a>
+          </div>
+          <details className="vacancy-previous-list">
+            <summary>Переглянути посади попереднього конкурсу <span>+</span></summary>
+            {previousVacancies.map((faculty, facultyIndex) => (
+              <section className="vacancy-faculty" key={faculty.name}>
+                <header>
+                  <span>{String(facultyIndex + 1).padStart(2, "0")}</span>
+                  <h3>{faculty.name}</h3>
+                  <b>{faculty.departments.length} {faculty.departments.length === 1 ? "кафедра" : faculty.departments.length < 5 ? "кафедри" : "кафедр"}</b>
+                </header>
+                <div className="vacancy-departments">
+                  {faculty.departments.map((department, departmentIndex) => (
+                    <article className="vacancy-department" key={department.name}>
+                      <div className="vacancy-department-title">
+                        <span>{String(departmentIndex + 1).padStart(2, "0")}</span>
+                        <h4>{department.name}</h4>
+                      </div>
+                      <div className="vacancy-roles">
+                        {department.roles.map((role) => (
+                          <div className="vacancy-role" key={role.title}>
+                            <strong>{role.title}</strong>
+                            <span><b>{role.count}</b>{role.count === 1 ? " посада" : role.count < 5 ? " посади" : " посад"}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </details>
         </div>
       </section>
 
@@ -269,7 +248,7 @@ export default async function VacanciesPage() {
             <span>03 / Подання заяви</span>
             <h2>Особисто в Академії</h2>
             <p>
-              Документи приймаються з 21 липня до 24 серпня 2026 року.
+              Документи за конкурсом №2 і №3 приймаються до 16 вересня 2026 року включно.
               Заяви приймає навчально-методичний відділ: м. Київ,
               вул. Кільцева дорога, 3-А, кабінет №216 або №227.
             </p>
@@ -278,7 +257,7 @@ export default async function VacanciesPage() {
           <div className="vacancy-submit-actions">
             <Link href="/contacts">Контакти й маршрут →</Link>
             <a
-              href="/documents/vacancies/konkurs-naukovo-pedagogichnyh-pracivnykiv-2025-2026.docx"
+              href={academicCompetitionDocument}
               download
             >
               Завантажити оригінал .DOCX ↗

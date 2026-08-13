@@ -1305,6 +1305,17 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .vacancy-role strong{font-size:13px}
 .vacancy-role>span{font:9px var(--mono);text-transform:uppercase;text-align:right}
 .vacancy-role>span>b{margin-right:5px;color:var(--cobalt);font:700 26px/1 var(--disp)}
+.vacancy-archive{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:35px;align-items:end;margin-top:80px;padding:32px;background:var(--navy);color:#fff}
+.vacancy-archive span{color:var(--gold);font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.vacancy-archive h2{margin:10px 0 14px;font-size:clamp(30px,4vw,54px);line-height:1}
+.vacancy-archive p{max-width:66ch;color:#cdd6e8;font-size:14px;line-height:1.65}
+.vacancy-archive>a{padding:14px 16px;border:1px solid var(--gold);color:var(--gold);font:700 9px var(--mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.vacancy-previous-list{margin-top:18px;border:1px solid var(--ink);background:#f5f3ec}
+.vacancy-previous-list>summary{display:flex;justify-content:space-between;gap:20px;padding:20px 24px;cursor:pointer;list-style:none;font:700 11px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.vacancy-previous-list>summary::-webkit-details-marker{display:none}
+.vacancy-previous-list>summary span{color:var(--cobalt);font-size:20px}
+.vacancy-previous-list[open]>summary span{transform:rotate(45deg)}
+.vacancy-previous-list>.vacancy-faculty{padding:0 24px 36px}
 
 .vacancy-apply{background:var(--paper)}
 .vacancy-checklists{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ink);border:1px solid var(--ink)}
@@ -1358,6 +1369,10 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .vacancy-department{gap:20px;padding:22px 3px}
   .vacancy-department:hover{padding-left:8px}
   .vacancy-role{grid-template-columns:minmax(0,1fr) 92px}
+  .vacancy-archive{grid-template-columns:1fr;padding:24px 18px}
+  .vacancy-archive>a{white-space:normal}
+  .vacancy-previous-list>summary{padding:18px 16px;line-height:1.5}
+  .vacancy-previous-list>.vacancy-faculty{padding-inline:16px}
   .vacancy-checklists>article{padding:25px 20px}
   .vacancy-submit>.wrap{grid-template-columns:1fr}
   .home-hiring h2{font-size:clamp(44px,14vw,68px)}

@@ -139,6 +139,16 @@ export const seedContent: ContentItem[] = [
   seed("vacancy-14", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра психології", title: "Доцент", count: "2", deadline: "2026-08-24", status: "Відкрито", note: "" }, 140),
   seed("vacancy-15", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра соціально-трудових відносин та соціальної роботи", title: "Завідувач кафедри", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 150),
   seed("vacancy-16", "vacancy", { faculty: "Факультет економіки, соціальних технологій та туризму", department: "Кафедра соціально-трудових відносин та соціальної роботи", title: "Доцент", count: "1", deadline: "2026-08-24", status: "Відкрито", note: "" }, 160),
+  seed("vacancy-competition-2-3-01", "vacancy", { competition: "2-3", faculty: "Гуманітарний напрям", department: "Кафедра української та іноземних мов і гуманітарних наук", title: "Завідувач кафедри", count: "1", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 210),
+  seed("vacancy-competition-2-3-02", "vacancy", { competition: "2-3", faculty: "Гуманітарний напрям", department: "Кафедра української та іноземних мов і гуманітарних наук", title: "Професор", count: "1", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 220),
+  seed("vacancy-competition-2-3-03", "vacancy", { competition: "2-3", faculty: "Гуманітарний напрям", department: "Кафедра української та іноземних мов і гуманітарних наук", title: "Доцент", count: "1", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 230),
+  seed("vacancy-competition-2-3-04", "vacancy", { competition: "2-3", faculty: "Гуманітарний напрям", department: "Кафедра української та іноземних мов і гуманітарних наук", title: "Старший викладач", count: "2", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 240),
+  seed("vacancy-competition-2-3-05", "vacancy", { competition: "2-3", faculty: "Факультет психології та соціального розвитку", department: "Кафедра клінічної психології та психотерапії", title: "Завідувач кафедри", count: "1", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 250),
+  seed("vacancy-competition-2-3-06", "vacancy", { competition: "2-3", faculty: "Факультет психології та соціального розвитку", department: "Кафедра клінічної психології та психотерапії", title: "Професор", count: "3", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 260),
+  seed("vacancy-competition-2-3-07", "vacancy", { competition: "2-3", faculty: "Факультет психології та соціального розвитку", department: "Кафедра клінічної психології та психотерапії", title: "Доцент", count: "3", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 270),
+  seed("vacancy-competition-2-3-08", "vacancy", { competition: "2-3", faculty: "Факультет психології та соціального розвитку", department: "Кафедра психології бізнесу та управління", title: "Завідувач кафедри", count: "1", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 280),
+  seed("vacancy-competition-2-3-09", "vacancy", { competition: "2-3", faculty: "Факультет психології та соціального розвитку", department: "Кафедра психології бізнесу та управління", title: "Професор", count: "2", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 290),
+  seed("vacancy-competition-2-3-10", "vacancy", { competition: "2-3", faculty: "Факультет психології та соціального розвитку", department: "Кафедра психології бізнесу та управління", title: "Доцент", count: "3", deadline: "2026-09-16", status: "Відкрито", note: "Конкурс №2 і №3" }, 300),
 ];
 
 function applyPublishedCorrections(item: ContentItem): ContentItem {
@@ -238,6 +248,7 @@ async function ensureSupabaseContent(): Promise<void> {
 export async function getContentItems(kind: ContentKind): Promise<ContentItem[]> {
   if (isSupabaseConfigured()) {
     try {
+      await ensureSupabaseContent();
       const { data, error } = await createSupabasePublicClient().from("editorial_content_items").select("*").eq("kind", kind).order("sort_order", { ascending: true });
       if (error) throw error;
       if (data?.length) return data.map((row) => applyPublishedCorrections(fromRow(row as Record<string, unknown>)));

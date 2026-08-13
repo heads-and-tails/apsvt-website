@@ -116,12 +116,33 @@ test("renders editorially managed public information",async()=>{
   assert.doesNotMatch(vacanciesHtml,/vacancy-status/);
   assert.doesNotMatch(vacanciesHtml,/Термін у розміщеному оголошенні/);
   assert.match(vacanciesHtml,/21 липня — 24 серпня 2026 року/);
+  assert.match(vacanciesHtml,/Конкурс №2 і №3/);
+  assert.match(vacanciesHtml,/<b>18<\/b><strong>відкритих посад<\/strong>/);
+  assert.match(vacanciesHtml,/До [\s\S]{0,80}16 вересня 2026 року[\s\S]{0,80} включно/);
+  assert.match(vacanciesHtml,/Кафедра української та іноземних мов і гуманітарних наук/);
+  assert.match(vacanciesHtml,/Кафедра клінічної психології та психотерапії/);
+  assert.match(vacanciesHtml,/Кафедра психології бізнесу та управління/);
+  assert.match(vacanciesHtml,/konkurs-2-3-movy-psykholohiia-2026\.docx/);
 
   const researchHtml=await (await render("/research")).text();
   assert.match(researchHtml,/Ресурси Академії/);
   assert.match(researchHtml,/Повний випуск наукового журналу Академії у форматі PDF/);
   assert.match(researchHtml,/sites\/default\/files\/Visnyk_1-2_2020\.pdf/);
   assert.doesNotMatch(researchHtml,/socosvita\.kiev\.ua\/Visnyk_/);
+});
+
+test("publishes academic competition 2 and 3 in news",async()=>{
+  const slug="konkurs-2-3-naukovo-pedahohichni-pratsivnyky-2026";
+  const [homeHtml,newsHtml,articleHtml]=await Promise.all([
+    (await render("/")).text(),
+    (await render("/news")).text(),
+    (await render(`/news/${slug}`)).text(),
+  ]);
+  for(const html of [homeHtml,newsHtml]) assert.match(html,/Оголошено конкурс №2 і №3/);
+  assert.match(articleHtml,/18 посад/);
+  assert.match(articleHtml,/до 16 вересня 2026 року включно/i);
+  assert.match(articleHtml,/href="\/vacancies#competition-2-3"/);
+  assert.match(articleHtml,/konkurs-2-3-movy-psykholohiia-2026\.docx/);
 });
 
 test("publishes international partnerships and the foreign applicant guide",async()=>{
