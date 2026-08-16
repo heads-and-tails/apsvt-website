@@ -927,3 +927,20 @@ test("publishes the 2026 remote admission route for Ukrainians abroad",async()=>
     assert.match(html,/inz@socosvita\.kiev\.ua/);
   }
 });
+
+test("publishes the criminal law, procedure and forensics department",async()=>{
+  const [departmentHtml,facultyHtml,directoryHtml]=await Promise.all([
+    (await render("/departments/criminal-law")).text(),
+    (await render("/departments/law-faculty")).text(),
+    (await render("/departments")).text(),
+  ]);
+  assert.match(departmentHtml,/Кримінальне право,[\s\S]*процес і криміналістика/);
+  for(const person of ["Ірина Завидняк","Володимир Ліпкан","Микола Маломуж","Андрій Бегма","Роман Лев","Олександр Ярмоленко"]){
+    assert.match(departmentHtml,new RegExp(person));
+  }
+  assert.match(departmentHtml,/iryna-zavydniak\.jpg/);
+  assert.match(departmentHtml,/oleksandr-yarmolenko\.jpg/);
+  assert.match(departmentHtml,/Лабораторія криміналістики/);
+  assert.match(facultyHtml,/href="\/departments\/criminal-law"/);
+  assert.match(directoryHtml,/href="\/departments\/criminal-law"/);
+});

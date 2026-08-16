@@ -1,0 +1,110 @@
+.criminal-department { background: #f2f0ea; color: #0c1424; }
+.criminal-department-hero { background: #07162f; color: #fff; overflow: hidden; }
+.criminal-department-hero-grid { min-height: min(820px, calc(100vh - 108px)); display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(320px, .62fr); gap: clamp(36px, 6vw, 96px); align-items: center; padding-block: clamp(70px, 9vw, 132px); }
+.criminal-department-hero-copy { min-width: 0; }
+.criminal-department-hero .crumb { margin-bottom: clamp(42px, 8vh, 86px); color: #8ea0bf; font-size: 12px; letter-spacing: .13em; text-transform: uppercase; }
+.criminal-department-hero .crumb a { color: inherit; text-decoration: none; }
+.criminal-department-hero-copy > span { display: block; margin-bottom: 22px; color: #ffcf2e; font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+.criminal-department-hero h1 { max-width: 980px; margin: 0; font-size: clamp(46px, 6.45vw, 104px); line-height: .9; letter-spacing: -.065em; text-wrap: balance; }
+.criminal-department-hero h1 em { color: #ffcf2e; font-style: normal; }
+.criminal-department-hero-copy > p { max-width: 760px; margin: 34px 0 0; color: #c9d2e3; font-size: clamp(18px, 1.55vw, 25px); line-height: 1.5; }
+.criminal-department-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.criminal-department-hero-actions a { display: inline-flex; min-height: 52px; align-items: center; padding: 0 20px; border: 1px solid #51617b; color: #fff; font-size: 13px; font-weight: 800; text-decoration: none; text-transform: uppercase; }
+.criminal-department-hero-actions a:first-child { border-color: #ffcf2e; background: #ffcf2e; color: #07162f; }
+.criminal-department-hero-portrait { margin: 0; min-width: 0; background: #ffcf2e; }
+.criminal-department-hero-portrait img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 22%; }
+.criminal-department-hero-portrait figcaption { display: grid; gap: 5px; padding: 24px 26px 28px; color: #07162f; }
+.criminal-department-hero-portrait small { font-size: 10px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.criminal-department-hero-portrait strong { font-size: clamp(25px, 2.3vw, 38px); line-height: 1; }
+.criminal-department-hero-portrait span { font-size: 14px; }
+.criminal-department-about { padding: clamp(80px, 10vw, 150px) 0; }
+.criminal-department-about-grid { display: grid; grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr); gap: clamp(48px, 8vw, 140px); align-items: start; }
+.criminal-department h2 { margin: 16px 0 0; font-size: clamp(42px, 5.4vw, 82px); line-height: .94; letter-spacing: -.055em; text-wrap: balance; }
+.criminal-department-about .program-lede { margin-top: 0; }
+.criminal-department-about-grid > div:last-child > p:not(.program-lede) { max-width: 780px; color: #536070; font-size: 17px; line-height: 1.75; }
+.criminal-department-pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 48px; border-top: 1px solid #9a9b97; border-bottom: 1px solid #9a9b97; }
+.criminal-department-pillars article { min-width: 0; padding: 28px 24px 34px 0; }
+.criminal-department-pillars article + article { padding-left: 24px; border-left: 1px solid #9a9b97; }
+.criminal-department-pillars span { color: #3156ff; font-family: var(--mono, monospace); font-size: 11px; }
+.criminal-department-pillars h3 { margin: 42px 0 12px; font-size: clamp(20px, 1.7vw, 28px); line-height: 1.04; }
+.criminal-department-pillars p { margin: 0; color: #596270; font-size: 14px; line-height: 1.6; }
+.criminal-department-research { padding: clamp(80px, 9vw, 136px) 0; background: #e7e4dd; }
+.criminal-department-research-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: clamp(36px, 6vw, 86px); margin-top: 56px; }
+.criminal-department-themes { border-top: 2px solid #111827; }
+.criminal-department-themes article { display: grid; grid-template-columns: 54px minmax(0, .8fr) minmax(230px, 1.2fr); gap: 24px; align-items: start; padding: 26px 0 30px; border-bottom: 1px solid #a2a29f; }
+.criminal-department-themes span { color: #3156ff; font: 11px var(--mono, monospace); }
+.criminal-department-themes h3 { margin: 0; font-size: clamp(22px, 2vw, 32px); line-height: 1.05; }
+.criminal-department-themes p { margin: 0; color: #56606f; line-height: 1.6; }
+.criminal-department-metrics { display: grid; grid-template-columns: 1fr 1fr; background: #07162f; color: #fff; }
+.criminal-department-metrics span { display: grid; align-content: start; min-height: 144px; padding: 22px; border: solid #33415a; border-width: 0 1px 1px 0; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.criminal-department-metrics b { color: #ffcf2e; font-size: clamp(40px, 4vw, 66px); line-height: 1; letter-spacing: -.05em; }
+.criminal-department-metrics small { grid-column: 1 / -1; padding: 20px 22px; color: #aeb9ca; line-height: 1.5; }
+.criminal-department-practice { padding: clamp(80px, 10vw, 150px) 0; background: #07162f; color: #fff; }
+.criminal-department-practice-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr); gap: clamp(50px, 9vw, 150px); align-items: end; }
+.criminal-department-practice h2 { color: #fff; }
+.criminal-department-practice p { max-width: 720px; margin: 28px 0; color: #bdc8d9; font-size: 18px; line-height: 1.7; }
+.criminal-department-practice a { display: inline-flex; min-height: 52px; align-items: center; padding: 0 20px; background: #ffcf2e; color: #07162f; font-size: 12px; font-weight: 900; text-decoration: none; text-transform: uppercase; }
+.criminal-department-practice-list { border-top: 1px solid #526079; }
+.criminal-department-practice-list span { display: grid; grid-template-columns: 52px 1fr; gap: 18px; padding: 22px 0; border-bottom: 1px solid #526079; color: #e8edf4; font-size: clamp(16px, 1.5vw, 21px); }
+.criminal-department-practice-list b { color: #ffcf2e; font: 11px var(--mono, monospace); }
+.criminal-department-team { padding: clamp(80px, 10vw, 150px) 0; }
+.criminal-department-team-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: 58px; background: #979a9d; border: 1px solid #979a9d; }
+.criminal-department-team-grid > article { min-width: 0; background: #f7f5ef; }
+.criminal-department-team-grid > article.is-head { grid-column: span 2; display: grid; grid-template-columns: minmax(240px, .8fr) minmax(0, 1.2fr); }
+.criminal-department-person-image { position: relative; min-width: 0; background: #d9d6cf; overflow: hidden; }
+.criminal-department-person-image img { display: block; width: 100%; height: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.criminal-department-person-image > span { position: absolute; top: 18px; left: 18px; display: grid; width: 42px; height: 42px; place-items: center; background: #ffcf2e; color: #07162f; font: 11px var(--mono, monospace); }
+.criminal-department-person-copy { min-width: 0; padding: clamp(24px, 2.8vw, 42px); }
+.criminal-department-person-copy > small { color: #3156ff; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.criminal-department-person-copy h3 { margin: 15px 0 10px; font-size: clamp(27px, 2.5vw, 42px); line-height: .98; letter-spacing: -.04em; text-wrap: balance; }
+.criminal-department-degree { min-height: 44px; margin: 0 0 24px; color: #525d6c; font-size: 14px; line-height: 1.45; }
+.criminal-department-person-copy details { border-top: 1px solid #a3a4a2; }
+.criminal-department-person-copy summary { display: flex; min-height: 56px; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; font-size: 12px; font-weight: 800; list-style: none; text-transform: uppercase; }
+.criminal-department-person-copy summary::-webkit-details-marker { display: none; }
+.criminal-department-person-copy summary span { color: #3156ff; font-size: 24px; font-weight: 400; transition: transform .2s ease; }
+.criminal-department-person-copy details[open] summary span { transform: rotate(45deg); }
+.criminal-department-person-copy details > div { padding: 4px 0 10px; }
+.criminal-department-person-copy h4 { margin: 20px 0 10px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+.criminal-department-person-copy ul { margin: 0; padding-left: 18px; color: #4f5968; font-size: 13px; line-height: 1.55; }
+.criminal-department-person-copy details p { color: #4f5968; font-size: 13px; line-height: 1.65; }
+.criminal-department-person-copy nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.criminal-department-person-copy nav a { padding: 9px 11px; border: 1px solid #9da2aa; color: #111827; font-size: 10px; font-weight: 800; text-decoration: none; text-transform: uppercase; overflow-wrap: anywhere; }
+.criminal-department-links { padding: 0 0 clamp(80px, 10vw, 140px); }
+.criminal-department-links .wrap { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: solid #999b9e; border-width: 1px 0; }
+.criminal-department-links a { display: grid; gap: 42px; min-width: 0; padding: 26px 24px 30px 0; color: #111827; text-decoration: none; }
+.criminal-department-links a + a { padding-left: 24px; border-left: 1px solid #999b9e; }
+.criminal-department-links span { color: #647080; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+.criminal-department-links b { font-size: clamp(18px, 1.5vw, 24px); line-height: 1.2; }
+
+@media (max-width: 980px) {
+  .criminal-department-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(260px, .52fr); gap: 32px; min-height: auto; }
+  .criminal-department-hero .crumb { margin-bottom: 44px; }
+  .criminal-department-pillars { grid-template-columns: 1fr; }
+  .criminal-department-pillars article { padding: 24px 0; }
+  .criminal-department-pillars article + article { padding-left: 0; border-top: 1px solid #9a9b97; border-left: 0; }
+  .criminal-department-pillars h3 { margin-top: 18px; }
+  .criminal-department-research-grid { grid-template-columns: 1fr; }
+  .criminal-department-team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .criminal-department-hero-grid, .criminal-department-about-grid, .criminal-department-practice-grid { grid-template-columns: 1fr; }
+  .criminal-department-hero-grid { padding-block: 56px 72px; }
+  .criminal-department-hero-portrait { max-width: 440px; }
+  .criminal-department-hero h1 br { display: none; }
+  .criminal-department-about-grid { gap: 34px; }
+  .criminal-department-themes article { grid-template-columns: 42px 1fr; gap: 14px; }
+  .criminal-department-themes p { grid-column: 2; }
+  .criminal-department-team-grid, .criminal-department-links .wrap { grid-template-columns: 1fr; }
+  .criminal-department-team-grid > article.is-head { grid-column: auto; grid-template-columns: 1fr; }
+  .criminal-department-links a, .criminal-department-links a + a { padding: 24px 0; border-left: 0; }
+  .criminal-department-links a + a { border-top: 1px solid #999b9e; }
+}
+@media (max-width: 520px) {
+  .criminal-department-hero h1 { font-size: clamp(40px, 12.5vw, 58px); }
+  .criminal-department-hero-actions { display: grid; }
+  .criminal-department-hero-actions a { justify-content: center; text-align: center; }
+  .criminal-department-metrics { grid-template-columns: 1fr; }
+  .criminal-department-metrics small { grid-column: auto; }
+  .criminal-department-team-grid { display: block; border: 0; background: transparent; }
+  .criminal-department-team-grid > article { margin-bottom: 18px; border: 1px solid #a2a3a1; }
+}
