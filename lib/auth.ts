@@ -16,6 +16,7 @@ export type EditorialProfile = {
   accessScopes: string[];
   createdAt: string;
   approvedAt: string | null;
+  mustChangePassword: boolean;
 };
 
 export type Publisher = EditorialProfile;
@@ -40,7 +41,7 @@ const preapprovedDepartmentEditors = new Map<string, { displayName: string; acce
   ["markovec28@gmail.com", { displayName: "Неля Василець", accessScopes: ["/programs/management", "/programs/trade"] }],
 ]);
 
-function profileFromRow(row: ProfileRow): EditorialProfile {
+function profileFromRow(row: ProfileRow, mustChangePassword = false): EditorialProfile {
   return {
     id: row.id,
     email: row.email,
@@ -50,6 +51,7 @@ function profileFromRow(row: ProfileRow): EditorialProfile {
     accessScopes: normalizeEditorialAccessScopes(row.access_scope || "*"),
     createdAt: row.created_at,
     approvedAt: row.approved_at,
+    mustChangePassword,
   };
 }
 
@@ -72,6 +74,7 @@ export async function getPublisher(): Promise<Publisher | null> {
         accessScopes: ["*"],
         createdAt: new Date(0).toISOString(),
         approvedAt: new Date(0).toISOString(),
+        mustChangePassword: false,
       };
     }
     return null;
@@ -118,12 +121,13 @@ export async function getPublisher(): Promise<Publisher | null> {
     .maybeSingle<ProfileRow>();
 
   if (!data || data.status !== "approved") return null;
-  return profileFromRow(data);
+  return profileFromRow(data, user.app_metadata?.editorial_must_change_password === true);
 }
 
 export async function requirePublisher(): Promise<Publisher> {
   const publisher = await getPublisher();
   if (!publisher) throw new Error("UNAUTHORIZED");
+  if (publisher.mustChangePassword) throw new Error("PASSWORD_CHANGE_REQUIRED");
   return publisher;
 }
 
@@ -136,32 +140,47 @@ export async function requireAdmin(): Promise<Publisher> {
 export async function getEditorialProfiles(): Promise<EditorialProfile[]> {
   await requireAdmin();
   const admin = createSupabaseAdmin();
-  const { data, error } = await admin
-    .from("editorial_profiles")
-    .select("id,email,display_name,role,status,access_scope,created_at,approved_at")
-    .order("created_at", { ascending: false });
+  const [{ data, error }, { data: users, error: usersError }] = await Promise.all([
+    admin
+      .from("editorial_profiles")
+      .select("id,email,display_name,role,status,access_scope,created_at,approved_at")
+      .order("created_at", { ascending: false }),
+    admin.auth.admin.listUsers({ page: 1, perPage: 1000 }),
+  ]);
   if (error) throw error;
-  return (data as ProfileRow[]).map(profileFromRow);
+  if (usersError) throw usersError;
+  const passwordChangeIds = new Set(users.users
+    .filter((user) => user.app_metadata?.editorial_must_change_password === true)
+    .map((user) => user.id));
+  return (data as ProfileRow[]).map((row) => profileFromRow(row, passwordChangeIds.has(row.id)));
 }
 
-export async function inviteApprovedEditorialUser(
+export async function createApprovedEditorialUser(
   input: { email: string; displayName: string; role: EditorialRole; accessScopes: string[] },
   approvedBy: string,
-  redirectTo: string,
-): Promise<EditorialProfile> {
+  temporaryPassword: string,
+): Promise<{ profile: EditorialProfile; temporaryPasswordIssued: boolean }> {
   const admin = createSupabaseAdmin();
   const email = input.email.trim().toLowerCase();
   const { data: users, error: usersError } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
   if (usersError) throw usersError;
 
   let user = users.users.find((entry) => entry.email?.toLowerCase() === email) || null;
+  let temporaryPasswordIssued = false;
   if (!user) {
-    const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
-      redirectTo,
-      data: { display_name: input.displayName },
+    const { data, error } = await admin.auth.admin.createUser({
+      email,
+      password: temporaryPassword,
+      email_confirm: true,
+      user_metadata: {
+        display_name: input.displayName,
+        temporary_password_issued: true,
+      },
+      app_metadata: { editorial_must_change_password: true },
     });
     if (error) throw error;
     user = data.user;
+    temporaryPasswordIssued = true;
   }
 
   const { data, error } = await admin
@@ -179,7 +198,43 @@ export async function inviteApprovedEditorialUser(
     .select("id,email,display_name,role,status,access_scope,created_at,approved_at")
     .single<ProfileRow>();
   if (error) throw error;
-  return profileFromRow(data);
+  return {
+    profile: profileFromRow(data, temporaryPasswordIssued || user.app_metadata?.editorial_must_change_password === true),
+    temporaryPasswordIssued,
+  };
+}
+
+export async function issueEditorialTemporaryPassword(id: string, approvedBy: string, temporaryPassword: string): Promise<EditorialProfile> {
+  const admin = createSupabaseAdmin();
+  const { data: userData, error: userError } = await admin.auth.admin.updateUserById(id, {
+    password: temporaryPassword,
+    email_confirm: true,
+    user_metadata: { temporary_password_issued: true },
+    app_metadata: { editorial_must_change_password: true },
+  });
+  if (userError || !userData.user.email) throw userError || new Error("USER_EMAIL_MISSING");
+
+  const { data, error } = await admin
+    .from("editorial_profiles")
+    .update({
+      status: "approved",
+      approved_at: new Date().toISOString(),
+      approved_by: approvedBy,
+    })
+    .eq("id", id)
+    .select("id,email,display_name,role,status,access_scope,created_at,approved_at")
+    .single<ProfileRow>();
+  if (error) throw error;
+  return profileFromRow(data, true);
+}
+
+export async function completeEditorialPasswordChange(userId: string): Promise<void> {
+  const admin = createSupabaseAdmin();
+  const { error } = await admin.auth.admin.updateUserById(userId, {
+    app_metadata: { editorial_must_change_password: false },
+    user_metadata: { temporary_password_issued: false },
+  });
+  if (error) throw error;
 }
 
 export async function updateEditorialProfile(

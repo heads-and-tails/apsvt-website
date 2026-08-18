@@ -741,10 +741,11 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(callback,/requestedNext/);
   assert.match(callback,/invalid-link/);
   assert.match(resetForm,/weak_password/);
-  assert.match(auth,/inviteUserByEmail/);
+  assert.match(auth,/createUser/);
+  assert.match(auth,/editorial_must_change_password/);
   assert.match(auth,/status: "approved"/);
   assert.match(access,/\/api\/editorial\/users/);
-  assert.match(access,/Додати й погодити/);
+  assert.match(access,/Створити й надіслати пароль/);
   assert.match(documents,/purpose", "document"/);
   assert.match(documents,/\/api\/documents/);
   assert.match(documentMigration,/editorial_documents/);
@@ -903,7 +904,7 @@ test("ships code login and complete department-page editing",async()=>{
   ]);
   assert.match(login,/verifyOtp/);
   assert.match(login,/\[0-9\]\{6\}/);
-  assert.match(login,/Код із пошти/);
+  assert.match(login,/Одноразовий код/);
   for(const type of ["Розділи сторінки","Новини","Статті","Матеріали","Фотогалерея","Викладачі"]){assert.match(manager,new RegExp(type));}
   assert.match(publicRenderer,/department-teacher-grid/);
   assert.match(publicRenderer,/department-photo-grid/);

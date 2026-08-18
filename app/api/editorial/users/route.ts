@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { inviteApprovedEditorialUser, requireAdmin, updateEditorialProfile, type EditorialRole, type EditorialStatus } from "@/lib/auth";
+import { createApprovedEditorialUser, issueEditorialTemporaryPassword, requireAdmin, updateEditorialProfile, type EditorialRole, type EditorialStatus } from "@/lib/auth";
 import { isEditorialAccessScopes } from "@/lib/editorial-access";
+import { generateTemporaryPassword, sendEditorialTemporaryPassword } from "@/lib/editorial-email";
 
 const roles = new Set<EditorialRole>(["editor", "admin"]);
 const statuses = new Set<EditorialStatus>(["pending", "approved", "suspended"]);
@@ -14,20 +15,55 @@ export async function POST(request: Request) {
     if (!/^\S+@\S+\.\S+$/.test(email) || !displayName || !roles.has(body.role as EditorialRole) || !isEditorialAccessScopes(body.accessScopes)) {
       return NextResponse.json({ error: "Вкажіть ім’я, коректну пошту, роль та область доступу" }, { status: 400 });
     }
-    const callback = new URL("/auth/callback", request.url);
-    callback.searchParams.set("next", "/panel");
-    const profile = await inviteApprovedEditorialUser(
+    const temporaryPassword = generateTemporaryPassword();
+    const { profile, temporaryPasswordIssued } = await createApprovedEditorialUser(
       { email, displayName, role: body.role as EditorialRole, accessScopes: body.accessScopes },
       admin.id,
-      callback.toString(),
+      temporaryPassword,
     );
-    return NextResponse.json(profile, { status: 201 });
+    if (temporaryPasswordIssued) {
+      await sendEditorialTemporaryPassword({
+        email,
+        displayName,
+        temporaryPassword,
+        loginUrl: new URL("/panel/login", request.url).toString(),
+      });
+    }
+    return NextResponse.json({ ...profile, temporaryPasswordIssued }, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message.toLowerCase() : "";
-    if (message.includes("rate") || message.includes("email")) {
-      return NextResponse.json({ error: "Користувача погоджено не було: поштовий сервіс тимчасово обмежив запрошення" }, { status: 429 });
+    if (message.includes("editorial_email_not_configured")) {
+      return NextResponse.json({ error: "Акаунт створено, але поштовий сервіс ще не налаштовано. Скористайтеся кнопкою повторного надсилання після налаштування email." }, { status: 503 });
+    }
+    if (message.includes("email")) {
+      return NextResponse.json({ error: "Акаунт створено, але лист не вдалося надіслати. Спробуйте повторне надсилання тимчасового пароля." }, { status: 502 });
     }
     return NextResponse.json({ error: "Не вдалося додати користувача" }, { status: 403 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const admin = await requireAdmin();
+    const body = await request.json() as { id?: unknown };
+    if (typeof body.id !== "string" || body.id === admin.id) {
+      return NextResponse.json({ error: "Некоректний користувач" }, { status: 400 });
+    }
+    const temporaryPassword = generateTemporaryPassword();
+    const profile = await issueEditorialTemporaryPassword(body.id, admin.id, temporaryPassword);
+    await sendEditorialTemporaryPassword({
+      email: profile.email,
+      displayName: profile.displayName,
+      temporaryPassword,
+      loginUrl: new URL("/panel/login", request.url).toString(),
+    });
+    return NextResponse.json(profile);
+  } catch (error) {
+    const message = error instanceof Error ? error.message.toLowerCase() : "";
+    if (message.includes("editorial_email_not_configured")) {
+      return NextResponse.json({ error: "Поштовий сервіс ще не налаштовано" }, { status: 503 });
+    }
+    return NextResponse.json({ error: "Не вдалося надіслати тимчасовий пароль" }, { status: 403 });
   }
 }
 

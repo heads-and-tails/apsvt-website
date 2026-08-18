@@ -31,11 +31,17 @@ export function ResetPasswordForm() {
     if (password.length < 8) { setMessage("Пароль має містити щонайменше 8 символів."); return; }
     if (password !== confirm) { setMessage("Паролі не збігаються."); return; }
     setBusy(true);
-    const { error } = await supabase.auth.updateUser({ password });
+    const { error } = await supabase.auth.updateUser({ password, data: { temporary_password_issued: false } });
     if (error) {
       if (error.code === "weak_password") setMessage("Пароль надто простий. Додайте великі й малі літери, цифру та спеціальний символ.");
       else if (error.code === "same_password") setMessage("Новий пароль має відрізнятися від попереднього.");
       else setMessage("Не вдалося змінити пароль. Запросіть новий лист відновлення.");
+      setBusy(false);
+      return;
+    }
+    const confirmation = await fetch("/api/editorial/password-change-complete", { method: "POST" });
+    if (!confirmation.ok) {
+      setMessage("Пароль змінено, але не вдалося завершити активацію. Увійдіть ще раз або зверніться до адміністратора.");
       setBusy(false);
       return;
     }

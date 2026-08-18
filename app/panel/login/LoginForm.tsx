@@ -8,7 +8,7 @@ type LoginMode = "code" | "password";
 
 export function LoginForm() {
   const router = useRouter();
-  const [mode, setMode] = useState<LoginMode>("code");
+  const [mode, setMode] = useState<LoginMode>("password");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
@@ -27,12 +27,12 @@ export function LoginForm() {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        shouldCreateUser: true,
+        shouldCreateUser: false,
         emailRedirectTo: `${window.location.origin}/auth/callback?next=/panel`,
       },
     });
     if (error) {
-      setMessage("Не вдалося надіслати код. Зачекайте кілька хвилин і спробуйте ще раз.");
+      setMessage("Акаунт із такою поштою не знайдено або надсилання тимчасово недоступне.");
     } else {
       setCodeSent(true);
       setMessage("Код входу надіслано на пошту. Він діє один раз і має 6 цифр.");
@@ -85,8 +85,8 @@ export function LoginForm() {
 
   return <div className="editorial-login-wrap">
     <div className="editorial-login-tabs" role="tablist" aria-label="Спосіб входу">
-      <button type="button" role="tab" aria-selected={mode === "code"} className={mode === "code" ? "active" : ""} onClick={() => chooseMode("code")}>Код із пошти</button>
       <button type="button" role="tab" aria-selected={mode === "password"} className={mode === "password" ? "active" : ""} onClick={() => chooseMode("password")}>Пароль</button>
+      <button type="button" role="tab" aria-selected={mode === "code"} className={mode === "code" ? "active" : ""} onClick={() => chooseMode("code")}>Одноразовий код</button>
     </div>
     {mode === "code" ? <form className="editorial-login" onSubmit={verifyCode}>
       <label>Робоча електронна пошта<input type="email" autoComplete="email" required value={email} onChange={(event) => { setEmail(event.target.value); setCodeSent(false); setCode(""); }} placeholder="name@socosvita.kiev.ua" /></label>

@@ -32,6 +32,7 @@ export default async function PanelPage() {
   if (!publisher) {
     return <main className="auth-page"><div className="auth-card"><span className="auth-mark">АП</span><span className="kicker blue">Очікує погодження</span><h1>Запит отримано</h1><p>Акаунт <b>{user?.email}</b> успішно створено, але ще не має доступу до редакційної панелі. Адміністратор має погодити його та призначити роль.</p><SignOutButton/><Link className="back-home" href="/">← Повернутися на сайт</Link></div></main>;
   }
+  if (publisher.mustChangePassword) redirect("/panel/reset-password?initial=1");
 
   const [allPosts, allContent, allDocuments, departmentEntries, profiles, studentFinance] = await Promise.all([
     getPosts({ includeDrafts: true, limit: 100 }),

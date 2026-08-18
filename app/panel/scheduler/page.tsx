@@ -12,5 +12,6 @@ export const dynamic = "force-dynamic";
 export default async function SchedulerPage() {
   const publisher = await getPublisher();
   if (!publisher) redirect("/panel/login?next=/panel/scheduler");
+  if (publisher.mustChangePassword) redirect("/panel/reset-password?initial=1");
   return <SchedulerDashboard initialItems={await getSchedulerItems()} publisher={publisher} telegramConfigured={telegramConfigured()} />;
 }
