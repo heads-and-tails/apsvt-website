@@ -2129,3 +2129,79 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .ukrainians-abroad-note nav b{font-size:14px;overflow-wrap:anywhere}
 @media(max-width:1000px){.ukrainians-abroad-head,.ukrainians-abroad-note{grid-template-columns:1fr}.ukrainians-abroad-head{gap:28px}.ukrainians-abroad-head>div:last-child{max-width:650px}.ukrainians-abroad-route{grid-template-columns:1fr}.ukrainians-abroad-route article{min-height:210px}.ukrainians-abroad-route h3{margin-top:25px}}
 @media(max-width:700px){.ukrainians-abroad-head h2{font-size:clamp(42px,14vw,62px)}.ukrainians-abroad-head>div:last-child{padding-left:16px}.ukrainians-abroad-route article{grid-template-columns:42px minmax(0,1fr);gap:12px;padding:22px 17px}.ukrainians-abroad-route article>span{font-size:27px}.ukrainians-abroad-route h3{margin-top:18px;font-size:21px}.ukrainians-abroad-docs{grid-template-columns:1fr}.ukrainians-abroad-docs>article{padding:23px 17px}.ukrainians-abroad-docs header{gap:14px}.ukrainians-abroad-docs h3{font-size:20px}.ukrainians-abroad-note{padding:24px 18px;margin-right:9px;box-shadow:9px 9px var(--cobalt)}.ukrainians-abroad-note>div{padding-right:0}}
+
+/* Site-wide search. */
+.header-search-button{min-width:44px;height:44px;padding:0 11px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:background .2s,color .2s}
+.header-search-button:hover,.header-search-button:focus-visible{background:var(--ink);color:var(--gold)}
+.header-search-button>span{font:700 23px/1 var(--body);transform:rotate(-20deg)}
+.header-search-button>b{font:700 8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.site-search-overlay{position:fixed;inset:0;z-index:1005;padding:clamp(14px,4vw,54px);display:grid;place-items:start center;background:rgba(6,16,39,.88);backdrop-filter:blur(12px);overflow:auto}
+.site-search-dialog{width:min(960px,100%);max-height:calc(100svh - clamp(28px,8vw,108px));padding:0;background:var(--paper);border:1px solid rgba(255,255,255,.45);box-shadow:18px 18px 0 var(--gold);overflow:auto}
+.site-search-dialog>header{position:sticky;top:0;z-index:2;display:flex;align-items:start;justify-content:space-between;gap:24px;padding:24px 26px 18px;background:var(--paper);border-bottom:1px solid var(--ink)}
+.site-search-dialog>header span{color:var(--cobalt);font:9px var(--mono);letter-spacing:.11em;text-transform:uppercase}
+.site-search-dialog>header h2{margin-top:7px;font-size:clamp(24px,3.3vw,42px);line-height:1}
+.site-search-dialog>header button{width:48px;height:48px;flex:none;border:1px solid var(--ink);background:var(--navy);color:var(--gold);font:300 34px/1 var(--body);cursor:pointer}
+.site-search-field{position:sticky;top:91px;z-index:2;display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center;gap:10px;margin:0;padding:19px 26px;background:#d9dfe9;border-bottom:1px solid var(--ink)}
+.site-search-icon{font-size:34px;line-height:1;color:var(--cobalt);transform:rotate(-20deg)}
+.site-search-field input{width:100%;min-width:0;height:62px;padding:0 18px;border:2px solid var(--ink);background:#fff;color:var(--ink);font:600 clamp(17px,2vw,24px) var(--body);outline:none}
+.site-search-field input:focus{border-color:var(--cobalt);box-shadow:5px 5px 0 var(--gold)}
+.site-search-field kbd{padding:7px 9px;border:1px solid var(--ink);background:#fff;font:8px var(--mono)}
+.site-search-meta{display:flex;justify-content:space-between;gap:20px;padding:15px 26px;border-bottom:1px solid var(--line);font:8px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.site-search-meta>span{color:var(--cobalt);font-weight:700}.site-search-meta small{color:rgba(9,14,24,.55)}
+.site-search-results{display:grid;grid-template-columns:1fr 1fr;border-left:1px solid var(--ink)}
+.site-search-results>a{min-height:170px;padding:20px;display:grid;grid-template-columns:34px minmax(0,1fr) 24px;gap:12px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);background:#fff;transition:background .2s,color .2s}
+.site-search-results>a:hover,.site-search-results>a:focus-visible{background:var(--navy);color:#fff;outline:0}
+.site-search-results>a>span{color:var(--cobalt);font:9px var(--mono)}
+.site-search-results small{color:var(--cobalt);font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.site-search-results h3{margin:11px 0 8px;font-size:17px;line-height:1.1;overflow-wrap:anywhere}
+.site-search-results p{color:rgba(9,14,24,.62);font-size:12px;line-height:1.5}.site-search-results>a:hover p,.site-search-results>a:focus-visible p{color:#bfc9dc}
+.site-search-results>a>b{align-self:center;color:var(--gold);font-size:23px}
+.site-search-empty{padding:54px 26px 68px;text-align:center}.site-search-empty b{font:700 25px var(--disp);text-transform:uppercase}.site-search-empty p{margin-top:12px}.site-search-empty a{border-bottom:2px solid var(--gold);color:var(--cobalt)}
+
+/* Academy structure: Academy → faculty → department → programme. */
+.structure-academy-root{display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:22px;align-items:center;padding:18px;background:var(--navy);color:#fff;border:1px solid var(--navy);box-shadow:9px 9px 0 var(--gold)}
+.structure-academy-logo{height:78px;display:grid;place-items:center;background:#fff}.structure-academy-logo img{height:70px;width:auto}
+.structure-academy-root small{color:#9eabc1;font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.structure-academy-root h3{margin:7px 0 5px;font-size:clamp(19px,2.6vw,31px);line-height:1}.structure-academy-root p{color:#b9c4d8;font-size:12px}
+.structure-academy-root>a{padding:13px 15px;border:1px solid var(--gold);color:var(--gold);font:700 8px var(--mono);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
+.structure-academy-root>a:hover{background:var(--gold);color:var(--ink)}
+.structure-levels{display:grid;grid-template-columns:1fr 42px 1fr 42px 1fr;align-items:stretch;margin:34px 0 18px;border:1px solid var(--ink);background:#fff}
+.structure-levels>div{min-height:96px;padding:16px;display:grid;grid-template-columns:38px 1fr;gap:3px 12px;align-items:center}.structure-levels>div>span{grid-row:1/3;color:var(--cobalt);font:700 29px var(--disp)}
+.structure-levels b{align-self:end;font:700 14px var(--disp);text-transform:uppercase}.structure-levels small{align-self:start;color:rgba(9,14,24,.55);font:8px var(--mono);text-transform:uppercase;line-height:1.4}
+.structure-levels>i{display:grid;place-items:center;border-inline:1px solid var(--line);color:var(--cobalt);font-style:normal;font-size:22px}
+.structure-faculties{display:grid;gap:12px}.structure-faculties>details{border:1px solid var(--ink);background:#fff}.structure-faculties>details[open]{box-shadow:8px 8px 0 rgba(36,72,255,.18)}
+.structure-faculties summary{min-height:155px;padding:21px;display:grid;grid-template-columns:35px 54px minmax(0,1fr) 90px 30px;gap:16px;align-items:center;cursor:pointer;list-style:none}.structure-faculties summary::-webkit-details-marker{display:none}
+.structure-faculties summary>span{align-self:start;color:var(--cobalt);font:9px var(--mono)}.structure-faculties summary>strong{width:54px;height:54px;display:grid;place-items:center;background:var(--gold);border:1px solid var(--ink);font:700 13px var(--disp)}
+.structure-faculties summary div>small{color:var(--cobalt);font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase}.structure-faculties summary h3{margin:8px 0 7px;font-size:clamp(21px,2.8vw,36px);line-height:1.05}.structure-faculties summary p{max-width:74ch;color:rgba(9,14,24,.61);font-size:12px;line-height:1.5}
+.structure-faculties summary>b{color:var(--cobalt);font:700 36px var(--disp);text-align:center}.structure-faculties summary>b small{display:block;color:rgba(9,14,24,.55);font:8px var(--mono);text-transform:uppercase}
+.structure-faculties summary>i{font:normal 32px var(--body);transition:transform .2s}.structure-faculties details[open] summary>i{transform:rotate(45deg)}
+.structure-faculty-body{border-top:1px solid var(--ink);background:#d9dfe9;padding:15px}.structure-faculty-actions{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:4px 4px 14px;color:rgba(9,14,24,.6);font:8px var(--mono);letter-spacing:.06em;text-transform:uppercase}.structure-faculty-actions a{color:var(--cobalt);border-bottom:2px solid var(--gold);font-weight:700}
+.structure-departments{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ink);border:1px solid var(--ink)}
+.structure-departments article{min-height:260px;padding:20px;display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;background:#fff}.structure-departments article>span{color:var(--cobalt);font:9px var(--mono)}
+.structure-departments article small{color:var(--cobalt);font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase}.structure-departments h4{margin:9px 0;font:700 18px/1.08 var(--disp);text-transform:uppercase}.structure-departments h4 a:hover{color:var(--cobalt)}.structure-departments p{color:rgba(9,14,24,.6);font-size:12px;line-height:1.5}
+.structure-departments nav{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}.structure-departments nav a{display:flex;align-items:center;gap:7px;min-height:39px;padding:8px 10px;background:var(--navy);color:#fff;border:1px solid var(--navy);font-size:10px}.structure-departments nav a:hover{background:var(--gold);color:var(--ink)}
+.structure-departments nav b{color:var(--gold);font:700 9px var(--mono)}.structure-departments nav a:hover b{color:var(--cobalt)}.structure-departments nav i{font-style:normal}
+.structure-directory-link{margin-top:28px;padding:23px 25px;display:flex;align-items:center;justify-content:space-between;gap:30px;background:var(--gold);border:1px solid var(--ink)}.structure-directory-link>div{display:flex;align-items:center;gap:15px}.structure-directory-link span{color:var(--cobalt);font:700 45px var(--disp)}.structure-directory-link p{max-width:34ch;font:700 10px var(--mono);text-transform:uppercase}.structure-directory-link>a{padding-bottom:4px;border-bottom:2px solid var(--cobalt);font:700 9px var(--mono);text-transform:uppercase}
+.structure-other{margin-top:54px;padding-top:28px;border-top:4px solid var(--ink)}.structure-other-head{display:flex;justify-content:space-between;gap:30px;margin-bottom:20px}.structure-other-head span{font:700 22px var(--disp);text-transform:uppercase}.structure-other-head p{max-width:52ch;color:rgba(9,14,24,.6);font-size:12px}
+.structure-other>div:last-child{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--ink);border:1px solid var(--ink)}.structure-other a{min-height:210px;padding:19px;display:grid;grid-template-rows:auto 1fr auto auto;background:#fff}.structure-other a:hover{background:var(--navy);color:#fff}.structure-other small{color:var(--cobalt);font:8px var(--mono);text-transform:uppercase}.structure-other h3{align-self:end;margin:25px 0 10px;font-size:17px}.structure-other p{color:rgba(9,14,24,.6);font-size:11px;line-height:1.45}.structure-other a:hover p{color:#b9c4d8}.structure-other a>b{justify-self:end;color:var(--gold);font-size:20px}
+
+/* Department directory: keep faculty, department and programme links visually distinct. */
+.department-faculty>header>b{display:grid;gap:5px}.department-faculty>header>b small{color:rgba(9,14,24,.52);font:8px var(--mono);text-align:right;text-transform:uppercase}
+.department-faculty .department-directory>article{scroll-margin-top:90px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:18px;padding:28px 10px;border-bottom:1px solid var(--line);background:transparent}
+.department-faculty .department-directory>article>span{color:var(--cobalt);font:9px var(--mono)}.department-faculty .department-directory>article small{color:var(--cobalt);font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.department-faculty .department-directory>article h3{margin:7px 0;font-size:clamp(20px,2.5vw,33px);line-height:1.08}.department-faculty .department-directory>article h3 a:hover{color:var(--cobalt)}
+.department-faculty .department-directory>article p{max-width:75ch;color:rgba(9,14,24,.62);font-size:13px;line-height:1.5}
+.department-faculty .department-directory nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.department-faculty .department-directory nav a{min-height:42px;padding:9px 12px;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--ink);font-size:11px;transition:background .2s,color .2s}.department-faculty .department-directory nav a:hover{background:var(--navy);color:#fff}.department-faculty .department-directory nav b{color:var(--cobalt);font:700 9px var(--mono)}.department-faculty .department-directory nav i{color:var(--gold);font-style:normal}
+
+@media(max-width:1100px){
+  .header-search-button>b{display:none}.header-search-button{width:44px;padding:0}
+  .structure-other>div:last-child{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  .site-search-overlay{padding:0}.site-search-dialog{max-height:100svh;min-height:100svh;border:0;box-shadow:none}.site-search-dialog>header{padding:18px 16px 14px}.site-search-dialog>header button{width:44px;height:44px}.site-search-dialog>header h2{font-size:24px}.site-search-field{top:77px;grid-template-columns:30px minmax(0,1fr);padding:13px 16px}.site-search-field input{height:54px;padding-inline:12px;font-size:16px}.site-search-field kbd{display:none}.site-search-icon{font-size:27px}.site-search-meta{display:grid;padding:12px 16px}.site-search-results{grid-template-columns:1fr}.site-search-results>a{min-height:132px;padding:16px;grid-template-columns:28px minmax(0,1fr) 20px}.site-search-results h3{font-size:15px}
+  .structure-academy-root{grid-template-columns:62px minmax(0,1fr);padding:13px;box-shadow:6px 6px 0 var(--gold)}.structure-academy-logo{height:65px}.structure-academy-logo img{height:58px}.structure-academy-root>a{grid-column:1/3;text-align:center}.structure-academy-root h3{font-size:17px}
+  .structure-levels{grid-template-columns:1fr}.structure-levels>div{min-height:82px}.structure-levels>i{min-height:32px;border-inline:0;border-block:1px solid var(--line);transform:rotate(90deg)}
+  .structure-faculties summary{grid-template-columns:28px 45px minmax(0,1fr) 24px;gap:10px;padding:16px}.structure-faculties summary>strong{width:45px;height:45px}.structure-faculties summary>div{grid-column:3}.structure-faculties summary>div p{display:none}.structure-faculties summary>b{grid-column:2/4;grid-row:2;display:flex;align-items:baseline;gap:7px;padding-top:10px;border-top:1px solid var(--line);font-size:24px;text-align:left}.structure-faculties summary>b small{display:inline}.structure-faculties summary>i{grid-column:4;grid-row:1/3}.structure-faculty-body{padding:8px}.structure-faculty-actions{display:grid;padding:6px 4px 12px}.structure-departments{grid-template-columns:1fr}.structure-departments article{min-height:220px;padding:17px 14px;grid-template-columns:27px minmax(0,1fr)}.structure-departments h4{font-size:16px}.structure-directory-link{display:grid;padding:18px}.structure-directory-link>a{justify-self:start}.structure-other-head{display:grid}.structure-other>div:last-child{grid-template-columns:1fr}.structure-other a{min-height:170px}
+  .department-faculty>header>b small{text-align:left}.department-faculty .department-directory>article{grid-template-columns:30px minmax(0,1fr);gap:10px;padding:22px 3px}.department-faculty .department-directory nav{display:grid}.department-faculty .department-directory nav a{justify-content:space-between}
+}
+@media(max-width:430px){.brand-name{max-width:112px;font-size:7.7px}.hdr-right{gap:2px}.header-search-button,.lang-toggle,.burger{width:38px;min-width:38px;height:38px;min-height:38px}.header-search-button>span{font-size:20px}}

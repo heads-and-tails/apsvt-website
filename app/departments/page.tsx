@@ -16,14 +16,14 @@ const facultyGroups = [
     description: "Економіка, управління, поведінкові та соціальні науки, цифрові технології, туризм і гостинність.",
     profileHref: "/departments/economics-social-tourism-faculty",
     departments: [
-      { id: "psychology", title: "Кафедра психології", text: "Психічне здоров’я, консультування, дослідження та психологія організацій.", href: "/programs/psychology", programmes: "C4 Психологія" },
-      { id: "finance", title: "Кафедра фінансів", text: "Фінансовий аналіз, банківська справа, страхування та сталі фінанси.", href: "/programs/finance", programmes: "D2 Фінанси" },
-      { id: "economics-management", title: "Кафедра економіки підприємства та менеджменту", text: "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", href: "/programs/management", programmes: "D3 Менеджмент · D7 Торгівля" },
-      { id: "marketing", title: "Кафедра маркетингу", text: "Ринкова аналітика, бренди, комунікації, digital і поведінка споживачів.", href: "/programs/marketing", programmes: "D5 Маркетинг" },
-      { id: "social-work", title: "Кафедра соціально-трудових відносин та соціальної роботи", text: "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", href: "/programs/social-work", programmes: "I10 Соціальна робота" },
-      { id: "tourism", title: "Кафедра спеціальних туристичних дисциплін", text: "Туризм, гостинність, рекреація, події та створення туристичних продуктів.", href: "/programs/tourism", programmes: "J3 Туризм та рекреація" },
-      { id: "digital-technologies", title: "Кафедра інтелектуальних систем та цифрових технологій", text: "Інформаційні системи, цифрові освітні технології та управління інформаційною безпекою.", href: "/programs#doctoral-programmes", programmes: "A5 Професійна освіта" },
-      { id: "hospitality", title: "Кафедра енотехнологій і сервісу в готельно-ресторанному сегменті", text: "Гостинність, сервіс, еногастрономічна культура та практичні лабораторні формати.", href: "/news/hospitality-management-lab", programmes: "Готельно-ресторанний сервіс" },
+      { id: "psychology", title: "Кафедра психології", text: "Психічне здоров’я, консультування, дослідження та психологія організацій.", href: "/departments#psychology", programmes: [{ code: "C4", title: "Психологія", href: "/programs/psychology" }] },
+      { id: "finance", title: "Кафедра фінансів", text: "Фінансовий аналіз, банківська справа, страхування та сталі фінанси.", href: "/departments#finance", programmes: [{ code: "D2", title: "Фінанси", href: "/programs/finance" }] },
+      { id: "economics-management", title: "Кафедра економіки підприємства та менеджменту", text: "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", href: "/departments#economics-management", programmes: [{ code: "D3", title: "Менеджмент", href: "/programs/management" }, { code: "D7", title: "Торгівля", href: "/programs/trade" }] },
+      { id: "marketing", title: "Кафедра маркетингу", text: "Ринкова аналітика, бренди, комунікації, digital і поведінка споживачів.", href: "/departments#marketing", programmes: [{ code: "D5", title: "Маркетинг", href: "/programs/marketing" }] },
+      { id: "social-work", title: "Кафедра соціально-трудових відносин та соціальної роботи", text: "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", href: "/departments#social-work", programmes: [{ code: "I10", title: "Соціальна робота", href: "/programs/social-work" }] },
+      { id: "tourism", title: "Кафедра спеціальних туристичних дисциплін", text: "Туризм, гостинність, рекреація, події та створення туристичних продуктів.", href: "/departments#tourism", programmes: [{ code: "J3", title: "Туризм", href: "/programs/tourism" }] },
+      { id: "digital-technologies", title: "Кафедра інтелектуальних систем та цифрових технологій", text: "Інформаційні системи, цифрові освітні технології та управління інформаційною безпекою.", href: "/departments#digital-technologies", programmes: [{ code: "A5", title: "Професійна освіта · PhD", href: "/programs#doctoral-programmes" }] },
+      { id: "hospitality", title: "Кафедра енотехнологій і сервісу в готельно-ресторанному сегменті", text: "Гостинність, сервіс, еногастрономічна культура та практичні лабораторні формати.", href: "/departments#hospitality", programmes: [{ code: "Сервіс", title: "Готельно-ресторанний напрям", href: "/news/hospitality-management-lab" }] },
     ],
   },
   {
@@ -32,10 +32,10 @@ const facultyGroups = [
     description: "Публічне, приватне й кримінальне право, юридична клініка, криміналістика та публічне управління.",
     profileHref: "/departments/law-faculty",
     departments: [
-      { id: "public-law", title: "Кафедра конституційного, адміністративного та фінансового права", text: "Конституційне, адміністративне, фінансове й муніципальне право.", href: "/programs/law#department", programmes: "D8 Право" },
-      { id: "public-administration", title: "Кафедра публічного управління та адміністрування", text: "Публічна політика, державна служба, громади та управління змінами.", href: "/programs/public-administration", programmes: "D4 Публічне управління" },
-      { id: "private-law", title: "Кафедра цивільного, трудового та господарського права", text: "Приватно-правові відносини, цивільний процес, трудові права й соціальний діалог.", href: "/programs/law#department", programmes: "D8 Право" },
-      { id: "criminal-law", title: "Кафедра кримінального права, процесу та криміналістики", text: "Кримінальна юстиція, захист прав людини, судові симуляції та криміналістична лабораторія.", href: "/departments/criminal-law", programmes: "D8 Право" },
+      { id: "public-law", title: "Кафедра конституційного, адміністративного та фінансового права", text: "Конституційне, адміністративне, фінансове й муніципальне право.", href: "/departments#public-law", programmes: [{ code: "D8", title: "Право", href: "/programs/law" }] },
+      { id: "public-administration", title: "Кафедра публічного управління та адміністрування", text: "Публічна політика, державна служба, громади та управління змінами.", href: "/departments#public-administration", programmes: [{ code: "D4", title: "Публічне управління", href: "/programs/public-administration" }] },
+      { id: "private-law", title: "Кафедра цивільного, трудового та господарського права", text: "Приватно-правові відносини, цивільний процес, трудові права й соціальний діалог.", href: "/departments#private-law", programmes: [{ code: "D8", title: "Право", href: "/programs/law" }] },
+      { id: "criminal-law", title: "Кафедра кримінального права, процесу та криміналістики", text: "Кримінальна юстиція, захист прав людини, судові симуляції та криміналістична лабораторія.", href: "/departments/criminal-law", programmes: [{ code: "D8", title: "Право", href: "/programs/law" }] },
     ],
   },
   {
@@ -44,7 +44,7 @@ const facultyGroups = [
     description: "Мовні, гуманітарні та міжкультурні компетентності для студентів усіх освітніх програм.",
     profileHref: "/departments/languages-humanities",
     departments: [
-      { id: "languages", title: "Кафедра іноземних мов та гуманітарних дисциплін", text: "Професійна іноземна мова, українська для іноземців, критичне мислення та гуманітарна освіта.", href: "/departments/languages-humanities", programmes: "Усі освітні програми" },
+      { id: "languages", title: "Кафедра іноземних мов та гуманітарних дисциплін", text: "Професійна іноземна мова, українська для іноземців, критичне мислення та гуманітарна освіта.", href: "/departments/languages-humanities", programmes: [{ code: "Усі", title: "Освітні програми", href: "/programs" }] },
     ],
   },
 ];
@@ -53,8 +53,8 @@ export default function Page() {
   const count = facultyGroups.reduce((sum, group) => sum + group.departments.length, 0);
   return <main id="top"><SiteHeader />
     <section className="phero department-hero"><div className="wrap"><div className="crumb">Головна / Кафедри</div><span>{count} кафедр і навчальних осередків</span><h1>Кафедри<br />Академії</h1><p className="lead">Повна академічна структура: команди, які відповідають за зміст програм, якість викладання, дослідження і зв’язок навчання з практикою.</p></div></section><div className="phero-rule" />
-    <section className="department-map"><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Академічні підрозділи</div><h2>Від факультету<br />до програми</h2></div><p>Кожна картка веде на програму або профіль кафедри, де зібрані викладачі, практика, партнери й документи.</p></div>
-      <div className="department-faculties">{facultyGroups.map((group, groupIndex) => <section className="department-faculty" key={group.code}><header><span>{String(groupIndex + 1).padStart(2, "0")}</span><div><small>{group.code}</small><h2>{group.name}</h2><p>{group.description}</p><Link className="department-faculty-profile" href={group.profileHref}>Відкрити сторінку підрозділу →</Link></div><b>{group.departments.length}</b></header><div className="department-directory">{group.departments.map((department, index) => <Link id={department.id} href={department.href} key={department.title}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{department.programmes}</small><h3>{department.title}</h3><p>{department.text}</p></div><b>↗</b></Link>)}</div></section>)}</div>
+    <section className="department-map"><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Академічні підрозділи</div><h2>Від факультету<br />до програми</h2></div><p>Спочатку оберіть факультет, потім кафедру. Програми кожної кафедри вже показані окремими кнопками — шукати їх на інших сторінках не потрібно.</p></div>
+      <div className="department-faculties">{facultyGroups.map((group, groupIndex) => <section className="department-faculty" key={group.code}><header><span>{String(groupIndex + 1).padStart(2, "0")}</span><div><small>Факультет · {group.code}</small><h2>{group.name}</h2><p>{group.description}</p><Link className="department-faculty-profile" href={group.profileHref}>Відкрити сторінку факультету →</Link></div><b>{group.departments.length}<small>кафедр</small></b></header><div className="department-directory">{group.departments.map((department, index) => <article id={department.id} key={department.title}><span>{String(index + 1).padStart(2, "0")}</span><div><small>Кафедра</small><h3><Link href={department.href}>{department.title}</Link></h3><p>{department.text}</p><nav aria-label={`Програми: ${department.title}`}>{department.programmes.map((programme) => <Link href={programme.href} key={`${department.id}-${programme.code}`}><b>{programme.code}</b><span>{programme.title}</span><i>↗</i></Link>)}</nav></div></article>)}</div></section>)}</div>
     </div></section>
     <section className="department-practice-band"><div className="wrap"><div><div className="idx">02 / Навчально-практичні осередки</div><h2>Практика всередині Академії</h2></div><div className="department-practice-links"><Link href="/programs/law/legal-clinic"><span>Юридична клініка «Феміда»</span><b>Первинна правова допомога й супервізія →</b></Link><Link href="/programs/law/forensic-laboratory"><span>Лабораторія криміналістики</span><b>Кабінет слідчого та криміналістичний майданчик →</b></Link><Link href="/materials/tourism-lab-533745080.html"><span>«Академія подорожей»</span><b>Модель реального туристичного підприємства →</b></Link></div></div></section>
     <section className="department-doctoral"><div className="wrap">

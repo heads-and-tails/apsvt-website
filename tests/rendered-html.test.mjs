@@ -311,9 +311,11 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
   assert.match(home,/Свято вручення дипломів/);
   assert.match(home,/href="\/events\/graduation-2026"/);
   assert.match(about,/Від соціально-трудової освіти до міждисциплінарної Академії/);
-  assert.match(about,/Зрозуміла мапа/);
-  assert.match(about,/Рівень 1/);
-  assert.match(about,/Рівень 3/);
+  assert.match(about,/Від Академії/);
+  assert.match(about,/Рівень 0/);
+  assert.match(about,/Факультет/);
+  assert.match(about,/Кафедра/);
+  assert.match(about,/Програма/);
   assert.match(about,/statute-2017\.pdf/);
   assert.match(documents,/Установчі документи/);
   assert.match(documents,/Аспірантура та освітньо-наукові програми/);
@@ -375,9 +377,9 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
   }
 
   const structure=await readFile(new URL("../app/about/AcademyStructure.tsx",import.meta.url),"utf8");
-  assert.match(structure,/useState/);
-  assert.match(structure,/aria-live="polite"/);
-  assert.match(structure,/aria-pressed/);
+  assert.match(structure,/<details/);
+  assert.match(structure,/structure-faculties/);
+  assert.match(structure,/Програми:/);
 });
 
 test("enriches programme pages with departments, practice partners, people and legal clinic",async()=>{
@@ -828,9 +830,25 @@ test("renders verified partner marks, the official emblem and designed faculty p
   assert.match(economicFaculty,/Освітні траєкторії/);
   assert.match(profiles,/departmentHref: "\/departments\/law-faculty#departments"/);
   assert.match(profiles,/departmentHref: "\/departments\/economics-social-tourism-faculty#departments"/);
-  assert.match(structure,/structure-current-path/);
-  assert.match(structure,/structure-summary/);
-  assert.match(structure,/Рівень 3/);
+  assert.match(structure,/structure-academy-root/);
+  assert.match(structure,/structure-levels/);
+  assert.match(structure,/Рівень 0/);
+});
+
+test("adds a global site search with programme, faculty and department results",async()=>{
+  const [home,header,search,index]=await Promise.all([
+    (await render("/")).text(),
+    readFile(new URL("../app/components/SiteHeader.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/components/SiteSearch.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../lib/site-search.ts",import.meta.url),"utf8"),
+  ]);
+  assert.match(home,/Пошук/);
+  assert.match(header,/SiteSearch/);
+  assert.match(search,/role="dialog"/);
+  assert.match(search,/useDeferredValue/);
+  assert.match(index,/Юридичний факультет/);
+  assert.match(index,/Кафедра психології/);
+  assert.match(index,/Туризм та рекреація/);
 });
 
 test("publishes Moodle and the student council across student resources",async()=>{

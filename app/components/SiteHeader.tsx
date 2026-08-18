@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { SiteSearch } from "./SiteSearch";
 
 const ukLinks = [
   ["/about", "Про Академію"],
@@ -35,6 +36,7 @@ const enLinks = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const firstMenuLink = useRef<HTMLAnchorElement>(null);
   const english = pathname === "/en" || pathname.startsWith("/en/");
@@ -73,6 +75,20 @@ export function SiteHeader() {
   }, []);
 
   const closeMenu = () => setOpen(false);
+
+  useEffect(() => {
+    const openSearch = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const typing = target?.tagName === "INPUT" || target?.tagName === "TEXTAREA" || target?.isContentEditable;
+      if ((event.key === "/" && !typing) || ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k")) {
+        event.preventDefault();
+        setOpen(false);
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", openSearch);
+    return () => window.removeEventListener("keydown", openSearch);
+  }, []);
 
   return (
     <header className={`legacy-header ${open ? "menu-open" : ""}`}>
@@ -142,6 +158,9 @@ export function SiteHeader() {
         </nav>
 
         <div className="hdr-right">
+          <button className="header-search-button" type="button" onClick={() => { setOpen(false); setSearchOpen(true); }} aria-label={english ? "Search the site" : "Пошук по сайту"} aria-haspopup="dialog">
+            <span aria-hidden="true">⌕</span><b>{english ? "Search" : "Пошук"}</b>
+          </button>
           <Link className="lang-toggle" href={english ? ukPath : enPath} aria-label={english ? "Українська версія" : "English version"} onClick={closeMenu}>
             {english ? "UA" : "EN"}
           </Link>
@@ -163,6 +182,7 @@ export function SiteHeader() {
           </button>
         </div>
       </div>
+      <SiteSearch open={searchOpen} onClose={() => setSearchOpen(false)} english={english} />
     </header>
   );
 }

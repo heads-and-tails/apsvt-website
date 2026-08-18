@@ -36,16 +36,16 @@ export default function Page() {
 
     <section className="about-identity"><div className="wrap split"><div className="copy"><div className="idx">01 / Хто ми</div><h2>Вчимо змінювати світ відповідально</h2><p className="lead">Академія працює з 1993 року й розвиває освіту у сфері права, економіки, соціальних відносин, управління, психології та туризму.</p><p>Заклад виник у системі профспілкової освіти України. Цей досвід сформував його особливий фокус: гідна праця, права людини, соціальна відповідальність і практична користь знань.</p><p>Сьогодні навчання поєднує реальні професійні сценарії, дослідження суспільних викликів, практику в організаціях і громадах та міжнародні освітні проєкти.</p><figure className="about-official-signature"><div><img src="/brand/apsvt-official-logo.png" alt="Офіційна емблема АПСВТ" /></div><figcaption><small>Офіційна емблема</small><b>Академія праці,<br />соціальних відносин і туризму</b><span>Київ · засновано 1993 року</span></figcaption></figure><div className="about-statute-link"><span>Установчий документ</span><a href="/documents/academy/statute-2017.pdf" target="_blank" rel="noreferrer">Статут Академії · PDF ↗</a></div></div><div className="ph tall"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&q=90&auto=format&fit=crop" alt="Лекція в Академії" /></div></div></section>
 
+    <AcademyStructure />
+
     <section className="deep-content"><div className="wrap"><div className="deep-intro"><h2>Наші принципи</h2><p>Чотири опори визначають, як ми навчаємо, співпрацюємо та приймаємо рішення.</p></div><div className="deep-grid">{values.map(([number, title, description]) => <article className="deep-card" data-n={number} key={title}><span className="mono">Принцип</span><h3>{title}</h3><p>{description}</p></article>)}</div></div></section>
 
     <section className="academy-history" id="history"><div className="wrap">
-      <div className="academy-history-head"><div><div className="idx">03 / Історія</div><h2>Від соціально-трудової освіти до міждисциплінарної Академії</h2></div><p>Ключові етапи подано за офіційною історичною довідкою Академії та документами освітніх програм.</p></div>
+      <div className="academy-history-head"><div><div className="idx">04 / Історія</div><h2>Від соціально-трудової освіти до міждисциплінарної Академії</h2></div><p>Ключові етапи подано за офіційною історичною довідкою Академії та документами освітніх програм.</p></div>
       <div className="academy-history-summary"><b>33+</b><span>роки розвитку</span><b>25 000</b><span>підготовлених фахівців*</span><b>15 000</b><span>слухачів підвищення кваліфікації*</span></div>
       <div className="academy-history-timeline">{history.map(([year, title, description], index) => <article key={year}><span>{String(index + 1).padStart(2, "0")}</span><time>{year}</time><div><h3>{title}</h3><p>{description}</p></div></article>)}</div>
       <p className="academy-history-note">* Історичні накопичувальні показники, оприлюднені Академією у довідці про її розвиток.</p>
     </div></section>
-
-    <AcademyStructure />
 
     <OfficialLinks index="05 / Докладніше" title="Документи й офіційні матеріали" items={[
       { title: "Ліцензії та акредитація", description: "Ліцензія на освітню діяльність, сертифікати програм і державні реєстри.", href: "/about/licenses" },
