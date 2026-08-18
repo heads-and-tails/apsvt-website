@@ -97,6 +97,37 @@ test("opens the dedicated Scientific Bulletin website from both languages",async
   assert.match(enHtml,/Open journal/);
 });
 
+test("publishes the verified 2025 Scientific Bulletin record without an embedded site",async()=>{
+  const html=await (await render("/research/journals/visnyk")).text();
+  assert.match(html,/ISSN 3041-2390/);
+  assert.match(html,/24\.02\.2025 № 349/);
+  assert.match(html,/C1/);
+  assert.match(html,/C4/);
+  assert.match(html,/D2/);
+  assert.match(html,/D3/);
+  assert.match(html,/visnyk-cover-2025\.jpg/);
+  assert.doesNotMatch(html,/<iframe/);
+  assert.doesNotMatch(html,/D1 Облік/);
+});
+
+test("uses one scannable academic order and keeps May 2026 archive documents local",async()=>{
+  const [programme,faculty,department]=await Promise.all([
+    (await render("/programs/finance")).text(),
+    (await render("/departments/economics-social-tourism-faculty")).text(),
+    (await render("/departments/criminal-law")).text(),
+  ]);
+  for(const html of [programme,faculty,department]) assert.match(html,/academic-page-map/);
+  for(const label of ["Спеціальність і програма","Навчальні плани","Вибіркові дисципліни","Наукова діяльність","Якість освіти"]){
+    assert.match(programme,new RegExp(label));
+  }
+  assert.match(faculty,/Факультет → кафедри → програми/);
+  assert.match(department,/criminal-law-department-2023\.pdf/);
+  for(const file of ["quality-system.pdf","student-survey-questionnaires.pdf","law-faculty-regulation-2023.pdf","criminal-law-department-2023.pdf"]){
+    const bytes=await readFile(new URL(`../public/documents/archive/may-2026/${file}`,import.meta.url));
+    assert.ok(bytes.length>100000,`${file} should be a downloaded archive PDF`);
+  }
+});
+
 test("renders editorially managed public information",async()=>{
   const admissionsHtml=await (await render("/admissions")).text();
   assert.match(admissionsHtml,/19 липня — 1 серпня, 18:00/);

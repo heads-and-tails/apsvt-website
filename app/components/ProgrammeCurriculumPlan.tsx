@@ -21,7 +21,7 @@ export function ProgrammeCurriculumPlan({ slug, code, title }: { slug: string; c
       <header className="law-curriculum-head">
         <div>
           <div className="idx">02 / Навчальний план · {curriculum.edition}</div>
-          <h2>Що ви<br />вивчатимете</h2>
+          <h2>Що ви вивчатимете</h2>
         </div>
         <div>
           <p>{curriculum.intro}</p>
@@ -48,10 +48,10 @@ export function ProgrammeCurriculumPlan({ slug, code, title }: { slug: string; c
         </details>)}
       </div>
 
-      <div className="law-curriculum-choice">
+      <div className="law-curriculum-choice" id="electives">
         <div className="law-curriculum-choice-intro">
           <div className="idx">03 / Індивідуальна траєкторія</div>
-          <h3>60 кредитів<br /><em>обираєте ви</em></h3>
+          <h3>60 кредитів <em>обираєте ви</em></h3>
           <p>Вибіркові компоненти складають не менше <b>25% програми</b>. Остаточний набір студент формує під час вибору дисциплін та фіксує в індивідуальному навчальному плані.</p>
         </div>
         <div className="law-curriculum-track-list">
@@ -63,7 +63,7 @@ export function ProgrammeCurriculumPlan({ slug, code, title }: { slug: string; c
       </div>
 
       <div className="law-curriculum-practice programme-curriculum-practice">
-        <header><div className="idx">04 / Практична підготовка та атестація</div><h3>Від знань —<br />до професії</h3></header>
+        <header><div className="idx">04 / Практична підготовка та атестація</div><h3>Від знань — до професії</h3></header>
         <div>
           {curriculum.practice.map((item, index) => <article key={item.title}>
             <span>{String(index + 1).padStart(2, "0")}</span>

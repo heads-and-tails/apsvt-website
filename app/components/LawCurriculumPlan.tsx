@@ -91,7 +91,7 @@ export function LawCurriculumPlan() {
       <header className="law-curriculum-head">
         <div>
           <div className="idx">02 / Навчальний план · редакція 2025</div>
-          <h2>Що ви<br />вивчатимете</h2>
+          <h2>Що ви вивчатимете</h2>
         </div>
         <div>
           <p>Реальна структура бакалаврської програми D8 «Право» за офіційною освітньо-професійною програмою Академії. Для кожної обов’язкової дисципліни вказано обсяг у кредитах ЄКТС і форму підсумкового контролю.</p>
@@ -117,10 +117,10 @@ export function LawCurriculumPlan() {
         </details>
       </div>
 
-      <div className="law-curriculum-choice">
+      <div className="law-curriculum-choice" id="electives">
         <div className="law-curriculum-choice-intro">
           <div className="idx">03 / Індивідуальна траєкторія</div>
-          <h3>60 кредитів<br /><em>обираєте ви</em></h3>
+          <h3>60 кредитів <em>обираєте ви</em></h3>
           <p><b>15 ЄКТС</b> — дисципліни загальної підготовки. <b>45 ЄКТС</b> — професійні правничі дисципліни. Конкретний набір студент формує в індивідуальному навчальному плані.</p>
         </div>
         <div className="law-curriculum-track-list">
@@ -132,7 +132,7 @@ export function LawCurriculumPlan() {
       </div>
 
       <div className="law-curriculum-practice">
-        <header><div className="idx">04 / Практична підготовка та атестація</div><h3>Від аудиторії —<br />до юридичної практики</h3></header>
+        <header><div className="idx">04 / Практична підготовка та атестація</div><h3>Від аудиторії — до юридичної практики</h3></header>
         <div>
           {practice.map((item, index) => <article key={item.title}>
             <span>{String(index + 1).padStart(2, "0")}</span>
