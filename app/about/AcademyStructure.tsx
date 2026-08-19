@@ -57,6 +57,15 @@ const otherUnits = [
   { title: "Сервіси Академії", description: "Вступ, бібліотека, кампус, гуртожиток і студентська підтримка.", href: "/facilities" },
 ];
 
+function departmentNoun(count: number) {
+  const lastTwoDigits = count % 100;
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return "кафедр";
+  const lastDigit = count % 10;
+  if (lastDigit === 1) return "кафедра";
+  if (lastDigit >= 2 && lastDigit <= 4) return "кафедри";
+  return "кафедр";
+}
+
 export function AcademyStructure() {
   const departmentCount = faculties.reduce((total, faculty) => total + faculty.departments.length, 0);
 
@@ -84,11 +93,11 @@ export function AcademyStructure() {
           <span>{String(facultyIndex + 1).padStart(2, "0")}</span>
           <strong>{faculty.code}</strong>
           <div><small>Факультет / підрозділ</small><h3>{faculty.title}</h3><p>{faculty.description}</p></div>
-          <b>{faculty.departments.length}<small> кафедр</small></b>
+          <b>{faculty.departments.length}<small> {departmentNoun(faculty.departments.length)}</small></b>
           <i aria-hidden="true">+</i>
         </summary>
         <div className="structure-faculty-body">
-          <div className="structure-faculty-actions"><span>{faculty.departments.length} кафедр · прямі посилання на програми</span><Link href={faculty.href}>Сторінка факультету →</Link></div>
+          <div className="structure-faculty-actions"><span>{faculty.departments.length} {departmentNoun(faculty.departments.length)} · прямі посилання на програми</span><Link href={faculty.href}>Сторінка факультету →</Link></div>
           <div className="structure-departments">
             {faculty.departments.map((department, departmentIndex) => <article key={department.title}>
               <span>{String(departmentIndex + 1).padStart(2, "0")}</span>
