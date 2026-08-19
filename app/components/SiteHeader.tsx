@@ -21,7 +21,7 @@ const ukLinks: readonly NavItem[] = [
     { href: "/programs", label: "Усі програми" }, { href: "/programs/law", label: "Право" },
     { href: "/programs/public-administration", label: "Публічне управління" }, { href: "/programs/psychology", label: "Психологія" },
     { href: "/programs/finance", label: "Фінанси" }, { href: "/programs/marketing", label: "Маркетинг" },
-    { href: "/programs/management", label: "Менеджмент" }, { href: "/programs/tourism", label: "Туризм" },
+    { href: "/programs/management", label: "Менеджмент" }, { href: "/programs/social-work", label: "Соціальна робота" },
   ] },
   { href: "/admissions", label: "Вступнику", children: [
     { href: "/admissions#route", label: "Як вступити" }, { href: "/admissions#dates", label: "Ключові дати" },

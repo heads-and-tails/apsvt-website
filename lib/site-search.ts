@@ -36,7 +36,6 @@ export const siteSearchItems: SiteSearchItem[] = [
   { title: "Торгівля", description: "D7 · бакалаврська освітня програма.", href: "/programs/trade", category: "Програма", keywords: "підприємництво продажі логістика" },
   { title: "Право", description: "D8 · бакалаврська та магістерська освітня програма.", href: "/programs/law", category: "Програма", keywords: "юрист адвокат юридична клініка" },
   { title: "Соціальна робота та консультування", description: "I10 · бакалаврська та магістерська освітня програма.", href: "/programs/social-work", category: "Програма", keywords: "соціальний працівник громада допомога" },
-  { title: "Туризм та рекреація", description: "J3 · бакалаврська освітня програма.", href: "/programs/tourism", category: "Програма", keywords: "подорожі гостинність івенти" },
   { title: "Усі освітні програми", description: "Каталог бакалаврських, магістерських і PhD програм.", href: "/programs", category: "Програма", keywords: "спеціальності бакалавр магістр аспірантура PhD" },
   { title: "Вступнику 2026", description: "Правила, строки, документи, іспити та консультація.", href: "/admissions", category: "Вступ", keywords: "вступ абітурієнт подати документи нмт приймальна комісія" },
   { title: "Вартість навчання", description: "Ціни, форми навчання та оплата.", href: "/tuition", category: "Вступ", keywords: "ціна контракт оплата вартість" },

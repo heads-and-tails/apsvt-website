@@ -13,11 +13,6 @@ const rateGroups = {
     full: { year: 38600, semester: 19300, month: 3860 },
     part: { year: 30900, semester: 15450, month: 3090 },
   },
-  tourism: {
-    label: "Бакалаврат — Туризм і рекреація",
-    full: { year: 43500, semester: 21750, month: 4350 },
-    part: { year: 34800, semester: 17400, month: 3480 },
-  },
   master: {
     label: "Магістратура — перший рік",
     full: { year: 43500, semester: 21750, month: 4350 },
