@@ -165,9 +165,10 @@ export function SiteHeader() {
           {links.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return <div className={`desktop-nav-item ${active ? "active" : ""}`} key={item.href}>
-              <Link className="desktop-nav-link" href={item.href}>{item.label}<span aria-hidden="true">⌄</span></Link>
+              <Link className="desktop-nav-link" href={item.href} aria-haspopup="menu">{item.label}<span aria-hidden="true">⌄</span></Link>
               <div className="desktop-dropdown" aria-label={`${item.label}: підрозділи`}>
-                {item.children.map((child) => <Link href={child.href} key={child.href}>{child.label}<span aria-hidden="true">↗</span></Link>)}
+                <div className="desktop-dropdown-heading"><small>{english ? "Explore section" : "Підрозділи"}</small><b>{item.label}</b></div>
+                {item.children.map((child, childIndex) => <Link href={child.href} key={child.href}><i>{String(childIndex + 1).padStart(2, "0")}</i><b>{child.label}</b><span aria-hidden="true">↗</span></Link>)}
               </div>
             </div>;
           })}
@@ -189,12 +190,21 @@ export function SiteHeader() {
             </div>
             <div className="menu-grid">
               {links.map((item, index) => (
-                <details className={`menu-group ${pathname === item.href || pathname.startsWith(`${item.href}/`) ? "active" : ""}`} key={item.href}>
+                <details
+                  className={`menu-group ${pathname === item.href || pathname.startsWith(`${item.href}/`) ? "active" : ""}`}
+                  key={item.href}
+                  onPointerEnter={(event) => {
+                    if (window.innerWidth > 700 && window.matchMedia("(hover: hover) and (pointer: fine)").matches) event.currentTarget.open = true;
+                  }}
+                  onPointerLeave={(event) => {
+                    if (window.innerWidth > 700 && window.matchMedia("(hover: hover) and (pointer: fine)").matches) event.currentTarget.open = false;
+                  }}
+                >
                   <summary ref={(node) => { if (index === 0) firstMenuControl.current = node; }} tabIndex={open ? 0 : -1}>
                     <span>{String(index + 1).padStart(2, "0")}</span><b>{item.label}</b><i aria-hidden="true">+</i>
                   </summary>
                   <div className="menu-subitems">
-                    {item.children.map((child) => <Link href={child.href} key={child.href} onClick={closeMenu} tabIndex={open ? 0 : -1}>{child.label}<span aria-hidden="true">→</span></Link>)}
+                    {item.children.map((child, childIndex) => <Link href={child.href} key={child.href} onClick={closeMenu} tabIndex={open ? 0 : -1}><small>{String(childIndex + 1).padStart(2, "0")}</small><b>{child.label}</b><span aria-hidden="true">→</span></Link>)}
                   </div>
                 </details>
               ))}
@@ -223,6 +233,9 @@ export function SiteHeader() {
             className={`burger ${open ? "active" : ""}`}
             type="button"
             onClick={() => setOpen((current) => !current)}
+            onPointerEnter={() => {
+              if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && window.innerWidth > 700 && window.innerWidth <= 1100) setOpen(true);
+            }}
             aria-label={open ? (english ? "Close menu" : "Закрити меню") : (english ? "Open menu" : "Відкрити меню")}
             aria-controls="site-navigation"
             aria-haspopup="true"
