@@ -2286,3 +2286,63 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
   .visnyk-hero{padding:110px 0 55px}.visnyk-hero-grid{grid-template-columns:1fr}.visnyk-cover-wrap{width:min(74vw,310px);margin:auto}.visnyk-hero-copy>a:first-child{margin-bottom:30px}.visnyk-hero h1{font-size:clamp(40px,12vw,61px)}.visnyk-actions{align-items:flex-start;flex-direction:column}
   .visnyk-facts{grid-template-columns:1fr}.visnyk-facts article{min-height:175px}.visnyk-indexing>.wrap>div:nth-child(2){grid-template-columns:1fr}.visnyk-indexing span{min-height:95px}
 }
+
+/* Section-first navigation: compact top level, useful dropdowns, no crowded labels. */
+.desktop-mainnav{height:100%;gap:0}
+.desktop-nav-item{position:relative;height:100%;display:flex;align-items:center}
+.desktop-mainnav .desktop-nav-link{height:100%;display:flex;align-items:center;gap:5px;padding:0 10px;font-size:10.5px}
+.desktop-mainnav .desktop-nav-link>span{font-size:13px;transition:transform .2s}
+.desktop-nav-item:hover .desktop-nav-link>span,.desktop-nav-item:focus-within .desktop-nav-link>span{transform:rotate(180deg)}
+.desktop-nav-item.active>.desktop-nav-link{color:var(--cobalt)}
+.desktop-dropdown{position:absolute;left:0;top:calc(100% - 1px);width:300px;padding:10px;background:#fff;border:1px solid var(--ink);box-shadow:12px 16px 0 rgba(6,16,39,.14);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px);transition:opacity .18s,transform .18s,visibility 0s .18s}
+.desktop-nav-item:nth-last-child(-n+2) .desktop-dropdown{left:auto;right:0}
+.desktop-nav-item:hover .desktop-dropdown,.desktop-nav-item:focus-within .desktop-dropdown{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .18s,transform .18s}
+.desktop-mainnav .desktop-dropdown a{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:42px;padding:9px 11px;border-bottom:1px solid var(--line);font:600 11px/1.35 var(--body);white-space:normal}
+.desktop-mainnav .desktop-dropdown a:last-child{border-bottom:0}
+.desktop-mainnav .desktop-dropdown a:after{display:none}
+.desktop-mainnav .desktop-dropdown a>span{color:var(--cobalt);font-size:15px}
+.desktop-mainnav .desktop-dropdown a:hover,.desktop-mainnav .desktop-dropdown a:focus-visible{background:var(--navy);color:#fff;outline:0}
+.desktop-mainnav .desktop-dropdown a:hover>span,.desktop-mainnav .desktop-dropdown a:focus-visible>span{color:var(--gold)}
+
+/* The full menu uses closed accordion groups; visitors open only what they need. */
+.menu-grid{border-left:0;border-top:1px solid var(--ink)}
+.menu-group{min-width:0;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.menu-group:nth-child(3n+1){border-left:1px solid var(--ink)}
+.menu-group>summary{min-height:104px;display:grid;grid-template-columns:34px minmax(0,1fr) 28px;gap:12px;align-items:center;padding:18px;cursor:pointer;list-style:none;background:transparent;transition:background-color .2s,color .2s}
+.menu-group>summary::-webkit-details-marker{display:none}
+.menu-group>summary>span{align-self:start;font:10px var(--mono);color:var(--cobalt)}
+.menu-group>summary>b{font:600 clamp(16px,1.55vw,23px)/1.15 var(--disp);text-transform:uppercase}
+.menu-group>summary>i{font-style:normal;font-size:25px;color:var(--cobalt);transition:transform .2s}
+.menu-group>summary:hover,.menu-group>summary:focus-visible,.menu-group.active>summary{background:var(--navy);color:#fff;outline:0}
+.menu-group>summary:hover>span,.menu-group>summary:focus-visible>span,.menu-group.active>summary>span{color:var(--gold)}
+.menu-group[open]>summary{background:var(--gold);color:var(--ink)}
+.menu-group[open]>summary>span{color:var(--cobalt)}
+.menu-group[open]>summary>i{transform:rotate(45deg)}
+.menu-subitems{display:grid;grid-template-columns:1fr 1fr;padding:8px;background:#fff;border-top:1px solid var(--ink)}
+.mainnav .menu-grid .menu-subitems a{min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px;border:0;border-bottom:1px solid var(--line);font:600 11px/1.35 var(--body);text-transform:none;white-space:normal}
+.mainnav .menu-grid .menu-subitems a>span{color:var(--cobalt);font-size:15px}
+.mainnav .menu-grid .menu-subitems a:hover,.mainnav .menu-grid .menu-subitems a:focus-visible{background:#eeece5;color:var(--cobalt);outline:2px solid var(--gold);outline-offset:-2px}
+
+/* Page jump tiles stay broad and aligned instead of becoming small squares. */
+:is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) .wrap{display:flex;flex-wrap:wrap;align-items:stretch;padding-block:0}
+:is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) a{flex:1 1 210px;min-width:0;min-height:74px;padding:15px 18px;display:flex;flex-direction:column;justify-content:space-between;border-left:1px solid var(--line);border-bottom:1px solid var(--line)}
+:is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) a:last-child{border-right:1px solid var(--line)}
+main section[id]{scroll-margin-top:96px}
+.deep-grid,.documents-map-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+@media(max-width:1280px) and (min-width:1101px){
+  .desktop-mainnav .desktop-nav-link{padding-inline:7px;font-size:9.5px}
+}
+@media(max-width:900px){
+  .menu-group:nth-child(3n+1){border-left:0}.menu-group:nth-child(2n+1){border-left:1px solid var(--ink)}
+}
+@media(max-width:700px){
+  .menu-group,.menu-group:nth-child(2n+1),.menu-group:nth-child(3n+1){border-left:1px solid var(--ink)}
+  .menu-group>summary{min-height:64px;grid-template-columns:28px minmax(0,1fr) 24px;padding:11px 10px}
+  .menu-group>summary>b{font-size:clamp(15px,4.6vw,19px)}
+  .menu-subitems{grid-template-columns:1fr;padding:6px}
+  .mainnav .menu-grid .menu-subitems a{min-height:42px;padding:8px 9px}
+  :is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) .wrap{display:grid;grid-template-columns:1fr;padding-inline:16px}
+  :is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) a{min-height:58px;padding:11px 13px;border-right:1px solid var(--line)}
+  .deep-grid,.documents-map-grid{grid-template-columns:1fr}
+}

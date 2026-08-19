@@ -298,7 +298,7 @@ export default function Page() {
 
     <section className="international-legal" id="legal"><div className="wrap">
       <div className="international-legal-head"><div><div className="idx">07 / Перевірені посилання</div><h2>Офіційні джерела</h2></div><p>Посилання ведуть безпосередньо на чинні документи Верховної Ради України, державну систему Study in Ukraine та нормативні документи Академії.</p></div>
-      <div className="international-source-groups">{legalGroups.map((group, groupIndex) => <details key={group.title} open={groupIndex === 0}>
+      <div className="international-source-groups">{legalGroups.map((group, groupIndex) => <details key={group.title}>
         <summary><span>{String(groupIndex + 1).padStart(2, "0")}</span><b>{group.title}</b><i>+</i></summary>
         <div>{group.links.map(([title, href]) => <a href={href} target="_blank" rel="noreferrer" key={title}><span>{title}</span><b>Відкрити ↗</b></a>)}</div>
       </details>)}</div>
@@ -311,7 +311,7 @@ export default function Page() {
 
     <section id="international-faq"><div className="wrap">
       <div className="sec-head"><div><div className="idx">08 / FAQ</div><h2>Запитання й відповіді</h2></div><p>Короткі пояснення перед поданням документів. У складній ситуації зверніться до міжнародного відділу.</p></div>
-      <div className="faq-list international-faq-list">{faq.map(({ question, answer }, index) => <details key={question} open={index === 0}><summary><span>{String(index + 1).padStart(2, "0")}</span>{question}<b>+</b></summary><p>{answer}</p>{index === 1 && <a href="https://apply.studyinukraine.gov.ua/home" target="_blank" rel="noreferrer">Перейти до офіційного кабінету ↗</a>}</details>)}</div>
+      <div className="faq-list international-faq-list">{faq.map(({ question, answer }, index) => <details key={question}><summary><span>{String(index + 1).padStart(2, "0")}</span>{question}<b>+</b></summary><p>{answer}</p>{index === 1 && <a href="https://apply.studyinukraine.gov.ua/home" target="_blank" rel="noreferrer">Перейти до офіційного кабінету ↗</a>}</details>)}</div>
     </div></section>
 
     <section className="international-contact" id="international-contact"><div className="wrap international-contact-card">

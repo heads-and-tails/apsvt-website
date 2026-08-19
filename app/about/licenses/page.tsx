@@ -265,7 +265,7 @@ export default function LicensesPage() {
 
       <section className="license-archive-section" id="archive">
         <div className="wrap">
-          <details className="license-archive" open>
+          <details className="license-archive">
             <summary>
               <span>04 / Повний комплект</span>
               <b>Архів попередніх сертифікатів</b>

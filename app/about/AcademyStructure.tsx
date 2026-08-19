@@ -88,7 +88,7 @@ export function AcademyStructure() {
     </div>
 
     <div className="structure-faculties">
-      {faculties.map((faculty, facultyIndex) => <details open={facultyIndex === 0} key={faculty.code}>
+      {faculties.map((faculty, facultyIndex) => <details key={faculty.code}>
         <summary>
           <span>{String(facultyIndex + 1).padStart(2, "0")}</span>
           <strong>{faculty.code}</strong>
