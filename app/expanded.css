@@ -2449,3 +2449,173 @@ main section[id]{scroll-margin-top:96px}
   .faculty-activity h2{font-size:27px;line-height:1.03}
   .visnyk-hero-grid{grid-template-columns:1fr}.visnyk-hero h1{font-size:clamp(31px,9vw,42px);line-height:.98}
 }
+
+/* Postgraduate education: a separate, text-first route for PhD and DSc applicants. */
+.postgraduate-page :where(h1,h2,h3){min-width:0;max-width:100%;overflow-wrap:normal;word-break:normal;hyphens:none;text-wrap:balance}
+.postgraduate-page p{text-wrap:pretty}
+.postgraduate-page :where(article,div,header,section,aside,nav,a){min-width:0}
+.postgraduate-page section[id]{scroll-margin-top:145px}
+.postgraduate-hero{padding-bottom:78px}
+.postgraduate-hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(390px,.8fr);gap:clamp(42px,6vw,90px);align-items:end;position:relative}
+.postgraduate-kicker{display:inline-block;margin-bottom:17px;color:#b8c6e5;font:9px var(--mono);letter-spacing:.13em;text-transform:uppercase}
+.postgraduate-hero h1{max-width:12.5ch;font-size:clamp(47px,5.7vw,82px);line-height:.91}
+.postgraduate-hero .lead{max-width:59ch;font-size:clamp(16px,1.45vw,20px)}
+.postgraduate-hero-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.22)}
+.postgraduate-hero-facts article{min-height:170px;padding:18px 15px;display:flex;flex-direction:column;background:rgba(6,16,39,.72);backdrop-filter:blur(8px)}
+.postgraduate-hero-facts b{color:var(--gold);font:700 clamp(35px,4vw,57px)/1 var(--disp)}
+.postgraduate-hero-facts span{margin-top:auto;font:700 13px/1.05 var(--disp);text-transform:uppercase}
+.postgraduate-hero-facts small{margin-top:9px;color:#aebbd6;font:7px/1.35 var(--mono);letter-spacing:.06em;text-transform:uppercase}
+
+.postgraduate-jump-nav{position:sticky;top:76px;z-index:120;background:var(--gold);border-bottom:1px solid var(--ink)}
+.postgraduate-jump-nav .wrap{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding-block:0}
+.postgraduate-jump-nav a{min-height:74px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;border-left:1px solid rgba(9,14,24,.26);transition:background .2s,color .2s}
+.postgraduate-jump-nav a:last-child{border-right:1px solid rgba(9,14,24,.26)}
+.postgraduate-jump-nav a small{font:8px var(--mono);color:var(--cobalt)}
+.postgraduate-jump-nav a span{font:700 11px/1.15 var(--disp);text-transform:uppercase}
+.postgraduate-jump-nav a:hover,.postgraduate-jump-nav a:focus-visible{background:var(--navy);color:#fff;outline:0}
+.postgraduate-jump-nav a:hover small,.postgraduate-jump-nav a:focus-visible small{color:var(--gold)}
+
+.postgraduate-section-head{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.7fr);gap:clamp(42px,7vw,110px);align-items:end;margin-bottom:48px}
+.postgraduate-section-head h2{max-width:16ch;margin-top:13px;font-size:clamp(37px,4.5vw,62px);line-height:.94}
+.postgraduate-section-head>p{max-width:58ch;color:rgba(9,14,24,.67);font-size:15px;line-height:1.7}
+.postgraduate-track-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.postgraduate-track-card{min-height:475px;padding:32px;display:flex;flex-direction:column;border:1px solid var(--ink);position:relative;overflow:hidden}
+.postgraduate-track-card:before{content:"";position:absolute;right:-75px;top:-75px;width:190px;height:190px;border-radius:50%;background:var(--gold);opacity:.88}
+.postgraduate-track-card>span{position:relative;color:var(--cobalt);font:8px var(--mono);letter-spacing:.11em;text-transform:uppercase}
+.postgraduate-track-card h3{position:relative;margin:78px 0 19px;font-size:clamp(35px,4vw,56px);line-height:.92;text-transform:uppercase}
+.postgraduate-track-card p{max-width:59ch;font-size:15px;line-height:1.65}
+.postgraduate-track-card ul{margin:25px 0 28px;padding:0;list-style:none;border-top:1px solid currentColor}
+.postgraduate-track-card li{padding:12px 2px;border-bottom:1px solid currentColor;font:600 12px/1.45 var(--body)}
+.postgraduate-track-card>a{margin-top:auto;align-self:flex-start;padding-bottom:5px;border-bottom:2px solid var(--cobalt);color:var(--cobalt);font:700 9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.postgraduate-track-card>a b{margin-left:12px;font-size:16px}
+.postgraduate-track-card.is-phd{background:#fff}
+.postgraduate-track-card.is-doctoral{background:var(--navy);color:#fff}
+.postgraduate-track-card.is-doctoral:before{background:var(--cobalt)}
+.postgraduate-track-card.is-doctoral>span,.postgraduate-track-card.is-doctoral>a{color:var(--gold);border-color:var(--gold)}
+.postgraduate-track-card.is-doctoral p{color:#c4cee1}
+
+.postgraduate-programmes{background:#e8e5dd}
+.postgraduate-programme-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--ink);border:1px solid var(--ink)}
+.postgraduate-programme-grid article{min-height:300px;padding:22px;display:flex;flex-direction:column;background:#fff;transition:transform .2s,background .2s}
+.postgraduate-programme-grid article:hover{z-index:1;background:var(--gold);transform:translateY(-6px)}
+.postgraduate-programme-grid article>div{display:flex;justify-content:space-between;align-items:start}
+.postgraduate-programme-grid article small{font:8px var(--mono);color:var(--cobalt)}
+.postgraduate-programme-grid article>div b{font:700 29px/1 var(--disp);color:var(--cobalt)}
+.postgraduate-programme-grid h3{margin-top:auto;font-size:clamp(20px,1.8vw,26px);line-height:1.03}
+.postgraduate-programme-grid p{min-height:48px;margin-top:12px;color:rgba(9,14,24,.63);font-size:12px;line-height:1.45}
+.postgraduate-programme-grid article>strong{margin-top:19px;padding-top:13px;border-top:1px solid var(--ink);font:700 9px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.postgraduate-programme-total{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;margin-top:18px;padding:19px 22px;background:var(--gold);border:1px solid var(--ink)}
+.postgraduate-programme-total span{font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.postgraduate-programme-total b{font:700 27px var(--disp);text-transform:uppercase}
+.postgraduate-programme-total a{justify-self:end;color:var(--cobalt);font:700 9px/1.35 var(--mono);text-align:right;text-transform:uppercase}
+
+.postgraduate-timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--ink);border:1px solid var(--ink)}
+.postgraduate-timeline article{min-height:330px;padding:23px;display:flex;flex-direction:column;background:#fff}
+.postgraduate-timeline article>span{color:transparent;-webkit-text-stroke:1px var(--cobalt);font:700 49px/1 var(--disp)}
+.postgraduate-timeline small{margin-top:28px;color:var(--cobalt);font:700 9px/1.4 var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.postgraduate-timeline h3{margin:12px 0 14px;font-size:24px;line-height:1}
+.postgraduate-timeline p{margin-top:auto;color:rgba(9,14,24,.65);font-size:13px;line-height:1.55}
+.postgraduate-admission-note{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:35px;margin-top:22px;padding:31px;background:var(--navy);color:#fff;box-shadow:12px 12px var(--gold)}
+.postgraduate-admission-note>div>span{color:var(--gold);font:8px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.postgraduate-admission-note h3{margin-top:37px;font-size:clamp(25px,2.6vw,37px);line-height:1.02;text-transform:uppercase}
+.postgraduate-admission-note ul{margin:0;padding:0;list-style:none;border-top:1px solid rgba(255,255,255,.25)}
+.postgraduate-admission-note li{padding:11px 2px;border-bottom:1px solid rgba(255,255,255,.25);color:#d5dceb;font-size:12px;line-height:1.45}
+.postgraduate-admission-note>a{grid-column:2;justify-self:start;padding-bottom:4px;border-bottom:1px solid var(--gold);color:var(--gold);font:700 8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+
+.postgraduate-route{background:var(--gold)}
+.postgraduate-route-grid{display:grid;grid-template-columns:minmax(300px,.72fr) minmax(0,1.28fr);gap:clamp(45px,8vw,125px);align-items:start}
+.postgraduate-route-grid>div{position:sticky;top:180px}
+.postgraduate-route h2{max-width:13ch;margin:14px 0 22px;font-size:clamp(39px,4.7vw,66px);line-height:.93}
+.postgraduate-route-grid>div p{max-width:50ch;font-size:15px;line-height:1.65}
+.postgraduate-route ol{margin:0;padding:0;list-style:none;border-top:1px solid var(--ink)}
+.postgraduate-route li{display:grid;grid-template-columns:65px minmax(0,1fr);gap:21px;padding:24px 3px;border-bottom:1px solid var(--ink)}
+.postgraduate-route li>span{font:700 30px var(--disp);color:var(--cobalt)}
+.postgraduate-route h3{font-size:24px;line-height:1}
+.postgraduate-route li p{margin-top:9px;color:rgba(9,14,24,.66);font-size:13px;line-height:1.55}
+
+.postgraduate-doctoral{background:var(--navy);color:#fff}
+.postgraduate-doctoral .idx{color:var(--gold)}
+.postgraduate-doctoral .postgraduate-section-head>p{color:#c0cbdf}
+.postgraduate-doctoral-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.24);border:1px solid rgba(255,255,255,.24)}
+.postgraduate-doctoral-grid article{min-height:335px;padding:28px;background:#0b1938}
+.postgraduate-doctoral-grid article>span{color:var(--gold);font:700 43px/1 var(--disp)}
+.postgraduate-doctoral-grid h3{margin:45px 0 17px;font-size:clamp(25px,2.6vw,36px);line-height:1;text-transform:uppercase}
+.postgraduate-doctoral-grid ul{margin:0;padding:0;list-style:none;border-top:1px solid rgba(255,255,255,.22)}
+.postgraduate-doctoral-grid li{padding:10px 2px;border-bottom:1px solid rgba(255,255,255,.22);color:#c7d0e2;font-size:12px;line-height:1.4}
+.postgraduate-disclaimer{max-width:95ch;margin-top:23px;padding-left:17px;border-left:3px solid var(--gold);color:#b8c4d9;font-size:12px;line-height:1.6}
+
+.postgraduate-cost{background:#fff}
+.postgraduate-cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.postgraduate-cost-grid>article{min-height:390px;padding:30px;display:flex;flex-direction:column;border:1px solid var(--ink);position:relative;overflow:hidden}
+.postgraduate-cost-grid>article:after{content:"";position:absolute;right:-65px;bottom:-65px;width:180px;height:180px;border:20px solid var(--gold);border-radius:50%}
+.postgraduate-cost-grid>article>span{color:var(--cobalt);font:8px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.postgraduate-cost-grid h3{margin-top:67px;color:var(--cobalt);font-size:clamp(45px,5.8vw,78px);line-height:.9}
+.postgraduate-cost-grid article>p{font:700 11px var(--mono);text-transform:uppercase}
+.postgraduate-cost-grid article>div{margin-top:auto;display:flex;align-items:baseline;gap:11px}
+.postgraduate-cost-grid article>div b{font:700 27px var(--disp)}
+.postgraduate-cost-grid article>div small{font:8px var(--mono);text-transform:uppercase}
+.postgraduate-cost-grid article>strong{max-width:46ch;margin-top:14px;color:rgba(9,14,24,.58);font:600 10px/1.45 var(--body);text-transform:uppercase}
+.postgraduate-cost-grid>aside{grid-column:1/-1;display:grid;grid-template-columns:1fr auto 1fr;gap:23px;align-items:center;padding:20px 25px;background:var(--gold);border:1px solid var(--ink)}
+.postgraduate-cost-grid>aside span{font:700 13px var(--disp);text-transform:uppercase}
+.postgraduate-cost-grid>aside b{font:700 28px var(--disp)}
+.postgraduate-cost-grid>aside small{text-align:right;font:8px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+
+.postgraduate-documents{background:#e8e5dd}
+.postgraduate-document-groups{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.postgraduate-document-groups>article{background:#fff;border:1px solid var(--ink)}
+.postgraduate-document-heading{min-height:155px;padding:22px;display:grid;grid-template-columns:90px minmax(0,1fr);gap:23px;align-items:end;background:var(--gold);border-bottom:1px solid var(--ink)}
+.postgraduate-document-heading>span{font:700 42px/1 var(--disp);color:var(--cobalt)}
+.postgraduate-document-heading small{font:8px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}
+.postgraduate-document-heading h3{margin-top:10px;font-size:28px;line-height:1}
+.postgraduate-document-list>a{display:grid;grid-template-columns:34px minmax(0,1fr) 25px;gap:12px;align-items:center;min-height:92px;padding:14px 16px;border-bottom:1px solid var(--line);transition:background .2s,padding .2s}
+.postgraduate-document-list>a:last-child{border-bottom:0}
+.postgraduate-document-list>a:hover{padding-left:23px;background:#f2f0ea}
+.postgraduate-document-list>a>span{color:var(--cobalt);font:8px var(--mono)}
+.postgraduate-document-list small{display:block;color:rgba(9,14,24,.5);font:7px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.postgraduate-document-list div>b{display:block;margin-top:7px;font:600 13px/1.35 var(--body)}
+.postgraduate-document-list>a>strong{justify-self:end;color:var(--cobalt);font-size:20px}
+
+.postgraduate-contact{background:var(--gold)}
+.postgraduate-contact-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(240px,.55fr);gap:clamp(45px,8vw,120px);align-items:end}
+.postgraduate-contact-grid>div:first-child>span{color:var(--cobalt);font:8px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.postgraduate-contact h2{max-width:15ch;margin:14px 0 22px;font-size:clamp(40px,5vw,70px);line-height:.92}
+.postgraduate-contact p{max-width:73ch;font-size:15px;line-height:1.65}
+.postgraduate-contact-grid>div:last-child{display:grid;gap:20px;justify-items:start}
+.postgraduate-contact-grid>div:last-child>a:last-child{padding-bottom:5px;border-bottom:2px solid var(--cobalt);color:var(--cobalt);font:700 9px var(--mono);text-transform:uppercase}
+
+@media(max-width:1500px) and (min-width:1101px){
+  .hdr-cta{display:none}
+  .desktop-mainnav .desktop-nav-link{padding-inline:7px;font-size:9.25px}
+}
+@media(max-width:1050px){
+  .postgraduate-hero-grid{grid-template-columns:1fr}.postgraduate-hero-facts{max-width:700px}
+  .postgraduate-jump-nav{position:relative;top:auto}.postgraduate-jump-nav .wrap{grid-template-columns:repeat(3,1fr)}
+  .postgraduate-programme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.postgraduate-programme-grid article{min-height:260px}
+  .postgraduate-timeline{grid-template-columns:1fr 1fr}
+}
+@media(max-width:800px){
+  .postgraduate-section-head,.postgraduate-route-grid,.postgraduate-contact-grid{grid-template-columns:1fr;gap:27px}
+  .postgraduate-track-grid,.postgraduate-document-groups{grid-template-columns:1fr}
+  .postgraduate-track-card{min-height:430px}
+  .postgraduate-route-grid>div{position:static}
+  .postgraduate-programme-total{grid-template-columns:1fr auto}.postgraduate-programme-total a{grid-column:1/-1;justify-self:start;text-align:left}
+}
+@media(max-width:700px){
+  .postgraduate-page section[id]{scroll-margin-top:85px}
+  .postgraduate-hero{padding-bottom:50px}.postgraduate-hero h1{font-size:clamp(33px,10.2vw,47px);line-height:.95}.postgraduate-hero .lead{font-size:15px}
+  .postgraduate-hero-facts{grid-template-columns:1fr}.postgraduate-hero-facts article{min-height:112px}.postgraduate-hero-facts span{margin-top:24px}
+  .postgraduate-jump-nav .wrap{grid-template-columns:1fr 1fr;padding-inline:16px}.postgraduate-jump-nav a{min-height:63px;border-right:1px solid rgba(9,14,24,.26)}
+  .postgraduate-section-head{margin-bottom:30px}.postgraduate-section-head h2{font-size:clamp(30px,9vw,41px);line-height:.97}.postgraduate-section-head>p{font-size:14px}
+  .postgraduate-track-card{min-height:0;padding:23px}.postgraduate-track-card h3{margin-top:58px;font-size:36px}.postgraduate-track-card p{font-size:14px}
+  .postgraduate-programme-grid,.postgraduate-timeline,.postgraduate-doctoral-grid,.postgraduate-cost-grid{grid-template-columns:1fr}
+  .postgraduate-programme-grid article{min-height:225px}.postgraduate-programme-grid p{min-height:0}
+  .postgraduate-programme-total{grid-template-columns:1fr}.postgraduate-programme-total b,.postgraduate-programme-total a{justify-self:start}
+  .postgraduate-timeline article{min-height:280px}
+  .postgraduate-admission-note{grid-template-columns:1fr;gap:25px;padding:22px;box-shadow:8px 8px var(--gold)}.postgraduate-admission-note h3{margin-top:26px}.postgraduate-admission-note>a{grid-column:1}
+  .postgraduate-route li{grid-template-columns:43px minmax(0,1fr);gap:13px}.postgraduate-route li>span{font-size:23px}.postgraduate-route h3{font-size:20px}
+  .postgraduate-doctoral-grid article{min-height:275px;padding:22px}.postgraduate-doctoral-grid h3{margin-top:32px;font-size:25px}
+  .postgraduate-cost-grid>article{min-height:330px;padding:23px}.postgraduate-cost-grid h3{font-size:48px}.postgraduate-cost-grid>aside{grid-column:1;grid-template-columns:1fr;gap:8px}.postgraduate-cost-grid>aside small{text-align:left}
+  .postgraduate-document-heading{grid-template-columns:70px minmax(0,1fr);min-height:130px;padding:18px}.postgraduate-document-heading>span{font-size:34px}.postgraduate-document-heading h3{font-size:23px}
+  .postgraduate-document-list>a{grid-template-columns:27px minmax(0,1fr) 20px;padding:13px 10px}.postgraduate-document-list div>b{font-size:12px}
+  .postgraduate-contact h2{font-size:clamp(31px,9vw,42px)}
+}

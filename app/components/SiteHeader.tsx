@@ -29,6 +29,15 @@ const ukLinks: readonly NavItem[] = [
     { href: "/admissions#entrance-programs", label: "Програми випробувань" }, { href: "/admissions#entrance-results", label: "Результати" },
     { href: "/admissions#applicant-rankings", label: "Рейтингові списки" }, { href: "/admissions#consultation", label: "Консультація" },
   ] },
+  { href: "/research/postgraduate-doctoral", label: "Аспірантура", children: [
+    { href: "/research/postgraduate-doctoral", label: "Огляд і вибір рівня" },
+    { href: "/research/postgraduate-doctoral#phd", label: "Аспірантура · PhD" },
+    { href: "/research/postgraduate-doctoral#doctoral", label: "Докторантура · доктор наук" },
+    { href: "/research/postgraduate-doctoral#programmes", label: "Програми й спеціальності" },
+    { href: "/research/postgraduate-doctoral#admission", label: "Вступ 2026" },
+    { href: "/research/postgraduate-doctoral#cost", label: "Вартість навчання" },
+    { href: "/research/postgraduate-doctoral#documents", label: "Офіційні документи" },
+  ] },
   { href: "/people", label: "Люди", children: [
     { href: "/people", label: "Команда Академії" }, { href: "/departments", label: "Кафедри" },
     { href: "/departments/law-faculty", label: "Юридичний факультет" }, { href: "/departments/economics-social-tourism-faculty", label: "Факультет економіки й туризму" },
@@ -40,7 +49,7 @@ const ukLinks: readonly NavItem[] = [
     { href: "/international#international-contact", label: "Контакти відділу" },
   ] },
   { href: "/research", label: "Наука", children: [
-    { href: "/research", label: "Дослідження" }, { href: "/research/postgraduate-doctoral", label: "Аспірантура й докторантура" },
+    { href: "/research", label: "Дослідження" },
     { href: "/research/conferences", label: "Конференції" }, { href: "/research/journals", label: "Наукові видання" },
     { href: "/research/journals/visnyk", label: "Вісник АПСВТ" }, { href: "/research/theses", label: "Кваліфікаційні роботи" },
   ] },
@@ -96,6 +105,9 @@ export function SiteHeader() {
   const firstMenuControl = useRef<HTMLElement>(null);
   const english = pathname === "/en" || pathname.startsWith("/en/");
   const links = english ? enLinks : ukLinks;
+  const activeTopLevelHref = [...links]
+    .sort((left, right) => right.href.length - left.href.length)
+    .find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))?.href;
   const ukPath = english ? pathname.replace(/^\/en/, "") || "/" : pathname;
   const enPath = english ? pathname : `/en${pathname === "/" ? "" : pathname}`;
 
@@ -163,7 +175,7 @@ export function SiteHeader() {
 
         <nav className="desktop-mainnav" aria-label={english ? "Main navigation" : "Головна навігація"}>
           {links.map((item) => {
-            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+            const active = activeTopLevelHref === item.href;
             return <div className={`desktop-nav-item ${active ? "active" : ""}`} key={item.href}>
               <Link className="desktop-nav-link" href={item.href} aria-haspopup="menu">{item.label}<span aria-hidden="true">⌄</span></Link>
               <div className="desktop-dropdown" aria-label={`${item.label}: підрозділи`}>
@@ -191,7 +203,7 @@ export function SiteHeader() {
             <div className="menu-grid">
               {links.map((item, index) => (
                 <details
-                  className={`menu-group ${pathname === item.href || pathname.startsWith(`${item.href}/`) ? "active" : ""}`}
+                  className={`menu-group ${activeTopLevelHref === item.href ? "active" : ""}`}
                   key={item.href}
                   onPointerEnter={(event) => {
                     if (window.innerWidth > 700 && window.matchMedia("(hover: hover) and (pointer: fine)").matches) event.currentTarget.open = true;

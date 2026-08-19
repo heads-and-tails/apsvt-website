@@ -44,6 +44,7 @@ export const siteSearchItems: SiteSearchItem[] = [
   { title: "Академічний календар", description: "Навчальні періоди, сесії та канікули.", href: "/academic-calendar", category: "Студенту", keywords: "семестр сесія канікули дати" },
   { title: "Документи Академії", description: "Положення, правила, накази та офіційні матеріали.", href: "/documents", category: "Сервіс", keywords: "положення наказ статут правила pdf" },
   { title: "Наука і дослідження", description: "Конференції, видання, аспірантура та наукові матеріали.", href: "/research", category: "Наука", keywords: "конференція вісник публікації аспірантура" },
+  { title: "Аспірантура і докторантура", description: "Програми PhD, спеціальності докторантури, вступ 2026, календар, вартість і документи.", href: "/research/postgraduate-doctoral", category: "Наука", keywords: "аспірантура докторантура доктор філософії доктор наук PhD DSc A5 C1 C4 D4 D8 вступ 2026" },
   { title: "Бібліотека", description: "Каталоги, навчальна література та цифрові ресурси.", href: "/facilities/library", category: "Сервіс", keywords: "книги каталог читальна зала" },
   { title: "Кампус і гуртожиток", description: "Навчальний корпус, проживання та студентські простори.", href: "/facilities", category: "Сервіс", keywords: "кампус гуртожиток адреса проживання" },
   { title: "Контакти", description: "Адреса, телефони, електронна пошта та як дістатися.", href: "/contacts", category: "Сервіс", keywords: "телефон email адреса мапа" },
