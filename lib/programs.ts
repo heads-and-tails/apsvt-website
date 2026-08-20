@@ -1,3 +1,5 @@
+import { officialProgrammeFileBase } from "@/lib/programme-documents";
+
 export type Program = {
   slug: string;
   number: string;
@@ -40,7 +42,7 @@ export const programs: Program[] = [
     ],
     careers:["Психолог-консультант","HR / people partner","Фахівець кризових служб","Дослідник поведінки","Психолог у закладах освіти"],
     international:["Erasmus+ інтенсиви","Міжнародні наукові конференції","Подвійний диплом для споріднених напрямів"],
-    materials:[{label:"ОПП C4 «Психологія» · бакалавр",href:"/documents/programmes/2025/c4-psychology-bachelor-2024-2025.pdf"},{label:"ОПП «Психологія бізнесу та управління» · магістр",href:"/documents/programmes/2025/c4-psychology-business-management-master-2024-2025.pdf"},{label:"Офіційна сторінка програми",href:"/materials/1-dd85d4708.html"}],
+    materials:[{label:"ОПП C4 «Психологія» · бакалавр",href:`${officialProgrammeFileBase}/c4-psychology-bachelor-2024-2025.pdf`},{label:"ОПП «Психологія бізнесу та управління» · магістр",href:`${officialProgrammeFileBase}/c4-psychology-business-management-master-2024-2025.pdf`},{label:"Офіційна сторінка програми",href:"/materials/1-dd85d4708.html"}],
     tags:["люди","підтримка","дослідження","здоров’я"],
   },
   {
@@ -59,7 +61,7 @@ export const programs: Program[] = [
     ],
     careers:["Фінансовий аналітик","Банківський фахівець","Фахівець зі страхування","Інвестиційний консультант","Фінансовий менеджер"],
     international:["Jean Monnet GreenFinEDU","CIMA-орієнтовані магістерські модулі","Erasmus+ проєкти кафедри"],
-    materials:[{label:"ОПП D2 «Фінанси, банківська справа, страхування та фондовий ринок» · магістр",href:"/documents/programmes/2025/d2-finance-master.pdf"},{label:"Кафедра фінансів",href:"/materials/finance-department-e14228d97.html"},{label:"Корпоративні фінанси",href:"/materials/korporatyvni-finansy-4dc5136f1.html"}],
+    materials:[{label:"ОПП D2 «Фінанси, банківська справа, страхування та фондовий ринок» · магістр",href:`${officialProgrammeFileBase}/d2-finance-master.pdf`},{label:"Кафедра фінансів",href:"/materials/finance-department-e14228d97.html"},{label:"Корпоративні фінанси",href:"/materials/korporatyvni-finansy-4dc5136f1.html"}],
     tags:["аналітика","цифри","бізнес","інвестиції"],
   },
   {
@@ -78,7 +80,7 @@ export const programs: Program[] = [
     ],
     careers:["Проєктний менеджер","Операційний менеджер","HR-менеджер","Бізнес-аналітик","Підприємець"],
     international:["Подвійний диплом","Практика в міжнародних компаніях","Erasmus+ освітні модулі"],
-    materials:[{label:"ОПП D3 «Менеджмент» · бакалавр",href:"/documents/programmes/2025/d3-management-bachelor.pdf"},{label:"ОПП D3 «Менеджмент» · магістр",href:"/documents/programmes/2025/d3-management-master.pdf"},{label:"Кафедра менеджменту",href:"/materials/econpidpr-department-d4b13ae23.html"}],
+    materials:[{label:"ОПП D3 «Менеджмент» · бакалавр",href:`${officialProgrammeFileBase}/d3-management-bachelor.pdf`},{label:"ОПП D3 «Менеджмент» · магістр",href:`${officialProgrammeFileBase}/d3-management-master.pdf`},{label:"Кафедра менеджменту",href:"/materials/econpidpr-department-d4b13ae23.html"}],
     tags:["лідерство","команди","проєкти","бізнес"],
   },
   {
@@ -97,7 +99,7 @@ export const programs: Program[] = [
     ],
     careers:["Державний службовець","Менеджер громади","Аналітик публічної політики","Керівник соціального проєкту","Фахівець громадської організації"],
     international:["Європейські студії","Спільні дослідницькі проєкти","Мобільність і міжнародні конференції"],
-    materials:[{label:"ОПП D4 «Публічне управління та адміністрування» · магістр",href:"/documents/programmes/2025/d4-public-administration-master.pdf"},{label:"Кафедра публічного управління",href:"/materials/admin-department-30395593c.html"},{label:"Освітня діяльність",href:"/materials/educational-701ba56bb.html"}],
+    materials:[{label:"ОПП D4 «Публічне управління та адміністрування» · магістр",href:`${officialProgrammeFileBase}/d4-public-administration-master.pdf`},{label:"Кафедра публічного управління",href:"/materials/admin-department-30395593c.html"},{label:"Освітня діяльність",href:"/materials/educational-701ba56bb.html"}],
     tags:["суспільство","управління","політика","громади"],
   },
   {
@@ -116,7 +118,7 @@ export const programs: Program[] = [
     ],
     careers:["Маркетинг-менеджер","Бренд-менеджер","Дослідник ринку","Фахівець із комунікацій","Customer experience manager"],
     international:["Jean Monnet winter school","Міжнародні бізнес-проєкти","Подвійний диплом"],
-    materials:[{label:"ОПП D5 «Маркетинг» · бакалавр",href:"/documents/programmes/2025/d5-marketing-bachelor.pdf"},{label:"ОПП D5 «Маркетинг» · магістр",href:"/documents/programmes/2025/d5-marketing-master.pdf"},{label:"Кафедра маркетингу",href:"/materials/marketing-department-6d479b9a4.html"}],
+    materials:[{label:"ОПП D5 «Маркетинг» · бакалавр",href:`${officialProgrammeFileBase}/d5-marketing-bachelor.pdf`},{label:"ОПП D5 «Маркетинг» · магістр",href:`${officialProgrammeFileBase}/d5-marketing-master.pdf`},{label:"Кафедра маркетингу",href:"/materials/marketing-department-6d479b9a4.html"}],
     tags:["креативність","люди","аналітика","бренди"],
   },
   {
@@ -154,7 +156,7 @@ export const programs: Program[] = [
     ],
     careers:["Адвокат / помічник адвоката","Юрисконсульт","Фахівець органів влади","Комплаєнс-менеджер","Правозахисник"],
     international:["Подвійний диплом у Польщі","LLM та міжнародне право","Міжнародні правничі проєкти"],
-    materials:[{label:"ОПП D8 «Право» · бакалавр",href:"/documents/programmes/2025/d8-law-bachelor.pdf"},{label:"ОПП D8 «Право» · магістр",href:"/documents/programmes/2025/d8-law-master.pdf"},{label:"Юридичний факультет",href:"/departments/law-faculty"},{label:"Юридична клініка",href:"/programs/law/legal-clinic"},{label:"Лабораторія криміналістики",href:"/programs/law/forensic-laboratory"}],
+    materials:[{label:"ОПП D8 «Право» · бакалавр",href:`${officialProgrammeFileBase}/d8-law-bachelor.pdf`},{label:"ОПП D8 «Право» · магістр",href:`${officialProgrammeFileBase}/d8-law-master.pdf`},{label:"Юридичний факультет",href:"/departments/law-faculty"},{label:"Юридична клініка",href:"/programs/law/legal-clinic"},{label:"Лабораторія криміналістики",href:"/programs/law/forensic-laboratory"}],
     tags:["справедливість","аргументація","люди","держава"],
   },
   {
@@ -192,7 +194,7 @@ export const programs: Program[] = [
     ],
     careers:["Викладач професійної освіти","Методист цифрового навчання","Instructional designer","Адміністратор освітніх платформ","Фахівець з EdTech"],
     international:["Міжнародні EdTech-проєкти","Цифрові освітні лабораторії","Академічна мобільність"],
-    materials:[{label:"ОПП A5 «Професійна освіта · Цифрові технології» · бакалавр",href:"/documents/programmes/2025/a5-professional-education-digital-technologies-bachelor.pdf"},{label:"ОПП A5 «Професійна освіта · Цифрові технології» · магістр",href:"/documents/programmes/2025/a5-professional-education-digital-technologies-master.pdf"}],
+    materials:[{label:"ОПП A5 «Професійна освіта · Цифрові технології» · бакалавр",href:`${officialProgrammeFileBase}/a5-professional-education-digital-technologies-bachelor.pdf`},{label:"ОПП A5 «Професійна освіта · Цифрові технології» · магістр",href:`${officialProgrammeFileBase}/a5-professional-education-digital-technologies-master.pdf`}],
     tags:["освіта","цифрові технології","люди","проєкти"],
   },
 ];

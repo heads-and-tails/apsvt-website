@@ -1,3 +1,5 @@
+import { officialProgrammeFileBase } from "@/lib/programme-documents";
+
 export type ProgrammeCurriculumCourse = {
   name: string;
   stage: string;
@@ -339,7 +341,7 @@ export const programmeCurricula: Record<string, ProgrammeCurriculum> = {
   "professional-education": {
     edition: "офіційна ОПП 2025",
     sourceLabel: "ОПП A5 «Професійна освіта · Цифрові технології»",
-    sourceHref: "/documents/programmes/2025/a5-professional-education-digital-technologies-bachelor.pdf",
+    sourceHref: `${officialProgrammeFileBase}/a5-professional-education-digital-technologies-bachelor.pdf`,
     intro: "Програма на 240 кредитів ЄКТС поєднує професійну педагогіку, цифрові технології, інформаційні й інтелектуальні системи та проєктування сучасних освітніх середовищ.",
     groups: [
       {
