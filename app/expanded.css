@@ -1059,7 +1059,7 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .enrollment-order-meta>span{font:700 38px/1 var(--disp);color:var(--cobalt)}
 .enrollment-order-meta>small{font:8px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;text-align:right;color:#697386}
 .enrollment-order-card>p{margin-top:48px;font:8px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--cobalt)}
-.enrollment-order-card h3{margin:12px 0 30px;font:600 clamp(24px,2.7vw,36px)/1.02 var(--disp);text-transform:uppercase;overflow-wrap:break-word;text-wrap:balance}
+.enrollment-order-card h3{margin:12px 0 30px;font:600 clamp(22px,2.15vw,30px)/1.04 var(--disp);text-transform:uppercase;overflow-wrap:normal;word-break:normal;hyphens:none;text-wrap:balance}
 .enrollment-order-footer{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-top:auto;padding-top:20px;border-top:1px solid var(--line)}
 .enrollment-order-footer span{max-width:25ch;font-size:10px;line-height:1.5;color:#697386}
 .enrollment-order-footer b{font:700 9px var(--mono);letter-spacing:.08em;color:var(--cobalt);text-align:right;white-space:nowrap}
