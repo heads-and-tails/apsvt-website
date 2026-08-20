@@ -5,32 +5,98 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SiteSearch } from "./SiteSearch";
 
-const ukLinks = [
-  ["/about", "Про Академію"],
-  ["/programs", "Програми"],
-  ["/admissions", "Вступнику"],
-  ["/people", "Люди"],
-  ["/international", "Міжнародне"],
-  ["/research", "Наука"],
-  ["/facilities", "Кампус"],
-  ["/events", "Події"],
-  ["/students", "Студенту"],
-  ["/news", "Новини"],
-  ["/contacts", "Контакти"],
+type NavItem = {
+  href: string;
+  label: string;
+  children: readonly { href: string; label: string }[];
+};
+
+const ukLinks: readonly NavItem[] = [
+  { href: "/about", label: "Академія", children: [
+    { href: "/about", label: "Про Академію" }, { href: "/about#structure", label: "Структура" },
+    { href: "/departments", label: "Факультети й кафедри" }, { href: "/about/licenses", label: "Ліцензії та акредитація" },
+    { href: "/vacancies", label: "Вакансії" }, { href: "/news", label: "Новини" }, { href: "/contacts", label: "Контакти" },
+  ] },
+  { href: "/programs", label: "Освіта", children: [
+    { href: "/programs", label: "Усі програми" }, { href: "/programs/law", label: "Право" },
+    { href: "/programs/public-administration", label: "Публічне управління" }, { href: "/programs/psychology", label: "Психологія" },
+    { href: "/programs/finance", label: "Фінанси" }, { href: "/programs/marketing", label: "Маркетинг" },
+    { href: "/programs/management", label: "Менеджмент" }, { href: "/programs/social-work", label: "Соціальна робота" },
+    { href: "/programs/professional-education", label: "Професійна освіта · Digital" },
+  ] },
+  { href: "/admissions", label: "Вступнику", children: [
+    { href: "/admissions#route", label: "Як вступити" }, { href: "/admissions#dates", label: "Ключові дати" },
+    { href: "/tuition", label: "Вартість і оплата" }, { href: "/admissions#entrance-exams", label: "Розклад випробувань" },
+    { href: "/admissions#entrance-programs", label: "Програми випробувань" }, { href: "/admissions#entrance-results", label: "Результати" },
+    { href: "/admissions#applicant-rankings", label: "Рейтингові списки" }, { href: "/admissions#consultation", label: "Консультація" },
+  ] },
+  { href: "/research/postgraduate-doctoral", label: "Аспірантура", children: [
+    { href: "/research/postgraduate-doctoral", label: "Огляд і вибір рівня" },
+    { href: "/research/postgraduate-doctoral#phd", label: "Аспірантура · PhD" },
+    { href: "/research/postgraduate-doctoral#doctoral", label: "Докторантура · доктор наук" },
+    { href: "/research/postgraduate-doctoral#programmes", label: "Програми й спеціальності" },
+    { href: "/research/postgraduate-doctoral#admission", label: "Вступ 2026" },
+    { href: "/research/postgraduate-doctoral#cost", label: "Вартість навчання" },
+    { href: "/research/postgraduate-doctoral#documents", label: "Офіційні документи" },
+  ] },
+  { href: "/people", label: "Люди", children: [
+    { href: "/people", label: "Команда Академії" }, { href: "/departments", label: "Кафедри" },
+    { href: "/departments/law-faculty", label: "Юридичний факультет" }, { href: "/departments/economics-social-tourism-faculty", label: "Факультет економіки й туризму" },
+    { href: "/students/council", label: "Студентська рада" },
+  ] },
+  { href: "/international", label: "Міжнародне", children: [
+    { href: "/international#partners", label: "Партнери" }, { href: "/international#international-opportunities", label: "Міжнародні можливості" },
+    { href: "/international#ukrainians-abroad", label: "Українцям за кордоном" }, { href: "/international#foreign-applicants", label: "Іноземним вступникам" },
+    { href: "/international#international-contact", label: "Контакти відділу" },
+  ] },
+  { href: "/research", label: "Наука", children: [
+    { href: "/research", label: "Дослідження" },
+    { href: "/research/conferences", label: "Конференції" }, { href: "/research/journals", label: "Наукові видання" },
+    { href: "/research/journals/visnyk", label: "Вісник АПСВТ" }, { href: "/research/theses", label: "Кваліфікаційні роботи" },
+  ] },
+  { href: "/facilities", label: "Кампус", children: [
+    { href: "/facilities", label: "Кампус і сервіси" }, { href: "/facilities/campus", label: "Навчальний простір" },
+    { href: "/facilities/library", label: "Бібліотека" }, { href: "/facilities/dormitory", label: "Гуртожиток" },
+    { href: "/events", label: "Події" },
+  ] },
+  { href: "/students", label: "Студенту", children: [
+    { href: "/students", label: "Ресурси студенту" }, { href: "/students/guide", label: "Путівник студента" },
+    { href: "/schedule", label: "Розклад занять" }, { href: "/academic-calendar", label: "Академічний календар" },
+    { href: "/materials", label: "Навчальні матеріали" }, { href: "/student-app", label: "Студентська платформа" },
+  ] },
 ] as const;
 
-const enLinks = [
-  ["/en/about", "About"],
-  ["/en/programs", "Programmes"],
-  ["/en/admissions", "Admissions"],
-  ["/en/people", "People"],
-  ["/en/international", "International"],
-  ["/en/research", "Research"],
-  ["/en/facilities", "Campus"],
-  ["/en/events", "Events"],
-  ["/en/students", "Students"],
-  ["/en/news", "News"],
-  ["/en/contacts", "Contacts"],
+const enLinks: readonly NavItem[] = [
+  { href: "/en/about", label: "Academy", children: [
+    { href: "/en/about", label: "About" }, { href: "/en/departments", label: "Faculties & departments" },
+    { href: "/en/news", label: "News" }, { href: "/en/contacts", label: "Contacts" },
+  ] },
+  { href: "/en/programs", label: "Study", children: [
+    { href: "/en/programs", label: "All programmes" }, { href: "/en/programs/law", label: "Law" },
+    { href: "/en/programs/public-administration", label: "Public administration" }, { href: "/en/programs/psychology", label: "Psychology" },
+    { href: "/en/programs/professional-education", label: "Professional education · Digital" },
+  ] },
+  { href: "/en/admissions", label: "Admissions", children: [
+    { href: "/en/admissions", label: "How to apply" }, { href: "/en/tuition", label: "Tuition & payment" },
+    { href: "/en/admissions#consultation", label: "Consultation" },
+  ] },
+  { href: "/en/people", label: "People", children: [
+    { href: "/en/people", label: "Academic team" }, { href: "/en/departments", label: "Departments" },
+  ] },
+  { href: "/en/international", label: "International", children: [
+    { href: "/en/international", label: "Cooperation" }, { href: "/en/international#foreign-applicants", label: "International applicants" },
+  ] },
+  { href: "/en/research", label: "Research", children: [
+    { href: "/en/research", label: "Research" }, { href: "/en/research/conferences", label: "Conferences" },
+    { href: "/en/research/journals", label: "Journals" }, { href: "/en/research/theses", label: "Student theses" },
+  ] },
+  { href: "/en/facilities", label: "Campus", children: [
+    { href: "/en/facilities", label: "Campus services" }, { href: "/en/facilities/library", label: "Library" },
+    { href: "/en/events", label: "Events" },
+  ] },
+  { href: "/en/students", label: "Students", children: [
+    { href: "/en/students", label: "Student resources" }, { href: "/en/schedule", label: "Class schedule" },
+  ] },
 ] as const;
 
 export function SiteHeader() {
@@ -38,9 +104,12 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
-  const firstMenuLink = useRef<HTMLAnchorElement>(null);
+  const firstMenuControl = useRef<HTMLElement>(null);
   const english = pathname === "/en" || pathname.startsWith("/en/");
   const links = english ? enLinks : ukLinks;
+  const activeTopLevelHref = [...links]
+    .sort((left, right) => right.href.length - left.href.length)
+    .find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))?.href;
   const ukPath = english ? pathname.replace(/^\/en/, "") || "/" : pathname;
   const enPath = english ? pathname : `/en${pathname === "/" ? "" : pathname}`;
 
@@ -49,7 +118,7 @@ export function SiteHeader() {
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    firstMenuLink.current?.focus();
+    firstMenuControl.current?.focus();
 
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
@@ -107,15 +176,16 @@ export function SiteHeader() {
         </Link>
 
         <nav className="desktop-mainnav" aria-label={english ? "Main navigation" : "Головна навігація"}>
-          {links.map(([href, label]) => (
-            <Link
-              className={pathname === href || pathname.startsWith(`${href}/`) ? "active" : ""}
-              href={href}
-              key={href}
-            >
-              {label}
-            </Link>
-          ))}
+          {links.map((item) => {
+            const active = activeTopLevelHref === item.href;
+            return <div className={`desktop-nav-item ${active ? "active" : ""}`} key={item.href}>
+              <Link className="desktop-nav-link" href={item.href} aria-haspopup="menu">{item.label}<span aria-hidden="true">⌄</span></Link>
+              <div className="desktop-dropdown" aria-label={`${item.label}: підрозділи`}>
+                <div className="desktop-dropdown-heading"><small>{english ? "Explore section" : "Підрозділи"}</small><b>{item.label}</b></div>
+                {item.children.map((child, childIndex) => <Link href={child.href} key={child.href}><i>{String(childIndex + 1).padStart(2, "0")}</i><b>{child.label}</b><span aria-hidden="true">↗</span></Link>)}
+              </div>
+            </div>;
+          })}
         </nav>
 
         <nav
@@ -133,19 +203,24 @@ export function SiteHeader() {
               <b>{english ? "Choose a section" : "Оберіть розділ"}</b>
             </div>
             <div className="menu-grid">
-              {links.map(([href, label], index) => (
-                <Link
-                  className={pathname === href || pathname.startsWith(`${href}/`) ? "active" : ""}
-                  href={href}
-                  key={href}
-                  onClick={closeMenu}
-                  ref={index === 0 ? firstMenuLink : undefined}
-                  tabIndex={open ? 0 : -1}
+              {links.map((item, index) => (
+                <details
+                  className={`menu-group ${activeTopLevelHref === item.href ? "active" : ""}`}
+                  key={item.href}
+                  onPointerEnter={(event) => {
+                    if (window.innerWidth > 700 && window.matchMedia("(hover: hover) and (pointer: fine)").matches) event.currentTarget.open = true;
+                  }}
+                  onPointerLeave={(event) => {
+                    if (window.innerWidth > 700 && window.matchMedia("(hover: hover) and (pointer: fine)").matches) event.currentTarget.open = false;
+                  }}
                 >
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <b>{label}</b>
-                  <i>↗</i>
-                </Link>
+                  <summary ref={(node) => { if (index === 0) firstMenuControl.current = node; }} tabIndex={open ? 0 : -1}>
+                    <span>{String(index + 1).padStart(2, "0")}</span><b>{item.label}</b><i aria-hidden="true">+</i>
+                  </summary>
+                  <div className="menu-subitems">
+                    {item.children.map((child, childIndex) => <Link href={child.href} key={child.href} onClick={closeMenu} tabIndex={open ? 0 : -1}><small>{String(childIndex + 1).padStart(2, "0")}</small><b>{child.label}</b><span aria-hidden="true">→</span></Link>)}
+                  </div>
+                </details>
               ))}
             </div>
             <div className="menu-footer">
@@ -172,6 +247,9 @@ export function SiteHeader() {
             className={`burger ${open ? "active" : ""}`}
             type="button"
             onClick={() => setOpen((current) => !current)}
+            onPointerEnter={() => {
+              if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && window.innerWidth > 700 && window.innerWidth <= 1100) setOpen(true);
+            }}
             aria-label={open ? (english ? "Close menu" : "Закрити меню") : (english ? "Open menu" : "Відкрити меню")}
             aria-controls="site-navigation"
             aria-haspopup="true"

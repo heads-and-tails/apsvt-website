@@ -15,7 +15,7 @@ export function ApplicantRankings() {
     <article className="applicant-ranking-level" id="rankings-bachelor">
       <header><span>01 / Бакалаврат</span><div><h3>Рейтингові списки від 03 серпня 2026 року</h3><p>Документи згруповано за освітньою програмою, формою навчання та курсом вступу.</p></div></header>
       <div className="applicant-ranking-groups">
-        {bachelorApplicantRankings.map((group, groupIndex) => <details key={group.code} open={groupIndex < 2}>
+        {bachelorApplicantRankings.map((group) => <details key={group.code}>
           <summary><span>{group.code}</span><h4>{group.programme}</h4><b>{group.documents.length} {group.documents.length === 1 ? "список" : group.documents.length < 5 ? "списки" : "списків"}</b><i>+</i></summary>
           <div className="applicant-ranking-documents">
             {group.documents.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>

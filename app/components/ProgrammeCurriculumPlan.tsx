@@ -37,7 +37,7 @@ export function ProgrammeCurriculumPlan({ slug, code, title }: { slug: string; c
       </div>
 
       <div className="law-curriculum-groups">
-        {curriculum.groups.map((group, index) => <details open={index === 0} key={group.title}>
+        {curriculum.groups.map((group, index) => <details key={group.title}>
           <summary>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <div><small>{group.label}</small><h3>{group.title}</h3></div>

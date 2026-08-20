@@ -19,7 +19,7 @@ const questions: { title: string; eyebrow: string; options: Option[] }[] = [
       { label: "Добробут людей", note: "Підтримувати, консультувати, відновлювати", tags: ["люди", "підтримка", "допомога", "психологія"], boosts: ["psychology", "social-work"] },
       { label: "Бізнес і команди", note: "Розвивати організації, бренди та проєкти", tags: ["бізнес", "лідерство", "команди", "бренди"], boosts: ["management", "marketing", "trade"] },
       { label: "Справедливі правила", note: "Працювати з правом, політикою та громадами", tags: ["справедливість", "держава", "політика", "громади"], boosts: ["law", "public-administration"] },
-      { label: "Нові враження", note: "Створювати подорожі, події та сервіс", tags: ["подорожі", "організація", "підприємництво"], boosts: ["tourism", "trade"] },
+      { label: "Нові проєкти", note: "Створювати сервіси, продукти та власні ініціативи", tags: ["організація", "підприємництво", "проєкти"], boosts: ["trade", "management", "professional-education"] },
     ],
   },
   {
@@ -29,7 +29,7 @@ const questions: { title: string; eyebrow: string; options: Option[] }[] = [
       { label: "Слухати й допомагати", note: "Розбиратися в ситуації людини", tags: ["підтримка", "допомога", "люди"], boosts: ["psychology", "social-work"] },
       { label: "Аналізувати", note: "Шукати закономірності у цифрах і даних", tags: ["аналітика", "цифри", "інвестиції"], boosts: ["finance", "marketing"] },
       { label: "Аргументувати", note: "Захищати позицію та знаходити рішення", tags: ["аргументація", "справедливість", "держава"], boosts: ["law", "public-administration"] },
-      { label: "Організовувати", note: "Збирати людей і ресурси навколо ідеї", tags: ["проєкти", "організація", "лідерство"], boosts: ["management", "tourism", "trade"] },
+      { label: "Організовувати", note: "Збирати людей і ресурси навколо ідеї", tags: ["проєкти", "організація", "лідерство"], boosts: ["management", "trade", "public-administration", "professional-education"] },
     ],
   },
   {
@@ -39,7 +39,7 @@ const questions: { title: string; eyebrow: string; options: Option[] }[] = [
       { label: "У компанії", note: "Команда, клієнти й вимірюваний результат", tags: ["бізнес", "бренди", "команди"], boosts: ["management", "marketing", "finance"] },
       { label: "У громаді або NGO", note: "Соціальні зміни та суспільна користь", tags: ["громади", "суспільство", "допомога"], boosts: ["social-work", "public-administration", "psychology"] },
       { label: "У правничій чи державній сфері", note: "Правила, інституції та публічні рішення", tags: ["держава", "політика", "справедливість"], boosts: ["law", "public-administration"] },
-      { label: "У власному проєкті", note: "Свобода створювати й відповідати за результат", tags: ["підприємництво", "продажі", "організація"], boosts: ["trade", "tourism", "marketing"] },
+      { label: "У власному проєкті", note: "Свобода створювати й відповідати за результат", tags: ["підприємництво", "продажі", "організація"], boosts: ["trade", "management", "marketing"] },
     ],
   },
   {
@@ -49,7 +49,7 @@ const questions: { title: string; eyebrow: string; options: Option[] }[] = [
       { label: "За підтримкою", note: "Ви уважні до людей та їхнього стану", tags: ["люди", "підтримка", "здоров’я"], boosts: ["psychology", "social-work"] },
       { label: "За порядком", note: "Ви бачите систему й тримаєте фокус", tags: ["аналітика", "управління", "логістика"], boosts: ["finance", "management", "trade"] },
       { label: "За сильними словами", note: "Ви пояснюєте, переконуєте й домовляєтесь", tags: ["бренди", "команди", "аргументація"], boosts: ["marketing", "law", "management"] },
-      { label: "За новими ідеями", note: "Ви помічаєте можливості раніше за інших", tags: ["дослідження", "подорожі", "інвестиції"], boosts: ["tourism", "finance", "psychology"] },
+      { label: "За новими ідеями", note: "Ви помічаєте можливості раніше за інших", tags: ["дослідження", "креативність", "інвестиції", "цифрові технології"], boosts: ["marketing", "finance", "psychology", "professional-education"] },
     ],
   },
 ];

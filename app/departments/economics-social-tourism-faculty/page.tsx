@@ -18,7 +18,7 @@ const departments = [
   ["03", "Економіка і менеджмент", "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", "/programs/management", "D3 · D7"],
   ["04", "Маркетинг", "Ринкова аналітика, бренди, digital-комунікації та поведінка споживачів.", "/programs/marketing", "D5"],
   ["05", "Соціальна робота", "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", "/programs/social-work", "I10"],
-  ["06", "Туризм", "Туристичні продукти, гостинність, рекреація, події та екскурсійна діяльність.", "/programs/tourism", "J3"],
+  ["06", "Туристичні дисципліни", "Туристичні продукти, гостинність, рекреація, події та екскурсійна діяльність.", "/departments#tourism", "Кафедра"],
   ["07", "Цифрові технології", "Інтелектуальні системи, цифрова освіта та управління інформаційною безпекою.", "/programs#doctoral-programmes", "A5"],
   ["08", "Енотехнології і сервіс", "Еногастрономічна культура, готельно-ресторанний сервіс і практичні лабораторії.", "/news/hospitality-management-lab", "HoReCa"],
 ];
@@ -30,7 +30,6 @@ const programmes = [
   ["D7", "Торгівля", "/programs/trade"],
   ["C4", "Психологія", "/programs/psychology"],
   ["I10", "Соціальна робота та консультування", "/programs/social-work"],
-  ["J3", "Туризм та рекреація", "/programs/tourism"],
   ["A5", "Професійна освіта", "/programs#doctoral-programmes"],
 ];
 
@@ -48,7 +47,7 @@ const facultyPageMap = [
 export default async function Page() {
   const departmentEntries = await getDepartmentEntries("/departments/economics-social-tourism-faculty");
   return <main id="top"><SiteHeader />
-    <section className="law-faculty-hero festt-hero"><div className="law-faculty-hero-image"><img src="/apsvt-students-real.jpg" alt="Студенти Академії під час навчання" /></div><div className="wrap law-faculty-hero-copy"><Link href="/departments">← Усі кафедри</Link><span>ФЕСТТ · міждисциплінарний факультет</span><h1>Економіка.<br /><em>Людина. Подорож.</em></h1><p>Факультет поєднує бізнес, соціальні науки, цифрові технології, психологію, туризм і гостинність — від фундаментальної підготовки до практики з роботодавцями.</p><div><b>8</b><span>кафедр і напрямів</span><b>8</b><span>освітніх траєкторій</span></div></div></section><div className="hero-rule" />
+    <section className="law-faculty-hero festt-hero"><div className="law-faculty-hero-image"><img src="/apsvt-students-real.jpg" alt="Студенти Академії під час навчання" /></div><div className="wrap law-faculty-hero-copy"><Link href="/departments">← Усі кафедри</Link><span>ФЕСТТ · міждисциплінарний факультет</span><h1>Економіка.<br /><em>Людина. Подорож.</em></h1><p>Факультет поєднує бізнес, соціальні науки, цифрові технології, психологію, туризм і гостинність — від фундаментальної підготовки до практики з роботодавцями.</p><div><b>8</b><span>кафедр і напрямів</span><b>7</b><span>освітніх траєкторій</span></div></div></section><div className="hero-rule" />
 
     <AcademicPageMap kind="факультет" title="Факультет → кафедри → програми" items={facultyPageMap} />
 

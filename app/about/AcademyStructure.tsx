@@ -22,7 +22,7 @@ const faculties: FacultyGroup[] = [
       { title: "Кафедра економіки підприємства та менеджменту", description: "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", href: "/departments#economics-management", programmes: [{ code: "D3", name: "Менеджмент", href: "/programs/management" }, { code: "D7", name: "Торгівля", href: "/programs/trade" }] },
       { title: "Кафедра маркетингу", description: "Ринкова аналітика, бренди, комунікації та digital.", href: "/departments#marketing", programmes: [{ code: "D5", name: "Маркетинг", href: "/programs/marketing" }] },
       { title: "Кафедра соціально-трудових відносин та соціальної роботи", description: "Соціальна політика, підтримка людей і громад та консультування.", href: "/departments#social-work", programmes: [{ code: "I10", name: "Соціальна робота", href: "/programs/social-work" }] },
-      { title: "Кафедра спеціальних туристичних дисциплін", description: "Туризм, гостинність, рекреація та створення туристичних продуктів.", href: "/departments#tourism", programmes: [{ code: "J3", name: "Туризм", href: "/programs/tourism" }] },
+      { title: "Кафедра спеціальних туристичних дисциплін", description: "Туризм, гостинність, рекреація та створення туристичних продуктів.", href: "/departments#tourism", programmes: [] },
       { title: "Кафедра інтелектуальних систем та цифрових технологій", description: "Інформаційні системи та цифрові освітні технології.", href: "/departments#digital-technologies", programmes: [{ code: "A5", name: "Професійна освіта · PhD", href: "/programs#doctoral-programmes" }] },
       { title: "Кафедра енотехнологій і готельно-ресторанного сервісу", description: "Гостинність, сервіс та еногастрономічна культура.", href: "/departments#hospitality", programmes: [{ code: "Сервіс", name: "Готельно-ресторанний напрям", href: "/news/hospitality-management-lab" }] },
     ],
@@ -57,6 +57,15 @@ const otherUnits = [
   { title: "Сервіси Академії", description: "Вступ, бібліотека, кампус, гуртожиток і студентська підтримка.", href: "/facilities" },
 ];
 
+function departmentNoun(count: number) {
+  const lastTwoDigits = count % 100;
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return "кафедр";
+  const lastDigit = count % 10;
+  if (lastDigit === 1) return "кафедра";
+  if (lastDigit >= 2 && lastDigit <= 4) return "кафедри";
+  return "кафедр";
+}
+
 export function AcademyStructure() {
   const departmentCount = faculties.reduce((total, faculty) => total + faculty.departments.length, 0);
 
@@ -79,16 +88,16 @@ export function AcademyStructure() {
     </div>
 
     <div className="structure-faculties">
-      {faculties.map((faculty, facultyIndex) => <details open={facultyIndex === 0} key={faculty.code}>
+      {faculties.map((faculty, facultyIndex) => <details key={faculty.code}>
         <summary>
           <span>{String(facultyIndex + 1).padStart(2, "0")}</span>
           <strong>{faculty.code}</strong>
           <div><small>Факультет / підрозділ</small><h3>{faculty.title}</h3><p>{faculty.description}</p></div>
-          <b>{faculty.departments.length}<small> кафедр</small></b>
+          <b>{faculty.departments.length}<small> {departmentNoun(faculty.departments.length)}</small></b>
           <i aria-hidden="true">+</i>
         </summary>
         <div className="structure-faculty-body">
-          <div className="structure-faculty-actions"><span>{faculty.departments.length} кафедр · прямі посилання на програми</span><Link href={faculty.href}>Сторінка факультету →</Link></div>
+          <div className="structure-faculty-actions"><span>{faculty.departments.length} {departmentNoun(faculty.departments.length)} · прямі посилання на програми</span><Link href={faculty.href}>Сторінка факультету →</Link></div>
           <div className="structure-departments">
             {faculty.departments.map((department, departmentIndex) => <article key={department.title}>
               <span>{String(departmentIndex + 1).padStart(2, "0")}</span>

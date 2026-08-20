@@ -107,7 +107,7 @@ export function LawCurriculumPlan() {
       </div>
 
       <div className="law-curriculum-groups">
-        <details open>
+        <details>
           <summary><span>01</span><div><small>Обов’язковий блок</small><h3>Загальна підготовка</h3></div><b>45 ЄКТС</b><i>+</i></summary>
           <CourseTable courses={generalCourses} />
         </details>
