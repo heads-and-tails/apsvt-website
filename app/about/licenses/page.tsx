@@ -29,6 +29,15 @@ type CurrentCertificate = {
   href: string;
 };
 
+type ExpertDocument = {
+  title: string;
+  programme: string;
+  level: string;
+  specialty: string;
+  kind: "Відомості про самооцінювання" | "Звіт експертної групи";
+  href: string;
+};
+
 const currentCertificates: CurrentCertificate[] = [
   { title: "Фінанси, банківська справа, страхування та фондовий ринок", level: "Магістр", specialty: "072", number: "№ 19421", issued: "23.12.2025", validUntil: "23.12.2026", href: "/documents/accreditation/2026/finance-insurance-master-19421.pdf" },
   { title: "Професійна освіта (за спеціалізаціями)", level: "Магістр", specialty: "015", number: "№ 19390", issued: "23.12.2025", validUntil: "23.12.2026", href: "/documents/accreditation/2026/professional-education-master-19390.pdf" },
@@ -36,6 +45,65 @@ const currentCertificates: CurrentCertificate[] = [
   { title: "Психологія бізнесу та управління", level: "Магістр", specialty: "053", number: "№ 10064", issued: "15.01.2025", validUntil: "01.07.2030", href: "/documents/accreditation/2026/business-management-psychology-master-10064.pdf" },
   { title: "Публічне управління та адміністрування", level: "Бакалавр", specialty: "281", number: "№ 20649", issued: "22.04.2026", validUntil: "21.04.2027", href: "/documents/accreditation/2026/public-administration-bachelor-20649.pdf" },
   { title: "Клінічна психологія", level: "Магістр", specialty: "053", number: "№ 6698", issued: "26.12.2023", validUntil: "01.07.2029", href: "/documents/accreditation/2026/clinical-psychology-master-6698.pdf" },
+];
+
+const expertDocuments: ExpertDocument[] = [
+  {
+    title: "Відомості про самооцінювання освітньої програми",
+    programme: "Психологія бізнесу та управління",
+    level: "Магістр",
+    specialty: "053 · Психологія",
+    kind: "Відомості про самооцінювання",
+    href: "/documents/accreditation/expert-results/2026/psychology-business-management-self-evaluation.pdf",
+  },
+  {
+    title: "Відомості про самооцінювання освітньої програми",
+    programme: "Клінічна психологія",
+    level: "Магістр",
+    specialty: "053 · Психологія",
+    kind: "Відомості про самооцінювання",
+    href: "/documents/accreditation/expert-results/2026/clinical-psychology-self-evaluation-2023.pdf",
+  },
+  {
+    title: "Звіт експертної групи за результатами акредитаційної експертизи",
+    programme: "Професійна освіта",
+    level: "Магістр",
+    specialty: "015 · Професійна освіта",
+    kind: "Звіт експертної групи",
+    href: "/documents/accreditation/expert-results/2026/professional-education-expert-group-report.pdf",
+  },
+  {
+    title: "Звіт експертної групи за результатами акредитаційної експертизи",
+    programme: "Психологія",
+    level: "Бакалавр",
+    specialty: "053 · Психологія",
+    kind: "Звіт експертної групи",
+    href: "/documents/accreditation/expert-results/2026/psychology-bachelor-expert-group-report.pdf",
+  },
+  {
+    title: "Відомості про самооцінювання освітньої програми",
+    programme: "Професійна освіта",
+    level: "Магістр",
+    specialty: "015 · Професійна освіта",
+    kind: "Відомості про самооцінювання",
+    href: "/documents/accreditation/expert-results/2026/professional-education-self-evaluation.pdf",
+  },
+  {
+    title: "Відомості про самооцінювання освітньої програми",
+    programme: "Психологія",
+    level: "Бакалавр",
+    specialty: "053 · Психологія",
+    kind: "Відомості про самооцінювання",
+    href: "/documents/accreditation/expert-results/2026/psychology-bachelor-self-evaluation-2025.pdf",
+  },
+  {
+    title: "Відомості про самооцінювання освітньої програми",
+    programme: "Фінанси, банківська справа, страхування та фондовий ринок",
+    level: "Магістр",
+    specialty: "072 · Фінанси",
+    kind: "Відомості про самооцінювання",
+    href: "/documents/accreditation/expert-results/2026/finance-master-self-evaluation.pdf",
+  },
 ];
 
 const programmeCertificates: Certificate[] = [
@@ -182,6 +250,23 @@ function CurrentCertificateCard({ certificate, index }: { certificate: CurrentCe
   </a>;
 }
 
+function ExpertDocumentCard({ document, index }: { document: ExpertDocument; index: number }) {
+  return (
+    <a className="expert-document-card" href={document.href} target="_blank" rel="noreferrer">
+      <div className="expert-document-meta">
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <small>{document.level} · {document.specialty}</small>
+      </div>
+      <p>{document.kind}</p>
+      <h3>{document.programme}</h3>
+      <div className="expert-document-footer">
+        <span>{document.title}</span>
+        <b>PDF ↗</b>
+      </div>
+    </a>
+  );
+}
+
 export default function LicensesPage() {
   return (
     <main id="top">
@@ -197,8 +282,8 @@ export default function LicensesPage() {
           </div>
           <aside className="license-hero-card">
             <span>Документи у розділі</span>
-            <b>23</b>
-            <p>1 ліцензійний документ<br />22 сертифікати та архівні скани</p>
+            <b>30</b>
+            <p>1 ліцензійний документ<br />22 сертифікати та архівні скани<br />7 матеріалів акредитаційних експертиз</p>
             <a href="#license-document">Перейти до ліцензії ↓</a>
           </aside>
         </div>
@@ -208,8 +293,9 @@ export default function LicensesPage() {
         <div className="wrap">
           <a href="#license-document"><span>01</span><b>Ліцензія</b></a>
           <a href="#current-certificates"><span>02</span><b>Нові сертифікати</b></a>
-          <a href="#certificates"><span>03</span><b>Попередні скани</b></a>
-          <a href="#verification"><span>04</span><b>Перевірити статус</b></a>
+          <a href="#expert-results"><span>03</span><b>Результати експертиз</b></a>
+          <a href="#certificates"><span>04</span><b>Попередні скани</b></a>
+          <a href="#verification"><span>05</span><b>Перевірити статус</b></a>
         </div>
       </nav>
 
@@ -246,11 +332,28 @@ export default function LicensesPage() {
         </div>
       </section>
 
+      <section className="expert-results-section" id="expert-results">
+        <div className="wrap">
+          <div className="license-section-head">
+            <div>
+              <div className="idx">03 / Акредитаційні справи</div>
+              <h2>Результати акредитаційних експертиз</h2>
+            </div>
+            <p>Офіційні відомості про самооцінювання освітніх програм і звіти експертних груп. Документи відкриваються у форматі PDF в новій вкладці.</p>
+          </div>
+          <div className="expert-document-grid">
+            {expertDocuments.map((document, index) => (
+              <ExpertDocumentCard document={document} index={index} key={`${document.programme}-${document.kind}`} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="license-certificates-section" id="certificates">
         <div className="wrap">
           <div className="license-section-head">
             <div>
-              <div className="idx">03 / Попередня добірка</div>
+              <div className="idx">04 / Попередня добірка</div>
               <h2>Скани сертифікатів</h2>
             </div>
             <p>Це скани, перенесені з попередньої офіційної сторінки Академії. Зазначені строки відтворено як історичні дані джерела; актуальний статус потрібно перевіряти в державних реєстрах нижче.</p>
@@ -267,7 +370,7 @@ export default function LicensesPage() {
         <div className="wrap">
           <details className="license-archive">
             <summary>
-              <span>04 / Повний комплект</span>
+              <span>05 / Повний комплект</span>
               <b>Архів попередніх сертифікатів</b>
               <i>+</i>
             </summary>
@@ -285,7 +388,7 @@ export default function LicensesPage() {
         <div className="wrap">
           <div className="license-section-head light">
             <div>
-              <div className="idx">05 / Актуальний статус</div>
+              <div className="idx">06 / Актуальний статус</div>
               <h2>Перевірте в офіційному реєстрі</h2>
             </div>
             <p>Державні реєстри є джерелом актуальної інформації про видані, переоформлені, розширені, звужені або анульовані ліцензії та сертифікати.</p>
