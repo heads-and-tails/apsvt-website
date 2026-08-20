@@ -8,8 +8,8 @@ export const documentCategories = [
   {
     id: "education",
     number: "02",
-    title: "Освітній процес",
-    description: "Організація навчання, індивідуальна траєкторія, академічний статус і студентське самоврядування.",
+    title: "Освітні програми та освітній процес",
+    description: "Чинні освітньо-професійні програми бакалаврату й магістратури, організація навчання та індивідуальна траєкторія.",
   },
   {
     id: "inclusiveness",
@@ -148,6 +148,70 @@ export const officialDocuments: OfficialDocument[] = [
     pages: 2,
     updated: "2026",
     status: "current",
+  },
+  {
+    id: "programme-management-bachelor-2025",
+    category: "education",
+    title: "ОПП D3 «Менеджмент» — бакалавр",
+    description: "Офіційна освітньо-професійна програма першого рівня вищої освіти.",
+    href: "/documents/programmes/2025/d3-management-bachelor.pdf", format: "PDF", pages: 22, updated: "2025", status: "current",
+  },
+  {
+    id: "programme-management-master-2025",
+    category: "education",
+    title: "ОПП D3 «Менеджмент» — магістр",
+    description: "Офіційна освітньо-професійна програма другого рівня вищої освіти.",
+    href: "/documents/programmes/2025/d3-management-master.pdf", format: "PDF", pages: 13, updated: "2025", status: "current",
+  },
+  {
+    id: "programme-marketing-bachelor-2025", category: "education", title: "ОПП D5 «Маркетинг» — бакалавр",
+    description: "Офіційна освітньо-професійна програма першого рівня вищої освіти.",
+    href: "/documents/programmes/2025/d5-marketing-bachelor.pdf", format: "PDF", pages: 20, updated: "2025", status: "current",
+  },
+  {
+    id: "programme-marketing-master-2025", category: "education", title: "ОПП D5 «Маркетинг» — магістр",
+    description: "Офіційна освітньо-професійна програма другого рівня вищої освіти.",
+    href: "/documents/programmes/2025/d5-marketing-master.pdf", format: "PDF", pages: 15, updated: "2025", status: "current",
+  },
+  {
+    id: "programme-law-bachelor-2025", category: "education", title: "ОПП D8 «Право» — бакалавр",
+    description: "Офіційна освітньо-професійна програма першого рівня вищої освіти.",
+    href: "/documents/programmes/2025/d8-law-bachelor.pdf", format: "PDF", pages: 22, updated: "2025", status: "current",
+  },
+  {
+    id: "programme-law-master-2025", category: "education", title: "ОПП D8 «Право» — магістр",
+    description: "Офіційна освітньо-професійна програма другого рівня вищої освіти.",
+    href: "/documents/programmes/2025/d8-law-master.pdf", format: "PDF", pages: 20, updated: "2025", status: "current",
+  },
+  {
+    id: "programme-psychology-bachelor-2024-2025", category: "education", title: "ОПП C4 «Психологія» — бакалавр",
+    description: "Офіційна освітньо-професійна програма першого рівня вищої освіти.",
+    href: "/documents/programmes/2025/c4-psychology-bachelor-2024-2025.pdf", format: "PDF", pages: 18, updated: "2024/25", status: "current",
+  },
+  {
+    id: "programme-psychology-business-master-2024-2025", category: "education", title: "ОПП «Психологія бізнесу та управління» — магістр",
+    description: "Офіційна магістерська програма з психології бізнесу та управління.",
+    href: "/documents/programmes/2025/c4-psychology-business-management-master-2024-2025.pdf", format: "PDF", pages: 15, updated: "2024/25", status: "current",
+  },
+  {
+    id: "programme-professional-education-bachelor-2025", category: "education", title: "ОПП A5 «Професійна освіта · Цифрові технології» — бакалавр",
+    description: "Офіційна програма з професійної педагогіки та цифрових освітніх технологій.",
+    href: "/documents/programmes/2025/a5-professional-education-digital-technologies-bachelor.pdf", format: "PDF", pages: 34, updated: "2025", status: "current",
+  },
+  {
+    id: "programme-professional-education-master-2025", category: "education", title: "ОПП A5 «Професійна освіта · Цифрові технології» — магістр",
+    description: "Офіційна магістерська програма з цифрових технологій професійної освіти.",
+    href: "/documents/programmes/2025/a5-professional-education-digital-technologies-master.pdf", format: "PDF", pages: 20, updated: "2025", status: "current",
+  },
+  {
+    id: "programme-public-administration-master-2025", category: "education", title: "ОПП D4 «Публічне управління та адміністрування» — магістр",
+    description: "Офіційна освітньо-професійна програма другого рівня вищої освіти.",
+    href: "/documents/programmes/2025/d4-public-administration-master.pdf", format: "PDF", pages: 18, updated: "2025", status: "current",
+  },
+  {
+    id: "programme-finance-master-2025", category: "education", title: "ОПП D2 «Фінанси, банківська справа, страхування та фондовий ринок» — магістр",
+    description: "Офіційна освітньо-професійна програма другого рівня вищої освіти.",
+    href: "/documents/programmes/2025/d2-finance-master.pdf", format: "PDF", pages: 17, updated: "2025", status: "current",
   },
   {
     id: "education-process",

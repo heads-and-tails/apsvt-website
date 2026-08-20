@@ -23,6 +23,11 @@ function PartnerCard({ partner }: { partner: ProgrammePartner }) {
 export function ProgrammeEcosystem({ slug }: { slug: string }) {
   const profile = getProgrammeProfile(slug);
   const program = getProgram(slug);
+  const officialProgrammeDocuments = program?.materials.map((material) => ({
+    title: material.label,
+    meta: material.href.endsWith(".pdf") ? "PDF · офіційна освітня програма" : "Офіційний матеріал Академії",
+    href: material.href,
+  })) || [];
   if (!profile && !program) return null;
 
   if (!profile && program) return <>
@@ -57,7 +62,7 @@ export function ProgrammeEcosystem({ slug }: { slug: string }) {
     <section className="programme-documents" id="programme-documents"><div className="wrap">
       <div className="programme-documents-head"><div><div className="idx">05 / Документи програми</div><h2>Програма, плани та дисципліни</h2></div><Link href="/documents">Увесь каталог документів →</Link></div>
       <div className="programme-resource-strip" aria-label="Типи матеріалів програми"><a href="#curriculum"><b>01</b><span>Навчальний план</span></a><a href="#electives"><b>02</b><span>Вибіркові дисципліни</span></a><Link href="/materials"><b>03</b><span>Робочі програми дисциплін</span></Link><a href="#quality"><b>04</b><span>Обговорення змін до ОП</span></a></div>
-      <div className="programme-document-list">{profile.documents.map((document, index) => {
+      <div className="programme-document-list">{[...officialProgrammeDocuments, ...profile.documents].filter((document, index, documents) => documents.findIndex((item) => item.href === document.href) === index).map((document, index) => {
         const external = document.href.startsWith("http");
         return <a href={document.href} target={external || !document.href.endsWith(".html") ? "_blank" : undefined} rel={external || !document.href.endsWith(".html") ? "noreferrer" : undefined} key={document.title}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{document.meta}</small><h3>{document.title}</h3></div><b>{document.href.endsWith(".html") ? "→" : "↗"}</b></a>;
       })}</div>

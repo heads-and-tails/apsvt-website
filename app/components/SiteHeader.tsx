@@ -22,6 +22,7 @@ const ukLinks: readonly NavItem[] = [
     { href: "/programs/public-administration", label: "Публічне управління" }, { href: "/programs/psychology", label: "Психологія" },
     { href: "/programs/finance", label: "Фінанси" }, { href: "/programs/marketing", label: "Маркетинг" },
     { href: "/programs/management", label: "Менеджмент" }, { href: "/programs/social-work", label: "Соціальна робота" },
+    { href: "/programs/professional-education", label: "Професійна освіта · Digital" },
   ] },
   { href: "/admissions", label: "Вступнику", children: [
     { href: "/admissions#route", label: "Як вступити" }, { href: "/admissions#dates", label: "Ключові дати" },
@@ -73,6 +74,7 @@ const enLinks: readonly NavItem[] = [
   { href: "/en/programs", label: "Study", children: [
     { href: "/en/programs", label: "All programmes" }, { href: "/en/programs/law", label: "Law" },
     { href: "/en/programs/public-administration", label: "Public administration" }, { href: "/en/programs/psychology", label: "Psychology" },
+    { href: "/en/programs/professional-education", label: "Professional education · Digital" },
   ] },
   { href: "/en/admissions", label: "Admissions", children: [
     { href: "/en/admissions", label: "How to apply" }, { href: "/en/tuition", label: "Tuition & payment" },

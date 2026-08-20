@@ -19,7 +19,7 @@ const questions: { title: string; eyebrow: string; options: Option[] }[] = [
       { label: "Добробут людей", note: "Підтримувати, консультувати, відновлювати", tags: ["люди", "підтримка", "допомога", "психологія"], boosts: ["psychology", "social-work"] },
       { label: "Бізнес і команди", note: "Розвивати організації, бренди та проєкти", tags: ["бізнес", "лідерство", "команди", "бренди"], boosts: ["management", "marketing", "trade"] },
       { label: "Справедливі правила", note: "Працювати з правом, політикою та громадами", tags: ["справедливість", "держава", "політика", "громади"], boosts: ["law", "public-administration"] },
-      { label: "Нові проєкти", note: "Створювати сервіси, продукти та власні ініціативи", tags: ["організація", "підприємництво", "проєкти"], boosts: ["trade", "management"] },
+      { label: "Нові проєкти", note: "Створювати сервіси, продукти та власні ініціативи", tags: ["організація", "підприємництво", "проєкти"], boosts: ["trade", "management", "professional-education"] },
     ],
   },
   {
@@ -29,7 +29,7 @@ const questions: { title: string; eyebrow: string; options: Option[] }[] = [
       { label: "Слухати й допомагати", note: "Розбиратися в ситуації людини", tags: ["підтримка", "допомога", "люди"], boosts: ["psychology", "social-work"] },
       { label: "Аналізувати", note: "Шукати закономірності у цифрах і даних", tags: ["аналітика", "цифри", "інвестиції"], boosts: ["finance", "marketing"] },
       { label: "Аргументувати", note: "Захищати позицію та знаходити рішення", tags: ["аргументація", "справедливість", "держава"], boosts: ["law", "public-administration"] },
-      { label: "Організовувати", note: "Збирати людей і ресурси навколо ідеї", tags: ["проєкти", "організація", "лідерство"], boosts: ["management", "trade", "public-administration"] },
+      { label: "Організовувати", note: "Збирати людей і ресурси навколо ідеї", tags: ["проєкти", "організація", "лідерство"], boosts: ["management", "trade", "public-administration", "professional-education"] },
     ],
   },
   {
@@ -49,7 +49,7 @@ const questions: { title: string; eyebrow: string; options: Option[] }[] = [
       { label: "За підтримкою", note: "Ви уважні до людей та їхнього стану", tags: ["люди", "підтримка", "здоров’я"], boosts: ["psychology", "social-work"] },
       { label: "За порядком", note: "Ви бачите систему й тримаєте фокус", tags: ["аналітика", "управління", "логістика"], boosts: ["finance", "management", "trade"] },
       { label: "За сильними словами", note: "Ви пояснюєте, переконуєте й домовляєтесь", tags: ["бренди", "команди", "аргументація"], boosts: ["marketing", "law", "management"] },
-      { label: "За новими ідеями", note: "Ви помічаєте можливості раніше за інших", tags: ["дослідження", "креативність", "інвестиції"], boosts: ["marketing", "finance", "psychology"] },
+      { label: "За новими ідеями", note: "Ви помічаєте можливості раніше за інших", tags: ["дослідження", "креативність", "інвестиції", "цифрові технології"], boosts: ["marketing", "finance", "psychology", "professional-education"] },
     ],
   },
 ];
