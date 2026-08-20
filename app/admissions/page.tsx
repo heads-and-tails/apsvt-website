@@ -9,6 +9,7 @@ import { ApplicantDocumentLibrary } from "./ApplicantDocumentLibrary";
 import { EntranceExamSchedule } from "./EntranceExamSchedule";
 import { EntranceExamPrograms } from "./EntranceExamPrograms";
 import { EntranceExamResults } from "./EntranceExamResults";
+import { EnrollmentOrders } from "./EnrollmentOrders";
 import { ApplicantRankings } from "./ApplicantRankings";
 import { UkrainiansAbroadAdmission } from "../components/UkrainiansAbroadAdmission";
 import { getPublicContent as getContentItems } from "@/lib/content";
@@ -37,6 +38,7 @@ export default async function Page() {
       <a href="#entrance-exams"><span>05</span><b>Розклад випробувань</b></a>
       <a href="#entrance-programs"><span>06</span><b>Програми випробувань</b></a>
       <a href="#entrance-results"><span>07</span><b>Результати випробувань</b></a>
+      <a href="#enrollment-orders"><span>07.1</span><b>Накази про зарахування</b></a>
       <a href="#applicant-rankings"><span>08</span><b>Рейтингові списки</b></a>
       <a href="#admission-rules"><span>09</span><b>Правила і документи</b></a>
       <a href="#document-assistant"><span>10</span><b>Запитати помічника</b></a>
@@ -59,6 +61,8 @@ export default async function Page() {
     <EntranceExamPrograms />
 
     <EntranceExamResults />
+
+    <EnrollmentOrders />
 
     <ApplicantRankings />
 

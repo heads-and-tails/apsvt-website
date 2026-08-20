@@ -1045,6 +1045,30 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .entrance-results-empty>span{width:46px;height:46px;display:grid;place-items:center;background:var(--gold);color:var(--ink);font:700 18px var(--disp)}
 .entrance-results-empty b{font:600 16px var(--disp);text-transform:uppercase}.entrance-results-empty p{font-size:12px;color:#aebbd1;margin-top:5px}
 
+/* Admissions: official enrollment orders. */
+.enrollment-orders{background:#eeece6;scroll-margin-top:88px}
+.enrollment-orders-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(270px,.55fr);gap:clamp(42px,8vw,105px);align-items:end;margin-bottom:50px}
+.enrollment-orders-head h2{font-size:clamp(42px,6.4vw,88px);line-height:.9;letter-spacing:-.045em;margin-top:14px;text-wrap:balance}
+.enrollment-orders-head aside{border-left:5px solid var(--gold);padding:4px 0 4px 22px}
+.enrollment-orders-head aside b{font:700 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cobalt)}
+.enrollment-orders-head aside p{font-size:13px;line-height:1.6;color:#5f6878;margin:11px 0}
+.enrollment-orders-head aside span{font:9px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.enrollment-order-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--ink);border:1px solid var(--ink)}
+.enrollment-order-card{min-width:0;min-height:330px;padding:28px;background:var(--paper);display:flex;flex-direction:column;transition:background-color .2s,color .2s,transform .2s}
+.enrollment-order-meta{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+.enrollment-order-meta>span{font:700 38px/1 var(--disp);color:var(--cobalt)}
+.enrollment-order-meta>small{font:8px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;text-align:right;color:#697386}
+.enrollment-order-card>p{margin-top:48px;font:8px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--cobalt)}
+.enrollment-order-card h3{margin:12px 0 30px;font:600 clamp(24px,2.7vw,36px)/1.02 var(--disp);text-transform:uppercase;overflow-wrap:break-word;text-wrap:balance}
+.enrollment-order-footer{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-top:auto;padding-top:20px;border-top:1px solid var(--line)}
+.enrollment-order-footer span{max-width:25ch;font-size:10px;line-height:1.5;color:#697386}
+.enrollment-order-footer b{font:700 9px var(--mono);letter-spacing:.08em;color:var(--cobalt);text-align:right;white-space:nowrap}
+.enrollment-order-card:hover{position:relative;z-index:2;background:var(--navy);color:#fff;transform:translateY(-5px)}
+.enrollment-order-card:hover .enrollment-order-meta>span,.enrollment-order-card:hover>p,.enrollment-order-card:hover .enrollment-order-footer b{color:var(--gold)}
+.enrollment-order-card:hover .enrollment-order-meta>small,.enrollment-order-card:hover .enrollment-order-footer span{color:#b8c3d5}
+@media(max-width:850px){.enrollment-orders-head{grid-template-columns:1fr;gap:28px}.enrollment-order-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.enrollment-order-card:last-child{grid-column:1/-1;min-height:270px}}
+@media(max-width:700px){.enrollment-orders-head h2{max-width:100%;font-size:clamp(34px,9.4vw,42px);overflow-wrap:break-word}.enrollment-order-grid{grid-template-columns:1fr}.enrollment-order-card,.enrollment-order-card:last-child{grid-column:auto;min-height:260px;padding:22px}.enrollment-order-footer{align-items:flex-start;flex-direction:column}.enrollment-order-footer b{text-align:left;white-space:normal}}
+
 /* Research: current Academy reports, doctoral admission and restored conference archive. */
 .research-page-intro{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:clamp(45px,8vw,110px);align-items:start}.research-page-intro h2{font-size:clamp(34px,5vw,68px);margin-top:14px}.research-page-intro>p,.research-page-intro>div:last-child>p{font-size:clamp(17px,1.8vw,23px);line-height:1.55}.research-page-intro .sec-link{display:inline-block;margin-top:24px}.research-official-materials{margin-top:38px}.research-topic-layout{display:grid;grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);gap:clamp(42px,8vw,105px);align-items:center}.research-topic-scan{display:block;background:#fff;padding:18px;box-shadow:16px 16px var(--gold)}.research-topic-scan img{display:block;width:100%;height:auto}.research-topic-scan span{display:block;margin-top:14px;font:700 9px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cobalt)}.research-topic-layout h3{font-size:clamp(30px,4.5vw,58px);line-height:1;margin:16px 0 24px;text-transform:uppercase}.research-topic-layout p{max-width:62ch;font-size:15px;line-height:1.7}.research-topic-layout .cta{margin-top:28px}.conference-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.conference-links a{padding:10px 13px;background:var(--navy);color:#fff;font:700 8px var(--mono);letter-spacing:.07em;text-transform:uppercase;transition:.2s}.conference-links a:hover{background:var(--gold);color:var(--ink)}
 @media(max-width:760px){.research-page-intro,.research-topic-layout{grid-template-columns:1fr}.research-page-intro{gap:28px}.research-topic-scan{max-width:520px;margin-right:12px;box-shadow:10px 10px var(--gold)}.research-official-materials a{grid-template-columns:1fr auto}.research-official-materials a span{grid-column:1/-1}.conference-archive-list article{grid-template-columns:50px minmax(0,1fr);gap:12px;padding-inline:0}.conference-links{display:grid}.entrance-result-video{padding:8px}}
