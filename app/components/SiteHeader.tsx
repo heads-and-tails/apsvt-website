@@ -102,6 +102,7 @@ const enLinks: readonly NavItem[] = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [openMenuGroup, setOpenMenuGroup] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const firstMenuControl = useRef<HTMLElement>(null);
@@ -123,6 +124,7 @@ export function SiteHeader() {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       setOpen(false);
+      setOpenMenuGroup(null);
       menuButton.current?.focus();
     };
 
@@ -136,14 +138,20 @@ export function SiteHeader() {
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 1101px)");
     const closeAtDesktopWidth = (event: MediaQueryListEvent) => {
-      if (event.matches) setOpen(false);
+      if (event.matches) {
+        setOpen(false);
+        setOpenMenuGroup(null);
+      }
     };
 
     desktop.addEventListener("change", closeAtDesktopWidth);
     return () => desktop.removeEventListener("change", closeAtDesktopWidth);
   }, []);
 
-  const closeMenu = () => setOpen(false);
+  const closeMenu = () => {
+    setOpen(false);
+    setOpenMenuGroup(null);
+  };
 
   useEffect(() => {
     const openSearch = (event: KeyboardEvent) => {
@@ -152,6 +160,7 @@ export function SiteHeader() {
       if ((event.key === "/" && !typing) || ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k")) {
         event.preventDefault();
         setOpen(false);
+        setOpenMenuGroup(null);
         setSearchOpen(true);
       }
     };
@@ -207,14 +216,9 @@ export function SiteHeader() {
                 <details
                   className={`menu-group ${activeTopLevelHref === item.href ? "active" : ""}`}
                   key={item.href}
-                  onPointerEnter={(event) => {
-                    if (window.innerWidth > 700 && window.matchMedia("(hover: hover) and (pointer: fine)").matches) event.currentTarget.open = true;
-                  }}
-                  onPointerLeave={(event) => {
-                    if (window.innerWidth > 700 && window.matchMedia("(hover: hover) and (pointer: fine)").matches) event.currentTarget.open = false;
-                  }}
+                  open={openMenuGroup === item.href}
                 >
-                  <summary ref={(node) => { if (index === 0) firstMenuControl.current = node; }} tabIndex={open ? 0 : -1}>
+                  <summary ref={(node) => { if (index === 0) firstMenuControl.current = node; }} tabIndex={open ? 0 : -1} onClick={(event) => { event.preventDefault(); setOpenMenuGroup((current) => current === item.href ? null : item.href); }}>
                     <span>{String(index + 1).padStart(2, "0")}</span><b>{item.label}</b><i aria-hidden="true">+</i>
                   </summary>
                   <div className="menu-subitems">
@@ -233,7 +237,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hdr-right">
-          <button className="header-search-button" type="button" onClick={() => { setOpen(false); setSearchOpen(true); }} aria-label={english ? "Search the site" : "Пошук по сайту"} aria-haspopup="dialog">
+          <button className="header-search-button" type="button" onClick={() => { closeMenu(); setSearchOpen(true); }} aria-label={english ? "Search the site" : "Пошук по сайту"} aria-haspopup="dialog">
             <span aria-hidden="true">⌕</span><b>{english ? "Search" : "Пошук"}</b>
           </button>
           <Link className="lang-toggle" href={english ? ukPath : enPath} aria-label={english ? "Українська версія" : "English version"} onClick={closeMenu}>
@@ -246,10 +250,7 @@ export function SiteHeader() {
             ref={menuButton}
             className={`burger ${open ? "active" : ""}`}
             type="button"
-            onClick={() => setOpen((current) => !current)}
-            onPointerEnter={() => {
-              if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && window.innerWidth > 700 && window.innerWidth <= 1100) setOpen(true);
-            }}
+            onClick={() => { setOpen((current) => !current); setOpenMenuGroup(null); }}
             aria-label={open ? (english ? "Close menu" : "Закрити меню") : (english ? "Open menu" : "Відкрити меню")}
             aria-controls="site-navigation"
             aria-haspopup="true"

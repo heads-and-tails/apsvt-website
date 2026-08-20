@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
+import { PageJumpNav } from "../../components/PageJumpNav";
 
 export const metadata: Metadata = {
   title: "Путівник студента",
@@ -39,7 +40,7 @@ export default function Page() {
       <div className="resource-hero-grid"><div><span className="resource-kicker">Перші кроки в Академії</span><h1>Путівник<br />студента</h1><p>Зібрали найважливіше про навчання, цифрові сервіси, оцінювання, кампус і підтримку — без необхідності переглядати весь документ.</p></div><aside><span>Редакція</span><b>2024</b><p>Оригінальний путівник Академії</p><div><strong>28</strong><small>сторінок у PDF</small></div><a href="/documents/students/first-year-guide-2024.pdf" target="_blank" rel="noreferrer">Відкрити оригінал ↗</a></aside></div>
     </div></section><div className="phero-rule" />
 
-    <nav className="resource-page-nav" aria-label="Навігація путівником"><div className="wrap"><a href="#start">Перші кроки</a><a href="#services">Сервіси</a><a href="#grading">Оцінювання</a><a href="#support">Підтримка</a></div></nav>
+    <PageJumpNav className="resource-page-nav" ariaLabel="Навігація путівником" label="Розділи путівника"><a href="#start">Перші кроки</a><a href="#services">Сервіси</a><a href="#grading">Оцінювання</a><a href="#support">Підтримка</a></PageJumpNav>
 
     <section className="guide-start" id="start"><div className="wrap">
       <div className="resource-section-head"><div><div className="idx">01 / Початок</div><h2>Що зробити насамперед</h2></div><p>Ці чотири кроки допоможуть швидко зорієнтуватися на початку навчання.</p></div>

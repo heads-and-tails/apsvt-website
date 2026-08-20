@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { TuitionPaymentAssistant } from "./TuitionPaymentAssistant";
+import { PageJumpNav } from "../components/PageJumpNav";
 
 export const metadata: Metadata = {
   title: "Вартість навчання та оплата",
@@ -37,12 +38,12 @@ export default function Page() {
   return <main id="top"><SiteHeader />
     <section className="tuition-hero"><div className="wrap tuition-hero-grid"><div><div className="crumb">Головна / Вартість та оплата</div><span className="tuition-kicker">2026/27 навчальний рік</span><h1>Вартість<br />навчання</h1><p className="lead">Офіційні суми для вступників і студентів — за навчальний рік, семестр та місяць.</p><div className="tuition-hero-actions"><a href="#prices">Переглянути тарифи ↓</a><a href="#payment">Оплата навчання →</a></div></div></div></section>
 
-    <nav className="tuition-page-nav" aria-label="Навігація сторінкою вартості"><div className="wrap">
+    <PageJumpNav className="tuition-page-nav" ariaLabel="Навігація сторінкою вартості" label="Розділи вартості й оплати">
       <a href="#prices"><span>01</span><b>Вступникам 2026</b></a>
       <a href="#continuing"><span>02</span><b>Старші курси</b></a>
       <a href="#payment"><span>03</span><b>Оплата</b></a>
       <a href="#contracts"><span>04</span><b>Договори</b></a>
-    </div></nav>
+    </PageJumpNav>
 
     <section id="prices"><div className="wrap"><div className="tuition-section-head single"><div><div className="idx">01 / Вступникам 2026 року</div><h2>Вартість навчання<br />для вступників</h2></div></div>
       <div className="tuition-applicant-table-wrap"><table className="tuition-applicant-table"><thead><tr><th>Рівень і програма</th><th>Форма навчання</th><th>Навчальний рік</th><th>Семестр</th><th>Місяць</th></tr></thead><tbody>{entrantRates.flatMap((rate) => [

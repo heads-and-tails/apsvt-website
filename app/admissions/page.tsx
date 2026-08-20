@@ -12,6 +12,7 @@ import { EntranceExamResults } from "./EntranceExamResults";
 import { EnrollmentOrders } from "./EnrollmentOrders";
 import { ApplicantRankings } from "./ApplicantRankings";
 import { UkrainiansAbroadAdmission } from "../components/UkrainiansAbroadAdmission";
+import { PageJumpNav } from "../components/PageJumpNav";
 import { getPublicContent as getContentItems } from "@/lib/content";
 
 export const metadata: Metadata = { title: "Вступ 2026", description: "Маршрут вступу до АПСВТ у 2026 році: вибір програми, документи та персональна консультація." };
@@ -29,7 +30,7 @@ export default async function Page() {
   return <main id="top"><SiteHeader />
     <section className="phero img admissions-hero"><div className="bgi"><img src="/apsvt-regional-students.png" alt="Міжнародна студентська спільнота Академії" /></div><div className="wrap"><div className="crumb">Головна / Вступ 2026</div><h1>Ваш маршрут<br />до Академії</h1><p className="lead">Від першого запитання до зарахування — з тестом на програму та персональною підтримкою команди.</p><div className="admissions-hero-actions"><a className="cta" href="#test"><span>Знайти свою програму</span></a><a className="cta ghost" href="#consultation"><span>Отримати консультацію</span></a></div></div></section><div className="phero-rule" />
 
-    <nav className="applicant-section-nav" aria-label="Навігація для вступника"><div className="wrap">
+    <PageJumpNav className="applicant-section-nav" ariaLabel="Навігація для вступника" label="Розділи для вступника">
       <a href="#route"><span>01</span><b>Як вступити</b></a>
       <a href="#dates"><span>02</span><b>Ключові дати</b></a>
       <a href="#tuition"><span>03</span><b>Вартість і оплата</b></a>
@@ -44,7 +45,7 @@ export default async function Page() {
       <a href="#document-assistant"><span>10</span><b>Запитати помічника</b></a>
       <a href="#test"><span>11</span><b>Обрати програму</b></a>
       <a href="#consultation"><span>12</span><b>Консультація</b></a>
-    </div></nav>
+    </PageJumpNav>
 
     <section id="route"><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Чотири кроки</div><h2>Від вибору до зарахування</h2></div></div><div className="steps">{steps.map(([number, title, description]) => <article className="step" key={number}><span>{number}</span><h3>{title}</h3><p>{description}</p></article>)}</div></div></section>
 

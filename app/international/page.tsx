@@ -5,6 +5,7 @@ import { SiteFooter } from "../components/SiteFooter";
 import { PageDocuments } from "../components/PageDocuments";
 import { GreenFinEduResources } from "./GreenFinEduResources";
 import { UkrainiansAbroadAdmission } from "../components/UkrainiansAbroadAdmission";
+import { PageJumpNav } from "../components/PageJumpNav";
 
 export const metadata: Metadata = {
   title: "Міжнародне співробітництво та вступ іноземців",
@@ -162,7 +163,7 @@ export default function Page() {
       </div>
     </section><div className="phero-rule" />
 
-    <nav className="intl-page-nav" aria-label="Навігація міжнародною сторінкою"><div className="wrap">
+    <PageJumpNav className="intl-page-nav" ariaLabel="Навігація міжнародною сторінкою" label="Розділи міжнародної сторінки">
       <a href="#partners"><span>01</span><b>Партнери</b></a>
       <a href="#greenfinedu"><span>02</span><b>GreenFinEDU</b></a>
       <a href="#partnerships-in-action"><span>03</span><b>Події</b></a>
@@ -173,7 +174,7 @@ export default function Page() {
       <a href="#legal"><span>07</span><b>Офіційні джерела</b></a>
       <a href="#international-faq"><span>08</span><b>Запитання й відповіді</b></a>
       <a href="#international-contact"><span>09</span><b>Контакти</b></a>
-    </div></nav>
+    </PageJumpNav>
 
     <section id="partners"><div className="wrap">
       <div className="international-intro">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SiteHeader } from "../../components/SiteHeader";
+import { PageJumpNav } from "../../components/PageJumpNav";
 
 export const metadata: Metadata = {
   title: "Ліцензії та акредитація",
@@ -289,15 +290,13 @@ export default function LicensesPage() {
         </div>
       </section>
 
-      <nav className="license-page-nav" aria-label="Навігація сторінкою">
-        <div className="wrap">
+      <PageJumpNav className="license-page-nav" ariaLabel="Навігація сторінкою" label="Розділи ліцензій та акредитації">
           <a href="#license-document"><span>01</span><b>Ліцензія</b></a>
           <a href="#current-certificates"><span>02</span><b>Нові сертифікати</b></a>
           <a href="#expert-results"><span>03</span><b>Результати експертиз</b></a>
           <a href="#certificates"><span>04</span><b>Попередні скани</b></a>
           <a href="#verification"><span>05</span><b>Перевірити статус</b></a>
-        </div>
-      </nav>
+      </PageJumpNav>
 
       <section id="license-document">
         <div className="wrap license-document-grid">

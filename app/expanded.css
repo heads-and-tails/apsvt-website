@@ -2349,9 +2349,24 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .mainnav .menu-grid .menu-subitems a>span{color:var(--cobalt);font-size:15px}
 .mainnav .menu-grid .menu-subitems a:hover,.mainnav .menu-grid .menu-subitems a:focus-visible{background:#eeece5;color:var(--cobalt);outline:2px solid var(--gold);outline-offset:-2px}
 
-/* Page jump tiles stay broad and aligned instead of becoming small squares. */
+/* Page jump tiles stay collapsed until requested, then open as broad rows. */
+.page-jump-disclosure{background:#fff;border-bottom:1px solid var(--line)}
+.page-jump-disclosure>summary,.academic-page-map-disclosure>summary{max-width:1380px;margin:0 auto;min-height:76px;padding:14px clamp(18px,4vw,48px);display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:18px;align-items:center;cursor:pointer;list-style:none}
+.page-jump-disclosure>summary::-webkit-details-marker,.academic-page-map-disclosure>summary::-webkit-details-marker{display:none}
+.page-jump-disclosure>summary>span,.academic-page-map-disclosure>summary>span{grid-column:1;font:8px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cobalt)}
+.page-jump-disclosure>summary>b,.academic-page-map-disclosure>summary>b{grid-column:1;font:700 clamp(18px,2.1vw,28px)/1 var(--disp);text-transform:uppercase}
+.page-jump-disclosure>summary>small,.academic-page-map-disclosure>summary>small{grid-column:2;grid-row:1/3;font:9px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#697386}
+.page-jump-disclosure>summary>i,.academic-page-map-disclosure>summary>i{grid-column:3;grid-row:1/3;width:38px;height:38px;display:grid;place-items:center;background:var(--navy);color:var(--gold);font:normal 25px/1 var(--disp);transition:transform .2s,background .2s,color .2s}
+.page-jump-disclosure>summary:hover,.page-jump-disclosure>summary:focus-visible,.academic-page-map-disclosure>summary:hover,.academic-page-map-disclosure>summary:focus-visible{background:#f2f0ea;outline:0}
+.page-jump-disclosure[open]>summary>i,.academic-page-map-disclosure[open]>summary>i{transform:rotate(45deg);background:var(--gold);color:var(--ink)}
+.academic-page-map-disclosure{border:1px solid rgba(255,255,255,.28)}
+.academic-page-map-disclosure>summary{max-width:none;color:#fff}
+.academic-page-map-disclosure>summary>small{color:#bdc8dc}
+.academic-page-map-disclosure>summary:hover,.academic-page-map-disclosure>summary:focus-visible{color:var(--ink)}
+.academic-page-map-disclosure>summary:hover>small,.academic-page-map-disclosure>summary:focus-visible>small{color:#5f6878}
+:is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav){border-top:1px solid var(--line)}
 :is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) .wrap{display:flex;flex-wrap:wrap;align-items:stretch;padding-block:0}
-:is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) a{flex:1 1 210px;min-width:0;min-height:74px;padding:15px 18px;display:flex;flex-direction:column;justify-content:space-between;border-left:1px solid var(--line);border-bottom:1px solid var(--line)}
+:is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) a{flex:1 1 260px;min-width:0;min-height:74px;padding:15px 18px;display:flex;flex-direction:column;justify-content:space-between;border-left:1px solid var(--line);border-bottom:1px solid var(--line)}
 :is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) a:last-child{border-right:1px solid var(--line)}
 main section[id]{scroll-margin-top:96px}
 .deep-grid,.documents-map-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -2370,6 +2385,7 @@ main section[id]{scroll-margin-top:96px}
   .mainnav .menu-grid .menu-subitems a{min-height:42px;padding:8px 9px}
   :is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) .wrap{display:grid;grid-template-columns:1fr;padding-inline:16px}
   :is(.applicant-section-nav,.intl-page-nav,.tuition-page-nav,.license-page-nav,.resource-page-nav) a{min-height:58px;padding:11px 13px;border-right:1px solid var(--line)}
+  .page-jump-disclosure>summary,.academic-page-map-disclosure>summary{min-height:68px;padding:11px 16px;grid-template-columns:minmax(0,1fr) auto;gap:10px}.page-jump-disclosure>summary>small,.academic-page-map-disclosure>summary>small{display:none}.page-jump-disclosure>summary>i,.academic-page-map-disclosure>summary>i{grid-column:2;width:34px;height:34px}
   .deep-grid,.documents-map-grid{grid-template-columns:1fr}
 }
 
