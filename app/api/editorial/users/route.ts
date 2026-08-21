@@ -21,22 +21,22 @@ export async function POST(request: Request) {
       admin.id,
       temporaryPassword,
     );
-    if (temporaryPasswordIssued) {
-      await sendEditorialTemporaryPassword({
+    const deliveryMethod = temporaryPasswordIssued
+      ? await sendEditorialTemporaryPassword({
         email,
         displayName,
         temporaryPassword,
         loginUrl: new URL("/panel/login", request.url).toString(),
-      });
-    }
-    return NextResponse.json({ ...profile, temporaryPasswordIssued }, { status: 201 });
+      })
+      : null;
+    return NextResponse.json({ ...profile, temporaryPasswordIssued, deliveryMethod }, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message.toLowerCase() : "";
     if (message.includes("editorial_email_not_configured")) {
       return NextResponse.json({ error: "Акаунт створено, але поштовий сервіс ще не налаштовано. Скористайтеся кнопкою повторного надсилання після налаштування email." }, { status: 503 });
     }
     if (message.includes("email")) {
-      return NextResponse.json({ error: "Акаунт створено, але лист не вдалося надіслати. Спробуйте повторне надсилання тимчасового пароля." }, { status: 502 });
+      return NextResponse.json({ error: "Акаунт і права збережено, але лист активації не надіслано. Скористайтеся відновленням пароля." }, { status: 502 });
     }
     return NextResponse.json({ error: "Не вдалося додати користувача" }, { status: 403 });
   }
@@ -51,19 +51,19 @@ export async function PUT(request: Request) {
     }
     const temporaryPassword = generateTemporaryPassword();
     const profile = await issueEditorialTemporaryPassword(body.id, admin.id, temporaryPassword);
-    await sendEditorialTemporaryPassword({
+    const deliveryMethod = await sendEditorialTemporaryPassword({
       email: profile.email,
       displayName: profile.displayName,
       temporaryPassword,
       loginUrl: new URL("/panel/login", request.url).toString(),
     });
-    return NextResponse.json(profile);
+    return NextResponse.json({ ...profile, deliveryMethod });
   } catch (error) {
     const message = error instanceof Error ? error.message.toLowerCase() : "";
     if (message.includes("editorial_email_not_configured")) {
       return NextResponse.json({ error: "Поштовий сервіс ще не налаштовано" }, { status: 503 });
     }
-    return NextResponse.json({ error: "Не вдалося надіслати тимчасовий пароль" }, { status: 403 });
+    return NextResponse.json({ error: "Не вдалося надіслати лист активації" }, { status: 403 });
   }
 }
 

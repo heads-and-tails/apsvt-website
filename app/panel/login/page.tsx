@@ -14,7 +14,7 @@ export default async function EditorialLoginPage() {
   return <main className="auth-page"><div className="auth-card editorial-auth-card">
     <span className="auth-mark">АП</span><span className="kicker blue">Редакційний доступ</span>
     <h1>Вхід до панелі</h1>
-    <p>Введіть погоджену електронну адресу та пароль. Для нового акаунта тимчасовий пароль надсилає адміністратор; після першого входу ви створите власний.</p>
+    <p>Введіть погоджену електронну адресу та пароль. Для нового акаунта адміністратор надсилає безпечний лист активації; також можна увійти за одноразовим посиланням.</p>
     {isSupabaseConfigured() ? <LoginForm /> : <div className="auth-setup"><b>Підключення готується</b><p>Supabase ще не активовано для цього середовища. Публічний сайт продовжує працювати без змін.</p></div>}
     <p className="auth-security">Акаунти створює та погоджує адміністратор. Самостійна реєстрація вимкнена, щоб редакційні матеріали залишалися захищеними.</p>
     <Link className="back-home" href="/">← Повернутися на сайт</Link>

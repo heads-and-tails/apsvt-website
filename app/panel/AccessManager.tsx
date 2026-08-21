@@ -36,13 +36,15 @@ export function AccessManager({ initialProfiles, currentUserId }: { initialProfi
       headers: { "content-type": "application/json" },
       body: JSON.stringify(invite),
     });
-    const result = await response.json() as EditorialProfile & { error?: string; temporaryPasswordIssued?: boolean };
+    const result = await response.json() as EditorialProfile & { error?: string; temporaryPasswordIssued?: boolean; deliveryMethod?: "temporary-password" | "password-setup-link" };
     if (!response.ok) setMessage(result.error || "Не вдалося додати користувача");
     else {
       setProfiles((current) => [result, ...current.filter((profile) => profile.id !== result.id)]);
       setInvite({ displayName: "", email: "", role: "editor", accessScopes: ["*"] });
       setMessage(result.temporaryPasswordIssued
-        ? "Акаунт створено й погоджено. Тимчасовий пароль надіслано на пошту."
+        ? result.deliveryMethod === "password-setup-link"
+          ? "Акаунт створено й погоджено. Безпечне посилання для створення пароля надіслано на пошту."
+          : "Акаунт створено й погоджено. Тимчасовий пароль надіслано на пошту."
         : "Акаунт уже існував. Права доступу оновлено без зміни його пароля.");
     }
     setBusyId(null);
@@ -55,11 +57,13 @@ export function AccessManager({ initialProfiles, currentUserId }: { initialProfi
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ id }),
     });
-    const result = await response.json() as EditorialProfile & { error?: string };
-    if (!response.ok) setMessage(result.error || "Не вдалося надіслати тимчасовий пароль");
+    const result = await response.json() as EditorialProfile & { error?: string; deliveryMethod?: "temporary-password" | "password-setup-link" };
+    if (!response.ok) setMessage(result.error || "Не вдалося надіслати лист активації");
     else {
       setProfiles((current) => current.map((profile) => profile.id === id ? result : profile));
-      setMessage("Новий тимчасовий пароль надіслано на пошту. Попередній пароль більше не діє.");
+      setMessage(result.deliveryMethod === "password-setup-link"
+        ? "Безпечне посилання для створення нового пароля надіслано на пошту."
+        : "Новий тимчасовий пароль надіслано на пошту. Попередній пароль більше не діє.");
     }
     setBusyId(null);
   }
@@ -82,14 +86,14 @@ export function AccessManager({ initialProfiles, currentUserId }: { initialProfi
   }
 
   return <section className="access-manager" id="access">
-    <div className="materials-head"><div><span>Безпека редакції</span><h2>Користувачі та доступ</h2><p>Створюйте погоджені акаунти, призначайте сторінки й кафедри. Новий редактор отримає тимчасовий пароль на email і змінить його під час першого входу.</p></div><b>{profiles.filter((profile) => profile.status === "approved").length} активних</b></div>
+    <div className="materials-head"><div><span>Безпека редакції</span><h2>Користувачі та доступ</h2><p>Створюйте погоджені акаунти, призначайте сторінки й кафедри. Новий редактор отримає безпечний лист активації та створить власний пароль.</p></div><b>{profiles.filter((profile) => profile.status === "approved").length} активних</b></div>
     <form className="access-invite" onSubmit={addPerson}>
-      <div><small>Новий користувач</small><h3>Створити редакційний акаунт</h3><p>Новому користувачу система надішле тимчасовий пароль. Якщо акаунт існує, зміняться лише права.</p></div>
+      <div><small>Новий користувач</small><h3>Створити редакційний акаунт</h3><p>Новому користувачу система надішле лист для безпечного створення пароля. Якщо акаунт існує, зміняться лише права.</p></div>
       <label>Ім’я<input required value={invite.displayName} onChange={(event) => setInvite((current) => ({ ...current, displayName: event.target.value }))} placeholder="Ім’я та прізвище" /></label>
       <label>Електронна пошта<input required type="email" value={invite.email} onChange={(event) => setInvite((current) => ({ ...current, email: event.target.value }))} placeholder="name@example.com" /></label>
       <label>Роль<select value={invite.role} onChange={(event) => setInvite((current) => ({ ...current, role: event.target.value as EditorialRole }))}><option value="editor">Редактор</option><option value="admin">Адміністратор</option></select></label>
       <div className="access-scope-field"><span>Може редагувати</span><ScopePicker values={invite.accessScopes} onChange={(accessScopes) => setInvite((current) => ({ ...current, accessScopes }))} /></div>
-      <button disabled={busyId === "invite" || !invite.accessScopes.length} type="submit">{busyId === "invite" ? "Створюємо…" : "Створити й надіслати пароль →"}</button>
+      <button disabled={busyId === "invite" || !invite.accessScopes.length} type="submit">{busyId === "invite" ? "Створюємо…" : "Створити й надіслати доступ →"}</button>
     </form>
     {message && <p className="access-message" role="status">{message}</p>}
     <div className="access-list">
@@ -99,7 +103,7 @@ export function AccessManager({ initialProfiles, currentUserId }: { initialProfi
         <label>Роль<select value={profile.role} disabled={busyId === profile.id || profile.id === currentUserId} onChange={(event) => void update(profile.id, event.target.value as EditorialRole, profile.status, profile.accessScopes)}><option value="editor">Редактор</option><option value="admin">Адміністратор</option></select></label>
         <div className="access-scope-field"><span>Сторінки / кафедри</span><ScopePicker values={profile.accessScopes} disabled={busyId === profile.id || profile.id === currentUserId || profile.role === "admin"} onChange={(accessScopes) => void update(profile.id, profile.role, profile.status, accessScopes)} /></div>
         <label>Доступ<select value={profile.status} disabled={busyId === profile.id || profile.id === currentUserId} onChange={(event) => void update(profile.id, profile.role, event.target.value as EditorialStatus, profile.accessScopes)}><option value="pending">Очікує</option><option value="approved">Погоджено</option><option value="suspended">Призупинено</option></select></label>
-        <div className="access-account-actions"><span className={`access-status ${profile.status}`}>{profile.mustChangePassword ? "Очікує зміни пароля" : profile.status === "approved" ? "Погоджено" : profile.status === "pending" ? "Очікує рішення" : "Призупинено"}</span>{profile.id !== currentUserId && <button type="button" disabled={busyId === profile.id} onClick={() => void sendTemporaryPassword(profile.id)}>{busyId === profile.id ? "Надсилаємо…" : "Новий тимчасовий пароль"}</button>}</div>
+        <div className="access-account-actions"><span className={`access-status ${profile.status}`}>{profile.mustChangePassword ? "Очікує зміни пароля" : profile.status === "approved" ? "Погоджено" : profile.status === "pending" ? "Очікує рішення" : "Призупинено"}</span>{profile.id !== currentUserId && <button type="button" disabled={busyId === profile.id} onClick={() => void sendTemporaryPassword(profile.id)}>{busyId === profile.id ? "Надсилаємо…" : "Надіслати доступ"}</button>}</div>
       </article>)}
     </div>
   </section>;

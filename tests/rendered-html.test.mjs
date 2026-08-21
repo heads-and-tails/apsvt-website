@@ -744,7 +744,7 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(html,/Вхід до панелі/);
   assert.match(html,/Підключення готується/);
 
-  const [panel,auth,migration,access,documents,documentMigration,pageDocuments,accessMigration,accessRules,multiAccessMigration]=await Promise.all([
+  const [panel,auth,migration,access,documents,documentMigration,pageDocuments,accessMigration,accessRules,multiAccessMigration,editorialEmail]=await Promise.all([
     readFile(new URL("../app/panel/page.tsx",import.meta.url),"utf8"),
     readFile(new URL("../lib/auth.ts",import.meta.url),"utf8"),
     readFile(new URL("../supabase/migrations/202607220001_editorial_panel.sql",import.meta.url),"utf8"),
@@ -755,6 +755,7 @@ test("ships a protected Supabase editorial panel",async()=>{
     readFile(new URL("../supabase/migrations/202607230002_editorial_access_scopes.sql",import.meta.url),"utf8"),
     readFile(new URL("../lib/editorial-access.ts",import.meta.url),"utf8"),
     readFile(new URL("../supabase/migrations/202607230003_editorial_multi_access_scopes.sql",import.meta.url),"utf8"),
+    readFile(new URL("../lib/editorial-email.ts",import.meta.url),"utf8"),
   ]);
   assert.doesNotMatch(panel,/apsvt-academy\.ikucha\.chatgpt\.site\/panel/);
   assert.match(panel,/initialProfiles/);
@@ -778,7 +779,9 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(auth,/editorial_must_change_password/);
   assert.match(auth,/status: "approved"/);
   assert.match(access,/\/api\/editorial\/users/);
-  assert.match(access,/Створити й надіслати пароль/);
+  assert.match(access,/Створити й надіслати доступ/);
+  assert.match(editorialEmail,/resetPasswordForEmail/);
+  assert.match(editorialEmail,/using Supabase fallback/);
   assert.match(documents,/purpose", "document"/);
   assert.match(documents,/\/api\/documents/);
   assert.match(documentMigration,/editorial_documents/);
@@ -789,7 +792,7 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(accessMigration,/access_scope/);
   assert.match(accessMigration,/private\.can_edit_page/);
   assert.match(accessRules,/canEditPage/);
-  assert.match(accessRules,/Кафедра психології/);
+  assert.match(accessRules,/Психологічний напрям/);
   assert.match(access,/type="checkbox"/);
   assert.match(access,/ScopePicker/);
   assert.match(accessRules,/accessScopes\.includes/);
