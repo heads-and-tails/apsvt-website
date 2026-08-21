@@ -2661,3 +2661,59 @@ main section[id]{scroll-margin-top:96px}
   .postgraduate-document-list>a{grid-template-columns:27px minmax(0,1fr) 20px;padding:13px 10px}.postgraduate-document-list div>b{font-size:12px}
   .postgraduate-contact h2{max-width:100%;font-size:clamp(27px,7.8vw,34px);text-wrap:wrap}
 }
+
+/* Admissions directory: show one applicant topic only after its icon is selected. */
+.admissions-section-hub{padding:88px 0 0;background:#e8e5dd}
+.admissions-hub-catalog{padding-bottom:88px;outline:0}
+.admissions-hub-intro{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.55fr);gap:clamp(34px,7vw,100px);align-items:end;margin-bottom:46px}
+.admissions-hub-intro h2{max-width:13ch;margin-top:10px;font-size:clamp(38px,5.5vw,76px);line-height:.94;letter-spacing:-.045em;text-wrap:balance}
+.admissions-hub-intro>p{max-width:48ch;padding-left:20px;border-left:5px solid var(--gold);font-size:15px;color:rgba(9,14,24,.67)}
+.admissions-icon-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.admissions-icon-card{min-width:0;min-height:245px;padding:21px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr auto;gap:18px;text-align:left;color:var(--ink);background:#fff;border:1px solid var(--ink);cursor:pointer;transition:transform .22s,background-color .22s,color .22s,box-shadow .22s}
+.admissions-icon-card:hover,.admissions-icon-card:focus-visible{transform:translateY(-5px);background:var(--navy);color:#fff;box-shadow:8px 8px 0 var(--gold);outline:0}
+.admissions-icon-card.active{background:var(--cobalt);color:#fff;box-shadow:8px 8px 0 var(--gold)}
+.admissions-card-icon{width:58px;height:58px;display:grid;place-items:center;background:var(--gold);color:var(--ink);font:700 16px/1 var(--disp);letter-spacing:-.04em;text-transform:uppercase}
+.admissions-icon-card .admissions-card-icon{grid-column:1/-1}
+.admissions-card-copy{grid-column:1;align-self:end;display:grid;gap:8px;min-width:0}
+.admissions-card-copy small{font:9px var(--mono);letter-spacing:.1em;color:var(--cobalt)}
+.admissions-icon-card:hover small,.admissions-icon-card:focus-visible small,.admissions-icon-card.active small{color:var(--gold)}
+.admissions-card-copy b{font:700 clamp(16px,1.4vw,21px)/1.08 var(--disp);text-transform:uppercase;text-wrap:balance;overflow-wrap:normal;word-break:normal}
+.admissions-card-copy>span{max-width:31ch;font:12px/1.5 var(--body);color:rgba(9,14,24,.62)}
+.admissions-icon-card:hover .admissions-card-copy>span,.admissions-icon-card:focus-visible .admissions-card-copy>span,.admissions-icon-card.active .admissions-card-copy>span{color:#c9d3e8}
+.admissions-icon-card>i{grid-column:2;align-self:end;justify-self:end;font:normal 27px/1 var(--disp);color:var(--cobalt)}
+.admissions-icon-card:hover>i,.admissions-icon-card:focus-visible>i,.admissions-icon-card.active>i{color:var(--gold)}
+.admissions-hub-prompt{margin-top:28px;display:grid;grid-template-columns:48px minmax(0,1fr);gap:15px;align-items:center;padding:18px 20px;background:var(--navy);color:#fff;border-left:6px solid var(--gold)}
+.admissions-hub-prompt>span{width:44px;height:44px;display:grid;place-items:center;background:var(--gold);color:var(--ink);font:700 20px var(--disp)}
+.admissions-hub-prompt p{font-size:12px;color:#b9c4da}.admissions-hub-prompt b{display:block;margin-bottom:2px;color:#fff;font:600 13px var(--disp);text-transform:uppercase}
+.admissions-active-panel{padding:0;background:var(--paper);outline:0;border-top:8px solid var(--gold)}
+.admissions-active-toolbar{background:var(--navy);color:#fff;border-bottom:1px solid rgba(255,255,255,.2)}
+.admissions-active-toolbar>.wrap{min-height:116px;display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:20px;align-items:center}
+.admissions-active-toolbar small{display:block;margin-bottom:6px;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.admissions-active-toolbar h2{font-size:clamp(20px,2.3vw,32px);line-height:1;text-wrap:balance}
+.admissions-active-toolbar button{min-height:48px;padding:11px 16px;display:flex;align-items:center;gap:10px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5);font:700 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.admissions-active-toolbar button:hover,.admissions-active-toolbar button:focus-visible{background:var(--gold);color:var(--ink);border-color:var(--gold);outline:0}
+.admissions-active-toolbar button>span{font-size:20px}
+.admissions-active-content{background:var(--paper)}
+
+@media(max-width:1100px){
+  .admissions-icon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:820px){
+  .admissions-hub-intro{grid-template-columns:1fr;gap:24px}.admissions-hub-intro>p{max-width:62ch}
+  .admissions-icon-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .admissions-active-toolbar>.wrap{grid-template-columns:52px minmax(0,1fr)}
+  .admissions-active-toolbar .admissions-card-icon{width:52px;height:52px}
+  .admissions-active-toolbar button{grid-column:1/-1;width:100%;justify-content:center;margin-bottom:18px}
+}
+@media(max-width:560px){
+  .admissions-section-hub{padding-top:58px}.admissions-hub-catalog{padding-bottom:58px}
+  .admissions-hub-intro{margin-bottom:30px}.admissions-hub-intro h2{max-width:100%;font-size:clamp(31px,9.4vw,42px)}
+  .admissions-hub-intro>p{padding-left:14px;font-size:13px}
+  .admissions-icon-grid{grid-template-columns:1fr;gap:10px}
+  .admissions-icon-card{min-height:0;padding:16px;grid-template-columns:52px minmax(0,1fr) 24px;grid-template-rows:auto;gap:14px;align-items:center}
+  .admissions-icon-card .admissions-card-icon{grid-column:1;width:52px;height:52px;font-size:14px}
+  .admissions-card-copy{grid-column:2;align-self:center;gap:4px}.admissions-card-copy b{font-size:15px}.admissions-card-copy>span{font-size:11px}
+  .admissions-icon-card>i{grid-column:3;align-self:center;font-size:21px}
+  .admissions-hub-prompt{grid-template-columns:40px minmax(0,1fr);padding:14px}.admissions-hub-prompt>span{width:38px;height:38px}
+  .admissions-active-toolbar>.wrap{min-height:0;padding-top:18px}.admissions-active-toolbar h2{font-size:19px}
+}
