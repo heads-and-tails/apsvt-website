@@ -36,6 +36,7 @@ export type ProgrammeProfile = {
   partners: ProgrammePartner[];
   team: ProgrammePerson[];
   documents: ProgrammeDocument[];
+  discussionEmail?: string;
 };
 
 const sharedQualityDocuments: ProgrammeDocument[] = [
@@ -45,10 +46,10 @@ const sharedQualityDocuments: ProgrammeDocument[] = [
 
 export const programmeProfiles: Record<string, ProgrammeProfile> = {
   psychology: {
-    department: "Кафедра психології",
-    faculty: "Факультет економіки, соціальних технологій і туризму",
-    departmentHref: "/departments/economics-social-tourism-faculty#departments",
-    departmentSummary: "Кафедру засновано у 2022 році. Вона об’єднує бакалаврську, магістерські траєкторії з клінічної та бізнес-психології і підготовку докторів філософії.",
+    department: "Кафедри психологічного напряму",
+    faculty: "Факультет психології та соціального розвитку",
+    departmentHref: "/departments/psychology-social-development-faculty#departments",
+    departmentSummary: "Програму спільно розвивають кафедра клінічної психології та психотерапії і кафедра психології бізнесу та управління. Вони об’єднують бакалаврську підготовку, магістерські траєкторії та підготовку докторів філософії.",
     departmentFocus: ["психічне здоров’я", "психодіагностика", "організаційна психологія", "доказова практика"],
     practiceNote: "Практична підготовка охоплює психологічне консультування, діагностику, роботу з групами та організаціями. Конкретну базу практики студент погоджує з кафедрою відповідно до траєкторії.",
     practiceSource: "Офіційний профіль кафедри",
@@ -148,6 +149,7 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
       { title: "Програма вступного випробування D4", meta: "PDF · вступ 2026", href: "/documents/admissions/exam-programs/2026/phd/public-administration.pdf" },
       ...sharedQualityDocuments,
     ],
+    discussionEmail: "publ.adm.apsvt@gmail.com",
   },
   marketing: {
     department: "Кафедра маркетингу",
@@ -230,8 +232,8 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
   },
   "social-work": {
     department: "Кафедра соціально-трудових відносин та соціальної роботи",
-    faculty: "Факультет економіки, соціальних технологій і туризму",
-    departmentHref: "/departments/economics-social-tourism-faculty#departments",
+    faculty: "Факультет психології та соціального розвитку",
+    departmentHref: "/departments/psychology-social-development-faculty#departments",
     departmentSummary: "Міждисциплінарна команда з соціальної роботи, консультування, психології та соціальної політики. Навчання спирається на кейс-менеджмент і роботу з громадами.",
     departmentFocus: ["кейс-менеджмент", "робота з громадами", "соціальна профілактика", "супервізія"],
     practiceNote: "Викладачі мають досвід соціальних служб, громадського здоров’я та міжнародних проєктів. Програма подвійного диплома передбачає очні заняття й стажування в Польщі.",

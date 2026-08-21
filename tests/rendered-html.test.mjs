@@ -840,12 +840,14 @@ test("ships the public BytesLab Academy workspace with protected management",asy
 });
 
 test("renders verified partner marks, the official emblem and designed faculty pages",async()=>{
-  const [finance,tourism,about,lawFaculty,economicFaculty,profiles,structure]=await Promise.all([
+  const [finance,tourism,about,lawFaculty,economicFaculty,psychologyFaculty,psychologyFacultySource,profiles,structure]=await Promise.all([
     (await render("/programs/finance")).text(),
     (await render("/programs/tourism")).text(),
     (await render("/about")).text(),
     (await render("/departments/law-faculty")).text(),
     (await render("/departments/economics-social-tourism-faculty")).text(),
+    (await render("/departments/psychology-social-development-faculty")).text(),
+    readFile(new URL("../app/departments/psychology-social-development-faculty/page.tsx",import.meta.url),"utf8"),
     readFile(new URL("../lib/programme-profiles.ts",import.meta.url),"utf8"),
     readFile(new URL("../app/about/AcademyStructure.tsx",import.meta.url),"utf8"),
   ]);
@@ -856,11 +858,15 @@ test("renders verified partner marks, the official emblem and designed faculty p
   assert.match(about,/brand\/apsvt-official-logo\.png/);
   assert.match(lawFaculty,/Від першого набору/);
   assert.match(lawFaculty,/Юридична клініка/);
-  assert.match(economicFaculty,/Вісім напрямів/);
+  assert.match(economicFaculty,/Шість напрямів/);
   assert.match(economicFaculty,/«Академія/);
   assert.match(economicFaculty,/Освітні траєкторії/);
+  assert.match(psychologyFaculty,/Факультет психології та соціального розвитку/);
+  assert.match(psychologyFacultySource,/Кафедра клінічної психології та психотерапії/);
+  assert.match(psychologyFacultySource,/Центр ментального здоров’я/);
   assert.match(profiles,/departmentHref: "\/departments\/law-faculty#departments"/);
   assert.match(profiles,/departmentHref: "\/departments\/economics-social-tourism-faculty#departments"/);
+  assert.match(profiles,/departmentHref: "\/departments\/psychology-social-development-faculty#departments"/);
   assert.match(structure,/structure-academy-root/);
   assert.match(structure,/structure-levels/);
   assert.match(structure,/Рівень 0/);
@@ -878,8 +884,29 @@ test("adds a global site search with programme, faculty and department results",
   assert.match(search,/role="dialog"/);
   assert.match(search,/useDeferredValue/);
   assert.match(index,/Юридичний факультет/);
-  assert.match(index,/Кафедра психології/);
+  assert.match(index,/Кафедра клінічної психології та психотерапії/);
   assert.match(index,/Туризм та рекреація/);
+});
+
+test("routes public-administration programme feedback to the requested address",async()=>{
+  const html=await (await render("/programs/public-administration")).text();
+  assert.match(html,/publ\.adm\.apsvt@gmail\.com/);
+  assert.match(html,/mailto:publ\.adm\.apsvt@gmail\.com/);
+});
+
+test("publishes the psychology and social development faculty as a separate structure",async()=>{
+  const [html,page,directory,structure]=await Promise.all([
+    (await render("/departments/psychology-social-development-faculty")).text(),
+    readFile(new URL("../app/departments/psychology-social-development-faculty/page.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/departments/page.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/about/AcademyStructure.tsx",import.meta.url),"utf8"),
+  ]);
+  assert.match(html,/ФПСР/);
+  assert.match(html,/3<\/b><span>кафедри/);
+  assert.match(page,/Кафедра психології бізнесу та управління/);
+  assert.match(page,/Соціальна робота та консультування/);
+  assert.match(directory,/psychology-social-development-faculty/);
+  assert.match(structure,/Факультет психології та соціального розвитку/);
 });
 
 test("publishes Moodle and the student council across student resources",async()=>{

@@ -13,14 +13,12 @@ const facultyGroups = [
   {
     code: "ФЕСТТ",
     name: "Факультет економіки, соціальних технологій і туризму",
-    description: "Економіка, управління, поведінкові та соціальні науки, цифрові технології, туризм і гостинність.",
+    description: "Економіка, управління, цифрові технології, туризм і гостинність.",
     profileHref: "/departments/economics-social-tourism-faculty",
     departments: [
-      { id: "psychology", title: "Кафедра психології", text: "Психічне здоров’я, консультування, дослідження та психологія організацій.", href: "/departments#psychology", programmes: [{ code: "C4", title: "Психологія", href: "/programs/psychology" }] },
       { id: "finance", title: "Кафедра фінансів", text: "Фінансовий аналіз, банківська справа, страхування та сталі фінанси.", href: "/departments#finance", programmes: [{ code: "D2", title: "Фінанси", href: "/programs/finance" }] },
       { id: "economics-management", title: "Кафедра економіки підприємства та менеджменту", text: "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", href: "/departments#economics-management", programmes: [{ code: "D3", title: "Менеджмент", href: "/programs/management" }, { code: "D7", title: "Торгівля", href: "/programs/trade" }] },
       { id: "marketing", title: "Кафедра маркетингу", text: "Ринкова аналітика, бренди, комунікації, digital і поведінка споживачів.", href: "/departments#marketing", programmes: [{ code: "D5", title: "Маркетинг", href: "/programs/marketing" }] },
-      { id: "social-work", title: "Кафедра соціально-трудових відносин та соціальної роботи", text: "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", href: "/departments#social-work", programmes: [{ code: "I10", title: "Соціальна робота", href: "/programs/social-work" }] },
       { id: "tourism", title: "Кафедра спеціальних туристичних дисциплін", text: "Туризм, гостинність, рекреація, події та створення туристичних продуктів.", href: "/departments#tourism", programmes: [] },
       { id: "digital-technologies", title: "Кафедра інтелектуальних систем та цифрових технологій", text: "Інформаційні системи, цифрові освітні технології та управління інформаційною безпекою.", href: "/departments#digital-technologies", programmes: [{ code: "A5", title: "Професійна освіта · PhD", href: "/programs#doctoral-programmes" }] },
       { id: "hospitality", title: "Кафедра енотехнологій і сервісу в готельно-ресторанному сегменті", text: "Гостинність, сервіс, еногастрономічна культура та практичні лабораторні формати.", href: "/departments#hospitality", programmes: [{ code: "Сервіс", title: "Готельно-ресторанний напрям", href: "/news/hospitality-management-lab" }] },
@@ -36,6 +34,17 @@ const facultyGroups = [
       { id: "public-administration", title: "Кафедра публічного управління та адміністрування", text: "Публічна політика, державна служба, громади та управління змінами.", href: "/departments#public-administration", programmes: [{ code: "D4", title: "Публічне управління", href: "/programs/public-administration" }] },
       { id: "private-law", title: "Кафедра цивільного, трудового та господарського права", text: "Приватно-правові відносини, цивільний процес, трудові права й соціальний діалог.", href: "/departments#private-law", programmes: [{ code: "D8", title: "Право", href: "/programs/law" }] },
       { id: "criminal-law", title: "Кафедра кримінального права, процесу та криміналістики", text: "Кримінальна юстиція, захист прав людини, судові симуляції та криміналістична лабораторія.", href: "/departments/criminal-law", programmes: [{ code: "D8", title: "Право", href: "/programs/law" }] },
+    ],
+  },
+  {
+    code: "ФПСР",
+    name: "Факультет психології та соціального розвитку",
+    description: "Психічне здоров’я, психологічне благополуччя, соціальна підтримка та професійний розвиток.",
+    profileHref: "/departments/psychology-social-development-faculty",
+    departments: [
+      { id: "clinical-psychology", title: "Кафедра клінічної психології та психотерапії", text: "Психічне здоров’я, діагностика, консультування та психотерапевтичні підходи.", href: "/programs/psychology#department", programmes: [{ code: "C4", title: "Психологія · клінічна траєкторія", href: "/programs/psychology" }] },
+      { id: "business-psychology", title: "Кафедра психології бізнесу та управління", text: "Організаційна психологія, професійний розвиток, команди та управління змінами.", href: "/programs/psychology#department", programmes: [{ code: "C4", title: "Психологія бізнесу та управління", href: "/programs/psychology" }] },
+      { id: "social-work", title: "Кафедра соціально-трудових відносин та соціальної роботи", text: "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", href: "/programs/social-work#department", programmes: [{ code: "I10", title: "Соціальна робота та консультування", href: "/programs/social-work" }] },
     ],
   },
   {

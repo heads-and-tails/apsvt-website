@@ -42,6 +42,7 @@ const ukLinks: readonly NavItem[] = [
   { href: "/people", label: "Люди", children: [
     { href: "/people", label: "Команда Академії" }, { href: "/departments", label: "Кафедри" },
     { href: "/departments/law-faculty", label: "Юридичний факультет" }, { href: "/departments/economics-social-tourism-faculty", label: "Факультет економіки й туризму" },
+    { href: "/departments/psychology-social-development-faculty", label: "Факультет психології й розвитку" },
     { href: "/students/council", label: "Студентська рада" },
   ] },
   { href: "/international", label: "Міжнародне", children: [

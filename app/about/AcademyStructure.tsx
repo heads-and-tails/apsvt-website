@@ -14,14 +14,12 @@ const faculties: FacultyGroup[] = [
   {
     code: "ФЕСТТ",
     title: "Факультет економіки, соціальних технологій і туризму",
-    description: "Економіка, управління, психологія, соціальна робота, цифрові технології, туризм і гостинність.",
+    description: "Економіка, управління, цифрові технології, туризм і гостинність.",
     href: "/departments/economics-social-tourism-faculty",
     departments: [
-      { title: "Кафедра психології", description: "Консультування, психічне здоров’я та психологія організацій.", href: "/departments#psychology", programmes: [{ code: "C4", name: "Психологія", href: "/programs/psychology" }] },
       { title: "Кафедра фінансів", description: "Фінансовий аналіз, банківська справа, страхування та сталі фінанси.", href: "/departments#finance", programmes: [{ code: "D2", name: "Фінанси", href: "/programs/finance" }] },
       { title: "Кафедра економіки підприємства та менеджменту", description: "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", href: "/departments#economics-management", programmes: [{ code: "D3", name: "Менеджмент", href: "/programs/management" }, { code: "D7", name: "Торгівля", href: "/programs/trade" }] },
       { title: "Кафедра маркетингу", description: "Ринкова аналітика, бренди, комунікації та digital.", href: "/departments#marketing", programmes: [{ code: "D5", name: "Маркетинг", href: "/programs/marketing" }] },
-      { title: "Кафедра соціально-трудових відносин та соціальної роботи", description: "Соціальна політика, підтримка людей і громад та консультування.", href: "/departments#social-work", programmes: [{ code: "I10", name: "Соціальна робота", href: "/programs/social-work" }] },
       { title: "Кафедра спеціальних туристичних дисциплін", description: "Туризм, гостинність, рекреація та створення туристичних продуктів.", href: "/departments#tourism", programmes: [] },
       { title: "Кафедра інтелектуальних систем та цифрових технологій", description: "Інформаційні системи та цифрові освітні технології.", href: "/departments#digital-technologies", programmes: [{ code: "A5", name: "Професійна освіта · PhD", href: "/programs#doctoral-programmes" }] },
       { title: "Кафедра енотехнологій і готельно-ресторанного сервісу", description: "Гостинність, сервіс та еногастрономічна культура.", href: "/departments#hospitality", programmes: [{ code: "Сервіс", name: "Готельно-ресторанний напрям", href: "/news/hospitality-management-lab" }] },
@@ -37,6 +35,17 @@ const faculties: FacultyGroup[] = [
       { title: "Кафедра публічного управління та адміністрування", description: "Публічна політика, державна служба та управління громадами.", href: "/departments#public-administration", programmes: [{ code: "D4", name: "Публічне управління", href: "/programs/public-administration" }] },
       { title: "Кафедра цивільного, трудового та господарського права", description: "Приватне право, цивільний процес, трудові права й соціальний діалог.", href: "/departments#private-law", programmes: [{ code: "D8", name: "Право", href: "/programs/law" }] },
       { title: "Кафедра кримінального права, процесу та криміналістики", description: "Кримінальна юстиція, права людини та криміналістична практика.", href: "/departments/criminal-law", programmes: [{ code: "D8", name: "Право", href: "/programs/law" }] },
+    ],
+  },
+  {
+    code: "ФПСР",
+    title: "Факультет психології та соціального розвитку",
+    description: "Психічне здоров’я, психологічне благополуччя, соціальна підтримка та розвиток людини.",
+    href: "/departments/psychology-social-development-faculty",
+    departments: [
+      { title: "Кафедра клінічної психології та психотерапії", description: "Психічне здоров’я, психологічне консультування, діагностика та психотерапевтичні підходи.", href: "/programs/psychology#department", programmes: [{ code: "C4", name: "Психологія · клінічна траєкторія", href: "/programs/psychology" }] },
+      { title: "Кафедра психології бізнесу та управління", description: "Організаційна психологія, професійний розвиток, команди та управління змінами.", href: "/programs/psychology#department", programmes: [{ code: "C4", name: "Психологія бізнесу та управління", href: "/programs/psychology" }] },
+      { title: "Кафедра соціально-трудових відносин та соціальної роботи", description: "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", href: "/programs/social-work#department", programmes: [{ code: "I10", name: "Соціальна робота та консультування", href: "/programs/social-work" }] },
     ],
   },
   {

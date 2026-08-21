@@ -1965,6 +1965,7 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .faculty-programme-grid span{font:9px var(--mono);color:var(--cobalt)}
 .faculty-programme-grid b{justify-self:end;font:700 15px var(--disp);color:var(--cobalt)}
 .faculty-programme-grid h3{grid-column:1/3;align-self:end;max-width:27ch;font-size:24px;line-height:1.02}
+.faculty-programme-grid p{grid-column:1/3;margin:12px 0 0;color:rgba(9,14,24,.66);font-size:13px;line-height:1.55;text-wrap:pretty}
 .faculty-programme-grid i{grid-column:3;grid-row:1/4;align-self:center;justify-self:end;color:var(--cobalt);font-style:normal;font-size:22px}
 .department-faculty-profile{display:inline-block;margin-top:17px;padding-bottom:4px;border-bottom:2px solid var(--cobalt);color:var(--cobalt);font:700 8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
 
