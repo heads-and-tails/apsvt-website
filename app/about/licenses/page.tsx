@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SiteHeader } from "../../components/SiteHeader";
-import { PageJumpNav } from "../../components/PageJumpNav";
+import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Ліцензії та акредитація",
@@ -268,6 +268,14 @@ function ExpertDocumentCard({ document, index }: { document: ExpertDocument; ind
   );
 }
 
+const licenseSections: readonly SectionHubItem[] = [
+  { id: "license-document", index: "01", title: "Ліцензія Академії", description: "Документ МОН про право провадити освітню діяльність.", icon: "LIC" },
+  { id: "current-certificates", index: "02", title: "Чинні сертифікати", description: "Нові акредитаційні сертифікати з номерами та строками дії.", icon: "✓" },
+  { id: "expert-results", index: "03", title: "Результати експертиз", description: "Самооцінювання програм і звіти акредитаційних експертних груп.", icon: "PDF" },
+  { id: "certificates", index: "04", title: "Архів сертифікатів", description: "Попередні скани та повний історичний комплект документів.", icon: "ARC", aliases: ["archive"] },
+  { id: "verification", index: "05", title: "Перевірити статус", description: "Прямі посилання на актуальні державні реєстри ЄДЕБО, НАЗЯВО та МОН.", icon: "↗" },
+];
+
 export default function LicensesPage() {
   return (
     <main id="top">
@@ -290,13 +298,11 @@ export default function LicensesPage() {
         </div>
       </section>
 
-      <PageJumpNav className="license-page-nav" ariaLabel="Навігація сторінкою" label="Розділи ліцензій та акредитації">
-          <a href="#license-document"><span>01</span><b>Ліцензія</b></a>
-          <a href="#current-certificates"><span>02</span><b>Нові сертифікати</b></a>
-          <a href="#expert-results"><span>03</span><b>Результати експертиз</b></a>
-          <a href="#certificates"><span>04</span><b>Попередні скани</b></a>
-          <a href="#verification"><span>05</span><b>Перевірити статус</b></a>
-      </PageJumpNav>
+      <SectionHub
+        sections={licenseSections}
+        eyebrow="Навігатор документів"
+        description="Оберіть тип документа або перевірку в державному реєстрі. На сторінці відкриється тільки потрібний блок."
+      >
 
       <section id="license-document">
         <div className="wrap license-document-grid">
@@ -348,7 +354,7 @@ export default function LicensesPage() {
         </div>
       </section>
 
-      <section className="license-certificates-section" id="certificates">
+      <div><section className="license-certificates-section" id="certificates">
         <div className="wrap">
           <div className="license-section-head">
             <div>
@@ -381,7 +387,7 @@ export default function LicensesPage() {
             </div>
           </details>
         </div>
-      </section>
+      </section></div>
 
       <section className="license-verification" id="verification">
         <div className="wrap">
@@ -416,6 +422,7 @@ export default function LicensesPage() {
           </div>
         </div>
       </section>
+      </SectionHub>
 
       <SiteFooter />
     </main>

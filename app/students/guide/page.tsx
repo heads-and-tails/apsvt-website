@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { PageJumpNav } from "../../components/PageJumpNav";
+import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Путівник студента",
@@ -33,6 +33,13 @@ const grading = [
   ["35–49", "FX", "Незадовільно"], ["0–34", "F", "Незадовільно"],
 ];
 
+const guideSections: readonly SectionHubItem[] = [
+  { id: "start", index: "01", title: "Перші кроки", description: "Студентський квиток, кабінет, розклад і навчальний календар.", icon: "→" },
+  { id: "services", index: "02", title: "Корисні сервіси", description: "Moodle, розклад, бібліотека, кампус, оплата та контакти.", icon: "WEB" },
+  { id: "grading", index: "03", title: "Оцінювання", description: "Відповідність стобальної шкали, ECTS і національної оцінки.", icon: "A" },
+  { id: "support", index: "04", title: "Безпека й підтримка", description: "Контакти Академії, важливі дії та повна PDF-версія путівника.", icon: "?" },
+];
+
 export default function Page() {
   return <main id="top"><SiteHeader />
     <section className="resource-hero student-guide-hero"><div className="wrap">
@@ -40,7 +47,11 @@ export default function Page() {
       <div className="resource-hero-grid"><div><span className="resource-kicker">Перші кроки в Академії</span><h1>Путівник<br />студента</h1><p>Зібрали найважливіше про навчання, цифрові сервіси, оцінювання, кампус і підтримку — без необхідності переглядати весь документ.</p></div><aside><span>Редакція</span><b>2024</b><p>Оригінальний путівник Академії</p><div><strong>28</strong><small>сторінок у PDF</small></div><a href="/documents/students/first-year-guide-2024.pdf" target="_blank" rel="noreferrer">Відкрити оригінал ↗</a></aside></div>
     </div></section><div className="phero-rule" />
 
-    <PageJumpNav className="resource-page-nav" ariaLabel="Навігація путівником" label="Розділи путівника"><a href="#start">Перші кроки</a><a href="#services">Сервіси</a><a href="#grading">Оцінювання</a><a href="#support">Підтримка</a></PageJumpNav>
+    <SectionHub
+      sections={guideSections}
+      eyebrow="Навігатор студента"
+      description="Путівник поділено на чотири теми. Оберіть потрібну — на сторінці відкриється тільки цей розділ."
+    >
 
     <section className="guide-start" id="start"><div className="wrap">
       <div className="resource-section-head"><div><div className="idx">01 / Початок</div><h2>Що зробити насамперед</h2></div><p>Ці чотири кроки допоможуть швидко зорієнтуватися на початку навчання.</p></div>
@@ -57,6 +68,7 @@ export default function Page() {
     <section className="guide-grading" id="grading"><div className="wrap guide-grading-layout"><div><div className="idx">03 / Навчання</div><h2>Як читається оцінка</h2><p>У путівнику наведено відповідність стобальної шкали, оцінок ECTS і національної шкали.</p><Link className="back-link" href="/documents#education">Положення про освітній процес →</Link></div><div className="grading-table" role="table" aria-label="Шкала оцінювання"><div className="grading-row heading" role="row"><b>Бали</b><b>ECTS</b><b>Результат</b></div>{grading.map(([score, ects, result]) => <div className="grading-row" role="row" key={ects}><span>{score}</span><strong>{ects}</strong><span>{result}</span></div>)}</div></div></section>
 
     <section className="guide-support" id="support"><div className="wrap"><div className="guide-support-card"><span>Важливо</span><div><h2>Безпека й підтримка</h2><p>Під час повітряної тривоги спокійно зберіть особисті речі, прямуйте до найближчого укриття та дотримуйтеся вказівок працівників Академії. Якщо потрібна довідка, консультація або допомога з навчанням, зверніться до методиста факультету чи через загальні контакти.</p><div><Link className="cta dark" href="/contacts"><span>Контакти Академії</span></Link><a className="cta guide-pdf" href="/documents/students/first-year-guide-2024.pdf" target="_blank" rel="noreferrer"><span>Путівник PDF ↗</span></a></div></div></div><p className="resource-reference-note">Путівник опубліковано у редакції 2024 року. Для розкладу, вартості навчання, календаря та контактів використовуйте актуальні сторінки сайту, посилання на які наведено вище.</p></div></section>
+    </SectionHub>
     <SiteFooter />
   </main>;
 }

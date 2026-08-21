@@ -5,7 +5,7 @@ import { SiteFooter } from "../components/SiteFooter";
 import { PageDocuments } from "../components/PageDocuments";
 import { GreenFinEduResources } from "./GreenFinEduResources";
 import { UkrainiansAbroadAdmission } from "../components/UkrainiansAbroadAdmission";
-import { PageJumpNav } from "../components/PageJumpNav";
+import { SectionHub, type SectionHubItem } from "../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Міжнародне співробітництво та вступ іноземців",
@@ -148,6 +148,19 @@ const faq = [
   },
 ];
 
+const internationalSections: readonly SectionHubItem[] = [
+  { id: "partners", index: "01", title: "Міжнародні партнери", description: "Європейські заклади-партнери та академічні угоди Академії.", icon: "EU" },
+  { id: "greenfinedu", index: "02", title: "GreenFinEDU", description: "Міжнародний освітній проєкт, матеріали та результати співпраці.", icon: "GF" },
+  { id: "partnerships-in-action", index: "03", title: "Партнерство в дії", description: "Новини, зустрічі, підписані угоди та фотоматеріали.", icon: "NEWS" },
+  { id: "cooperation", index: "04", title: "Напрями співпраці", description: "Мобільність, дослідження, публікації, конференції та обмін досвідом.", icon: "↔" },
+  { id: "international-opportunities", index: "05", title: "Міжнародні можливості", description: "Стипендії, навчання за кордоном і програми професійного розвитку.", icon: "GO" },
+  { id: "ukrainians-abroad", index: "05.1", title: "Українцям за кордоном", description: "Дистанційний вступ, документи й підтвердження даних у 2026 році.", icon: "UA" },
+  { id: "foreign-applicants", index: "06", title: "Іноземним вступникам", description: "Повний маршрут вступу, електронне запрошення та пакет документів.", icon: "INT" },
+  { id: "legal", index: "07", title: "Офіційні джерела", description: "Нормативні акти, державні портали й документи Академії.", icon: "§" },
+  { id: "international-faq", index: "08", title: "Запитання й відповіді", description: "Короткі пояснення про запрошення, строки, мову та формат вступу.", icon: "?" },
+  { id: "international-contact", index: "09", title: "Контакти відділу", description: "Допомога з документами, пропозицією та електронним запрошенням.", icon: "@" },
+];
+
 export default function Page() {
   return <main id="top"><SiteHeader />
     <section className="phero img international-hero">
@@ -163,18 +176,11 @@ export default function Page() {
       </div>
     </section><div className="phero-rule" />
 
-    <PageJumpNav className="intl-page-nav" ariaLabel="Навігація міжнародною сторінкою" label="Розділи міжнародної сторінки">
-      <a href="#partners"><span>01</span><b>Партнери</b></a>
-      <a href="#greenfinedu"><span>02</span><b>GreenFinEDU</b></a>
-      <a href="#partnerships-in-action"><span>03</span><b>Події</b></a>
-      <a href="#cooperation"><span>04</span><b>Напрями співпраці</b></a>
-      <a href="#international-opportunities"><span>05</span><b>Можливості</b></a>
-      <a href="#ukrainians-abroad"><span>05.1</span><b>Українцям за кордоном</b></a>
-      <a href="#foreign-applicants"><span>06</span><b>Іноземним вступникам</b></a>
-      <a href="#legal"><span>07</span><b>Офіційні джерела</b></a>
-      <a href="#international-faq"><span>08</span><b>Запитання й відповіді</b></a>
-      <a href="#international-contact"><span>09</span><b>Контакти</b></a>
-    </PageJumpNav>
+    <SectionHub
+      sections={internationalSections}
+      eyebrow="Навігатор міжнародного розділу"
+      description="Партнерства, можливості та вступ розділено за темами. Оберіть одну іконку, щоб відкрити тільки потрібну інформацію."
+    >
 
     <section id="partners"><div className="wrap">
       <div className="international-intro">
@@ -259,7 +265,7 @@ export default function Page() {
 
     <UkrainiansAbroadAdmission index="05.1" />
 
-    <section className="foreign-applicants" id="foreign-applicants"><div className="wrap">
+    <div><section className="foreign-applicants" id="foreign-applicants"><div className="wrap">
       <div className="foreign-applicants-head">
         <div><div className="idx">06 / International applicants</div><h2>Вступ іноземних громадян</h2></div>
         <p>Офіційний маршрут від електронної заяви до зарахування — без посередників і неперевірених інструкцій.</p>
@@ -295,7 +301,7 @@ export default function Page() {
         <p>Навчання в Академії — на контрактній основі. Точний перелік документів залежить від рівня освіти та особистої ситуації.</p>
         <a href="/documents/admissions/07-poriadok-pryiomu-inozemtsiv.pdf" target="_blank" rel="noreferrer">Відкрити Порядок АПСВТ ↗</a>
       </aside>
-    </div></section>
+    </div></section></div>
 
     <section className="international-legal" id="legal"><div className="wrap">
       <div className="international-legal-head"><div><div className="idx">07 / Перевірені посилання</div><h2>Офіційні джерела</h2></div><p>Посилання ведуть безпосередньо на чинні документи Верховної Ради України, державну систему Study in Ukraine та нормативні документи Академії.</p></div>
@@ -319,6 +325,7 @@ export default function Page() {
       <div><div className="idx">09 / Міжнародний відділ</div><h2>Допоможемо пройти маршрут</h2><p>Перевіримо вашу ситуацію, підкажемо щодо документів, освітньої пропозиції та електронного запрошення.</p></div>
       <div className="international-contact-person"><small>Проректор з міжнародного співробітництва</small><h3>Н. М. Гончаренко</h3><a href="mailto:inz@socosvita.kiev.ua">inz@socosvita.kiev.ua</a><a href="tel:+380506073117">+380 50 607 31 17</a></div>
     </div></section>
+    </SectionHub>
 
     <PageDocuments pagePath="/international" />
     <SiteFooter />

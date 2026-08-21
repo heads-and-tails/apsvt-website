@@ -6,22 +6,21 @@ import { PageDocuments } from "../../components/PageDocuments";
 import { AcademicProfileCard } from "../../components/AcademicProfileCard";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
-import { AcademicPageMap } from "../../components/AcademicPageMap";
+import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Кафедра іноземних мов та гуманітарних дисциплін",
   description: "Мовна, гуманітарна та міжкультурна підготовка студентів АПСВТ.",
 };
 
-const departmentPageMap = [
-  { label: "Про кафедру", note: "роль у підготовці всіх спеціальностей", href: "#department-about" },
-  { label: "Освітні компоненти", note: "мовні та гуманітарні дисципліни", href: "#department-education" },
-  { label: "Робочі програми", note: "матеріали дисциплін і вибір", href: "#department-documents" },
-  { label: "Склад кафедри", note: "викладачі та професійні профілі", href: "#team" },
-  { label: "Наукова діяльність", note: "дослідження й студентські формати", href: "#science" },
-  { label: "Міжнародне середовище", note: "мовна практика та партнерські події", href: "#practice" },
-  { label: "Якість освіти", note: "опитування та оцінювання", href: "#quality" },
-  { label: "Новини кафедри", note: "події й актуальні матеріали", href: "#department-news" },
+const departmentSections: readonly SectionHubItem[] = [
+  { id: "department-about", index: "01", title: "Про кафедру та команда", description: "Роль кафедри, основні напрями й професійний профіль завідувачки.", icon: "DEP", aliases: ["team"] },
+  { id: "department-education", index: "02", title: "Освітні компоненти", description: "Мовні та гуманітарні дисципліни для всіх спеціальностей.", icon: "EDU" },
+  { id: "department-documents", index: "03", title: "Робочі програми", description: "Навчальні матеріали, силабуси й вибіркові дисципліни.", icon: "DOC" },
+  { id: "science", index: "04", title: "Наукова діяльність", description: "Дослідження, академічне письмо та студентські формати.", icon: "SCI" },
+  { id: "practice", index: "05", title: "Міжнародне середовище", description: "Мовна практика, мобільність і партнерські події.", icon: "INT" },
+  { id: "quality", index: "06", title: "Якість освіти", description: "Опитування, оцінювання та пропозиції до навчання.", icon: "✓" },
+  { id: "department-news", index: "07", title: "Новини кафедри", description: "Події та актуальні матеріали кафедри.", icon: "NEWS" },
 ];
 
 export default async function Page() {
@@ -29,7 +28,7 @@ export default async function Page() {
   return <main id="top"><SiteHeader />
     <section className="detail-hero image"><div className="detail-hero-bg"><img src="/news-international-workshop.jpg" alt="Міжкультурна навчальна дискусія студентів" /></div><div className="wrap"><div className="crumb">Головна / Кафедри / Іноземні мови та гуманітарні дисципліни</div><span className="detail-kicker">Освітній підрозділ АПСВТ</span><h1>Мова для професії. Гуманітарний погляд.</h1><p className="detail-deck">Кафедра розвиває професійну комунікацію, міжкультурну компетентність, критичне мислення та гуманітарну основу освіти.</p></div></section><div className="hero-rule" />
 
-    <AcademicPageMap kind="кафедра" title="Кафедра → дисципліни → матеріали" items={departmentPageMap} />
+    <SectionHub sections={departmentSections} eyebrow="Навігатор кафедри" description="Оберіть інформацію про кафедру, дисципліни, матеріали, науку або новини — відкриється тільки потрібний розділ.">
 
     <section id="department-about"><div className="wrap program-intro"><div><div className="idx">01 / Про кафедру</div><h2>Комунікація у глобальному середовищі</h2><p className="program-lede">Європейська інтеграція та сучасний ринок праці потребують впевненого володіння мовами, здатності працювати з інформацією та вести професійний діалог у міжнародному середовищі.</p><div className="focus-list"><div><span>01</span><b>Іноземні мови для професійної діяльності</b></div><div><span>02</span><b>Українська мова для іноземних студентів</b></div><div><span>03</span><b>Гуманітарні та суспільні дисципліни</b></div><div><span>04</span><b>Міжкультурна й цифрова комунікація</b></div></div></div>
       <aside className="programme-lead-card" id="team"><AcademicProfileCard badge="Завідувачка кафедри" person={{ name: "Світлана Бондар", role: "Освітня й організаційна робота кафедри", summary: "Кафедра забезпечує мовну та гуманітарну підготовку студентів усіх освітніх програм Академії." }} /></aside>
@@ -45,6 +44,7 @@ export default async function Page() {
 
     <section className="programme-quality" id="quality"><div className="wrap programme-quality-grid"><div><div className="idx">06 / Якість освіти</div><h2>Опитування та оцінювання</h2><p>Результати опитувань студентів і щорічне оцінювання викладачів використовуються для оновлення змісту та методик навчання.</p></div><nav><a href="/documents/archive/may-2026/quality-system.pdf" target="_blank" rel="noreferrer">Система забезпечення якості ↗</a><a href="/documents/archive/may-2026/student-survey-questionnaires.pdf" target="_blank" rel="noreferrer">Анкети для здобувачів ↗</a><Link href="/contacts">Надіслати пропозицію →</Link></nav></div></section>
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
+    </SectionHub>
     <PageDocuments pagePath="/departments/languages-humanities" />
     <SiteFooter />
   </main>;

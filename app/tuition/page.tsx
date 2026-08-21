@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { TuitionPaymentAssistant } from "./TuitionPaymentAssistant";
-import { PageJumpNav } from "../components/PageJumpNav";
+import { SectionHub, type SectionHubItem } from "../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Вартість навчання та оплата",
@@ -34,16 +34,22 @@ const continuingRates = [
   ["Магістратура, II курс", "Вступ 2025/26", "20 400", "17 400"],
 ];
 
+const tuitionSections: readonly SectionHubItem[] = [
+  { id: "prices", index: "01", title: "Вступникам 2026", description: "Офіційна вартість бакалаврату й магістратури за рік, семестр і місяць.", icon: "₴" },
+  { id: "continuing", index: "02", title: "Старші курси", description: "Річна оплата для студентів залежно від курсу та року вступу.", icon: "II" },
+  { id: "payment", index: "03", title: "Оплата навчання", description: "Помічник платежу, банківські реквізити та перевірка зарахування.", icon: "PAY", aliases: ["calculator"] },
+  { id: "contracts", index: "04", title: "Договори", description: "Офіційні шаблони договорів і правила безпечного підписання.", icon: "DOC" },
+];
+
 export default function Page() {
   return <main id="top"><SiteHeader />
     <section className="tuition-hero"><div className="wrap tuition-hero-grid"><div><div className="crumb">Головна / Вартість та оплата</div><span className="tuition-kicker">2026/27 навчальний рік</span><h1>Вартість<br />навчання</h1><p className="lead">Офіційні суми для вступників і студентів — за навчальний рік, семестр та місяць.</p><div className="tuition-hero-actions"><a href="#prices">Переглянути тарифи ↓</a><a href="#payment">Оплата навчання →</a></div></div></div></section>
 
-    <PageJumpNav className="tuition-page-nav" ariaLabel="Навігація сторінкою вартості" label="Розділи вартості й оплати">
-      <a href="#prices"><span>01</span><b>Вступникам 2026</b></a>
-      <a href="#continuing"><span>02</span><b>Старші курси</b></a>
-      <a href="#payment"><span>03</span><b>Оплата</b></a>
-      <a href="#contracts"><span>04</span><b>Договори</b></a>
-    </PageJumpNav>
+    <SectionHub
+      sections={tuitionSections}
+      eyebrow="Навігатор оплати"
+      description="Оберіть, що саме потрібно: тарифи, вартість старших курсів, оплата або договори. Інші блоки залишаться згорнутими."
+    >
 
     <section id="prices"><div className="wrap"><div className="tuition-section-head single"><div><div className="idx">01 / Вступникам 2026 року</div><h2>Вартість навчання<br />для вступників</h2></div></div>
       <div className="tuition-applicant-table-wrap"><table className="tuition-applicant-table"><thead><tr><th>Рівень і програма</th><th>Форма навчання</th><th>Навчальний рік</th><th>Семестр</th><th>Місяць</th></tr></thead><tbody>{entrantRates.flatMap((rate) => [
@@ -62,12 +68,13 @@ export default function Page() {
       <div className="tuition-portal-link"><div><span>Для студентів Академії</span><h3>Перевірте, чи зараховано платіж</h3><p>В особистому кабінеті видно актуальний залишок, прострочення, підтверджені оплати та договори.</p></div><Link href="/student">Відкрити особистий кабінет →</Link></div>
     </div></section>
 
-    <section id="contracts"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">04 / Документи</div><h2>Договори<br />для навчання</h2></div><p>Офіційні шаблони, опубліковані Академією. Приймальна комісія заповнює остаточний договір; він набирає чинності після зарахування.</p></div>
+    <div><section id="contracts"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">04 / Документи</div><h2>Договори<br />для навчання</h2></div><p>Офіційні шаблони, опубліковані Академією. Приймальна комісія заповнює остаточний договір; він набирає чинності після зарахування.</p></div>
       <div className="tuition-contract-grid"><a href="/documents/tuition/contract-paid-educational-service.docx" download><span>DOCX · шаблон 2025</span><div><b>Договір про надання платної освітньої послуги</b><p>Для підготовки фахівців за кошти фізичної або юридичної особи.</p></div><strong>Завантажити ↓</strong></a><a href="/documents/tuition/contract-education.docx" download><span>DOCX · шаблон 2025</span><div><b>Договір про навчання в Академії</b><p>Основний договір між Академією та здобувачем освіти.</p></div><strong>Завантажити ↓</strong></a></div>
       <p className="tuition-contract-note">Не підписуйте порожній шаблон і не надсилайте персональні дані через невідомі форми. Остаточну версію та порядок підписання погоджуйте з Приймальною комісією.</p>
     </div></section>
 
-    <section className="bigcta"><div className="wrap"><div className="mono">Потрібна перевірка?</div><h2>Уточніть суму<br />до оплати.</h2><Link className="cta" href="/admissions#consultation"><span>Отримати консультацію</span></Link></div></section>
+    <section className="bigcta"><div className="wrap"><div className="mono">Потрібна перевірка?</div><h2>Уточніть суму<br />до оплати.</h2><Link className="cta" href="/admissions#consultation"><span>Отримати консультацію</span></Link></div></section></div>
+    </SectionHub>
     <SiteFooter />
   </main>;
 }

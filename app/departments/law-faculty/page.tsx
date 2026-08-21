@@ -6,7 +6,7 @@ import { LawFacultyTeam } from "../../components/LawFacultyTeam";
 import { PageDocuments } from "../../components/PageDocuments";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
-import { AcademicPageMap } from "../../components/AcademicPageMap";
+import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Юридичний факультет",
@@ -20,15 +20,15 @@ const departments = [
   ["04", "Кафедра кримінального права, процесу та криміналістики", "Кримінальне право, процес, захист прав людини та криміналістика.", "/departments/criminal-law"],
 ];
 
-const facultyPageMap = [
-  { label: "Про факультет", note: "історія, місія та рівні освіти", href: "#faculty-about" },
-  { label: "Кафедри", note: "чотири правничі й управлінські напрями", href: "#departments" },
-  { label: "Спеціальності й програми", note: "D8 Право та D4 Публічне управління", href: "#faculty-programmes" },
-  { label: "Склад факультету", note: "викладачі та юристи-практики", href: "#law-teachers" },
-  { label: "Наукова діяльність", note: "дослідження, гуртки та проєкти", href: "#faculty-science" },
-  { label: "Практика й партнери", note: "клініка, лабораторія й установи", href: "#faculty-practice" },
-  { label: "Якість освіти", note: "обговорення, опитування та документи", href: "#faculty-quality" },
-  { label: "Новини факультету", note: "актуальні матеріали підрозділів", href: "#department-news" },
+const facultySections: readonly SectionHubItem[] = [
+  { id: "faculty-about", index: "01", title: "Про факультет", description: "Історія, місія та рівні правничої освіти.", icon: "F" },
+  { id: "departments", index: "02", title: "Кафедри", description: "Чотири правничі й управлінські академічні напрями.", icon: "4" },
+  { id: "faculty-programmes", index: "03", title: "Освітні програми", description: "D8 «Право» та D4 «Публічне управління».", icon: "OP" },
+  { id: "law-teachers", index: "04", title: "Склад факультету", description: "Викладачі, науковці та юристи-практики.", icon: "TEAM" },
+  { id: "faculty-science", index: "05", title: "Наукова діяльність", description: "Правничі дослідження, гуртки та студентські проєкти.", icon: "SCI" },
+  { id: "faculty-practice", index: "06", title: "Практика й партнери", description: "Юридична клініка, лабораторія та професійні установи.", icon: "LAB" },
+  { id: "faculty-quality", index: "07", title: "Якість освіти", description: "Обговорення програм, опитування та офіційні документи.", icon: "✓" },
+  { id: "department-news", index: "08", title: "Новини факультету", description: "Актуальні матеріали та події кафедр.", icon: "NEWS" },
 ];
 
 export default async function Page() {
@@ -36,7 +36,7 @@ export default async function Page() {
   return <main id="top"><SiteHeader />
     <section className="law-faculty-hero"><div className="law-faculty-hero-image"><img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1800&q=92&auto=format&fit=crop" alt="Правнича освіта" /></div><div className="wrap law-faculty-hero-copy"><Link href="/departments">← Усі кафедри</Link><span>ЮФ · з 1994 року</span><h1>Юридичний<br /><em>факультет</em></h1><p>Фундаментальна правнича освіта, клінічна практика, криміналістична лабораторія та дослідження, що працюють для людини й держави.</p><div><b>4</b><span>кафедри</span><b>2</b><span>практичні осередки</span></div></div></section><div className="hero-rule" />
 
-    <AcademicPageMap kind="факультет" title="Факультет → кафедри → програми" items={facultyPageMap} />
+    <SectionHub sections={facultySections} eyebrow="Навігатор факультету" description="Оберіть кафедри, команду, програми, практику або документи — відкриється тільки потрібний розділ.">
 
     <section className="law-faculty-intro" id="faculty-about"><div className="wrap law-faculty-intro-grid"><div><div className="idx">01 / Про факультет</div><h2>Від першого набору до правничої екосистеми</h2></div><div><p className="program-lede">Становлення факультету розпочалося з першого набору студентів у 1994 році. Сьогодні він готує практиків для судових, правозахисних і правоохоронних установ, органів влади, місцевого самоврядування та юридичного бізнесу.</p><p>До викладання залучені науковці та юристи-практики. Виїзні заняття, гостьові лекції, клінічна робота й лабораторні симуляції перетворюють теорію на професійну дію.</p><div className="law-faculty-milestones"><span><b>1994</b>перший набір студентів</span><span><b>2014</b>відкриття клініки «Феміда»</span><span><b>3</b>рівні вищої освіти</span></div></div></div></section>
 
@@ -52,6 +52,7 @@ export default async function Page() {
 
     <section className="programme-documents" id="faculty-quality"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">07 / Якість освіти й документи</div><h2>Програми, обговорення та оцінювання</h2></div><Link href="/documents#education">Усі документи →</Link></div><div className="programme-document-list"><a href="/documents/archive/may-2026/law-faculty-regulation-2023.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>PDF · архів травня 2026</small><h3>Положення про юридичний факультет</h3></div><b>↗</b></a><a href="/documents/archive/may-2026/public-law-department-2023.pdf" target="_blank" rel="noreferrer"><span>02</span><div><small>PDF · архів травня 2026</small><h3>Положення про кафедру публічного права</h3></div><b>↗</b></a><a href="/documents/archive/may-2026/private-law-department.pdf" target="_blank" rel="noreferrer"><span>03</span><div><small>PDF · архів травня 2026</small><h3>Положення про кафедру приватного права</h3></div><b>↗</b></a><a href="/documents/archive/may-2026/criminal-law-department-2023.pdf" target="_blank" rel="noreferrer"><span>04</span><div><small>PDF · архів травня 2026</small><h3>Положення про кафедру кримінального права</h3></div><b>↗</b></a><a href="/documents/archive/may-2026/quality-system.pdf" target="_blank" rel="noreferrer"><span>05</span><div><small>PDF · якість освіти</small><h3>Система забезпечення якості вищої освіти</h3></div><b>↗</b></a><a href="/documents/archive/may-2026/student-survey-questionnaires.pdf" target="_blank" rel="noreferrer"><span>06</span><div><small>PDF · опитування</small><h3>Анкети для оцінювання якості навчання</h3></div><b>↗</b></a></div><div className="law-faculty-source"><span>Матеріали відновлено з офіційної версії сайту за травень 2026 року</span><Link href="/materials">Відновлений каталог матеріалів →</Link></div></div></section>
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
+    </SectionHub>
     <PageDocuments pagePath="/departments/law-faculty" />
     <SiteFooter />
   </main>;

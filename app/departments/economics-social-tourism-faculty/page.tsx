@@ -5,7 +5,7 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { PageDocuments } from "../../components/PageDocuments";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
-import { AcademicPageMap } from "../../components/AcademicPageMap";
+import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Факультет економіки, соціальних технологій і туризму",
@@ -33,15 +33,15 @@ const programmes = [
   ["A5", "Професійна освіта", "/programs#doctoral-programmes"],
 ];
 
-const facultyPageMap = [
-  { label: "Про факультет", note: "місія, напрями й рівні освіти", href: "#faculty-about" },
-  { label: "Кафедри", note: "вісім академічних напрямів", href: "#departments" },
-  { label: "Спеціальності й програми", note: "перехід до навчальних планів", href: "#faculty-programmes" },
-  { label: "Організаційна діяльність", note: "деканат, рада і студентське представництво", href: "#faculty-organization" },
-  { label: "Наукова діяльність", note: "дослідження, гуртки та проєкти", href: "#faculty-science" },
-  { label: "Практика й партнери", note: "лабораторії та професійні кейси", href: "#faculty-practice" },
-  { label: "Якість освіти", note: "обговорення, анкети й рейтинги", href: "#faculty-quality" },
-  { label: "Новини факультету", note: "актуальні події підрозділів", href: "#department-news" },
+const facultySections: readonly SectionHubItem[] = [
+  { id: "faculty-about", index: "01", title: "Про факультет", description: "Місія, напрями підготовки та рівні освіти.", icon: "F" },
+  { id: "departments", index: "02", title: "Кафедри й напрями", description: "Вісім академічних напрямів факультету.", icon: "8" },
+  { id: "faculty-programmes", index: "03", title: "Освітні програми", description: "Спеціальності та переходи до навчальних планів.", icon: "OP" },
+  { id: "faculty-organization", index: "04", title: "Організація факультету", description: "Деканат, вчена рада і студентське представництво.", icon: "ORG" },
+  { id: "faculty-science", index: "05", title: "Наукова діяльність", description: "Дослідження, студентські гуртки та проєкти.", icon: "SCI" },
+  { id: "faculty-practice", index: "06", title: "Практика й партнери", description: "Лабораторії, стажування та професійні кейси.", icon: "LAB" },
+  { id: "faculty-quality", index: "07", title: "Якість освіти", description: "Обговорення, анкети, оцінювання та документи.", icon: "✓" },
+  { id: "department-news", index: "08", title: "Новини факультету", description: "Актуальні матеріали та події підрозділів.", icon: "NEWS" },
 ];
 
 export default async function Page() {
@@ -49,7 +49,7 @@ export default async function Page() {
   return <main id="top"><SiteHeader />
     <section className="law-faculty-hero festt-hero"><div className="law-faculty-hero-image"><img src="/apsvt-students-real.jpg" alt="Студенти Академії під час навчання" /></div><div className="wrap law-faculty-hero-copy"><Link href="/departments">← Усі кафедри</Link><span>ФЕСТТ · міждисциплінарний факультет</span><h1>Економіка.<br /><em>Людина. Подорож.</em></h1><p>Факультет поєднує бізнес, соціальні науки, цифрові технології, психологію, туризм і гостинність — від фундаментальної підготовки до практики з роботодавцями.</p><div><b>8</b><span>кафедр і напрямів</span><b>7</b><span>освітніх траєкторій</span></div></div></section><div className="hero-rule" />
 
-    <AcademicPageMap kind="факультет" title="Факультет → кафедри → програми" items={facultyPageMap} />
+    <SectionHub sections={facultySections} eyebrow="Навігатор факультету" description="Оберіть кафедри, програми, практику, документи або новини — відкриється тільки потрібний розділ.">
 
     <section className="law-faculty-intro festt-intro" id="faculty-about"><div className="wrap law-faculty-intro-grid"><div><div className="idx">01 / Про факультет</div><h2>Освіта на перетині економіки й суспільства</h2></div><div><p className="program-lede">Факультет готує фахівців для бізнесу, державних і громадських організацій, фінансового сектору, соціальної сфери, туристичної та готельно-ресторанної індустрії.</p><p>Освітні програми поєднують аналітичну підготовку, роботу з реальними кейсами, дослідження та практику. Студент може будувати індивідуальну траєкторію між суміжними професійними сферами.</p><div className="law-faculty-milestones"><span><b>8</b>предметних напрямів</span><span><b>3</b>рівні вищої освіти</span><span><b>1</b>спільна професійна екосистема</span></div></div></div></section>
 
@@ -65,6 +65,7 @@ export default async function Page() {
 
     <section className="programme-documents" id="faculty-quality"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">07 / Якість освіти</div><h2>Обговорення, анкети й оцінювання</h2></div><Link href="/documents#quality">Усі документи з якості →</Link></div><div className="programme-document-list"><a href="/documents/archive/may-2026/quality-system.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>PDF · архів травня 2026</small><h3>Система забезпечення якості вищої освіти</h3></div><b>↗</b></a><a href="/documents/archive/may-2026/student-survey-questionnaires.pdf" target="_blank" rel="noreferrer"><span>02</span><div><small>PDF · опитування здобувачів</small><h3>Анкети для оцінювання якості навчання</h3></div><b>↗</b></a><Link href="/contacts"><span>03</span><div><small>Обговорення освітніх програм</small><h3>Надіслати пропозицію або зауваження</h3></div><b>→</b></Link></div><div className="law-faculty-source"><span>Матеріали відновлено з офіційної версії сайту за травень 2026 року</span><Link href="/materials">Відновлений каталог матеріалів →</Link></div></div></section>
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
+    </SectionHub>
     <PageDocuments pagePath="/departments/economics-social-tourism-faculty" />
     <SiteFooter />
   </main>;
