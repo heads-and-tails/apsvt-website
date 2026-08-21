@@ -135,6 +135,11 @@ export const masterEntranceResultsAugust19: EntranceResultDocument[] = [
     href: "/documents/admissions/results/2026-08-19/marketing.pdf",
     pages: 1,
   },
+  {
+    title: "Фаховий іспит з психології для спеціальності I10 «Соціальна робота та консультування»",
+    href: "/documents/admissions/results/2026-08-19/social-work-counselling.pdf",
+    pages: 1,
+  },
 ];
 
 export function getEntranceResultDocumentsForNews(slug: string): EntranceResultDocument[] | null {

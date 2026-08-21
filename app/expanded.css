@@ -952,6 +952,20 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .entrance-level-nav b{font:600 clamp(23px,2.45vw,34px) var(--disp);text-transform:uppercase;margin-top:auto;overflow-wrap:anywhere}
 .entrance-level-nav small{font:9px var(--mono);text-transform:uppercase;color:#687181;margin-top:8px}
 .entrance-level-nav a:hover{background:var(--navy);color:#fff}.entrance-level-nav a:hover span,.entrance-level-nav a:hover small{color:var(--gold)}
+.entrance-session-folder{margin:0 0 82px;background:#fff;border:1px solid var(--ink)}
+.entrance-session-folder>summary{min-height:190px;padding:26px;display:grid;grid-template-columns:150px minmax(0,1fr) 48px;gap:26px;align-items:center;list-style:none;cursor:pointer;background:var(--gold);transition:background-color .2s,color .2s}
+.entrance-session-folder>summary::-webkit-details-marker{display:none}
+.entrance-session-folder>summary>span{align-self:start;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}
+.entrance-session-folder>summary small{font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#565d68}
+.entrance-session-folder>summary h3{max-width:22ch;margin:10px 0 12px;font-size:clamp(25px,3.2vw,44px);line-height:.98;text-wrap:balance}
+.entrance-session-folder>summary p{font-size:12px;color:#555e6c}
+.entrance-session-folder>summary>i{width:46px;height:46px;display:grid;place-items:center;background:var(--navy);color:var(--gold);font:normal 27px/1 var(--disp);transition:transform .2s}
+.entrance-session-folder>summary:hover,.entrance-session-folder>summary:focus-visible{background:var(--navy);color:#fff;outline:0}.entrance-session-folder>summary:hover>span,.entrance-session-folder>summary:focus-visible>span{color:var(--gold)}.entrance-session-folder>summary:hover small,.entrance-session-folder>summary:focus-visible small,.entrance-session-folder>summary:hover p,.entrance-session-folder>summary:focus-visible p{color:#c5cfe0}
+.entrance-session-folder[open]>summary>i{transform:rotate(45deg)}
+.entrance-session-documents{padding:0 26px 26px}
+.entrance-session-documents>a{min-height:125px;padding:20px 6px;display:grid;grid-template-columns:48px minmax(0,1fr) 160px;gap:18px;align-items:center;border-bottom:1px solid var(--ink);transition:background-color .2s,padding .2s}.entrance-session-documents>a:last-child{border-bottom:0}
+.entrance-session-documents>a:hover,.entrance-session-documents>a:focus-visible{padding-inline:16px;background:#f0eee8;outline:0}
+.entrance-session-documents>a>span{font:9px var(--mono);color:var(--cobalt)}.entrance-session-documents small{font:8px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#687181}.entrance-session-documents h4{margin:8px 0 5px;font:600 clamp(18px,2vw,27px)/1.08 var(--disp);text-transform:uppercase;text-wrap:balance}.entrance-session-documents p{font-size:11px;color:#697282}.entrance-session-documents>a>b{font:700 9px/1.5 var(--mono);letter-spacing:.05em;text-transform:uppercase;text-align:right;color:var(--cobalt)}
 .entrance-level{scroll-margin-top:92px;border-top:7px solid var(--ink);padding-top:34px;margin-top:82px}
 .entrance-level>header{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:50px;align-items:end;margin-bottom:38px}
 .entrance-level>header>div>span{font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cobalt)}
@@ -1091,6 +1105,7 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .entrance-pdf-button{min-height:120px}
   .entrance-level-nav{grid-template-columns:1fr}
   .entrance-level-nav a{min-height:120px}
+  .entrance-session-folder>summary{grid-template-columns:1fr 46px}.entrance-session-folder>summary>span{grid-column:1/-1}.entrance-session-folder>summary>i{grid-column:2;grid-row:2}.entrance-session-folder>summary>div{grid-column:1;grid-row:2}
   .entrance-program-head{display:none}
   .entrance-program-table,.entrance-program-table.compact{border-left:0}
   .entrance-program-row,.entrance-program-table.compact .entrance-program-row{grid-template-columns:60px minmax(0,1fr) 90px;border-left:1px solid var(--ink)}
@@ -1106,6 +1121,7 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .entrance-exams-head h2{max-width:100%;font-size:clamp(34px,9.4vw,42px);overflow-wrap:break-word}
   .entrance-results-head h2{max-width:100%;font-size:clamp(34px,9.4vw,42px);overflow-wrap:break-word}
   .entrance-level-nav{margin-bottom:50px}
+  .entrance-session-folder{margin-bottom:62px}.entrance-session-folder>summary{min-height:0;padding:20px;grid-template-columns:minmax(0,1fr) 40px;gap:15px}.entrance-session-folder>summary>i{width:40px;height:40px}.entrance-session-folder>summary h3{max-width:100%;font-size:clamp(24px,7.8vw,34px)}.entrance-session-documents{padding:0 16px 16px}.entrance-session-documents>a{grid-template-columns:30px minmax(0,1fr);gap:10px;padding:18px 2px}.entrance-session-documents>a>b{grid-column:2;text-align:left;margin-top:7px}
   .entrance-level{margin-top:62px}
   .entrance-level>header{gap:24px}
   .entrance-level>header h3{max-width:100%;font-size:clamp(32px,9.6vw,42px);overflow-wrap:break-word}

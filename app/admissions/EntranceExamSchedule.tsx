@@ -76,7 +76,7 @@ export function EntranceExamSchedule() {
   return <section className="entrance-exams" id="entrance-exams"><div className="wrap">
     <div className="entrance-exams-head">
       <div><div className="idx">05 / Приймальна комісія</div><h2>Розклад вступних<br />випробувань</h2></div>
-      <div className="entrance-exams-note"><b>Вступ 2026</b><p>Дати, час, формат і аудиторії витягнуто з офіційних графіків Приймальної комісії.</p><span>3 рівні освіти · 7 сторінок</span></div>
+      <div className="entrance-exams-note"><b>Вступ 2026</b><p>Дати, час, формат і аудиторії витягнуто з офіційних графіків Приймальної комісії.</p><span>Основна та додаткова сесії</span></div>
     </div>
 
     <nav className="entrance-level-nav" aria-label="Рівні освіти">
@@ -84,6 +84,22 @@ export function EntranceExamSchedule() {
       <a href="#entrance-master"><span>02</span><b>Магістратура</b><small>5–19 серпня</small></a>
       <a href="#entrance-phd"><span>03</span><b>Аспірантура</b><small>21–26 серпня</small></a>
     </nav>
+
+    <details className="entrance-session-folder" id="additional-session-2026">
+      <summary>
+        <span>04 / Окрема папка</span>
+        <div><small>Додаткові строки · вересень 2026</small><h3>Додаткова сесія вступної кампанії 2026</h3><p>Натисніть, щоб відкрити офіційні графіки для бакалаврату та магістратури.</p></div>
+        <i aria-hidden="true">+</i>
+      </summary>
+      <div className="entrance-session-documents">
+        <a href="/documents/admissions/entrance-exams/additional-session-2026/bachelor-interviews.pdf" target="_blank" rel="noreferrer">
+          <span>01</span><div><small>Бакалаврат · 8–9 вересня 2026</small><h4>Графік проведення співбесід</h4><p>Консультація та співбесіди в Академії й дистанційно.</p></div><b>PDF · 1 сторінка ↗</b>
+        </a>
+        <a href="/documents/admissions/entrance-exams/additional-session-2026/master-interviews-professional-exams.pdf" target="_blank" rel="noreferrer">
+          <span>02</span><div><small>Магістратура · 15–17 вересня 2026</small><h4>Графік співбесід і фахових іспитів</h4><p>Консультації, іноземна мова та фахові випробування.</p></div><b>PDF · 4 сторінки ↗</b>
+        </a>
+      </div>
+    </details>
 
     <article className="entrance-level" id="entrance-bachelor">
       <header><div><span>01 / Бакалаврат</span><h3>Співбесіди</h3><p>Для вступників на основі повної загальної середньої освіти та НРК5, які беруть участь у конкурсі за кошти фізичних та/або юридичних осіб.</p></div><PdfButton href={documents.bachelor} pages={1} /></header>
