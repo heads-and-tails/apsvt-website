@@ -56,7 +56,7 @@ export function DocumentsCatalogue() {
 
   return <section className="documents-catalogue" id="catalogue"><div className="wrap">
     <div className="documents-catalogue-head documents-catalogue-head-simple">
-      <div><div className="idx">02 / Каталог</div><h2>Знайдіть потрібне<br />без пошуку навмання</h2></div>
+      <div><div className="idx">02 / Каталог</div><h2>Знайдіть потрібне без пошуку навмання</h2></div>
     </div>
 
     <div className="documents-controls">
