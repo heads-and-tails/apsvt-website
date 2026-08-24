@@ -303,11 +303,14 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
       await ensureSupabasePosts();
       const client = options.includeDrafts ? createSupabaseAdmin() : createSupabasePublicClient();
       const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
-      let query = client.from("editorial_posts").select("*");
+      let query = client.from("editorial_posts").select("*")
+        .neq("category", "__telegram_editorial__")
+        .neq("category", "__byteslab_workspace__")
+        .neq("category", "__academy_scheduler__");
       if (!options.includeDrafts) query = query.eq("status", "published");
       const { data, error } = await query.order("featured", { ascending: false }).order("published_at", { ascending: false, nullsFirst: false }).limit(limit);
       if (error) throw error;
-      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>)).filter((post) => post.category !== "__byteslab_workspace__");
+      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>)).filter((post) => !post.category.startsWith("__"));
     } catch {
       // Keep the public site available with bundled editorial content.
     }
@@ -316,10 +319,12 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
     await ensurePosts();
     const database = await db();
     if (!database) throw new Error("D1_UNAVAILABLE");
-    const where = options.includeDrafts ? "" : "WHERE status = 'published'";
+    const where = options.includeDrafts
+      ? "WHERE substr(category,1,2) != '__'"
+      : "WHERE status = 'published' AND substr(category,1,2) != '__'";
     const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
     const result = await database.prepare(`SELECT * FROM posts ${where} ORDER BY featured DESC, COALESCE(published_at, created_at) DESC LIMIT ?`).bind(limit).all<Record<string, unknown>>();
-    return result.results.map(fromRow).filter((post) => post.category !== "__byteslab_workspace__");
+    return result.results.map(fromRow).filter((post) => !post.category.startsWith("__"));
   } catch {
     return seedPosts.filter((post) => options.includeDrafts || post.status === "published").slice(0, options.limit ?? 50);
   }

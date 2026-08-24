@@ -137,6 +137,21 @@ export async function requireAdmin(): Promise<Publisher> {
   return publisher;
 }
 
+export async function getPublisherByUserId(userId: string): Promise<Publisher | null> {
+  if (!isSupabaseConfigured() || !userId) return null;
+  const admin = createSupabaseAdmin();
+  const [{ data: userData, error: userError }, { data: profile, error: profileError }] = await Promise.all([
+    admin.auth.admin.getUserById(userId),
+    admin
+      .from("editorial_profiles")
+      .select("id,email,display_name,role,status,access_scope,created_at,approved_at")
+      .eq("id", userId)
+      .maybeSingle<ProfileRow>(),
+  ]);
+  if (userError || profileError || !profile || profile.status !== "approved") return null;
+  return profileFromRow(profile, userData.user?.app_metadata?.editorial_must_change_password === true);
+}
+
 export async function getEditorialProfiles(): Promise<EditorialProfile[]> {
   await requireAdmin();
   const admin = createSupabaseAdmin();

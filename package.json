@@ -12,7 +12,8 @@
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "telegram:configure": "node scripts/configure-telegram-bot.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",

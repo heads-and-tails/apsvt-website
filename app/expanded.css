@@ -643,6 +643,9 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .auth-setup{margin-top:25px;padding:18px;background:#fff;border-top:4px solid var(--gold)}
 .auth-setup b{font:700 13px var(--disp);text-transform:uppercase}.auth-setup p{margin-bottom:0;font-size:12px}
 .auth-card form:not(.editorial-login){margin-top:20px}.auth-card form:not(.editorial-login) button{width:100%}
+.telegram-connect-card form{margin-top:24px}.telegram-connect-card form button{width:100%}
+.telegram-connect-safety{display:grid;gap:6px;margin:22px 0;padding:18px;border:1px solid rgba(43,79,255,.24);background:#f1f4ff;text-align:left}
+.telegram-connect-safety b{color:var(--ink)}.telegram-connect-safety span{color:#657084;line-height:1.55}
 .panel-user form{margin:0}.panel-user button{border:0;background:transparent;color:#9fabc2;font-size:11px;padding:0;text-align:left}
 .access-manager{margin-top:70px;padding-top:20px}.access-manager .materials-head p{max-width:58ch;font-size:12px;color:#657084}
 .access-manager .materials-head>b{display:grid;place-items:center;background:var(--gold);padding:12px 16px;font:700 11px var(--mono);text-transform:uppercase}
