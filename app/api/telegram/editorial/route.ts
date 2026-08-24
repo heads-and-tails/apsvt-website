@@ -3,6 +3,7 @@ import {
   handleEditorialTelegramUpdate,
   type TelegramEditorialUpdate,
 } from "@/lib/telegram-editorial";
+import { getTelegramWebhookSecret } from "@/lib/telegram-config";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -12,7 +13,7 @@ function siteUrl(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const expectedSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  const expectedSecret = await getTelegramWebhookSecret();
   if (!expectedSecret || request.headers.get("x-telegram-bot-api-secret-token") !== expectedSecret) {
     return NextResponse.json({ ok: false }, { status: 403 });
   }

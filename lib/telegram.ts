@@ -1,3 +1,5 @@
+import { getTelegramBotToken } from "@/lib/telegram-config";
+
 export type TelegramButton =
   | { text: string; callback_data: string; url?: never }
   | { text: string; url: string; callback_data?: never };
@@ -8,8 +10,8 @@ type TelegramApiResponse<T> = {
   description?: string;
 };
 
-export function telegramConfigured(): boolean {
-  return Boolean(process.env.TELEGRAM_BOT_TOKEN);
+export async function telegramConfigured(): Promise<boolean> {
+  return Boolean(await getTelegramBotToken());
 }
 
 export function escapeTelegramHtml(value: string): string {
@@ -17,7 +19,7 @@ export function escapeTelegramHtml(value: string): string {
 }
 
 async function telegramRequest<T>(method: string, body: Record<string, unknown>): Promise<TelegramApiResponse<T>> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const token = await getTelegramBotToken();
   if (!token) return { ok: false, description: "Telegram bot is not configured" };
   const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
     method: "POST",
@@ -29,7 +31,7 @@ async function telegramRequest<T>(method: string, body: Record<string, unknown>)
 }
 
 export async function sendTelegramMessage(chatId: string, text: string, buttons: TelegramButton[][] = []) {
-  if (!chatId) return { ok: false, configured: telegramConfigured() };
+  if (!chatId) return { ok: false, configured: await telegramConfigured() };
   const result = await telegramRequest("sendMessage", {
     chat_id: chatId,
     text: text.slice(0, 4096),
@@ -37,7 +39,7 @@ export async function sendTelegramMessage(chatId: string, text: string, buttons:
     disable_web_page_preview: true,
     reply_markup: buttons.length ? { inline_keyboard: buttons } : undefined,
   });
-  return { ok: result.ok, configured: telegramConfigured(), description: result.description };
+  return { ok: result.ok, configured: await telegramConfigured(), description: result.description };
 }
 
 export async function answerTelegramCallback(callbackQueryId: string, text: string) {
@@ -53,7 +55,7 @@ export async function deleteTelegramMessage(chatId: string, messageId: number) {
 }
 
 export async function getTelegramFile(fileId: string): Promise<{ bytes: Uint8Array; filePath: string } | null> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const token = await getTelegramBotToken();
   if (!token) return null;
   const result = await telegramRequest<{ file_path?: string }>("getFile", { file_id: fileId });
   const filePath = result.result?.file_path;
