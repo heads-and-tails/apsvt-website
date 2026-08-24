@@ -25,6 +25,7 @@ import {
   type PageDocument,
 } from "@/lib/documents";
 import { createEditorialDraft, detectEditorialTarget } from "@/lib/editorial-ai";
+import { normalizeEducationQualityRubricId } from "@/lib/education-quality";
 import {
   draftRecordToPayload,
   draftTargetConfigs,
@@ -429,7 +430,7 @@ async function commitPendingDraft(chatId: string, publisher: Publisher) {
         fileUrl: sourceIsDocument ? source?.url || "" : "",
         fileName: sourceIsDocument ? source?.fileName || "" : "",
         date: payload.date || "",
-        role: payload.role || "",
+        role: config.departmentEntryType === "quality" ? normalizeEducationQualityRubricId(payload.role || "", `${payload.title || draft.title} ${payload.summary || draft.summary}`) : payload.role || "",
         email: payload.email || "",
         profileUrl: payload.profileUrl || "",
         status: "draft",

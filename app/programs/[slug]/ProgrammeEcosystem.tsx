@@ -3,6 +3,8 @@ import { getProgrammeProfile, type ProgrammePartner } from "@/lib/programme-prof
 import { AcademicProfileCard } from "@/app/components/AcademicProfileCard";
 import { MarketingTeam } from "./MarketingTeam";
 import { getProgram } from "@/lib/programs";
+import type { DepartmentEntry } from "@/lib/department-content";
+import { EducationQualitySection } from "@/app/components/EducationQualitySection";
 
 function PartnerCard({ partner }: { partner: ProgrammePartner }) {
   const content = <>
@@ -20,7 +22,7 @@ function PartnerCard({ partner }: { partner: ProgrammePartner }) {
     : <article className="programme-partner">{content}</article>;
 }
 
-export function ProgrammeEcosystem({ slug }: { slug: string }) {
+export function ProgrammeEcosystem({ slug, entries }: { slug: string; entries: DepartmentEntry[] }) {
   const profile = getProgrammeProfile(slug);
   const program = getProgram(slug);
   const officialProgrammeDocuments = program?.materials.map((material) => ({
@@ -42,7 +44,7 @@ export function ProgrammeEcosystem({ slug }: { slug: string }) {
     <section className="programme-team" id="team"><div className="wrap"><div className="sec-head programme-team-head"><div><div className="idx">06 / Склад кафедри</div><h2>Команда програми</h2></div><p>Профілі гаранта, викладачів і практиків публікуються на сторінці кафедри та доповнюються редактором підрозділу.</p></div><Link className="academic-inline-link" href="/departments">Перейти до кафедр →</Link></div></section>
     <section className="programme-science" id="science"><div className="wrap programme-science-grid"><div><div className="idx">07 / Наукова діяльність</div><h2>Дослідження, гуртки та проєкти</h2></div><div><p>Студентські дослідження пов’язуються з тематикою програми, конференціями Академії та науковою роботою кафедри. Актуальний склад гуртків і календар подій оголошує кафедра.</p><Link href="/research">Наука в Академії →</Link></div></div></section>
     <section className="programme-practice" id="practice"><div className="wrap"><div className="sec-head programme-practice-head"><div><div className="idx">08 / Партнери й практика</div><h2>Професійне середовище</h2></div><div><p>Базу практики та партнера кафедра підтверджує для конкретного навчального року й індивідуальної траєкторії.</p></div></div></div></section>
-    <section className="programme-quality" id="quality"><div className="wrap programme-quality-grid"><div><div className="idx">09 / Якість освіти</div><h2>Обговорення, опитування та оцінювання</h2><p>У цьому блоці зібрані процедури оновлення освітніх програм, опитування здобувачів, рейтинги студентів і щорічне оцінювання викладачів.</p></div><nav><Link href="/documents#quality">Система забезпечення якості →</Link><Link href="/documents/archive/may-2026/student-survey-questionnaires.pdf">Анкети для здобувачів ↗</Link><Link href="/contacts">Надіслати пропозицію до програми →</Link></nav></div></section>
+    <EducationQualitySection entries={entries} />
   </>;
 
   return <>
@@ -95,6 +97,6 @@ export function ProgrammeEcosystem({ slug }: { slug: string }) {
       <p className="programme-practice-disclaimer">Місця практики й стажування залежать від навчального року, наявності договору та індивідуальної траєкторії. Актуальне направлення підтверджує кафедра.</p>
     </div></section>
 
-    <section className="programme-quality" id="quality"><div className="wrap programme-quality-grid"><div><div className="idx">09 / Якість освіти</div><h2>Обговорення, опитування та оцінювання</h2><p>Пропозиції до освітньої програми, результати опитувань, рейтинги студентів і щорічне оцінювання викладачів зібрані у спільному контурі якості.</p></div><nav><Link href="/documents#quality">Документи з якості →</Link><a href="/documents/archive/may-2026/quality-system.pdf" target="_blank" rel="noreferrer">Система забезпечення якості ↗</a><a href="/documents/archive/may-2026/student-survey-questionnaires.pdf" target="_blank" rel="noreferrer">Анкети для здобувачів ↗</a>{profile.discussionEmail ? <a href={`mailto:${profile.discussionEmail}?subject=${encodeURIComponent(`Пропозиція до освітньої програми ${program?.code || ""}`)}`}>Пропозиції до програми: {profile.discussionEmail} ↗</a> : <Link href="/contacts">Пропозиції до освітньої програми →</Link>}</nav></div></section>
+    <EducationQualitySection entries={entries} discussionEmail={profile.discussionEmail} />
   </>;
 }

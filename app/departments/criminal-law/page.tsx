@@ -6,6 +6,7 @@ import { PageDocuments } from "../../components/PageDocuments";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
+import { EducationQualitySection } from "../../components/EducationQualitySection";
 import "./criminal-law.css";
 
 export const metadata: Metadata = {
@@ -134,7 +135,7 @@ export default async function Page() {
 
     <section className="criminal-department-practice" id="practice"><div className="wrap criminal-department-practice-grid"><div><div className="idx">05 / Практика й партнери</div><h2>Від матеріалів справи до процесуальної дії</h2><p>Студенти працюють із професійними сценаріями, беруть участь у тренінгах і судових симуляціях, проходять практику в правоохоронних органах, судах, адвокатських об’єднаннях та нотаріаті.</p><Link href="/programs/law/forensic-laboratory">Відкрити лабораторію криміналістики →</Link></div><div className="criminal-department-practice-list"><span><b>01</b>Дактилоскопічні дослідження</span><span><b>02</b>Фіксація слідів і робота з доказами</span><span><b>03</b>Криміналістичний аналіз документів</span><span><b>04</b>Моделювання слідчих дій</span></div></div></section>
 
-    <section className="programme-quality" id="quality"><div className="wrap programme-quality-grid"><div><div className="idx">06 / Якість освіти</div><h2>Обговорення, опитування та оцінювання</h2><p>Пропозиції до програми, результати опитувань здобувачів і оцінювання викладачів зібрані в єдиному контурі якості Академії.</p></div><nav><a href="/documents/archive/may-2026/quality-system.pdf" target="_blank" rel="noreferrer">Система забезпечення якості ↗</a><a href="/documents/archive/may-2026/student-survey-questionnaires.pdf" target="_blank" rel="noreferrer">Анкети здобувачів ↗</a><Link href="/contacts">Надіслати пропозицію до програми →</Link></nav></div></section>
+    <EducationQualitySection entries={departmentEntries} index="06" />
 
     <div id="department-news"><section className="criminal-department-links"><div className="wrap"><Link href="/departments/law-faculty"><span>Юридичний факультет</span><b>Усі кафедри факультету →</b></Link><Link href="/programs/law"><span>Освітня програма</span><b>D8 «Право» →</b></Link><Link href="/programs/law/forensic-laboratory"><span>Практичний осередок</span><b>Лабораторія криміналістики →</b></Link></div></section>
     <DepartmentEditorialContent entries={departmentEntries} /></div>

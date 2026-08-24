@@ -7,8 +7,9 @@ import {
   type ContentItem,
 } from "@/lib/content";
 import { isDepartmentPagePath } from "@/lib/editorial-access";
+import { educationQualityRubrics } from "@/lib/education-quality";
 
-export const departmentEntryTypes = ["section", "news", "article", "material", "photo", "teacher"] as const;
+export const departmentEntryTypes = ["section", "news", "article", "material", "photo", "teacher", "quality"] as const;
 export type DepartmentEntryType = (typeof departmentEntryTypes)[number];
 export type DepartmentEntryStatus = "draft" | "published";
 
@@ -64,6 +65,7 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
   if (entry.entryType === "photo" && !entry.imageUrl) return false;
   if (entry.entryType === "material" && !entry.fileUrl) return false;
   if (entry.entryType === "teacher" && !entry.role) return false;
+  if (entry.entryType === "quality" && !educationQualityRubrics.some((rubric) => rubric.id === entry.role)) return false;
   return true;
 }
 
