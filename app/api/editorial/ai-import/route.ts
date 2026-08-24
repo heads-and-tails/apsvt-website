@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requirePublisher } from "@/lib/auth";
-import { createEditorialDraft } from "@/lib/editorial-ai";
+import { createEditorialDraft, detectEditorialTarget } from "@/lib/editorial-ai";
 import { draftTargetConfigs, type EditorialDraftTarget } from "@/lib/editorial-drafts";
-import { canEditPage } from "@/lib/editorial-access";
+import { canEditPage, isDepartmentPagePath } from "@/lib/editorial-access";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -27,8 +27,7 @@ export async function POST(request: Request) {
     const target = data.get("target");
     const instruction = typeof data.get("instruction") === "string" ? String(data.get("instruction")).trim().slice(0, 1200) : "";
     const pagePath = typeof data.get("pagePath") === "string" ? String(data.get("pagePath")) : "";
-    const config = draftTargetConfigs.find((entry) => entry.id === target);
-    if (!(file instanceof File) || !config) {
+    if (!(file instanceof File) || (target !== "auto" && !draftTargetConfigs.some((entry) => entry.id === target))) {
       return NextResponse.json({ error: "Оберіть файл і розділ сайту" }, { status: 400 });
     }
     if (!allowedTypes.has(file.type)) {
@@ -37,13 +36,21 @@ export async function POST(request: Request) {
     if (file.size > 12 * 1024 * 1024) {
       return NextResponse.json({ error: "Файл для AI-імпорту має бути менше 12 МБ" }, { status: 400 });
     }
-    const destination = target === "document" && pagePath.startsWith("/") ? pagePath : config.pagePath;
-    if (!canEditPage(publisher, destination)) throw new Error("FORBIDDEN_SCOPE");
     const bytes = new Uint8Array(await file.arrayBuffer());
+    const resolvedTarget = target === "auto"
+      ? detectEditorialTarget(file, bytes, instruction)
+      : target as EditorialDraftTarget;
+    const config = draftTargetConfigs.find((entry) => entry.id === resolvedTarget)!;
+    const isDepartmentTarget = Boolean(config.departmentEntryType);
+    if (isDepartmentTarget && !isDepartmentPagePath(pagePath)) {
+      return NextResponse.json({ error: "Оберіть кафедру або факультет для цього матеріалу" }, { status: 400 });
+    }
+    const destination = (resolvedTarget === "document" || isDepartmentTarget) && pagePath.startsWith("/") ? pagePath : config.pagePath;
+    if (!canEditPage(publisher, destination)) throw new Error("FORBIDDEN_SCOPE");
     const draft = await createEditorialDraft({
       file,
       bytes,
-      target: target as EditorialDraftTarget,
+      target: resolvedTarget,
       instruction,
       editorEmail: publisher.email,
     });

@@ -46,6 +46,26 @@ export function extractEditorialFileText(file: File, bytes: Uint8Array): string 
   return "";
 }
 
+export function detectEditorialTarget(
+  file: File,
+  bytes: Uint8Array,
+  instruction = "",
+): EditorialDraftTarget {
+  const text = `${file.name}\n${instruction}\n${extractEditorialFileText(file, bytes)}`.toLowerCase();
+  if (/(резюме|cv|curriculum vitae|orcid|google scholar|науков(ий|ого) ступін|кандидат наук|доктор наук)/i.test(text)) return "department_teacher";
+  if (/(ваканс|конкурс.*посад|на заміщення.*посад|штатн(а|ої) посад)/i.test(text)) return "vacancy";
+  if (/(розклад|графік).*(іспит|співбесід|вступн.*випробув|екзамен|сесі)/i.test(text)) return "schedule_exam";
+  if (/(розклад занять|навчальн.*розклад|пари|аудиторі)/i.test(text)) return "schedule_lesson";
+  if (/(кваліфікаційн.*робот|дипломн.*робот|бакалаврськ.*робот|магістерськ.*робот|науковий керівник)/i.test(text)) return "student_thesis";
+  if (/(бібліотечн.*шифр|підручник|навчальний посібник|монографія|isbn)/i.test(text)) return "library_book";
+  if (/(вступн.*кампан|подання заяв|зарахуван|вступник)/i.test(text)) return "admission_timeline";
+  if (/(конференц|семінар|вебінар|кругл.*стіл|запрошуємо.*\d{1,2}[./]|відбудеться)/i.test(text)) return "event";
+  if (/(науков.*збірник|науков.*видан|дослідницьк.*ресурс|doi|репозитар)/i.test(text)) return "research_resource";
+  if (file.type.startsWith("image/")) return "news";
+  if (/(новин|пресреліз|відбулася|відбувся|зустріч|підписали угоду|академія повідомляє)/i.test(text)) return "news";
+  return "document";
+}
+
 function fallbackDraft(target: EditorialDraftTarget, fileName: string, text: string): EditorialAiDraft {
   const config = draftTargetConfigs.find((entry) => entry.id === target)!;
   const cleanTitle = fileName.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
