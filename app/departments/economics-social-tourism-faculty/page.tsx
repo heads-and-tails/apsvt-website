@@ -6,6 +6,7 @@ import { PageDocuments } from "../../components/PageDocuments";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
+import { EducationQualitySection } from "../../components/EducationQualitySection";
 
 export const metadata: Metadata = {
   title: "Факультет економіки, соціальних технологій і туризму",
@@ -59,7 +60,7 @@ export default async function Page() {
 
     <section className="law-practice-showcase festt-practice" id="faculty-practice"><div className="wrap"><div className="law-practice-head"><div><div className="idx">06 / Практика й партнери</div><h2>Від аудиторії — до професійного середовища</h2></div><p>Практика вбудована в освітню траєкторію: лабораторні формати, партнерські кейси, дослідження та стажування.</p></div><div className="law-practice-grid"><Link href="/materials/tourism-lab-533745080.html"><span>01</span><small>Навчальна лабораторія</small><h3>«Академія подорожей»</h3><p>Студенти проєктують маршрути, розраховують туристичний продукт і моделюють роботу підприємства.</p><b>Відкрити лабораторію →</b></Link><Link href="/programs/finance#practice"><span>02</span><small>Партнерські кейси</small><h3>Фінанси та бізнес</h3><p>Аналітичні завдання, професійні стандарти й практика у фінансових та комерційних організаціях.</p><b>Дивитися партнерів →</b></Link><Link href="/news/hospitality-management-lab"><span>03</span><small>Сервіс і гостинність</small><h3>HoReCa лабораторія</h3><p>Практична підготовка у сфері сервісу, еногастрономічної культури та управління гостинністю.</p><b>Перейти до проєкту →</b></Link></div></div></section>
 
-    <section className="programme-documents" id="faculty-quality"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">07 / Якість освіти</div><h2>Обговорення, анкети й оцінювання</h2></div><Link href="/documents#quality">Усі документи з якості →</Link></div><div className="programme-document-list"><a href="/documents/archive/may-2026/quality-system.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>PDF · архів травня 2026</small><h3>Система забезпечення якості вищої освіти</h3></div><b>↗</b></a><a href="/documents/archive/may-2026/student-survey-questionnaires.pdf" target="_blank" rel="noreferrer"><span>02</span><div><small>PDF · опитування здобувачів</small><h3>Анкети для оцінювання якості навчання</h3></div><b>↗</b></a><Link href="/contacts"><span>03</span><div><small>Обговорення освітніх програм</small><h3>Надіслати пропозицію або зауваження</h3></div><b>→</b></Link></div><div className="law-faculty-source"><span>Матеріали відновлено з офіційної версії сайту за травень 2026 року</span><Link href="/materials">Відновлений каталог матеріалів →</Link></div></div></section>
+    <EducationQualitySection entries={departmentEntries} index="07" id="faculty-quality" />
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
     <PageDocuments pagePath="/departments/economics-social-tourism-faculty" />

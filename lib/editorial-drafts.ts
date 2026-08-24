@@ -14,6 +14,7 @@ export type EditorialDraftTarget =
   | "department_news"
   | "department_article"
   | "department_material"
+  | "department_quality"
   | "department_photo"
   | "department_teacher"
   | "document";
@@ -46,7 +47,7 @@ export type DraftTargetConfig = {
   description: string;
   pagePath: string;
   contentKind?: ContentKind;
-  departmentEntryType?: "section" | "news" | "article" | "material" | "photo" | "teacher";
+  departmentEntryType?: "section" | "news" | "article" | "material" | "photo" | "teacher" | "quality";
   fields: DraftField[];
 };
 
@@ -239,6 +240,20 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
     fields: [
       { key: "title", label: "Назва матеріалу" },
       { key: "summary", label: "Опис", type: "textarea" },
+    ],
+  },
+  {
+    id: "department_quality",
+    label: "Кафедра · якість освіти",
+    description: "Результати моніторингу, обговорення змін до ОП або щорічне оцінювання НПП",
+    pagePath: "/programs",
+    departmentEntryType: "quality",
+    fields: [
+      { key: "role", label: "Рубрика", placeholder: "monitoring / programme-discussion / npp-evaluation" },
+      { key: "title", label: "Назва матеріалу" },
+      { key: "date", label: "Дата", type: "date" },
+      { key: "summary", label: "Короткий опис", type: "textarea" },
+      { key: "body", label: "Повний текст", type: "textarea" },
     ],
   },
   {

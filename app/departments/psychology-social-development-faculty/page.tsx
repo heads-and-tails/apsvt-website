@@ -6,6 +6,7 @@ import { PageDocuments } from "../../components/PageDocuments";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
+import { EducationQualitySection } from "../../components/EducationQualitySection";
 
 export const metadata: Metadata = {
   title: "Факультет психології та соціального розвитку",
@@ -55,7 +56,7 @@ export default async function Page() {
 
     <section className="law-practice-showcase festt-practice" id="faculty-practice"><div className="wrap"><div className="law-practice-head"><div><div className="idx">06 / Практика й партнери</div><h2>Від аудиторії — до професійного середовища</h2></div><p>Практика вбудована в освітню траєкторію: дослідницькі завдання, підтримка психічного здоров’я, партнерські кейси та стажування.</p></div><div className="law-practice-grid"><Link href="/programs/psychology#science"><span>01</span><small>Навчально-дослідна лабораторія</small><h3>Психологічно-соціальний інструментарій</h3><p>Студенти проєктують, перевіряють і адаптують інструменти для дослідження, діагностики та підтримки.</p><b>Перейти до досліджень →</b></Link><Link href="/programs/psychology#practice"><span>02</span><small>Психологічна підтримка</small><h3>Центр ментального здоров’я</h3><p>Простір підтримки психічного здоров’я та супроводу особистісного зростання здобувачів і співробітників.</p><b>Відкрити напрям →</b></Link><Link href="/programs/social-work#practice"><span>03</span><small>Професійне середовище</small><h3>Партнерські кейси</h3><p>Стейкголдерська підтримка навчання, розвиток практичних навичок і професійних компетентностей.</p><b>Дивитися партнерів →</b></Link></div></div></section>
 
-    <section className="programme-documents" id="faculty-quality"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">07 / Якість освіти</div><h2>Обговорення, анкети й оцінювання</h2></div><Link href="/documents#quality">Усі документи з якості →</Link></div><div className="programme-document-list"><a href="/documents/archive/may-2026/quality-system.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>PDF · система якості</small><h3>Система забезпечення якості вищої освіти</h3></div><b>↗</b></a><a href="/documents/archive/may-2026/student-survey-questionnaires.pdf" target="_blank" rel="noreferrer"><span>02</span><div><small>PDF · опитування здобувачів</small><h3>Анкети для оцінювання якості навчання</h3></div><b>↗</b></a><a href="mailto:k.psychology22@gmail.com"><span>03</span><div><small>Обговорення освітніх програм</small><h3>Надіслати пропозицію або зауваження</h3></div><b>↗</b></a></div></div></section>
+    <EducationQualitySection entries={departmentEntries} index="07" id="faculty-quality" discussionEmail="k.psychology22@gmail.com" />
 
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>

@@ -54,7 +54,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <div>{slug === "law" ? <LawCurriculumPlan /> : <ProgrammeCurriculumPlan slug={slug} code={program.code} title={program.title} />}
     {slug === "law" && <LawCourseAnnotations />}</div>
     <section id="careers"><div className="wrap career-layout"><div><div className="idx">03 / Після випуску</div><h2>Кар’єрні можливості</h2><div className="career-list">{program.careers.map((career,i)=><div key={career}><span>0{i+1}</span><b>{career}</b></div>)}</div></div><aside className="programme-lead-card"><AcademicProfileCard badge="Керівник програми" person={{ name: program.lead, role: program.leadRole, summary: programmeLead?.summary || `Координує освітню траєкторію та академічну якість програми «${program.title}».`, image: programmeLead?.image, tags: programmeLead?.interests, links: programmeLeadLinks }} /></aside></div></section>
-    <ProgrammeEcosystem slug={slug} />
+    <ProgrammeEcosystem slug={slug} entries={departmentEntries} />
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} />
     <ProgramEntranceExams slug={slug} />
     <ProgramDoctoralResources slug={slug} /></div>

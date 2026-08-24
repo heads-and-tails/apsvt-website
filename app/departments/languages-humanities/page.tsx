@@ -7,6 +7,7 @@ import { AcademicProfileCard } from "../../components/AcademicProfileCard";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
+import { EducationQualitySection } from "../../components/EducationQualitySection";
 
 export const metadata: Metadata = {
   title: "Кафедра іноземних мов та гуманітарних дисциплін",
@@ -42,7 +43,7 @@ export default async function Page() {
 
     <section className="faculty-activity" id="practice"><div className="wrap faculty-activity-grid"><div><div className="idx">05 / Міжнародне середовище</div><h2>Мовна практика у партнерських подіях</h2><p>Кафедра підтримує підготовку студентів до міжнародних програм, академічної мобільності, конференцій і професійної комунікації.</p></div><nav><Link href="/international">Міжнародні можливості →</Link><Link href="/events">Події Академії →</Link></nav></div></section>
 
-    <section className="programme-quality" id="quality"><div className="wrap programme-quality-grid"><div><div className="idx">06 / Якість освіти</div><h2>Опитування та оцінювання</h2><p>Результати опитувань студентів і щорічне оцінювання викладачів використовуються для оновлення змісту та методик навчання.</p></div><nav><a href="/documents/archive/may-2026/quality-system.pdf" target="_blank" rel="noreferrer">Система забезпечення якості ↗</a><a href="/documents/archive/may-2026/student-survey-questionnaires.pdf" target="_blank" rel="noreferrer">Анкети для здобувачів ↗</a><Link href="/contacts">Надіслати пропозицію →</Link></nav></div></section>
+    <EducationQualitySection entries={departmentEntries} index="06" />
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
     <PageDocuments pagePath="/departments/languages-humanities" />

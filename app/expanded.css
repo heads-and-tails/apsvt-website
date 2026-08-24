@@ -2314,6 +2314,31 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .programme-quality nav{border-top:1px solid var(--ink)}
 .programme-quality nav a{display:flex;justify-content:space-between;gap:25px;padding:17px 3px;border-bottom:1px solid var(--ink);font:700 11px/1.35 var(--disp);text-transform:uppercase}
 .programme-quality nav a:hover{padding-left:12px;background:rgba(255,255,255,.34)}
+.education-quality{background:var(--gold);scroll-margin-top:88px}
+.education-quality-head{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.7fr);gap:clamp(42px,8vw,115px);align-items:end;margin-bottom:42px}
+.education-quality-head h2{max-width:14ch;margin-top:13px;font-size:clamp(40px,5.3vw,74px);line-height:.93}
+.education-quality-head>div:last-child>p{max-width:62ch;font-size:15px;line-height:1.65}
+.education-quality-head>div:last-child>a{display:inline-block;margin-top:20px;padding-bottom:4px;border-bottom:2px solid var(--cobalt);color:var(--cobalt);font:700 9px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.education-quality-rubrics{border-top:1px solid var(--ink)}
+.education-quality-rubric{border-bottom:1px solid var(--ink)}
+.education-quality-rubric>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:58px minmax(0,1fr) 36px;gap:24px;align-items:center;min-height:142px;padding:23px 9px;transition:background-color .2s,padding .2s}
+.education-quality-rubric>summary::-webkit-details-marker{display:none}
+.education-quality-rubric>summary:hover,.education-quality-rubric>summary:focus-visible{padding-inline:20px;background:rgba(255,255,255,.35);outline:0}
+.education-quality-rubric>summary>span{align-self:start;color:var(--cobalt);font:9px var(--mono);letter-spacing:.08em}
+.education-quality-rubric>summary h3{max-width:30ch;font-size:clamp(23px,3vw,39px);line-height:1}
+.education-quality-rubric>summary p{max-width:75ch;margin-top:10px;color:rgba(9,14,24,.68);font-size:12px;line-height:1.55}
+.education-quality-rubric>summary>b{font:400 34px/1 var(--disp);text-align:center;transition:transform .2s}
+.education-quality-rubric[open]>summary>b{transform:rotate(45deg)}
+.education-quality-rubric-body{padding:0 8px 30px 91px}
+.education-quality-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--ink);border:1px solid var(--ink)}
+.education-quality-items>article{min-width:0;padding:24px;background:var(--paper)}
+.education-quality-items small{color:var(--cobalt);font:8px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.education-quality-items h4{margin-top:10px;font-size:22px;line-height:1.08}
+.education-quality-items p{margin-top:12px;color:rgba(9,14,24,.72);font-size:13px;line-height:1.65}
+.education-quality-copy{margin-top:18px;padding-top:4px;border-top:1px solid var(--line)}
+.education-quality-items article>a,.education-quality-empty a{display:inline-block;margin-top:20px;padding-bottom:3px;border-bottom:1px solid var(--cobalt);color:var(--cobalt);font:700 8px var(--mono);letter-spacing:.06em;text-transform:uppercase;overflow-wrap:anywhere}
+.education-quality-empty{min-height:110px;padding:24px;border-left:5px solid var(--cobalt);background:rgba(255,255,255,.35)}
+.education-quality-empty p{font-size:13px;color:rgba(9,14,24,.7)}
 .academic-inline-link{display:inline-block;padding:13px 0 4px;border-bottom:2px solid var(--cobalt);color:var(--cobalt);font:700 9px var(--mono);text-transform:uppercase}
 .faculty-activity{background:#fff;scroll-margin-top:88px}
 .faculty-activity-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.7fr);gap:clamp(45px,8vw,110px);align-items:end}
@@ -2348,7 +2373,7 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 :where(.academic-page-map,.programme-science,.programme-quality,.faculty-activity,.visnyk-page,.programme-resource-strip)>*, :where(.academic-page-map,.programme-science,.programme-quality,.faculty-activity,.visnyk-page,.programme-resource-strip) *{min-width:0}
 
 @media(max-width:900px){
-  .academic-page-map header,.programme-science-grid,.programme-quality-grid,.faculty-activity-grid,.visnyk-scope-grid{grid-template-columns:1fr;gap:30px}
+  .academic-page-map header,.programme-science-grid,.programme-quality-grid,.education-quality-head,.faculty-activity-grid,.visnyk-scope-grid{grid-template-columns:1fr;gap:30px}
   .programme-resource-strip{grid-template-columns:1fr 1fr}
   .visnyk-hero-grid{grid-template-columns:minmax(210px,.7fr) minmax(0,1.3fr);gap:45px}
   .visnyk-facts{grid-template-columns:1fr 1fr}
@@ -2358,6 +2383,13 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
   .academic-page-map{padding:42px 0}.academic-page-map header{margin-bottom:20px}.academic-page-map h2{font-size:clamp(31px,10vw,45px)}.academic-page-map nav{grid-template-columns:1fr}.academic-page-map nav>a{min-height:82px;padding:13px}
   .programme-resource-strip{grid-template-columns:1fr}.programme-resource-strip>a{min-height:78px}
   .programme-science h2,.programme-quality h2,.faculty-activity h2{font-size:clamp(34px,10vw,48px)}
+  .education-quality-head h2{font-size:clamp(34px,10vw,48px)}
+  .education-quality-rubric>summary{grid-template-columns:34px minmax(0,1fr) 28px;gap:11px;min-height:118px;padding:19px 2px}
+  .education-quality-rubric>summary:hover,.education-quality-rubric>summary:focus-visible{padding-inline:8px}
+  .education-quality-rubric>summary h3{font-size:clamp(20px,6.4vw,27px)}
+  .education-quality-rubric-body{padding:0 0 24px 45px}
+  .education-quality-items{grid-template-columns:1fr}
+  .education-quality-items>article,.education-quality-empty{padding:18px}
   .visnyk-hero{padding:110px 0 55px}.visnyk-hero-grid{grid-template-columns:1fr}.visnyk-cover-wrap{width:min(74vw,310px);margin:auto}.visnyk-hero-copy>a:first-child{margin-bottom:30px}.visnyk-hero h1{font-size:clamp(40px,12vw,61px)}.visnyk-actions{align-items:flex-start;flex-direction:column}
   .visnyk-facts{grid-template-columns:1fr}.visnyk-facts article{min-height:175px}.visnyk-indexing>.wrap>div:nth-child(2){grid-template-columns:1fr}.visnyk-indexing span{min-height:95px}
 }
