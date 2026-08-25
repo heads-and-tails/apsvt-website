@@ -15,7 +15,7 @@ const ukLinks: readonly NavItem[] = [
   { href: "/about", label: "Академія", children: [
     { href: "/about", label: "Про Академію" }, { href: "/about#structure", label: "Структура" },
     { href: "/departments", label: "Факультети й кафедри" }, { href: "/about/licenses", label: "Ліцензії та акредитація" },
-    { href: "/vacancies", label: "Вакансії" }, { href: "/news", label: "Новини" }, { href: "/contacts", label: "Контакти" },
+    { href: "/vacancies", label: "Вакансії" }, { href: "/news", label: "Новини" }, { href: "/news/archive", label: "Архів новин" }, { href: "/contacts", label: "Контакти" },
   ] },
   { href: "/programs", label: "Освіта", children: [
     { href: "/programs", label: "Усі програми" }, { href: "/programs/law", label: "Право" },

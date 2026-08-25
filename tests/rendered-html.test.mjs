@@ -128,6 +128,19 @@ test("uses one scannable academic order and keeps May 2026 archive documents loc
   }
 });
 
+test("links the recovered May 2026 news archive from the public news section",async()=>{
+  const [newsHtml,archiveHtml]=await Promise.all([
+    (await render("/news")).text(),
+    (await render("/news/archive")).text(),
+  ]);
+  assert.match(newsHtml,/href="\/news\/archive"/);
+  assert.match(newsHtml,/745 новин/);
+  assert.match(archiveHtml,/Архів[\s\S]*новин/);
+  assert.match(archiveHtml,/Збережена копія станом на травень 2026 року/);
+  const index=JSON.parse(await readFile(new URL("../public/materials-index.json",import.meta.url),"utf8"));
+  assert.equal(index.filter((item)=>item.category==="Новини та події").length,745);
+});
+
 test("renders editorially managed public information",async()=>{
   const admissionsHtml=await (await render("/admissions")).text();
   assert.match(admissionsHtml,/19 липня — 1 серпня, 18:00/);
