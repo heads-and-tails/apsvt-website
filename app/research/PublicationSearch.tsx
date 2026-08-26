@@ -42,6 +42,9 @@ const publicationsUk: Publication[] = [
   {year:"2019",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2019, №4",type:"Вісник Академії · PDF",topic:"Економіка · право",href:"https://www.socosvita.kiev.ua/sites/default/files/Visnyk_4_2019.pdf"},
   {year:"2019",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2019, №3",type:"Вісник Академії · PDF",topic:"Соціальна робота",href:"https://www.socosvita.kiev.ua/sites/default/files/Visnyk_3_2019.pdf"},
   {year:"2018",author:"Колектив авторів АПСВТ",title:"Вісник АПСВТ, 2018, №4",type:"Вісник Академії · PDF",topic:"Соціальна робота · ринок праці",href:"https://www.socosvita.kiev.ua/sites/default/files/Visnyk_4_2018.pdf"},
+  {year:"2026",author:"Кафедра маркетингу АПСВТ · за загальною редакцією Н. В. Писаренко та В. Б. Сухомлина",title:"Науковий вимір осмислення та пошуку шляхів розвитку України: маркетинговий, економічний, фінансовий, управлінський та правовий аспекти",type:"Збірник III Міжнародної конференції · PDF · DOI",topic:"Маркетинг · конференції",href:"/documents/research/conference-proceedings/marketing-conference-proceedings-2026.pdf"},
+  {year:"2025",author:"Кафедра маркетингу АПСВТ · за загальною редакцією Н. В. Писаренко та В. Б. Сухомлина",title:"Науковий вимір осмислення та пошуку оптимальних моделей розвитку України: маркетинговий, економічний, фінансовий, управлінський та правовий аспекти",type:"Збірник II Міжнародної конференції · PDF · DOI",topic:"Маркетинг · конференції",href:"/documents/research/conference-proceedings/marketing-conference-proceedings-2025.pdf"},
+  {year:"2024",author:"Кафедра маркетингу АПСВТ · за загальною редакцією Н. В. Писаренко та І. С. Чорнодіда",title:"Науковий вимір осмислення та пошуку оптимальних моделей розвитку України: маркетинговий, економічний, фінансовий та управлінський аспекти",type:"Збірник Міжнародної конференції · PDF · DOI",topic:"Маркетинг · конференції",href:"/documents/research/conference-proceedings/marketing-conference-proceedings-2024.pdf"},
 ];
 
 const publicationsEn: Publication[] = [
@@ -59,6 +62,9 @@ const publicationsEn: Publication[] = [
   {year:"2019",author:"APSVT author collective",title:"APSVT Scientific Bulletin, 2019, No. 4",type:"Academy journal",topic:"Economics · Law",href:publicationsUk[11].href},
   {year:"2019",author:"APSVT author collective",title:"APSVT Scientific Bulletin, 2019, No. 3",type:"Academy journal",topic:"Social work",href:publicationsUk[12].href},
   {year:"2018",author:"APSVT author collective",title:"APSVT Scientific Bulletin, 2018, No. 4",type:"Academy journal",topic:"Social work · Labour market",href:publicationsUk[13].href},
+  {year:"2026",author:"APSVT Department of Marketing · edited by N. Pysarenko and V. Sukhomlyn",title:"Scientific dimension of reflecting on and seeking pathways for Ukraine’s development: marketing, economic, financial, management, and legal aspects",type:"Proceedings of the III International Conference · PDF · DOI",topic:"Marketing · conferences",href:publicationsUk[14].href},
+  {year:"2025",author:"APSVT Department of Marketing · edited by N. Pysarenko and V. Sukhomlyn",title:"The scientific dimension of understanding and research of optimal models of Ukraine’s development: marketing, economic, financial, managerial and legal aspects",type:"Proceedings of the II International Conference · PDF · DOI",topic:"Marketing · conferences",href:publicationsUk[15].href},
+  {year:"2024",author:"APSVT Department of Marketing · edited by N. Pysarenko and I. Chornodid",title:"The scientific dimension of understanding and research of optimal models of Ukraine’s development: marketing, economic, financial and management aspects",type:"International Conference proceedings · PDF · DOI",topic:"Marketing · conferences",href:publicationsUk[16].href},
 ];
 
 export function PublicationSearch({ language = "uk" }: { language?: "uk" | "en" }) {

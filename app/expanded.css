@@ -376,6 +376,22 @@ section{padding-block:clamp(72px,8vw,112px)}
 .marketing-publications-head h2{max-width:13ch;margin-top:12px;font-size:clamp(38px,5vw,68px);line-height:.96;text-wrap:balance}
 .marketing-publications-head>p{color:#c6d0e3;font-size:15px;line-height:1.7}
 .marketing-publications-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.marketing-publication-subhead{display:grid;grid-template-columns:54px minmax(0,1fr);gap:18px;align-items:start;margin:12px 0 24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.2)}
+.marketing-publication-subhead>span{font:700 11px var(--mono);color:var(--gold);letter-spacing:.12em}
+.marketing-publication-subhead h3{font-size:clamp(24px,3vw,38px);line-height:1.05;text-transform:uppercase;text-wrap:balance}
+.marketing-publication-subhead p{margin-top:8px;color:#c6d0e3;font-size:13px}
+.marketing-conference-subhead{margin-top:58px}
+.marketing-conference-grid{display:grid;gap:14px}
+.marketing-conference-card{display:grid;grid-template-columns:minmax(220px,.52fr) minmax(0,1.48fr);background:#f5f2ea;color:var(--ink);border:1px solid rgba(255,255,255,.16);min-height:410px}
+.marketing-conference-cover{display:block;padding:20px;background:#e8e5dc;border-right:1px solid var(--line)}
+.marketing-conference-cover img{display:block;width:100%;height:100%;max-height:510px;object-fit:contain;background:#fff;box-shadow:0 12px 30px rgba(9,14,24,.14)}
+.marketing-conference-body{display:flex;flex-direction:column;padding:clamp(24px,4vw,48px)}
+.marketing-conference-body h3{font-size:clamp(24px,3.2vw,46px);line-height:1.02;margin:22px 0 16px;max-width:27ch;text-transform:uppercase;text-wrap:balance}
+.marketing-conference-body>p{max-width:66ch;font-size:14px;line-height:1.65;color:rgba(9,14,24,.72)}
+.marketing-conference-body dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:28px 0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.marketing-conference-body dl>div{padding:15px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.marketing-conference-body dt{font:700 8px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cobalt)}
+.marketing-conference-body dd{margin:8px 0 0;font:700 12px var(--disp);line-height:1.3}
 .marketing-publication-card{display:flex;min-width:0;flex-direction:column;background:#f8f6ef;color:var(--ink);border-top:5px solid var(--gold)}
 .marketing-publication-cover{display:block;aspect-ratio:4/4.55;overflow:hidden;background:#dfe4ed;border-bottom:1px solid var(--line)}
 .marketing-publication-cover img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .45s}
@@ -392,7 +408,8 @@ section{padding-block:clamp(72px,8vw,112px)}
 .marketing-publication-footer a,.marketing-department-link{padding-bottom:4px;border-bottom:2px solid var(--gold);font:700 8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
 .marketing-department-link{display:inline-block;margin-top:34px;color:var(--gold)}
 @media(max-width:1050px){.marketing-publications-grid{grid-template-columns:1fr 1fr}.marketing-publication-card:first-child{grid-column:1/-1;display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.28fr)}.marketing-publication-card:first-child .marketing-publication-cover{height:100%;aspect-ratio:auto;border-bottom:0;border-right:1px solid var(--line)}}
-@media(max-width:700px){.marketing-publications-head,.marketing-publications-grid{grid-template-columns:1fr}.marketing-publications-head{gap:24px}.marketing-publication-card:first-child{grid-column:auto;display:flex}.marketing-publication-card:first-child .marketing-publication-cover{height:auto;aspect-ratio:4/4.55;border-right:0;border-bottom:1px solid var(--line)}.marketing-publication-body{padding:21px}.marketing-publication-footer{align-items:flex-start;flex-direction:column}.marketing-publication-footer>div{justify-content:flex-start}}
+@media(max-width:820px){.marketing-conference-card{grid-template-columns:1fr}.marketing-conference-cover{border-right:0;border-bottom:1px solid var(--line)}.marketing-conference-cover img{height:auto;max-height:none}.marketing-conference-body dl{grid-template-columns:1fr 1fr}.marketing-conference-body dl>div:last-child{grid-column:1/-1}}
+@media(max-width:700px){.marketing-publications-head,.marketing-publications-grid{grid-template-columns:1fr}.marketing-publications-head{gap:24px}.marketing-publication-subhead{grid-template-columns:38px minmax(0,1fr);gap:10px}.marketing-conference-subhead{margin-top:40px}.marketing-publication-card:first-child{grid-column:auto;display:flex}.marketing-publication-card:first-child .marketing-publication-cover{height:auto;aspect-ratio:4/4.55;border-right:0;border-bottom:1px solid var(--line)}.marketing-publication-body,.marketing-conference-body{padding:21px}.marketing-conference-body dl{grid-template-columns:1fr}.marketing-conference-body dl>div:last-child{grid-column:auto}.marketing-conference-body h3{font-size:clamp(22px,7vw,31px)}.marketing-publication-footer{align-items:flex-start;flex-direction:column}.marketing-publication-footer>div{justify-content:flex-start}}
 
 .operations{margin-top:90px;padding-top:70px;border-top:2px solid var(--navy)}
 .operations-heading{align-items:start}
