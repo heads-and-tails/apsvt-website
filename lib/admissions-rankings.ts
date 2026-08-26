@@ -12,6 +12,7 @@ export type ApplicantRankingGroup = {
 };
 
 const root = "/documents/admissions/rankings/2026-08-03";
+const masterRoot = "/documents/admissions/rankings/2026-08-24-master";
 
 export const applicantRankingsNewsSlug = "reitynhovi-spysky-vstupnykiv-bakalavrat-2026";
 
@@ -101,3 +102,20 @@ export const bachelorRankingDocumentCount = bachelorApplicantRankings.reduce(
   (total, group) => total + group.documents.length,
   0,
 );
+
+const masterRankingRowCounts = [11, 1, 1, 2, 23, 11, 25, 10, 4, 15, 3, 1, 2, 12, 19, 24, 2, 4, 6, 1, 3, 3, 9, 4, 1, 1];
+
+export const masterApplicantRankings: ApplicantRankingDocument[] = masterRankingRowCounts.map(
+  (rowCount, index) => {
+    const number = String(index + 1).padStart(2, "0");
+
+    return {
+      title: `Рейтинговий список ${number}`,
+      meta: `Кількість записів: ${rowCount} · офіційна таблиця`,
+      href: `${masterRoot}/master-ranking-${number}.csv`,
+    };
+  },
+);
+
+export const masterRankingDocumentCount = masterApplicantRankings.length;
+export const applicantRankingDocumentCount = bachelorRankingDocumentCount + masterRankingDocumentCount;
