@@ -60,6 +60,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <div><ProgrammeEcosystem slug={slug} /></div>
     <EducationQualitySection
       entries={departmentEntries}
+      pagePath={`/programs/${slug}`}
       index="05"
       discussionEmail={programmeProfile?.discussionEmail}
       title={`Якість програми ${program.code}`}

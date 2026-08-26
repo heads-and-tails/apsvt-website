@@ -56,7 +56,7 @@ export default async function Page() {
 
     <section className="law-practice-showcase festt-practice" id="faculty-practice"><div className="wrap"><div className="law-practice-head"><div><div className="idx">06 / Практика й партнери</div><h2>Від аудиторії — до професійного середовища</h2></div><p>Практика вбудована в освітню траєкторію: дослідницькі завдання, підтримка психічного здоров’я, партнерські кейси та стажування.</p></div><div className="law-practice-grid"><Link href="/programs/psychology#science"><span>01</span><small>Навчально-дослідна лабораторія</small><h3>Психологічно-соціальний інструментарій</h3><p>Студенти проєктують, перевіряють і адаптують інструменти для дослідження, діагностики та підтримки.</p><b>Перейти до досліджень →</b></Link><Link href="/programs/psychology#practice"><span>02</span><small>Психологічна підтримка</small><h3>Центр ментального здоров’я</h3><p>Простір підтримки психічного здоров’я та супроводу особистісного зростання здобувачів і співробітників.</p><b>Відкрити напрям →</b></Link><Link href="/programs/social-work#practice"><span>03</span><small>Професійне середовище</small><h3>Партнерські кейси</h3><p>Стейкголдерська підтримка навчання, розвиток практичних навичок і професійних компетентностей.</p><b>Дивитися партнерів →</b></Link></div></div></section>
 
-    <EducationQualitySection entries={departmentEntries} index="07" id="faculty-quality" discussionEmail="k.psychology22@gmail.com" />
+    <EducationQualitySection entries={departmentEntries} pagePath="/departments/psychology-social-development-faculty" index="07" id="faculty-quality" discussionEmail="k.psychology22@gmail.com" />
 
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>

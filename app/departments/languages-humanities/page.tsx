@@ -43,7 +43,7 @@ export default async function Page() {
 
     <section className="faculty-activity" id="practice"><div className="wrap faculty-activity-grid"><div><div className="idx">05 / Міжнародне середовище</div><h2>Мовна практика у партнерських подіях</h2><p>Кафедра підтримує підготовку студентів до міжнародних програм, академічної мобільності, конференцій і професійної комунікації.</p></div><nav><Link href="/international">Міжнародні можливості →</Link><Link href="/events">Події Академії →</Link></nav></div></section>
 
-    <EducationQualitySection entries={departmentEntries} index="06" />
+    <EducationQualitySection entries={departmentEntries} pagePath="/departments/languages-humanities" index="06" />
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
     <PageDocuments pagePath="/departments/languages-humanities" />

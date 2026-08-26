@@ -60,7 +60,7 @@ export default async function Page() {
 
     <section className="law-practice-showcase festt-practice" id="faculty-practice"><div className="wrap"><div className="law-practice-head"><div><div className="idx">06 / Практика й партнери</div><h2>Від аудиторії — до професійного середовища</h2></div><p>Практика вбудована в освітню траєкторію: лабораторні формати, партнерські кейси, дослідження та стажування.</p></div><div className="law-practice-grid"><Link href="/materials/tourism-lab-533745080.html"><span>01</span><small>Навчальна лабораторія</small><h3>«Академія подорожей»</h3><p>Студенти проєктують маршрути, розраховують туристичний продукт і моделюють роботу підприємства.</p><b>Відкрити лабораторію →</b></Link><Link href="/programs/finance#practice"><span>02</span><small>Партнерські кейси</small><h3>Фінанси та бізнес</h3><p>Аналітичні завдання, професійні стандарти й практика у фінансових та комерційних організаціях.</p><b>Дивитися партнерів →</b></Link><Link href="/news/hospitality-management-lab"><span>03</span><small>Сервіс і гостинність</small><h3>HoReCa лабораторія</h3><p>Практична підготовка у сфері сервісу, еногастрономічної культури та управління гостинністю.</p><b>Перейти до проєкту →</b></Link></div></div></section>
 
-    <EducationQualitySection entries={departmentEntries} index="07" id="faculty-quality" />
+    <EducationQualitySection entries={departmentEntries} pagePath="/departments/economics-social-tourism-faculty" index="07" id="faculty-quality" />
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
     <PageDocuments pagePath="/departments/economics-social-tourism-faculty" />

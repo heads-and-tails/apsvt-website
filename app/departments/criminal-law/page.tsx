@@ -135,7 +135,7 @@ export default async function Page() {
 
     <section className="criminal-department-practice" id="practice"><div className="wrap criminal-department-practice-grid"><div><div className="idx">05 / Практика й партнери</div><h2>Від матеріалів справи до процесуальної дії</h2><p>Студенти працюють із професійними сценаріями, беруть участь у тренінгах і судових симуляціях, проходять практику в правоохоронних органах, судах, адвокатських об’єднаннях та нотаріаті.</p><Link href="/programs/law/forensic-laboratory">Відкрити лабораторію криміналістики →</Link></div><div className="criminal-department-practice-list"><span><b>01</b>Дактилоскопічні дослідження</span><span><b>02</b>Фіксація слідів і робота з доказами</span><span><b>03</b>Криміналістичний аналіз документів</span><span><b>04</b>Моделювання слідчих дій</span></div></div></section>
 
-    <EducationQualitySection entries={departmentEntries} index="06" />
+    <EducationQualitySection entries={departmentEntries} pagePath="/departments/criminal-law" index="06" />
 
     <div id="department-news"><section className="criminal-department-links"><div className="wrap"><Link href="/departments/law-faculty"><span>Юридичний факультет</span><b>Усі кафедри факультету →</b></Link><Link href="/programs/law"><span>Освітня програма</span><b>D8 «Право» →</b></Link><Link href="/programs/law/forensic-laboratory"><span>Практичний осередок</span><b>Лабораторія криміналістики →</b></Link></div></section>
     <DepartmentEditorialContent entries={departmentEntries} /></div>

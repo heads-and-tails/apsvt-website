@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { educationQualityRubrics, normalizeEducationQualityRubricId } from "@/lib/education-quality";
+import { getArchivedEducationQualityEntries } from "@/lib/archived-education-quality";
 
 function paragraphs(value: string) {
   return value.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
@@ -13,6 +14,7 @@ export function EducationQualitySection({
   discussionEmail,
   title = "Відкриті дані кафедри",
   description = "Матеріали згруповано за трьома постійними рубриками. Відкрийте лише потрібну — решта інформації залишатиметься згорнутою.",
+  pagePath,
 }: {
   entries: DepartmentEntry[];
   index?: string;
@@ -20,8 +22,17 @@ export function EducationQualitySection({
   discussionEmail?: string;
   title?: string;
   description?: string;
+  pagePath?: string;
 }) {
-  const qualityEntries = entries.filter((entry) => entry.entryType === "quality");
+  const currentEntries = entries.filter((entry) => entry.entryType === "quality");
+  const archivedEntries = pagePath ? getArchivedEducationQualityEntries(pagePath) : [];
+  const seen = new Set<string>();
+  const qualityEntries = [...currentEntries, ...archivedEntries].filter((entry) => {
+    const key = entry.fileUrl || entry.title;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 
   return <section className="education-quality" id={id}>
     <div className="wrap">
