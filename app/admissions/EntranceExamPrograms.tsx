@@ -24,7 +24,7 @@ export function EntranceExamPrograms() {
   return <section className="exam-programs" id="entrance-programs"><div className="wrap">
     <div className="exam-programs-head">
       <div><div className="idx">06 / Підготовка до вступу</div><h2>Програми вступних<br />випробувань</h2></div>
-      <aside><span>2026</span><b>18</b><p>офіційних програм уже доступні для перегляду</p></aside>
+      <aside><span>2026</span><b>{bachelorEntranceExamPrograms.length + 1 + phdEntranceExamPrograms.length}</b><p>офіційних програм уже доступні для перегляду</p></aside>
     </div>
 
     <nav className="exam-program-level-nav" aria-label="Програми вступних випробувань за рівнями освіти">
