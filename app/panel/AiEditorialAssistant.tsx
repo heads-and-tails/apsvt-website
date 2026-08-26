@@ -11,6 +11,7 @@ import {
   type EditorialDraftTarget,
 } from "@/lib/editorial-drafts";
 import { canEditPage, editorialAccessOptions } from "@/lib/editorial-access";
+import { requestJson } from "@/lib/client-request";
 
 type UploadedSource = { url: string; fileName: string; mimeType: string; fileSize: number };
 type AssistantTarget = EditorialDraftTarget | "auto";
@@ -54,10 +55,7 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
     data.append("file", selected);
     data.append("purpose", isDocument ? "document" : "image");
     if (destinationConfig?.departmentEntryType) data.append("pagePath", pagePath);
-    const response = await fetch("/api/uploads", { method: "POST", body: data });
-    const result = await response.json() as UploadedSource & { error?: string };
-    if (!response.ok || !result.url) throw new Error(result.error || "Не вдалося зберегти вихідний файл");
-    return result;
+    return requestJson<UploadedSource>("/api/uploads", { method: "POST", body: data }, 60_000);
   }
 
   async function analyze(event: React.FormEvent) {
@@ -68,9 +66,7 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
     const data = new FormData();
     data.append("file", file); data.append("target", target); data.append("pagePath", pagePath); data.append("instruction", instruction);
     try {
-      const analysisResponse = await fetch("/api/editorial/ai-import", { method: "POST", body: data });
-      const result = await analysisResponse.json() as EditorialAiDraft & { error?: string };
-      if (!analysisResponse.ok) throw new Error(result.error || "Не вдалося створити чернетку");
+      const result = await requestJson<EditorialAiDraft>("/api/editorial/ai-import", { method: "POST", body: data }, 90_000);
       const source = await uploadSource(file, result.target).catch(() => null);
       setDraft(result); setUploaded(source);
       if (target === "auto") setTarget(result.target);
@@ -118,7 +114,7 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
     try {
       if (publishTarget === "news") {
         const payload = draftRecordToPayload(records[0]);
-        const response = await fetch("/api/posts", {
+        await requestJson("/api/posts", {
           method: "POST", headers: { "content-type": "application/json" },
           body: JSON.stringify({
             title: payload.title || draft.title, excerpt: payload.excerpt || draft.summary,
@@ -127,8 +123,6 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
             imageAlt: payload.title || draft.title, status: "draft", featured: false, publishedAt: null,
           }),
         });
-        const result = await response.json() as { error?: string };
-        if (!response.ok) throw new Error(result.error || "Не вдалося зберегти матеріал");
         setMessage("Матеріал збережено як чернетку в розділі «Новини». Відкрийте його у списку матеріалів для фінальної публікації.");
       } else if (publishTarget === "document") {
         if (!uploaded) throw new Error("Не вдалося зберегти вихідний файл. Спробуйте завантажити PDF або Word ще раз.");

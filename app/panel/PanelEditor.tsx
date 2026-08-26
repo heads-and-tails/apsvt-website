@@ -14,6 +14,7 @@ import { StudentFinanceManager } from "./StudentFinanceManager";
 import type { StudentFinanceAdminData } from "@/lib/student-finance";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { DepartmentManager } from "./DepartmentManager";
+import { requestJson } from "@/lib/client-request";
 
 type FormState = { title: string; excerpt: string; body: string; category: string; imageUrl: string; imageAlt: string; status: "draft" | "published"; featured: boolean; publishedAt: string | null; slug?: string };
 type PanelView = "overview" | "assistant" | "news-editor" | "materials" | "departments" | "operations" | "documents" | "finance" | "access";
@@ -91,8 +92,49 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
   function change<K extends keyof FormState>(key: K, value: FormState[K]) { setForm((current) => ({ ...current, [key]: value })); }
   function edit(post: Post) { setEditing(post.id); setForm({ title: post.title, excerpt: post.excerpt, body: post.body, category: post.category, imageUrl: post.imageUrl, imageAlt: post.imageAlt, status: post.status, featured: post.featured, publishedAt: post.publishedAt, slug: post.slug }); open("news-editor"); }
   function reset() { setEditing(null); setForm(empty); setMessage(""); }
-  async function upload(file: File) { setBusy(true); setMessage("Завантажуємо фото…"); const data = new FormData(); data.append("file", file); const response = await fetch("/api/uploads", { method: "POST", body: data }); const result = await response.json() as { url?: string; error?: string }; if (!response.ok || !result.url) { setMessage(result.error || "Не вдалося завантажити фото"); setBusy(false); return; } change("imageUrl", result.url); if (!form.imageAlt) change("imageAlt", file.name.replace(/[-_]/g, " ")); setMessage("Фото готове"); setBusy(false); }
-  async function submit(event: React.FormEvent) { event.preventDefault(); setBusy(true); setMessage(editing ? "Зберігаємо зміни…" : "Створюємо матеріал…"); const response = await fetch(editing ? `/api/posts/${editing}` : "/api/posts", { method: editing ? "PATCH" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(form) }); const result = await response.json() as Post & { error?: string }; if (!response.ok) { setMessage(result.error || "Не вдалося зберегти"); setBusy(false); return; } setPosts((current) => editing ? current.map((post) => post.id === editing ? result : post) : [result, ...current]); setMessage(result.status === "published" ? "Матеріал опубліковано" : "Чернетку збережено"); setEditing(null); setForm(empty); setBusy(false); }
+  async function upload(file: File) {
+    setBusy(true);
+    setMessage("Завантажуємо фото…");
+    const data = new FormData();
+    data.append("file", file);
+    try {
+      const result = await requestJson<{ url: string }>("/api/uploads", { method: "POST", body: data }, 45_000);
+      change("imageUrl", result.url);
+      if (!form.imageAlt) change("imageAlt", file.name.replace(/[-_]/g, " "));
+      setMessage("Фото готове");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Не вдалося завантажити фото");
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const requestedStatus = submitter?.value === "published" ? "published" : "draft";
+    const payload: FormState = {
+      ...form,
+      status: requestedStatus,
+      publishedAt: requestedStatus === "published" ? form.publishedAt : null,
+    };
+    setBusy(true);
+    setMessage(requestedStatus === "published" ? "Публікуємо матеріал…" : "Зберігаємо чернетку…");
+    try {
+      const result = await requestJson<Post>(editing ? `/api/posts/${editing}` : "/api/posts", {
+        method: editing ? "PATCH" : "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      setPosts((current) => editing ? current.map((post) => post.id === editing ? result : post) : [result, ...current]);
+      setMessage(result.status === "published" ? "Матеріал опубліковано" : "Чернетку збережено");
+      setEditing(null);
+      setForm(empty);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Не вдалося зберегти матеріал");
+    } finally {
+      setBusy(false);
+    }
+  }
   async function remove(id: string) { if (!confirm("Видалити цей матеріал?")) return; setBusy(true); const response = await fetch(`/api/posts/${id}`, { method: "DELETE" }); if (response.ok) { setPosts((current) => current.filter((post) => post.id !== id)); setMessage("Матеріал видалено"); } else setMessage("Не вдалося видалити"); setBusy(false); }
 
   return <div className="panel-shell panel-shell-v2">
@@ -103,7 +145,28 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
 
       {activeView === "overview" && <PanelOverview posts={posts} documents={initialDocuments} departmentEntries={initialDepartmentEntries} canManageNews={canManageNews} canManageDepartment={canManageDepartment} canManageOperations={allowedKinds.length > 0} isAdmin={isAdmin} open={open} />}
       {activeView === "assistant" && <AiEditorialAssistant publisher={publisher} />}
-      {activeView === "news-editor" && canManageNews && <form className="editor" id="editor" onSubmit={submit}><section className="editor-fields"><label>Заголовок<input required value={form.title} onChange={(event) => change("title", event.target.value)} placeholder="Сильний і зрозумілий заголовок" /></label><div className="field-row"><label>Категорія<select value={form.category} onChange={(event) => change("category", event.target.value)}><option>Новини</option><option>Вступ</option><option>Освіта</option><option>Наука</option><option>Міжнародне</option><option>Студенти</option><option>Події</option></select></label><label>Статус<select value={form.status} onChange={(event) => change("status", event.target.value as "draft" | "published")}><option value="draft">Чернетка</option><option value="published">Опублікувати</option></select></label></div><label>Короткий опис<textarea required rows={3} value={form.excerpt} onChange={(event) => change("excerpt", event.target.value)} placeholder="1–2 речення для картки матеріалу" /></label><label>Текст статті<textarea required className="body-editor" rows={16} value={form.body} onChange={(event) => change("body", event.target.value)} placeholder={"Перший абзац — головна думка.\n\nНовий абзац починайте після порожнього рядка."} /></label><label className="toggle"><input type="checkbox" checked={form.featured} onChange={(event) => change("featured", event.target.checked)} /><span>Показувати як головний матеріал</span></label></section><aside className="editor-media"><div className="upload-box">{form.imageUrl ? <img src={form.imageUrl} alt="Попередній перегляд" /> : <div><b>Фото матеріалу</b><p>JPG, PNG або WebP · до 8 МБ</p></div>}<label className="upload-button">{busy ? "Зачекайте…" : "Обрати фото"}<input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); }} /></label></div><label>Альтернативний опис<input value={form.imageAlt} onChange={(event) => change("imageAlt", event.target.value)} placeholder="Що зображено на фото" /></label><label>Або URL зображення<input type="url" value={form.imageUrl} onChange={(event) => change("imageUrl", event.target.value)} placeholder="https://…" /></label><div className="publish-box"><p>{message || "Матеріал можна зберегти як чернетку або одразу опублікувати."}</p><button disabled={busy} type="submit">{busy ? "Зберігаємо…" : editing ? "Зберегти зміни" : "Зберегти матеріал"}</button>{editing && <button className="secondary" type="button" onClick={reset}>Скасувати редагування</button>}</div></aside></form>}
+      {activeView === "news-editor" && canManageNews && <form className="editor" id="editor" onSubmit={submit}>
+        <section className="editor-fields">
+          <label>Заголовок<input required value={form.title} onChange={(event) => change("title", event.target.value)} placeholder="Сильний і зрозумілий заголовок" /></label>
+          <label>Категорія<select value={form.category} onChange={(event) => change("category", event.target.value)}><option>Новини</option><option>Вступ</option><option>Освіта</option><option>Наука</option><option>Міжнародне</option><option>Студенти</option><option>Події</option></select></label>
+          <label>Короткий опис<textarea required rows={3} value={form.excerpt} onChange={(event) => change("excerpt", event.target.value)} placeholder="1–2 речення для картки матеріалу" /></label>
+          <label>Текст статті<textarea required className="body-editor" rows={16} value={form.body} onChange={(event) => change("body", event.target.value)} placeholder={"Перший абзац — головна думка.\n\nНовий абзац починайте після порожнього рядка."} /></label>
+          <label className="toggle"><input type="checkbox" checked={form.featured} onChange={(event) => change("featured", event.target.checked)} /><span>Показувати як головний матеріал</span></label>
+        </section>
+        <aside className="editor-media">
+          <div className="upload-box">{form.imageUrl ? <img src={form.imageUrl} alt="Попередній перегляд" /> : <div><b>Фото матеріалу</b><p>JPG, PNG або WebP · до 8 МБ</p></div>}<label className="upload-button">{busy ? "Зачекайте…" : "Обрати фото"}<input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); }} /></label></div>
+          <label>Альтернативний опис<input value={form.imageAlt} onChange={(event) => change("imageAlt", event.target.value)} placeholder="Що зображено на фото" /></label>
+          <label>Або URL зображення<input type="url" value={form.imageUrl} onChange={(event) => change("imageUrl", event.target.value)} placeholder="https://…" /></label>
+          <div className="publish-box">
+            <p aria-live="polite">{message || "Збережіть матеріал як чернетку для перевірки або опублікуйте його одразу."}</p>
+            <div className="publish-actions">
+              <button className="secondary draft-action" disabled={busy} type="submit" name="status" value="draft">{busy ? "Зачекайте…" : "Зберегти як чернетку"}</button>
+              <button disabled={busy} type="submit" name="status" value="published">{busy ? "Зачекайте…" : "Опублікувати зараз"}</button>
+            </div>
+            {editing && <button className="secondary" type="button" onClick={reset}>Скасувати редагування</button>}
+          </div>
+        </aside>
+      </form>}
       {activeView === "materials" && canManageNews && <section className="materials panel-materials" id="materials"><div className="materials-head"><div><span>Архів редакції</span><h2>Усі матеріали</h2><p>Редагуйте чернетки, перевіряйте опубліковані матеріали або створіть новий.</p></div><button type="button" onClick={() => { reset(); open("news-editor"); }}>+ Новий</button></div><div className="material-list">{posts.map((post) => <article key={post.id}><div className="material-thumb"><img src={post.imageUrl || "/apsvt-students-real.jpg"} alt="" /></div><div><span>{post.category} · {post.status === "published" ? "Опубліковано" : "Чернетка"}</span><h3>{post.title}</h3><p>{post.excerpt}</p></div><div className="material-actions"><button onClick={() => edit(post)}>Редагувати</button>{post.status === "published" && <a href={`/news/${post.slug}`} target="_blank">Переглянути ↗</a>}<button className="danger" onClick={() => void remove(post.id)}>Видалити</button></div></article>)}</div></section>}
       {activeView === "departments" && canManageDepartment && <DepartmentManager initialEntries={initialDepartmentEntries} publisher={publisher} />}
       {activeView === "operations" && allowedKinds.length > 0 && <OperationsEditor initialContent={initialContent} allowedKinds={allowedKinds} />}

@@ -359,11 +359,15 @@ export function slugify(value: string): string {
 
 export async function createPost(input: PostInput, authorEmail: string): Promise<Post> {
   if (isSupabaseConfigured()) {
-    await ensureSupabasePosts();
     const now = new Date().toISOString();
     const post: Post = { ...input, id: crypto.randomUUID(), slug: slugify(input.slug || input.title), createdAt: now, updatedAt: now, authorEmail };
     if (post.status === "published" && !post.publishedAt) post.publishedAt = now;
-    const { data, error } = await createSupabaseAdmin().from("editorial_posts").insert(toSupabaseRow(post)).select("*").single();
+    const admin = createSupabaseAdmin();
+    let { data, error } = await admin.from("editorial_posts").insert(toSupabaseRow(post)).select("*").single();
+    if (error?.code === "23505") {
+      post.slug = `${post.slug}-${post.id.slice(0, 8)}`;
+      ({ data, error } = await admin.from("editorial_posts").insert(toSupabaseRow(post)).select("*").single());
+    }
     if (error) throw error;
     return fromRow(data as Record<string, unknown>);
   }
