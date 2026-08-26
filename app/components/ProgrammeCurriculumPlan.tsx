@@ -36,6 +36,11 @@ export function ProgrammeCurriculumPlan({ slug, code, title }: { slug: string; c
         <div><b>{curriculum.practice.length}</b><span>етапи практики й атестації</span></div>
       </div>
 
+      <div className="curriculum-block-heading">
+        <div><span>Обов’язкова частина</span><h3>Програмні дисципліни</h3></div>
+        <p>Ці освітні компоненти опановують усі студенти програми. Відкрийте потрібний блок, щоб переглянути перелік дисциплін і період навчання.</p>
+      </div>
+
       <div className="law-curriculum-groups">
         {curriculum.groups.map((group, index) => <details key={group.title}>
           <summary>
@@ -50,15 +55,16 @@ export function ProgrammeCurriculumPlan({ slug, code, title }: { slug: string; c
 
       <div className="law-curriculum-choice" id="electives">
         <div className="law-curriculum-choice-intro">
-          <div className="idx">03 / Індивідуальна траєкторія</div>
-          <h3>60 кредитів <em>обираєте ви</em></h3>
-          <p>Вибіркові компоненти складають не менше <b>25% програми</b>. Остаточний набір студент формує під час вибору дисциплін та фіксує в індивідуальному навчальному плані.</p>
+          <div className="idx">03 / Дисципліни за вибором</div>
+          <h3>Вибіркові <em>дисципліни</em></h3>
+          <p>На індивідуальну траєкторію відведено <b>60 кредитів ЄКТС — не менше 25% програми</b>. Студент обирає дисципліни з актуального каталогу й фіксує їх в індивідуальному навчальному плані.</p>
         </div>
         <div className="law-curriculum-track-list">
           {curriculum.electives.map((track, index) => <article key={track.title}>
             <span>{String(index + 1).padStart(2, "0")}</span>
-            <div><h4>{track.title}</h4><p>{track.examples}</p></div>
+            <div><h4>{track.title}</h4><ul>{track.examples.split(" · ").map((course) => <li key={course}>{course}</li>)}</ul></div>
           </article>)}
+          <p className="law-curriculum-elective-note">Конкретний перелік доступних дисциплін і семестр їх викладання Академія уточнює перед кожною процедурою вибору.</p>
         </div>
       </div>
 
