@@ -5,6 +5,7 @@ import {
   masterApplicantRankings,
   masterRankingDocumentCount,
 } from "@/lib/admissions-rankings";
+import { MasterRankingsExplorer } from "./MasterRankingsExplorer";
 
 export function ApplicantRankings() {
   return <section className="applicant-rankings" id="applicant-rankings"><div className="wrap">
@@ -36,18 +37,7 @@ export function ApplicantRankings() {
 
     <article className="applicant-ranking-level" id="rankings-master">
       <header><span>02 / Магістратура</span><div><h3>Рейтингові списки вступників від 24 серпня 2026 року</h3><p>Офіційні таблиці Приймальної комісії зібрано в одному блоці. Натисніть на розділ, щоб переглянути та завантажити потрібний список.</p></div></header>
-      <div className="applicant-ranking-groups">
-        <details>
-          <summary><span>24.08</span><h4>Магістратура · рейтингові списки</h4><b>{masterRankingDocumentCount} списків</b><i>+</i></summary>
-          <div className="applicant-ranking-documents">
-            {masterApplicantRankings.map((document, index) => <a href={document.href} download key={document.href}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <div><h5>{document.title}</h5><small>{document.meta}</small></div>
-              <b>CSV · завантажити ↓</b>
-            </a>)}
-          </div>
-        </details>
-      </div>
+      <MasterRankingsExplorer documents={masterApplicantRankings} />
     </article>
   </div></section>;
 }
