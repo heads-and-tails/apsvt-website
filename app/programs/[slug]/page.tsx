@@ -17,6 +17,7 @@ import { marketingTeam } from "@/lib/marketing-team";
 import { getDepartmentEntries } from "@/lib/department-content";
 import { DepartmentEditorialContent } from "@/app/components/DepartmentEditorialContent";
 import { SectionHub, type SectionHubItem } from "@/app/components/SectionHub";
+import { EducationQualitySection } from "@/app/components/EducationQualitySection";
 
 export const dynamic = "force-dynamic";
 export function generateStaticParams(){return programs.map((program)=>({slug:program.slug}));}
@@ -25,9 +26,10 @@ const programmeSections: readonly SectionHubItem[] = [
   { id: "overview", index: "01", title: "Про програму", description: "Зміст, результати навчання, рівні освіти та вартість.", icon: "OP", aliases: ["education-levels"] },
   { id: "curriculum", index: "02", title: "Навчальний план", description: "Компоненти, кредити, атестація, анотації та вибіркові дисципліни.", icon: "PLAN", aliases: ["electives", "course-annotations"] },
   { id: "careers", index: "03", title: "Кар’єра", description: "Професійні можливості після випуску та керівник програми.", icon: "GO" },
-  { id: "department", index: "04", title: "Кафедра й освітнє середовище", description: "Документи, команда, наука, практика, партнери та якість.", icon: "DEP", aliases: ["programme-documents", "team", "science", "practice", "quality"] },
-  { id: "department-news", index: "05", title: "Новини й вступні матеріали", description: "Новини кафедри, програми випробувань і ресурси PhD.", icon: "NEWS", aliases: ["doctoral-programme"] },
-  { id: "international", index: "06", title: "Міжнародні можливості", description: "Мобільність, партнерські ініціативи та міжнародний досвід.", icon: "INT" },
+  { id: "department", index: "04", title: "Кафедра й освітнє середовище", description: "Документи, команда, наука, практика та партнери.", icon: "DEP", aliases: ["programme-documents", "team", "science", "practice"] },
+  { id: "quality", index: "05", title: "Якість освіти", description: "Моніторинг, опитування, оцінювання викладачів та обговорення змін до програми.", icon: "✓" },
+  { id: "department-news", index: "06", title: "Новини й вступні матеріали", description: "Новини кафедри, програми випробувань і ресурси PhD.", icon: "NEWS", aliases: ["doctoral-programme"] },
+  { id: "international", index: "07", title: "Міжнародні можливості", description: "Мобільність, партнерські ініціативи та міжнародний досвід.", icon: "INT" },
 ];
 
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
@@ -38,7 +40,8 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
 export default async function Page({params}:{params:Promise<{slug:string}>}){
   const slug=(await params).slug;const program=getProgram(slug);if(!program)notFound();
   const departmentEntries = await getDepartmentEntries(`/programs/${slug}`);
-  const programmeTeam = slug === "marketing" ? marketingTeam : getProgrammeProfile(slug)?.team || [];
+  const programmeProfile = getProgrammeProfile(slug);
+  const programmeTeam = slug === "marketing" ? marketingTeam : programmeProfile?.team || [];
   const programmeLead = programmeTeam.find((person) => person.name === program.lead) || programmeTeam[0];
   const programmeLeadLinks = programmeLead
     ? "profiles" in programmeLead
@@ -54,11 +57,18 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <div>{slug === "law" ? <LawCurriculumPlan /> : <ProgrammeCurriculumPlan slug={slug} code={program.code} title={program.title} />}
     {slug === "law" && <LawCourseAnnotations />}</div>
     <section id="careers"><div className="wrap career-layout"><div><div className="idx">03 / Після випуску</div><h2>Кар’єрні можливості</h2><div className="career-list">{program.careers.map((career,i)=><div key={career}><span>0{i+1}</span><b>{career}</b></div>)}</div></div><aside className="programme-lead-card"><AcademicProfileCard badge="Керівник програми" person={{ name: program.lead, role: program.leadRole, summary: programmeLead?.summary || `Координує освітню траєкторію та академічну якість програми «${program.title}».`, image: programmeLead?.image, tags: programmeLead?.interests, links: programmeLeadLinks }} /></aside></div></section>
-    <ProgrammeEcosystem slug={slug} entries={departmentEntries} />
+    <div><ProgrammeEcosystem slug={slug} /></div>
+    <EducationQualitySection
+      entries={departmentEntries}
+      index="05"
+      discussionEmail={programmeProfile?.discussionEmail}
+      title={`Якість програми ${program.code}`}
+      description="Моніторинг освітнього процесу, результати опитувань студентів, обговорення змін до освітньої програми та щорічне оцінювання викладачів."
+    />
     <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} />
     <ProgramEntranceExams slug={slug} />
     <ProgramDoctoralResources slug={slug} /></div>
-    <section className="intl-band" id="international"><div className="wrap"><div><div className="idx">{slug === "marketing" ? "05" : "04"} / Міжнародний горизонт</div><h2>Навчайтеся ширше</h2></div><div>{program.international.map(item=><p key={item}>{item}<span>↗</span></p>)}<Link className="cta" href="/international"><span>Усі можливості</span></Link></div></div></section>
+    <section className="intl-band" id="international"><div className="wrap"><div><div className="idx">07 / Міжнародний горизонт</div><h2>Навчайтеся ширше</h2></div><div>{program.international.map(item=><p key={item}>{item}<span>↗</span></p>)}<Link className="cta" href="/international"><span>Усі можливості</span></Link></div></div></section>
     </SectionHub>
     <PageDocuments pagePath={`/programs/${slug}`} />
     <SiteFooter /></main>;

@@ -11,19 +11,23 @@ export function EducationQualitySection({
   index = "09",
   id = "quality",
   discussionEmail,
+  title = "Відкриті дані кафедри",
+  description = "Матеріали згруповано за трьома постійними рубриками. Відкрийте лише потрібну — решта інформації залишатиметься згорнутою.",
 }: {
   entries: DepartmentEntry[];
   index?: string;
   id?: string;
   discussionEmail?: string;
+  title?: string;
+  description?: string;
 }) {
   const qualityEntries = entries.filter((entry) => entry.entryType === "quality");
 
   return <section className="education-quality" id={id}>
     <div className="wrap">
       <header className="education-quality-head">
-        <div><div className="idx">{index} / Якість освіти</div><h2>Відкриті дані кафедри</h2></div>
-        <div><p>Матеріали згруповано за трьома постійними рубриками. Відкрийте лише потрібну — решта інформації залишатиметься згорнутою.</p><Link href="/documents#quality">Загальна система якості Академії →</Link></div>
+        <div><div className="idx">{index} / Якість освіти</div><h2>{title}</h2></div>
+        <div><p>{description}</p><Link href="/documents#quality">Загальна система якості Академії →</Link></div>
       </header>
 
       <div className="education-quality-rubrics">
