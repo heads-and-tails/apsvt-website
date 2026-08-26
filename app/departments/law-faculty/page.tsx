@@ -8,6 +8,8 @@ import { DepartmentEditorialContent } from "../../components/DepartmentEditorial
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 import { EducationQualitySection } from "../../components/EducationQualitySection";
+import { AcademicPartners } from "../../components/AcademicPartners";
+import { AcademicNews } from "../../components/AcademicNews";
 
 export const metadata: Metadata = {
   title: "Юридичний факультет",
@@ -49,10 +51,10 @@ export default async function Page() {
 
     <section className="programme-science" id="faculty-science"><div className="wrap programme-science-grid"><div><div className="idx">04 / Наукова діяльність</div><h2>Правничі дослідження та студентські гуртки</h2></div><div><p>Кафедри досліджують публічне й приватне право, кримінальну юстицію, права людини, місцеве самоврядування та публічне управління. Працюють студентські наукові формати, зокрема історико-правовий гурток «Фенікс».</p><Link href="/research">Наука в Академії →</Link></div></div></section>
 
-    <section className="law-practice-showcase" id="faculty-practice"><div className="wrap"><div className="law-practice-head"><div><div className="idx">05 / Практика й партнери</div><h2>Навчальні ситуації, наближені до реальних</h2></div><p>Студент проходить шлях від аналізу фактичної ситуації до аргументованої й етичної правової позиції.</p></div><div className="law-practice-grid"><Link href="/programs/law/legal-clinic"><span>01</span><small>Правова допомога</small><h3>Юридична клініка «Феміда»</h3><p>Інтерв’ювання клієнта, правовий аналіз, підготовка відповіді й супервізія викладача.</p><b>Відкрити сторінку →</b></Link><Link href="/programs/law/forensic-laboratory"><span>02</span><small>Навчальна лабораторія</small><h3>Лабораторія криміналістики</h3><p>Технічна фотолабораторія, кабінет слідчого, фіксація слідів і моделювання процесуальних дій.</p><b>Відкрити лабораторію →</b></Link><article><span>03</span><small>Професійне середовище</small><h3>Суди, адвокатура та публічні установи</h3><p>Зовнішні бази практики кафедра підтверджує перед направленням відповідно до програми й навчального року.</p><b>За погодженням факультету</b></article></div></div></section>
+    <section className="law-practice-showcase" id="faculty-practice"><div className="wrap"><div className="law-practice-head"><div><div className="idx">05 / Практика й партнери</div><h2>Навчальні ситуації, наближені до реальних</h2></div><p>Студент проходить шлях від аналізу фактичної ситуації до аргументованої й етичної правової позиції.</p></div><div className="law-practice-grid"><Link href="/programs/law/legal-clinic"><span>01</span><small>Правова допомога</small><h3>Юридична клініка «Феміда»</h3><p>Інтерв’ювання клієнта, правовий аналіз, підготовка відповіді й супервізія викладача.</p><b>Відкрити сторінку →</b></Link><Link href="/programs/law/forensic-laboratory"><span>02</span><small>Навчальна лабораторія</small><h3>Лабораторія криміналістики</h3><p>Технічна фотолабораторія, кабінет слідчого, фіксація слідів і моделювання процесуальних дій.</p><b>Відкрити лабораторію →</b></Link><article><span>03</span><small>Професійне середовище</small><h3>Суди, адвокатура та публічні установи</h3><p>Зовнішні бази практики кафедра підтверджує перед направленням відповідно до програми й навчального року.</p><b>За погодженням факультету</b></article></div></div><AcademicPartners slugs={["law", "public-administration"]} /></section>
 
     <EducationQualitySection entries={departmentEntries} pagePath="/departments/law-faculty" index="07" id="faculty-quality" />
-    <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
+    <div id="department-news"><AcademicNews slugs={["law", "public-administration"]} title="Новини юридичного факультету" /><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
     <PageDocuments pagePath="/departments/law-faculty" />
     <SiteFooter />

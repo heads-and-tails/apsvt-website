@@ -7,6 +7,8 @@ import { DepartmentEditorialContent } from "../../components/DepartmentEditorial
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 import { EducationQualitySection } from "../../components/EducationQualitySection";
+import { AcademicPartners } from "../../components/AcademicPartners";
+import { AcademicNews } from "../../components/AcademicNews";
 import "./criminal-law.css";
 
 export const metadata: Metadata = {
@@ -133,11 +135,11 @@ export default async function Page() {
       <div className="criminal-department-research-grid"><div className="criminal-department-themes"><article><span>01</span><h3>Боротьба зі злочинністю та корупцією</h3><p>Як складова соціальної політики України на шляху розвитку громадянського суспільства.</p></article><article><span>02</span><h3>Кримінальна відповідальність у сфері праці</h3><p>Дотримання трудового законодавства й правові механізми відповідальності.</p></article></div><div className="criminal-department-metrics"><span><b>10</b>монографій</span><span><b>4</b>підручники</span><span><b>24</b>навчальні посібники</span><span><b>100+</b>наукових статей</span><span><b>50+</b>тез конференцій</span><small>Результати наукової роботи кафедри за останні п’ять років за наданими матеріалами.</small></div></div>
     </div></section>
 
-    <section className="criminal-department-practice" id="practice"><div className="wrap criminal-department-practice-grid"><div><div className="idx">05 / Практика й партнери</div><h2>Від матеріалів справи до процесуальної дії</h2><p>Студенти працюють із професійними сценаріями, беруть участь у тренінгах і судових симуляціях, проходять практику в правоохоронних органах, судах, адвокатських об’єднаннях та нотаріаті.</p><Link href="/programs/law/forensic-laboratory">Відкрити лабораторію криміналістики →</Link></div><div className="criminal-department-practice-list"><span><b>01</b>Дактилоскопічні дослідження</span><span><b>02</b>Фіксація слідів і робота з доказами</span><span><b>03</b>Криміналістичний аналіз документів</span><span><b>04</b>Моделювання слідчих дій</span></div></div></section>
+    <section className="criminal-department-practice" id="practice"><div className="wrap criminal-department-practice-grid"><div><div className="idx">05 / Практика й партнери</div><h2>Від матеріалів справи до процесуальної дії</h2><p>Студенти працюють із професійними сценаріями, беруть участь у тренінгах і судових симуляціях, проходять практику в правоохоронних органах, судах, адвокатських об’єднаннях та нотаріаті.</p><Link href="/programs/law/forensic-laboratory">Відкрити лабораторію криміналістики →</Link></div><div className="criminal-department-practice-list"><span><b>01</b>Дактилоскопічні дослідження</span><span><b>02</b>Фіксація слідів і робота з доказами</span><span><b>03</b>Криміналістичний аналіз документів</span><span><b>04</b>Моделювання слідчих дій</span></div></div><AcademicPartners slugs={["law"]} title="Професійні осередки та бази практики" /></section>
 
     <EducationQualitySection entries={departmentEntries} pagePath="/departments/criminal-law" index="06" />
 
-    <div id="department-news"><section className="criminal-department-links"><div className="wrap"><Link href="/departments/law-faculty"><span>Юридичний факультет</span><b>Усі кафедри факультету →</b></Link><Link href="/programs/law"><span>Освітня програма</span><b>D8 «Право» →</b></Link><Link href="/programs/law/forensic-laboratory"><span>Практичний осередок</span><b>Лабораторія криміналістики →</b></Link></div></section>
+    <div id="department-news"><AcademicNews slugs={["law"]} title="Новини кафедри та факультету" /><section className="criminal-department-links"><div className="wrap"><Link href="/departments/law-faculty"><span>Юридичний факультет</span><b>Усі кафедри факультету →</b></Link><Link href="/programs/law"><span>Освітня програма</span><b>D8 «Право» →</b></Link><Link href="/programs/law/forensic-laboratory"><span>Практичний осередок</span><b>Лабораторія криміналістики →</b></Link></div></section>
     <DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
     <PageDocuments pagePath="/departments/criminal-law" />

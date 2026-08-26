@@ -1789,6 +1789,12 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .programme-partner-mark.is-format:before{content:"";position:absolute;inset:10px;border:1px solid currentColor;opacity:.18}
 .programme-partner-mark.is-format span{position:relative;z-index:1;font-size:clamp(23px,2.4vw,34px)}
 .programme-partner-mark.is-format small{position:relative;z-index:1;font:7px var(--mono);letter-spacing:.13em;text-transform:uppercase;opacity:.62}
+.academic-community-block{margin-top:72px}
+.academic-community-head{padding-top:38px;border-top:1px solid rgba(9,14,24,.24)}
+.academic-community-head>p{max-width:590px}
+.academic-news-section{padding:86px 0;background:#f5f3ec;border-top:1px solid var(--line)}
+.academic-news-section .news-grid{align-items:stretch}
+.academic-news-section .news{height:100%}
 
 .structure-level-label{display:grid;grid-template-columns:78px 150px minmax(0,1fr);gap:12px;align-items:center;margin-bottom:12px;font-family:var(--mono);text-transform:uppercase}
 .structure-level-label>span{padding:7px 9px;background:var(--cobalt);color:#fff;font-size:8px;letter-spacing:.08em;text-align:center}

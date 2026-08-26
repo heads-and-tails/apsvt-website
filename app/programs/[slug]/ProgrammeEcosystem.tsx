@@ -1,24 +1,9 @@
 import Link from "next/link";
-import { getProgrammeProfile, type ProgrammePartner } from "@/lib/programme-profiles";
+import { getProgrammeProfile } from "@/lib/programme-profiles";
 import { AcademicProfileCard } from "@/app/components/AcademicProfileCard";
+import { AcademicPartnerCard } from "@/app/components/AcademicPartners";
 import { MarketingTeam } from "./MarketingTeam";
 import { getProgram } from "@/lib/programs";
-
-function PartnerCard({ partner }: { partner: ProgrammePartner }) {
-  const content = <>
-    <div className={`programme-partner-mark ${partner.tone || "cream"} ${partner.logo ? "has-logo" : "is-format"}`}>
-      {partner.logo ? <img src={partner.logo} alt={partner.logoAlt || `Логотип ${partner.name}`} /> : <><span aria-hidden="true">{partner.mark}</span><small>формат практики</small></>}
-    </div>
-    <small>{partner.kind}</small>
-    <h3>{partner.name}</h3>
-    <p>{partner.note}</p>
-    {partner.href && <b>{partner.href.startsWith("/") ? "Докладніше →" : "Відкрити сайт ↗"}</b>}
-  </>;
-
-  return partner.href
-    ? <a className="programme-partner" href={partner.href} target={partner.href.startsWith("/") ? undefined : "_blank"} rel={partner.href.startsWith("/") ? undefined : "noreferrer"}>{content}</a>
-    : <article className="programme-partner">{content}</article>;
-}
 
 export function ProgrammeEcosystem({ slug }: { slug: string }) {
   const profile = getProgrammeProfile(slug);
@@ -90,7 +75,7 @@ export function ProgrammeEcosystem({ slug }: { slug: string }) {
 
     <section className="programme-practice" id="practice"><div className="wrap">
       <div className="sec-head programme-practice-head"><div><div className="idx">08 / Практика і професійне середовище</div><h2>Партнери: де знання стають досвідом</h2></div><div><p>{profile.practiceNote}</p><a href={profile.practiceSourceHref} target={profile.practiceSourceHref.startsWith("/") ? undefined : "_blank"} rel={profile.practiceSourceHref.startsWith("/") ? undefined : "noreferrer"}>{profile.practiceSource} ↗</a></div></div>
-      <div className="programme-partners">{profile.partners.map((partner) => <PartnerCard partner={partner} key={partner.name} />)}</div>
+      <div className="programme-partners">{profile.partners.map((partner) => <AcademicPartnerCard partner={partner} key={partner.name} />)}</div>
       <p className="programme-practice-disclaimer">Місця практики й стажування залежать від навчального року, наявності договору та індивідуальної траєкторії. Актуальне направлення підтверджує кафедра.</p>
     </div></section>
 

@@ -8,6 +8,8 @@ import { DepartmentEditorialContent } from "../../components/DepartmentEditorial
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 import { EducationQualitySection } from "../../components/EducationQualitySection";
+import { AcademicPartners } from "../../components/AcademicPartners";
+import { AcademicNews } from "../../components/AcademicNews";
 
 export const metadata: Metadata = {
   title: "Кафедра іноземних мов та гуманітарних дисциплін",
@@ -41,10 +43,10 @@ export default async function Page() {
 
     <section className="programme-science" id="science"><div className="wrap programme-science-grid"><div><div className="idx">04 / Наукова діяльність</div><h2>Мова, суспільство та міжкультурна комунікація</h2></div><div><p>Дослідницькі й студентські формати кафедри охоплюють професійну комунікацію, гуманітарні студії, академічне письмо та міжкультурний діалог.</p><Link href="/research">Наука в Академії →</Link></div></div></section>
 
-    <section className="faculty-activity" id="practice"><div className="wrap faculty-activity-grid"><div><div className="idx">05 / Міжнародне середовище</div><h2>Мовна практика у партнерських подіях</h2><p>Кафедра підтримує підготовку студентів до міжнародних програм, академічної мобільності, конференцій і професійної комунікації.</p></div><nav><Link href="/international">Міжнародні можливості →</Link><Link href="/events">Події Академії →</Link></nav></div></section>
+    <section className="faculty-activity" id="practice"><div className="wrap faculty-activity-grid"><div><div className="idx">05 / Міжнародне середовище</div><h2>Мовна практика у партнерських подіях</h2><p>Кафедра підтримує підготовку студентів до міжнародних програм, академічної мобільності, конференцій і професійної комунікації.</p></div><nav><Link href="/international">Міжнародні можливості →</Link><Link href="/events">Події Академії →</Link></nav></div><AcademicPartners slugs={["languages-humanities"]} /></section>
 
     <EducationQualitySection entries={departmentEntries} pagePath="/departments/languages-humanities" index="06" />
-    <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
+    <div id="department-news"><AcademicNews slugs={["languages-humanities"]} title="Новини кафедри" /><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
     <PageDocuments pagePath="/departments/languages-humanities" />
     <SiteFooter />

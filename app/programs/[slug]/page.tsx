@@ -18,6 +18,7 @@ import { getDepartmentEntries } from "@/lib/department-content";
 import { DepartmentEditorialContent } from "@/app/components/DepartmentEditorialContent";
 import { SectionHub, type SectionHubItem } from "@/app/components/SectionHub";
 import { EducationQualitySection } from "@/app/components/EducationQualitySection";
+import { AcademicNews } from "@/app/components/AcademicNews";
 
 export const dynamic = "force-dynamic";
 export function generateStaticParams(){return programs.map((program)=>({slug:program.slug}));}
@@ -66,7 +67,8 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       title={`Якість програми ${program.code}`}
       description="Моніторинг освітнього процесу, результати опитувань студентів, обговорення змін до освітньої програми та щорічне оцінювання викладачів."
     />
-    <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} />
+    <div id="department-news"><AcademicNews slugs={[slug]} title={`Новини програми ${program.code}`} />
+    <DepartmentEditorialContent entries={departmentEntries} />
     <ProgramEntranceExams slug={slug} />
     <ProgramDoctoralResources slug={slug} /></div>
     <section className="intl-band" id="international"><div className="wrap"><div><div className="idx">07 / Міжнародний горизонт</div><h2>Навчайтеся ширше</h2></div><div>{program.international.map(item=><p key={item}>{item}<span>↗</span></p>)}<Link className="cta" href="/international"><span>Усі можливості</span></Link></div></div></section>

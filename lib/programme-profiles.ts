@@ -1,3 +1,5 @@
+import { officialProgrammeFileBase } from "@/lib/programme-documents";
+
 export type ProgrammePartner = {
   name: string;
   mark: string;
@@ -252,6 +254,54 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
     documents: [
       { title: "Подвійний диплом із соціальної роботи", meta: "Сторінка програми й стажування", href: "/materials/2d-socwork-85723aff9.html" },
       { title: "Методичні рекомендації до педагогічної практики", meta: "PDF · 37 сторінок", href: "/documents/archive/old-site/pedagogical-practice-guidelines.pdf" },
+      ...sharedQualityDocuments,
+    ],
+  },
+  "professional-education": {
+    department: "Кафедра інтелектуальних систем та цифрових технологій",
+    faculty: "Факультет економіки, соціальних технологій і туризму",
+    departmentHref: "/departments/economics-social-tourism-faculty#departments",
+    departmentSummary: "Кафедра поєднує професійну педагогіку, проєктування цифрового навчання, інформаційні й інтелектуальні системи. Програма готує фахівців, здатних створювати сучасні курси, освітні платформи та технологічні рішення для навчання.",
+    departmentFocus: ["професійна педагогіка", "EdTech і LMS", "інтелектуальні системи", "VR/AR та інклюзивні технології"],
+    practiceNote: "Практичні завдання охоплюють педагогічний дизайн, створення електронних курсів, навчальну аналітику, роботу з Moodle та прототипування цифрових освітніх продуктів. Формат і базу практики кафедра узгоджує для конкретного навчального року.",
+    practiceSource: "Moodle і цифрові ресурси Академії",
+    practiceSourceHref: "https://moodle.socosvita.kiev.ua/",
+    partners: [
+      { name: "Moodle АПСВТ", mark: "moodle", kind: "Цифрове навчальне середовище", note: "Курси, матеріали, завдання, тести, зворотний зв’язок і навчальна аналітика.", href: "https://moodle.socosvita.kiev.ua/", tone: "gold" },
+      { name: "Headway Education", mark: "HEADWAY", kind: "Міжнародне освітнє партнерство", note: "Доступ студентів до сучасних курсів, стажувань і спільних освітньо-наукових проєктів.", href: "/international", tone: "blue" },
+      { name: "Цифрові лабораторії АПСВТ", mark: "DIGITAL LAB", kind: "Проєктна практика", note: "Прототипування онлайн-курсів, інтерактивних матеріалів, адаптивних та інклюзивних рішень.", href: "/facilities", tone: "ink" },
+    ],
+    team: [
+      { name: "Ілона Бацуровська", role: "гарантка програми, докторка педагогічних наук, професорка", summary: "Координує освітню програму та дослідження на перетині професійної освіти, цифрових середовищ, електронного навчання й сучасних освітніх технологій.", interests: ["професійна освіта", "e-learning", "цифрові середовища"] },
+      { name: "Команда кафедри цифрових технологій", role: "викладачі, методисти й технологічні практики", summary: "Супроводжує педагогічне проєктування, роботу з LMS, створення мультимедійних матеріалів і студентські EdTech-проєкти.", interests: ["LMS", "педагогічний дизайн", "EdTech"] },
+    ],
+    documents: [
+      { title: "ОПП A5 «Професійна освіта · Цифрові технології» — бакалавр", meta: "PDF · офіційна освітня програма", href: `${officialProgrammeFileBase}/a5-professional-education-digital-technologies-bachelor.pdf` },
+      { title: "ОПП A5 «Професійна освіта · Цифрові технології» — магістр", meta: "PDF · офіційна освітня програма", href: `${officialProgrammeFileBase}/a5-professional-education-digital-technologies-master.pdf` },
+      { title: "Програма вступного випробування A5", meta: "PDF · вступ до аспірантури", href: "/documents/programmes/phd/2025/a5-professional-education.pdf" },
+      ...sharedQualityDocuments,
+    ],
+  },
+  "languages-humanities": {
+    department: "Кафедра іноземних мов та гуманітарних дисциплін",
+    faculty: "Загальноакадемічна кафедра",
+    departmentHref: "/departments/languages-humanities",
+    departmentSummary: "Кафедра забезпечує професійну іншомовну підготовку, українську ділову комунікацію, академічне письмо та гуманітарні дисципліни для всіх освітніх програм Академії.",
+    departmentFocus: ["професійна іноземна мова", "академічне письмо", "міжкультурна комунікація", "гуманітарні студії"],
+    practiceNote: "Мовна практика інтегрована у міжнародні події, конференції, мобільність і підготовку студентів до роботи з фаховими джерелами та міжнародними командами.",
+    practiceSource: "Міжнародні можливості Академії",
+    practiceSourceHref: "/international",
+    partners: [
+      { name: "Headway Education", mark: "HEADWAY", kind: "Міжнародне освітнє партнерство", note: "Курси, міжнародна комунікація, стажування та спільні освітні ініціативи.", href: "/international", tone: "blue" },
+      { name: "Міжнародний відділ АПСВТ", mark: "APSWT INT", kind: "Академічна мобільність", note: "Підготовка до міжнародних програм, партнерських зустрічей і міжкультурних проєктів.", href: "/international", tone: "gold" },
+      { name: "Moodle АПСВТ", mark: "moodle", kind: "Цифрові мовні ресурси", note: "Навчальні матеріали, вправи, тести та асинхронна комунікація з викладачами.", href: "https://moodle.socosvita.kiev.ua/", tone: "ink" },
+    ],
+    team: [
+      { name: "Світлана Бондар", role: "завідувачка кафедри", summary: "Координує мовну й гуманітарну підготовку студентів усіх освітніх програм Академії, навчальні матеріали та міжкафедральну взаємодію.", interests: ["професійна мова", "гуманітарна освіта", "міжкультурна комунікація"] },
+    ],
+    documents: [
+      { title: "Робочі програми навчальних дисциплін", meta: "Каталог навчальних матеріалів", href: "/materials" },
+      { title: "Освітня документація Академії", meta: "Програми, плани та силабуси", href: "/documents#education" },
       ...sharedQualityDocuments,
     ],
   },
