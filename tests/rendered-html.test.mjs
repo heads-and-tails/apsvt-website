@@ -1037,3 +1037,14 @@ test("publishes the criminal law, procedure and forensics department",async()=>{
   assert.match(facultyHtml,/href="\/departments\/criminal-law"/);
   assert.match(directoryHtml,/href="\/departments\/criminal-law"/);
 });
+
+test("publishes the private, labour and commercial law department",async()=>{
+  const [departmentHtml,directoryHtml]=await Promise.all([
+    (await render("/departments/private-law")).text(),
+    (await render("/departments")).text(),
+  ]);
+  assert.match(departmentHtml,/Кафедра цивільного, трудового та господарського права/);
+  assert.match(departmentHtml,/Катерина Біда/);
+  assert.match(departmentHtml,/D8 «Право»/);
+  assert.match(directoryHtml,/href="\/departments\/private-law"/);
+});

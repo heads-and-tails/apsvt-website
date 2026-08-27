@@ -35,6 +35,7 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/programs/marketing", label: "Кафедра маркетингу", group: "department" },
   { value: "/programs/trade", label: "Кафедра економіки та менеджменту · Торгівля", group: "department" },
   { value: "/programs/law", label: "Кафедра конституційного, адміністративного та фінансового права", group: "department" },
+  { value: "/departments/private-law", label: "Кафедра цивільного, трудового та господарського права", group: "department" },
   { value: "/departments/criminal-law", label: "Кафедра кримінального права, процесу та криміналістики", group: "department" },
   { value: "/programs/social-work", label: "Кафедра соціальної роботи", group: "department" },
   { value: "/programs/professional-education", label: "Професійна освіта · Цифрові технології", group: "department" },
