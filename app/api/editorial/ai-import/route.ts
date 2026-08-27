@@ -16,6 +16,12 @@ const allowedTypes = new Set([
   "image/webp",
 ]);
 
+function departmentTargetFor(detectedTarget: EditorialDraftTarget): EditorialDraftTarget {
+  if (detectedTarget === "news" || detectedTarget === "event") return "department_news";
+  if (detectedTarget === "research_resource" || detectedTarget === "student_thesis") return "department_article";
+  return "department_material";
+}
+
 export async function POST(request: Request) {
   try {
     const publisher = await requirePublisher();
@@ -37,15 +43,30 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Файл для AI-імпорту має бути менше 12 МБ" }, { status: 400 });
     }
     const bytes = new Uint8Array(await file.arrayBuffer());
-    const resolvedTarget = target === "auto"
+    let resolvedTarget = target === "auto"
       ? detectEditorialTarget(file, bytes, instruction)
       : target as EditorialDraftTarget;
-    const config = draftTargetConfigs.find((entry) => entry.id === resolvedTarget)!;
-    const isDepartmentTarget = Boolean(config.departmentEntryType);
+    let config = draftTargetConfigs.find((entry) => entry.id === resolvedTarget)!;
+    let isDepartmentTarget = Boolean(config.departmentEntryType);
+    let destination = (resolvedTarget === "document" || isDepartmentTarget) && pagePath.startsWith("/") ? pagePath : config.pagePath;
+
+    // The selected department is the editor's explicit destination. Keep every
+    // automatically detected generic material inside it instead of redirecting
+    // departmental news to /news (and denying a department-scoped editor).
+    if (
+      target === "auto"
+      && isDepartmentPagePath(pagePath)
+      && !isDepartmentTarget
+    ) {
+      resolvedTarget = departmentTargetFor(resolvedTarget);
+      config = draftTargetConfigs.find((entry) => entry.id === resolvedTarget)!;
+      isDepartmentTarget = Boolean(config.departmentEntryType);
+      destination = pagePath;
+    }
+
     if (isDepartmentTarget && !isDepartmentPagePath(pagePath)) {
       return NextResponse.json({ error: "Оберіть кафедру або факультет для цього матеріалу" }, { status: 400 });
     }
-    const destination = (resolvedTarget === "document" || isDepartmentTarget) && pagePath.startsWith("/") ? pagePath : config.pagePath;
     if (!canEditPage(publisher, destination)) throw new Error("FORBIDDEN_SCOPE");
     const draft = await createEditorialDraft({
       file,
