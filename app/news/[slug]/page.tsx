@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { getPostBySlug, getPosts } from "@/lib/data";
+import { getPostBySlug, getPosts, stakeholderDiscussionNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
@@ -40,6 +40,7 @@ export default async function Page({ params }: Props) {
   const isMasterEntranceResultsNews = post.slug === entranceResultsNewsSlugAugust6;
   const isApplicantRankingsNews = post.slug === applicantRankingsNewsSlug;
   const isAcademicCompetitionNews = post.slug === academicCompetitionNewsSlug;
+  const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
 
   return <main id="top">
     <SiteHeader />
@@ -52,6 +53,11 @@ export default async function Page({ params }: Props) {
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
         <EditorialRichText text={post.body} />
+        {isStakeholderDiscussionNews && <div className="stakeholder-zoom-card">
+          <div><span>Онлайн-зустріч</span><time dateTime="2026-08-26T12:00:00+03:00">26 серпня · 12:00</time></div>
+          <div><span>Meeting ID</span><strong>303 650 3681</strong></div>
+          <a href="https://zoom.us/j/3036503681?pwd=QUNhTE14SjVWa3htTy9OZjRjQ2IzQT09" target="_blank" rel="noreferrer">Приєднатися до Zoom ↗</a>
+        </div>}
         {entranceResultDocuments && <div className="news-result-files">
           <span>Результати за предметами</span>
           {entranceResultDocuments.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>

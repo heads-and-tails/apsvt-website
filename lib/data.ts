@@ -27,8 +27,25 @@ import { applicantRankingsNewsSlug } from "@/lib/admissions-rankings";
 import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 
 const IMG = "https://images.unsplash.com";
+export const stakeholderDiscussionNewsSlug = "obhovorennia-osvitnikh-prohram-d8-d4-2026";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-stakeholder-discussion-d8-d4-2026",
+    slug: stakeholderDiscussionNewsSlug,
+    title: "Онлайн-обговорення освітніх програм D8 «Право» і D4 «Публічне управління та адміністрування»",
+    excerpt: "26 серпня о 12:00 стейкхолдерів запрошують до онлайн-обговорення освітніх програм юридичного факультету.",
+    body: "До відома стейкхолдерів освітніх програм зі спеціальностей D8 Право і D4 Публічне управління та адміністрування!\n\n26 серпня відбудеться онлайн-обговорення освітніх програм спеціальностей юридичного факультету. Початок — 12:00.\n\nMeeting ID: 303 650 3681.",
+    category: "Оголошення",
+    imageUrl: "/apsvt-event-real.jpg",
+    imageAlt: "Онлайн-обговорення освітніх програм юридичного факультету АПСВТ",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-08-25T09:00:00.000Z",
+    createdAt: "2026-08-25T09:00:00.000Z",
+    updatedAt: "2026-08-25T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-academic-competition-2-3-2026",
     slug: academicCompetitionNewsSlug,
@@ -290,7 +307,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
