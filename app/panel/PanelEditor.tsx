@@ -112,8 +112,26 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
     event.preventDefault();
     const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
     const requestedStatus = submitter?.value === "published" ? "published" : "draft";
+    const requiredFields = [
+      { name: "title", label: "заголовок", value: form.title },
+      { name: "excerpt", label: "короткий опис", value: form.excerpt },
+      { name: "body", label: "текст статті", value: form.body },
+    ];
+    const missingFields = requiredFields.filter((field) => !field.value.trim());
+    if (missingFields.length) {
+      setMessage(`Заповніть обов’язкові поля: ${missingFields.map((field) => field.label).join(", ")}.`);
+      const firstMissing = event.currentTarget.elements.namedItem(missingFields[0].name);
+      if (firstMissing instanceof HTMLElement) {
+        firstMissing.focus();
+        firstMissing.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      return;
+    }
     const payload: FormState = {
       ...form,
+      title: form.title.trim(),
+      excerpt: form.excerpt.trim(),
+      body: form.body.trim(),
       status: requestedStatus,
       publishedAt: requestedStatus === "published" ? form.publishedAt : null,
     };
@@ -145,12 +163,13 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
 
       {activeView === "overview" && <PanelOverview posts={posts} documents={initialDocuments} departmentEntries={initialDepartmentEntries} canManageNews={canManageNews} canManageDepartment={canManageDepartment} canManageOperations={allowedKinds.length > 0} isAdmin={isAdmin} open={open} />}
       {activeView === "assistant" && <AiEditorialAssistant publisher={publisher} />}
-      {activeView === "news-editor" && canManageNews && <form className="editor" id="editor" onSubmit={submit}>
+      {activeView === "news-editor" && canManageNews && <form className="editor" id="editor" noValidate onSubmit={submit}>
         <section className="editor-fields">
-          <label>Заголовок<input required value={form.title} onChange={(event) => change("title", event.target.value)} placeholder="Сильний і зрозумілий заголовок" /></label>
+          <p className="editor-required-note">Поля із позначкою <b>*</b> обов’язкові для чернетки та публікації.</p>
+          <label>Заголовок *<input name="title" required value={form.title} onChange={(event) => change("title", event.target.value)} placeholder="Сильний і зрозумілий заголовок" /></label>
           <label>Категорія<select value={form.category} onChange={(event) => change("category", event.target.value)}><option>Новини</option><option>Вступ</option><option>Освіта</option><option>Наука</option><option>Міжнародне</option><option>Студенти</option><option>Події</option></select></label>
-          <label>Короткий опис<textarea required rows={3} value={form.excerpt} onChange={(event) => change("excerpt", event.target.value)} placeholder="1–2 речення для картки матеріалу" /></label>
-          <label>Текст статті<textarea required className="body-editor" rows={16} value={form.body} onChange={(event) => change("body", event.target.value)} placeholder={"Перший абзац — головна думка.\n\nНовий абзац починайте після порожнього рядка."} /></label>
+          <label>Короткий опис *<textarea name="excerpt" required rows={3} value={form.excerpt} onChange={(event) => change("excerpt", event.target.value)} placeholder="1–2 речення для картки матеріалу" /></label>
+          <label>Текст статті *<textarea name="body" required className="body-editor" rows={16} value={form.body} onChange={(event) => change("body", event.target.value)} placeholder={"Перший абзац — головна думка.\n\nНовий абзац починайте після порожнього рядка."} /></label>
           <label className="toggle"><input type="checkbox" checked={form.featured} onChange={(event) => change("featured", event.target.checked)} /><span>Показувати як головний матеріал</span></label>
         </section>
         <aside className="editor-media">
