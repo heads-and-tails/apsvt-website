@@ -10,6 +10,7 @@ import {
 } from "@/lib/department-content";
 import { canEditPage, editorialAccessOptions } from "@/lib/editorial-access";
 import { educationQualityRubrics, normalizeEducationQualityRubricId } from "@/lib/education-quality";
+import { uploadEditorialFile } from "@/lib/editorial-upload-client";
 
 const typeLabels: Record<DepartmentEntryType, { label: string; singular: string; hint: string }> = {
   section: { label: "Розділи сторінки", singular: "текстовий розділ", hint: "Опис кафедри, напрями роботи, досягнення або контакти" },
@@ -110,24 +111,19 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
   async function upload(file: File, purpose: "image" | "document") {
     setBusy(true);
     setMessage(purpose === "image" ? "Завантажуємо фото…" : "Завантажуємо файл…");
-    const data = new FormData();
-    data.append("file", file);
-    data.append("purpose", purpose);
-    data.append("pagePath", pagePath);
-    const response = await fetch("/api/uploads", { method: "POST", body: data });
-    const result = await response.json() as { url?: string; fileName?: string; error?: string };
-    if (!response.ok || !result.url) {
-      setMessage(result.error || "Не вдалося завантажити файл");
+    try {
+      const result = await uploadEditorialFile(file, purpose, pagePath);
+      if (purpose === "image") {
+        setForm((current) => ({ ...current, imageUrl: result.url, imageAlt: current.imageAlt || current.title || file.name.replace(/[-_]/g, " ") }));
+      } else {
+        setForm((current) => ({ ...current, fileUrl: result.url, fileName: result.fileName || file.name, title: current.title || file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ") }));
+      }
+      setMessage("Файл готовий. Тепер збережіть запис.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Не вдалося завантажити файл");
+    } finally {
       setBusy(false);
-      return;
     }
-    if (purpose === "image") {
-      setForm((current) => ({ ...current, imageUrl: result.url || "", imageAlt: current.imageAlt || current.title || file.name.replace(/[-_]/g, " ") }));
-    } else {
-      setForm((current) => ({ ...current, fileUrl: result.url || "", fileName: result.fileName || file.name, title: current.title || file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ") }));
-    }
-    setMessage("Файл готовий. Тепер збережіть запис.");
-    setBusy(false);
   }
 
   async function save(event: React.FormEvent) {
