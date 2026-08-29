@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
+import { MarketingPublications } from "./MarketingPublications";
 
 export const metadata: Metadata = {
   title: "Наукові видання",
@@ -137,11 +138,13 @@ export default function Page() {
         </div>
       </section>
 
+      <MarketingPublications />
+
       <section className="soft">
         <div className="wrap">
           <div className="sec-head">
             <div>
-              <div className="idx">01 / Спеціальності</div>
+              <div className="idx">02 / Спеціальності</div>
               <h2>Визнані напрями</h2>
             </div>
           </div>
@@ -160,7 +163,7 @@ export default function Page() {
         <div className="wrap">
           <div className="sec-head">
             <div>
-              <div className="idx">02 / Міжнародне партнерство</div>
+              <div className="idx">03 / Міжнародне партнерство</div>
               <h2>Consortio</h2>
             </div>
           </div>
