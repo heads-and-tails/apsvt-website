@@ -295,7 +295,6 @@ export async function getAllContent(): Promise<ContentItem[]> {
 
 export async function createContentItem(input: ContentInput, authorEmail: string): Promise<ContentItem> {
   if (isSupabaseConfigured()) {
-    await ensureSupabaseContent();
     const now = new Date().toISOString();
     const item: ContentItem = { id: crypto.randomUUID(), kind: input.kind, payload: input.payload, sortOrder: input.sortOrder ?? Date.now(), createdAt: now, updatedAt: now, authorEmail };
     const { data, error } = await createSupabaseAdmin().from("editorial_content_items").insert(toSupabaseRow(item)).select("*").single();

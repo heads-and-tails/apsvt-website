@@ -20,13 +20,38 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const startedAt = Date.now();
+  const requestId = request.headers.get("x-vercel-id");
   try {
     const body: unknown = await request.json();
     if (!isDepartmentEntryInput(body)) return NextResponse.json({ error: "Заповніть обов’язкові поля" }, { status: 400 });
     const publisher = await requirePagePublisher(body.pagePath);
-    return NextResponse.json(await createDepartmentEntry(body, publisher.email), { status: 201 });
+    const entry = await createDepartmentEntry(body, publisher.email);
+    console.log(JSON.stringify({
+      level: "info",
+      message: "Department entry created",
+      route: "/api/department-content",
+      requestId,
+      pagePath: body.pagePath,
+      entryType: body.entryType,
+      durationMs: Date.now() - startedAt,
+    }));
+    return NextResponse.json(entry, { status: 201, headers: { "Cache-Control": "private, no-store" } });
   } catch (error) {
     const denied = error instanceof Error && (error.message === "UNAUTHORIZED" || error.message === "FORBIDDEN_SCOPE");
-    return NextResponse.json({ error: denied ? "Доступ заборонено" : "Не вдалося зберегти запис" }, { status: denied ? 403 : 500 });
+    const storageCode = error && typeof error === "object" && "code" in error ? String(error.code) : undefined;
+    console.error(JSON.stringify({
+      level: "error",
+      message: "Department entry creation failed",
+      route: "/api/department-content",
+      requestId,
+      error: error instanceof Error ? error.message : String(error),
+      storageCode,
+      durationMs: Date.now() - startedAt,
+    }));
+    return NextResponse.json(
+      { error: denied ? "Доступ заборонено" : "Не вдалося зберегти запис. Оновіть сторінку та повторіть спробу." },
+      { status: denied ? 403 : 500, headers: { "Cache-Control": "private, no-store" } },
+    );
   }
 }

@@ -23,6 +23,8 @@ function departmentTargetFor(detectedTarget: EditorialDraftTarget): EditorialDra
 }
 
 export async function POST(request: Request) {
+  const startedAt = Date.now();
+  const requestId = request.headers.get("x-vercel-id");
   try {
     const publisher = await requirePublisher();
     if (!request.headers.get("content-type")?.includes("multipart/form-data")) {
@@ -76,10 +78,27 @@ export async function POST(request: Request) {
       instruction,
       editorEmail: publisher.email,
     });
-    return NextResponse.json(draft);
+    console.log(JSON.stringify({
+      level: "info",
+      message: "Editorial AI draft created",
+      route: "/api/editorial/ai-import",
+      requestId,
+      target: resolvedTarget,
+      usedAi: draft.usedAi,
+      durationMs: Date.now() - startedAt,
+    }));
+    return NextResponse.json(draft, { headers: { "Cache-Control": "private, no-store" } });
   } catch (error) {
     const unauthorized = error instanceof Error && error.message === "UNAUTHORIZED";
     const forbidden = error instanceof Error && error.message === "FORBIDDEN_SCOPE";
+    console.error(JSON.stringify({
+      level: "error",
+      message: "Editorial AI import failed",
+      route: "/api/editorial/ai-import",
+      requestId,
+      error: error instanceof Error ? error.message : String(error),
+      durationMs: Date.now() - startedAt,
+    }));
     return NextResponse.json(
       {
         error: unauthorized
@@ -88,7 +107,7 @@ export async function POST(request: Request) {
             ? "У вас немає доступу до вибраної сторінки"
             : "Не вдалося підготувати чернетку. Перевірте файл і спробуйте ще раз.",
       },
-      { status: unauthorized ? 401 : forbidden ? 403 : 500 },
+      { status: unauthorized ? 401 : forbidden ? 403 : 500, headers: { "Cache-Control": "private, no-store" } },
     );
   }
 }
