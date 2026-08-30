@@ -28,6 +28,8 @@ const typeLabels: Record<DepartmentEntryType, { label: string; singular: string;
 type ExistingElementKind = "text" | "image" | "link";
 type ExistingPageElement = {
   selector: string;
+  groupSelector: string;
+  groupLabel: string;
   kind: ExistingElementKind;
   tag: string;
   label: string;
@@ -38,10 +40,21 @@ type ExistingPageElement = {
   order: number;
 };
 
+type ExistingPageGroup = {
+  selector: string;
+  label: string;
+  preview: string;
+  imageUrl: string;
+  items: ExistingPageElement[];
+  order: number;
+};
+
+type ExistingPageGroupView = ExistingPageGroup & { visibleItems: ExistingPageElement[] };
+
 type InventoryPayload = { pagePath: string; pageUrl: string; html: string; error?: string };
 
 const inventoryTextSelector = "h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd";
-const inventoryExcludedSelector = "header,footer,nav,script,style,noscript,button,form,[aria-hidden='true'],.loader,.scroll-progress,[data-editorial-rendered='true']";
+const inventoryExcludedSelector = "header,footer,nav,script,style,noscript,button,form,[aria-hidden='true'],.loader,.scroll-progress,.admissions-hub-catalog,.admissions-active-toolbar,[data-editorial-rendered='true']";
 
 function selectorForElement(element: Element, root: Element): string {
   const parts: string[] = [];
@@ -63,34 +76,170 @@ function absoluteUrl(value: string, pageUrl: string): string {
   try { return new URL(value, pageUrl).toString(); } catch { return value; }
 }
 
+function normalizedText(element: Element): string {
+  return (element.textContent || "").replace(/\s+/g, " ").trim();
+}
+
+function inventoryGroupFor(element: Element, root: Element): Element {
+  return element.closest("article,figure")
+    || element.closest("details")
+    || element.closest("a[href]")
+    || element.closest("section")
+    || element.parentElement
+    || root;
+}
+
+function inventoryGroupLabel(group: Element, fallback: string): string {
+  const heading = group.querySelector("h1,h2,h3,h4,h5,h6");
+  const caption = group.querySelector("figcaption");
+  const image = group.querySelector("img[alt]");
+  const candidate = heading ? normalizedText(heading) : caption ? normalizedText(caption) : image?.getAttribute("alt") || fallback;
+  return candidate.replace(/\s+/g, " ").trim().slice(0, 140) || "Блок сторінки";
+}
+
+function inventoryItemLabel(kind: ExistingElementKind, tag: string, value: string, alt: string): string {
+  if (kind === "image") return alt || "Зображення";
+  if (kind === "link") return value || "Посилання";
+  if (/^h[1-6]$/.test(tag)) return "Заголовок";
+  if (tag === "li") return "Пункт списку";
+  if (tag === "figcaption") return "Підпис до фото";
+  if (tag === "blockquote") return "Цитата";
+  if (tag === "dt" || tag === "dd") return "Поле опису";
+  return "Текст";
+}
+
+function groupExistingElements(elements: ExistingPageElement[]): ExistingPageGroup[] {
+  const groups = new Map<string, ExistingPageGroup>();
+  elements.forEach((item) => {
+    const selector = item.groupSelector || item.selector;
+    const current = groups.get(selector);
+    if (current) {
+      current.items.push(item);
+      if (!current.imageUrl && item.kind === "image") current.imageUrl = item.imageUrl;
+      return;
+    }
+    groups.set(selector, {
+      selector,
+      label: item.groupLabel || item.label,
+      preview: "",
+      imageUrl: item.kind === "image" ? item.imageUrl : "",
+      items: [item],
+      order: item.order,
+    });
+  });
+  return Array.from(groups.values()).map((group) => {
+    const seen = new Set<string>();
+    const previewParts: string[] = [];
+    group.items.forEach((item) => {
+      const value = item.kind === "link" ? item.value : item.kind === "text" ? item.value : "";
+      const normalized = value.replace(/\s+/g, " ").trim();
+      if (!normalized || normalized === group.label || seen.has(normalized)) return;
+      seen.add(normalized);
+      previewParts.push(normalized);
+    });
+    return { ...group, preview: previewParts.join(" · ").slice(0, 520) };
+  }).sort((a, b) => a.order - b.order).map((group, index) => ({ ...group, order: index }));
+}
+
+function ExistingContentList({
+  pageName,
+  loading,
+  error,
+  totalElements,
+  totalGroups,
+  groups,
+  query,
+  filter,
+  overrides,
+  busy,
+  onQueryChange,
+  onFilterChange,
+  onEdit,
+  onRestore,
+}: {
+  pageName: string;
+  loading: boolean;
+  error: string;
+  totalElements: number;
+  totalGroups: number;
+  groups: ExistingPageGroupView[];
+  query: string;
+  filter: "all" | ExistingElementKind;
+  overrides: Map<string, DepartmentEntry>;
+  busy: boolean;
+  onQueryChange: (value: string) => void;
+  onFilterChange: (value: "all" | ExistingElementKind) => void;
+  onEdit: (item: ExistingPageElement) => void;
+  onRestore: (entry: DepartmentEntry) => void;
+}) {
+  return <div className="operations-list existing-content-list">
+    <div className="operations-list-head"><div><small>{pageName}</small><h3>Готові блоки сторінки</h3></div><b>{groups.length}</b></div>
+    <div className="existing-content-controls"><label>Знайти розділ, людину або матеріал<input value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Наприклад: Ліпкан, партнери, навчальний план…" /></label><div role="group" aria-label="Фільтр наявного контенту">{(["all", "text", "image", "link"] as const).map((value) => <button type="button" className={filter === value ? "active" : ""} onClick={() => onFilterChange(value)} key={value}>{value === "all" ? "Усі блоки" : value === "text" ? "Тексти" : value === "image" ? "Фото" : "Посилання"}</button>)}</div><p>{totalElements} редагованих полів згруповано у {totalGroups} зрозумілих блоків.{groups.length !== totalGroups ? ` Показано ${groups.length}.` : ""} Відкрийте потрібний блок, щоб змінити окреме поле.</p></div>
+    {loading && <p className="department-empty">Зчитуємо й упорядковуємо поточний вміст сторінки…</p>}
+    {!loading && error && <p className="department-empty">{error}</p>}
+    {!loading && !error && groups.length === 0 && <p className="department-empty">За цим пошуком блоків не знайдено.</p>}
+    <div className="existing-content-groups">{groups.map((group) => {
+      const savedItems = group.items.map((item) => overrides.get(`${item.kind}:${item.selector}`)).filter((entry): entry is DepartmentEntry => Boolean(entry));
+      const firstImage = group.items.find((item) => item.kind === "image");
+      const savedImage = firstImage ? overrides.get(`image:${firstImage.selector}`) : undefined;
+      const previewImage = savedImage?.imageUrl || firstImage?.imageUrl || group.imageUrl;
+      return <details className={savedItems.length ? "modified" : ""} key={group.selector}>
+        <summary>
+          {previewImage ? <img src={previewImage} alt="" /> : <span className="existing-content-group-index">{String(group.order + 1).padStart(2, "0")}</span>}
+          <div><small>{group.items.length} {group.items.length === 1 ? "поле" : "полів"}{savedItems.length ? ` · змінено ${savedItems.length}` : ""}</small><h4>{group.label}</h4><p>{group.preview || "Зображення, посилання або службовий блок сторінки."}</p></div>
+          <b aria-hidden="true">+</b>
+        </summary>
+        <div className="existing-content-group-body"><div className="existing-content-group-note"><b>Вміст блоку</b><span>Кожне поле можна змінити окремо, не переписуючи весь розділ.</span></div>{group.visibleItems.map((item) => {
+          const saved = overrides.get(`${item.kind}:${item.selector}`);
+          const effectiveText = saved?.summary || item.value;
+          const effectiveImage = saved?.imageUrl || item.imageUrl;
+          const effectiveHref = saved?.profileUrl || item.href;
+          return <article className={saved ? "modified" : ""} key={`${item.kind}:${item.selector}`}>
+            {item.kind === "image" && <img src={effectiveImage} alt={saved?.imageAlt || item.imageAlt || ""} />}
+            <div><small>{item.kind === "text" ? item.label : item.kind === "image" ? "Зображення" : "Посилання"}{saved ? " · ЗМІНЕНО" : ""}</small>{item.kind === "link" && <h5>{effectiveText}</h5>}<p>{item.kind === "link" ? effectiveHref : item.kind === "image" ? saved?.imageAlt || item.imageAlt || "Без альтернативного опису" : effectiveText}</p></div>
+            <div><button type="button" onClick={() => onEdit(item)}>{saved ? "Редагувати зміну" : "Редагувати поле"}</button>{saved && <button className="danger" disabled={busy} type="button" onClick={() => onRestore(saved)}>Відновити</button>}</div>
+          </article>;
+        })}</div>
+      </details>;
+    })}</div>
+  </div>;
+}
+
 function extractExistingElements(payload: InventoryPayload): ExistingPageElement[] {
   const documentSnapshot = new DOMParser().parseFromString(payload.html, "text/html");
   const root = documentSnapshot.querySelector("main");
   if (!root) return [];
   const elements: ExistingPageElement[] = [];
   let order = 0;
-  root.querySelectorAll(inventoryTextSelector).forEach((element) => {
+  root.querySelectorAll(`${inventoryTextSelector},img,a[href]`).forEach((element) => {
     if (element.closest(inventoryExcludedSelector)) return;
-    const value = (element.textContent || "").replace(/\s+/g, " ").trim();
+    const tag = element.tagName.toLowerCase();
     const selector = selectorForElement(element, root);
-    if (!selector || selector.length > 1000 || value.length < 2 || value.length > 2500) return;
-    elements.push({ selector, kind: "text", tag: element.tagName.toLowerCase(), label: value.slice(0, 90), value, imageUrl: "", imageAlt: "", href: "", order: order++ });
-  });
-  root.querySelectorAll("img").forEach((element) => {
-    if (element.closest(inventoryExcludedSelector)) return;
-    const selector = selectorForElement(element, root);
-    const source = absoluteUrl(element.getAttribute("src") || "", payload.pageUrl);
-    if (!selector || selector.length > 1000 || !source) return;
-    const alt = (element.getAttribute("alt") || "").trim();
-    elements.push({ selector, kind: "image", tag: "img", label: alt || `Зображення ${order + 1}`, value: source, imageUrl: source, imageAlt: alt, href: "", order: order++ });
-  });
-  root.querySelectorAll("a[href]").forEach((element) => {
-    if (element.closest(inventoryExcludedSelector) || element.querySelector("img")) return;
-    const selector = selectorForElement(element, root);
-    const value = (element.textContent || "").replace(/\s+/g, " ").trim();
-    const href = absoluteUrl(element.getAttribute("href") || "", payload.pageUrl);
-    if (!selector || selector.length > 1000 || value.length < 2 || value.length > 300 || !href) return;
-    elements.push({ selector, kind: "link", tag: "a", label: value.slice(0, 90), value, imageUrl: "", imageAlt: "", href, order: order++ });
+    if (!selector || selector.length > 1000) return;
+    const group = inventoryGroupFor(element, root);
+    const groupSelector = selectorForElement(group, root) || selector;
+    const rawText = normalizedText(element);
+    const groupLabel = inventoryGroupLabel(group, rawText);
+
+    if (tag === "img") {
+      const image = element as HTMLImageElement;
+      const source = absoluteUrl(image.getAttribute("src") || "", payload.pageUrl);
+      if (!source) return;
+      const alt = (image.getAttribute("alt") || "").trim();
+      elements.push({ selector, groupSelector, groupLabel, kind: "image", tag, label: inventoryItemLabel("image", tag, source, alt), value: source, imageUrl: source, imageAlt: alt, href: "", order: order++ });
+      return;
+    }
+
+    if (tag === "a") {
+      const anchor = element as HTMLAnchorElement;
+      const href = absoluteUrl(anchor.getAttribute("href") || "", payload.pageUrl);
+      if (!href || rawText.length < 2 || rawText.length > 500) return;
+      elements.push({ selector, groupSelector, groupLabel, kind: "link", tag, label: inventoryItemLabel("link", tag, rawText, ""), value: rawText, imageUrl: "", imageAlt: "", href, order: order++ });
+      return;
+    }
+
+    if (rawText.length < 2 || rawText.length > 2500) return;
+    elements.push({ selector, groupSelector, groupLabel, kind: "text", tag, label: inventoryItemLabel("text", tag, rawText, ""), value: rawText, imageUrl: "", imageAlt: "", href: "", order: order++ });
   });
   return elements.sort((a, b) => a.order - b.order).slice(0, 400);
 }
@@ -159,14 +308,17 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     () => inventoryResult.path === pagePath ? inventoryResult.items : [],
     [inventoryResult, pagePath],
   );
+  const inventoryGroups = useMemo(() => groupExistingElements(inventory), [inventory]);
   const inventoryLoading = entryType === "override" && inventoryResult.path !== pagePath;
-  const filteredInventory = useMemo(() => {
+  const filteredInventoryGroups = useMemo<ExistingPageGroupView[]>(() => {
     const query = inventoryQuery.trim().toLocaleLowerCase("uk");
-    return inventory.filter((item) => {
-      if (inventoryFilter !== "all" && item.kind !== inventoryFilter) return false;
-      return !query || `${item.label} ${item.value} ${item.href}`.toLocaleLowerCase("uk").includes(query);
+    return inventoryGroups.flatMap((group) => {
+      const searchable = `${group.label} ${group.preview} ${group.items.map((item) => `${item.label} ${item.value} ${item.href}`).join(" ")}`.toLocaleLowerCase("uk");
+      if (query && !searchable.includes(query)) return [];
+      const visibleItems = inventoryFilter === "all" ? group.items : group.items.filter((item) => item.kind === inventoryFilter);
+      return visibleItems.length ? [{ ...group, visibleItems }] : [];
     });
-  }, [inventory, inventoryFilter, inventoryQuery]);
+  }, [inventoryFilter, inventoryGroups, inventoryQuery]);
   const overrideBySelector = useMemo(() => new Map(
     entries
       .filter((entry) => entry.pagePath === pagePath && entry.entryType === "override")
@@ -316,11 +468,11 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
   return <section className="department-manager" id="departments-editor">
     <div className="materials-head department-manager-head"><div><span>Увесь контент сайту</span><h2>Сторінки та матеріали</h2><p>Керуйте вже розміщеними текстами, фото й посиланнями, а також додавайте обкладинки, людей, партнерів, новини та файли.</p></div><a href={pagePath} target="_blank">Перевірити сторінку ↗</a></div>
     <div className="department-page-picker"><label>Сторінка<select value={pagePath} onChange={(event) => choosePage(event.target.value)}>{generalPages.length > 0 && <optgroup label="Загальні сторінки">{generalPages.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</optgroup>}{departmentPages.length > 0 && <optgroup label="Програми, факультети та кафедри">{departmentPages.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</optgroup>}</select></label><div><b>{pageLabel(pagePath)}</b><span>{entries.filter((entry) => entry.pagePath === pagePath).length} матеріалів</span></div></div>
-    <div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? inventory.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type).length}</span></button>)}</div>
+    <div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? inventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type).length}</span></button>)}</div>
     <div className="operations-layout">
       <form className="operations-form" id="department-entry-editor" onSubmit={save}>
         <div className="operations-form-head"><div><small>{typeLabels[entryType].hint}</small><h3>{isOverride && !form.body ? "Оберіть елемент праворуч" : editing ? `Редагувати ${typeLabels[entryType].singular}` : `Додати ${typeLabels[entryType].singular}`}</h3></div>{(editing || (isOverride && form.body)) && <button type="button" onClick={reset}>Скасувати</button>}</div>
-        {isOverride && !form.body ? <div className="existing-content-prompt"><b>Вміст сторінки вже завантажується</b><p>Оберіть текст, зображення або посилання у списку праворуч. Тут відкриється його редактор.</p></div> : <div className="operations-fields">
+        {isOverride && !form.body ? <div className="existing-content-prompt"><b>Вміст сторінки впорядковано</b><p>Праворуч показані цілі розділи, картки людей, партнерів і матеріалів. Розкрийте блок та оберіть поле, яке потрібно змінити.</p></div> : <div className="operations-fields">
           <label className="wide">{isOverride ? "Елемент сторінки" : isTeacher ? "Ім’я та прізвище" : isPartner ? "Назва партнера / компанії" : isHero ? "Головний заголовок сторінки" : "Заголовок"}<input required readOnly={isOverride} value={form.title} onChange={(event) => change("title", event.target.value)} placeholder={isTeacher ? "ПІБ викладача" : isPartner ? "Назва організації" : "Зрозумілий заголовок"} /></label>
           {(entryType === "news" || entryType === "article" || isQuality) && <label>Дата<input type="date" value={form.date} onChange={(event) => change("date", event.target.value)} /></label>}
           {isTeacher && <><label>Посада / науковий ступінь<input required value={form.role} onChange={(event) => change("role", event.target.value)} /></label><label>Email<input type="email" value={form.email} onChange={(event) => change("email", event.target.value)} /></label><label>Науковий профіль<input type="url" value={form.profileUrl} onChange={(event) => change("profileUrl", event.target.value)} placeholder="ORCID, Google Scholar…" /></label></>}
@@ -338,7 +490,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
         </div>}
         <div className="operations-save"><p>{message || (isOverride ? "Оберіть елемент сторінки у списку праворуч." : "Заповніть картку та збережіть зміни.")}</p><button disabled={busy || (isOverride && !form.body) || (entryType === "photo" && !form.imageUrl) || (isMaterial && !form.fileUrl)} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити" : isOverride ? "Опублікувати заміну" : "Додати на сторінку"}</button></div>
       </form>
-      {isOverride ? <div className="operations-list existing-content-list"><div className="operations-list-head"><div><small>{pageLabel(pagePath)}</small><h3>Контент, який уже є</h3></div><b>{inventory.length}</b></div><div className="existing-content-controls"><label>Знайти елемент<input value={inventoryQuery} onChange={(event) => setInventoryQuery(event.target.value)} placeholder="Заголовок, ім’я, назва…" /></label><div role="group" aria-label="Фільтр наявного контенту">{(["all", "text", "image", "link"] as const).map((filter) => <button type="button" className={inventoryFilter === filter ? "active" : ""} onClick={() => setInventoryFilter(filter)} key={filter}>{filter === "all" ? "Усе" : filter === "text" ? "Тексти" : filter === "image" ? "Фото" : "Посилання"}</button>)}</div></div>{inventoryLoading && <p className="department-empty">Зчитуємо поточний вміст сторінки…</p>}{inventoryResult.path === pagePath && inventoryResult.error && <p className="department-empty">{inventoryResult.error}</p>}{!inventoryLoading && !inventoryResult.error && filteredInventory.length === 0 && <p className="department-empty">За цим фільтром елементів не знайдено.</p>}<div className="existing-content-grid">{filteredInventory.map((item) => { const saved = overrideBySelector.get(`${item.kind}:${item.selector}`); const effectiveText = saved?.summary || item.value; const effectiveImage = saved?.imageUrl || item.imageUrl; const effectiveHref = saved?.profileUrl || item.href; return <article className={saved ? "modified" : ""} key={`${item.kind}:${item.selector}`}>{item.kind === "image" && <img src={effectiveImage} alt={saved?.imageAlt || item.imageAlt || ""} />}<div><small>{item.kind === "text" ? item.tag.toUpperCase() : item.kind === "image" ? "ЗОБРАЖЕННЯ" : "ПОСИЛАННЯ"}{saved ? " · ЗМІНЕНО" : ""}</small><h4>{item.label}</h4><p>{item.kind === "link" ? effectiveHref : effectiveText}</p></div><div><button type="button" onClick={() => startInventoryEdit(item)}>{saved ? "Редагувати зміну" : "Редагувати"}</button>{saved && <button className="danger" disabled={busy} type="button" onClick={() => void remove(saved)}>Відновити</button>}</div></article>; })}</div></div> : <div className="operations-list department-entry-list"><div className="operations-list-head"><div><small>{pageLabel(pagePath)}</small><h3>{typeLabels[entryType].label}</h3></div><b>{visible.length}</b></div>{visible.length === 0 && <p className="department-empty">Ще немає записів цього типу. Додайте перший матеріал у формі поруч.</p>}{visible.map((entry) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => startEdit(entry)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => void remove(entry)}>Видалити</button></div></article>)}</div>}
+      {isOverride ? <ExistingContentList pageName={pageLabel(pagePath)} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} totalElements={inventory.length} totalGroups={inventoryGroups.length} groups={filteredInventoryGroups} query={inventoryQuery} filter={inventoryFilter} overrides={overrideBySelector} busy={busy} onQueryChange={setInventoryQuery} onFilterChange={setInventoryFilter} onEdit={startInventoryEdit} onRestore={(entry) => void remove(entry)} /> : <div className="operations-list department-entry-list"><div className="operations-list-head"><div><small>{pageLabel(pagePath)}</small><h3>{typeLabels[entryType].label}</h3></div><b>{visible.length}</b></div>{visible.length === 0 && <p className="department-empty">Ще немає записів цього типу. Додайте перший матеріал у формі поруч.</p>}{visible.map((entry) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => startEdit(entry)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => void remove(entry)}>Видалити</button></div></article>)}</div>}
     </div>
   </section>;
 }
