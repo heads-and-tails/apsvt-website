@@ -66,7 +66,12 @@ export function detectEditorialTarget(
   return "document";
 }
 
-function fallbackDraft(target: EditorialDraftTarget, fileName: string, text: string): EditorialAiDraft {
+function fallbackDraft(
+  target: EditorialDraftTarget,
+  fileName: string,
+  text: string,
+  warning = "AI ще не активовано на сервері. Створено базовий чернетковий варіант із тексту файла — перевірте й відредагуйте його.",
+): EditorialAiDraft {
   const config = draftTargetConfigs.find((entry) => entry.id === target)!;
   const cleanTitle = fileName.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
   const paragraphs = text.split(/\n+/).map((item) => item.trim()).filter(Boolean);
@@ -88,7 +93,7 @@ function fallbackDraft(target: EditorialDraftTarget, fileName: string, text: str
     summary: second || "Текст розпізнано з файла. Перевірте поля перед публікацією.",
     body: text.slice(0, 20_000),
     records: generatedRecords.length ? generatedRecords : [payloadToDraftRecord(defaults, config.fields)],
-    warnings: ["AI ще не активовано на сервері. Створено базовий чернетковий варіант із тексту файла — перевірте й відредагуйте його."],
+    warnings: [warning],
     sourceFileName: fileName,
     usedAi: false,
   };
@@ -300,7 +305,18 @@ export async function createEditorialDraft(input: {
     }),
   });
   const result = await response.json() as OpenAiResponse;
-  if (!response.ok) throw new Error(result.error?.message || "OPENAI_REQUEST_FAILED");
+  if (!response.ok) {
+    const gatewayError = result.error?.message || "OPENAI_REQUEST_FAILED";
+    if (!directApiKey && /valid credit card/i.test(gatewayError)) {
+      return fallbackDraft(
+        input.target,
+        input.file.name,
+        extractedText,
+        "AI Gateway підключено, але Vercel очікує підтвердження платіжної картки. Після підтвердження AI запрацює автоматично; зараз створено базову чернетку для ручної перевірки.",
+      );
+    }
+    throw new Error(gatewayError);
+  }
   const text = outputText(result);
   if (!text) throw new Error("OPENAI_EMPTY_RESPONSE");
   return normalizeDraft(JSON.parse(text), input.target, input.file.name);
