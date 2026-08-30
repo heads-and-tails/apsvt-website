@@ -230,25 +230,9 @@ function toSupabaseRow(item: ContentItem) {
   };
 }
 
-let supabaseContentSeeded = false;
-async function ensureSupabaseContent(): Promise<void> {
-  if (supabaseContentSeeded || !isSupabaseConfigured()) return;
-  const admin = createSupabaseAdmin();
-  const { data, error } = await admin.from("editorial_content_items").select("id");
-  if (error) throw error;
-  const existingIds = new Set((data || []).map((item) => String(item.id)));
-  const missingSeeds = seedContent.filter((item) => !existingIds.has(item.id));
-  if (missingSeeds.length) {
-    const inserted = await admin.from("editorial_content_items").insert(missingSeeds.map(toSupabaseRow));
-    if (inserted.error) throw inserted.error;
-  }
-  supabaseContentSeeded = true;
-}
-
 export async function getContentItems(kind: ContentKind): Promise<ContentItem[]> {
   if (isSupabaseConfigured()) {
     try {
-      await ensureSupabaseContent();
       const { data, error } = await createSupabasePublicClient().from("editorial_content_items").select("*").eq("kind", kind).order("sort_order", { ascending: true });
       if (error) throw error;
       if (data?.length) return data.map((row) => applyPublishedCorrections(fromRow(row as Record<string, unknown>)));
@@ -274,7 +258,6 @@ export async function getPublicContent(kind: ContentKind): Promise<PublicContent
 export async function getAllContent(): Promise<ContentItem[]> {
   if (isSupabaseConfigured()) {
     try {
-      await ensureSupabaseContent();
       const { data, error } = await createSupabaseAdmin().from("editorial_content_items").select("*").order("kind").order("sort_order");
       if (error) throw error;
       return (data || []).map((row) => applyPublishedCorrections(fromRow(row as Record<string, unknown>)));
@@ -357,7 +340,6 @@ export async function replaceImportedSchedule(
   }));
 
   if (isSupabaseConfigured()) {
-    await ensureSupabaseContent();
     const admin = createSupabaseAdmin();
     const { data: existing, error: existingError } = await admin
       .from("editorial_content_items")
