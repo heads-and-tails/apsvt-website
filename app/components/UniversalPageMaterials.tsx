@@ -80,7 +80,48 @@ export function UniversalPageMaterials() {
   }, [entries, pathname]);
 
   useEffect(() => {
-    if (!entries.some((entry) => entry.entryType !== "hero") || document.querySelector("[data-editorial-rendered='true'], [data-page-materials-server='true']")) {
+    if (isIgnoredPath(pathname)) return;
+    const restore: Array<() => void> = [];
+    entries.filter((entry) => entry.entryType === "override").forEach((entry) => {
+      if (!entry.body.startsWith("main > ")) return;
+      try {
+        const element = document.querySelector<HTMLElement>(entry.body);
+        if (!element) return;
+        if (entry.role === "text") {
+          const original = element.innerHTML;
+          element.textContent = entry.summary;
+          restore.push(() => { element.innerHTML = original; });
+        } else if (entry.role === "image" && element instanceof HTMLImageElement) {
+          const originalSrc = element.getAttribute("src");
+          const originalSrcset = element.getAttribute("srcset");
+          const originalAlt = element.getAttribute("alt");
+          if (entry.imageUrl) element.src = entry.imageUrl;
+          element.removeAttribute("srcset");
+          if (entry.imageAlt) element.alt = entry.imageAlt;
+          restore.push(() => {
+            restoreAttribute(element, "src", originalSrc);
+            restoreAttribute(element, "srcset", originalSrcset);
+            restoreAttribute(element, "alt", originalAlt);
+          });
+        } else if (entry.role === "link" && element instanceof HTMLAnchorElement) {
+          const originalHref = element.getAttribute("href");
+          const originalHtml = element.innerHTML;
+          if (entry.profileUrl) element.href = entry.profileUrl;
+          if (entry.summary) element.textContent = entry.summary;
+          restore.push(() => {
+            restoreAttribute(element, "href", originalHref);
+            element.innerHTML = originalHtml;
+          });
+        }
+      } catch {
+        // A stale selector should never break the public page.
+      }
+    });
+    return () => restore.reverse().forEach((restoreElement) => restoreElement());
+  }, [entries, pathname]);
+
+  useEffect(() => {
+    if (!entries.some((entry) => entry.entryType !== "hero" && entry.entryType !== "override") || document.querySelector("[data-editorial-rendered='true'], [data-page-materials-server='true']")) {
       return;
     }
     const target = document.createElement("div");
@@ -96,7 +137,7 @@ export function UniversalPageMaterials() {
     };
   }, [entries, pathname]);
 
-  const visibleEntries = entries.filter((entry) => entry.entryType !== "hero");
+  const visibleEntries = entries.filter((entry) => entry.entryType !== "hero" && entry.entryType !== "override");
   if (
     isIgnoredPath(pathname)
     || portal?.path !== pathname

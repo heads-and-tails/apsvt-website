@@ -9,7 +9,7 @@ import {
 import { isEditorialPagePath } from "@/lib/editorial-access";
 import { educationQualityRubrics } from "@/lib/education-quality";
 
-export const departmentEntryTypes = ["hero", "section", "news", "article", "material", "photo", "teacher", "partner", "quality"] as const;
+export const departmentEntryTypes = ["override", "hero", "section", "news", "article", "material", "photo", "teacher", "partner", "quality"] as const;
 export type DepartmentEntryType = (typeof departmentEntryTypes)[number];
 export type DepartmentEntryStatus = "draft" | "published";
 
@@ -62,6 +62,13 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
     && (entry.status === "draft" || entry.status === "published")
     && typeof entry.sortOrder === "number" && Number.isFinite(entry.sortOrder);
   if (!validBase) return false;
+  if (entry.entryType === "override") {
+    return typeof entry.body === "string"
+      && entry.body.startsWith("main > ")
+      && entry.body.length <= 1000
+      && typeof entry.role === "string"
+      && ["text", "image", "link"].includes(entry.role);
+  }
   if (entry.entryType === "photo" && !entry.imageUrl) return false;
   if (entry.entryType === "material" && !entry.fileUrl) return false;
   if (entry.entryType === "teacher" && !entry.role) return false;
