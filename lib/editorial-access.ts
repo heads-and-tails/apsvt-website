@@ -6,25 +6,40 @@ export type EditorialAccessOption = {
 
 export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "*", label: "Увесь сайт", group: "all" },
+  { value: "/", label: "Головна сторінка", group: "page" },
   { value: "/news", label: "Новини та публікації", group: "page" },
+  { value: "/news/archive", label: "Архів новин", group: "page" },
   { value: "/about", label: "Про Академію", group: "page" },
+  { value: "/about/licenses", label: "Ліцензії та акредитація", group: "page" },
   { value: "/admissions", label: "Вступ", group: "page" },
   { value: "/students", label: "Студентам", group: "page" },
+  { value: "/students/guide", label: "Путівник студента", group: "page" },
+  { value: "/students/council", label: "Студентська рада", group: "page" },
   { value: "/research", label: "Наука", group: "page" },
+  { value: "/research/academy-work", label: "Наукова робота Академії", group: "page" },
+  { value: "/research/conferences", label: "Конференції", group: "page" },
+  { value: "/research/journals", label: "Наукові видання", group: "page" },
+  { value: "/research/postgraduate-doctoral", label: "Аспірантура і докторантура", group: "page" },
   { value: "/research/theses", label: "Кваліфікаційні роботи", group: "page" },
   { value: "/international", label: "Міжнародне", group: "page" },
   { value: "/events", label: "Події", group: "page" },
+  { value: "/events/graduation-2026", label: "Випуск 2026", group: "page" },
   { value: "/schedule", label: "Розклад занять", group: "page" },
   { value: "/exam-schedule", label: "Графік сесії", group: "page" },
+  { value: "/facilities/campus", label: "Кампус", group: "page" },
+  { value: "/facilities/dormitory", label: "Гуртожиток", group: "page" },
   { value: "/facilities/library", label: "Бібліотека", group: "page" },
   { value: "/materials", label: "Матеріали Академії", group: "page" },
   { value: "/people", label: "Люди Академії", group: "page" },
   { value: "/programs", label: "Освітні програми", group: "page" },
+  { value: "/departments", label: "Кафедри та факультети", group: "page" },
   { value: "/facilities", label: "Кампус і сервіси", group: "page" },
   { value: "/academic-calendar", label: "Навчальний календар", group: "page" },
   { value: "/contacts", label: "Контакти", group: "page" },
   { value: "/faq", label: "FAQ", group: "page" },
+  { value: "/tuition", label: "Вартість та оплата", group: "page" },
   { value: "/vacancies", label: "Вакансії та конкурси", group: "page" },
+  { value: "/stories", label: "Історії Академії", group: "page" },
   { value: "/departments/economics-social-tourism-faculty", label: "Факультет економіки, соціальних технологій і туризму", group: "department" },
   { value: "/departments/law-faculty", label: "Юридичний факультет", group: "department" },
   { value: "/departments/psychology-social-development-faculty", label: "Факультет психології та соціального розвитку", group: "department" },
@@ -35,6 +50,8 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/programs/marketing", label: "Кафедра маркетингу", group: "department" },
   { value: "/programs/trade", label: "Кафедра економіки та менеджменту · Торгівля", group: "department" },
   { value: "/programs/law", label: "Кафедра конституційного, адміністративного та фінансового права", group: "department" },
+  { value: "/programs/law/legal-clinic", label: "Юридична клініка", group: "department" },
+  { value: "/programs/law/forensic-laboratory", label: "Лабораторія криміналістики", group: "department" },
   { value: "/departments/private-law", label: "Кафедра цивільного, трудового та господарського права", group: "department" },
   { value: "/departments/criminal-law", label: "Кафедра кримінального права, процесу та криміналістики", group: "department" },
   { value: "/programs/social-work", label: "Кафедра соціальної роботи", group: "department" },
@@ -74,7 +91,12 @@ export function serializeEditorialAccessScopes(value: string[]): string {
 }
 
 export function canEditPage(profile: { role: string; accessScopes: string[] }, pagePath: string): boolean {
-  return profile.role === "admin" || profile.accessScopes.includes("*") || profile.accessScopes.includes(pagePath);
+  if (profile.role === "admin" || profile.accessScopes.includes("*")) return true;
+  return profile.accessScopes.some((scope) => scope === pagePath || (scope !== "/" && pagePath.startsWith(`${scope}/`)));
+}
+
+export function isEditorialPagePath(value: unknown): value is string {
+  return typeof value === "string" && editorialAccessOptions.some((option) => option.group !== "all" && option.value === value);
 }
 
 export function isDepartmentPagePath(value: unknown): value is string {

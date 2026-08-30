@@ -6,10 +6,10 @@ import {
   updateContentItem,
   type ContentItem,
 } from "@/lib/content";
-import { isDepartmentPagePath } from "@/lib/editorial-access";
+import { isEditorialPagePath } from "@/lib/editorial-access";
 import { educationQualityRubrics } from "@/lib/education-quality";
 
-export const departmentEntryTypes = ["section", "news", "article", "material", "photo", "teacher", "quality"] as const;
+export const departmentEntryTypes = ["hero", "section", "news", "article", "material", "photo", "teacher", "partner", "quality"] as const;
 export type DepartmentEntryType = (typeof departmentEntryTypes)[number];
 export type DepartmentEntryStatus = "draft" | "published";
 
@@ -37,7 +37,7 @@ export type DepartmentEntry = {
 
 export type DepartmentEntryInput = Omit<DepartmentEntry, "id" | "createdAt" | "updatedAt" | "authorEmail">;
 
-const marker = "department";
+const markers = new Set(["department", "page"]);
 
 export function isDepartmentEntryType(value: unknown): value is DepartmentEntryType {
   return typeof value === "string" && departmentEntryTypes.includes(value as DepartmentEntryType);
@@ -46,7 +46,7 @@ export function isDepartmentEntryType(value: unknown): value is DepartmentEntryT
 export function isDepartmentEntryInput(value: unknown): value is DepartmentEntryInput {
   if (!value || typeof value !== "object") return false;
   const entry = value as Record<string, unknown>;
-  const validBase = isDepartmentPagePath(entry.pagePath)
+  const validBase = isEditorialPagePath(entry.pagePath)
     && isDepartmentEntryType(entry.entryType)
     && typeof entry.title === "string" && Boolean(entry.title.trim())
     && typeof entry.summary === "string"
@@ -70,7 +70,7 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
 }
 
 function isDepartmentContentItem(item: ContentItem): boolean {
-  return item.kind === "research_resource" && item.payload.editorialSurface === marker && isDepartmentPagePath(item.payload.pagePath);
+  return item.kind === "research_resource" && markers.has(item.payload.editorialSurface) && isEditorialPagePath(item.payload.pagePath);
 }
 
 function fromContentItem(item: ContentItem): DepartmentEntry {
@@ -100,7 +100,7 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
 
 function toContentPayload(input: DepartmentEntryInput): Record<string, string> {
   return {
-    editorialSurface: marker,
+    editorialSurface: "page",
     pagePath: input.pagePath,
     entryType: input.entryType,
     title: input.title.trim(),

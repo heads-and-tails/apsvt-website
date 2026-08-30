@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requirePublisher } from "@/lib/auth";
 import { createEditorialDraft, detectEditorialTarget } from "@/lib/editorial-ai";
 import { draftTargetConfigs, type EditorialDraftTarget } from "@/lib/editorial-drafts";
-import { canEditPage, isDepartmentPagePath } from "@/lib/editorial-access";
+import { canEditPage, isEditorialPagePath } from "@/lib/editorial-access";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -55,8 +55,9 @@ export async function POST(request: Request) {
     // departmental news to /news (and denying a department-scoped editor).
     if (
       target === "auto"
-      && isDepartmentPagePath(pagePath)
+      && isEditorialPagePath(pagePath)
       && !isDepartmentTarget
+      && pagePath !== config.pagePath
     ) {
       resolvedTarget = departmentTargetFor(resolvedTarget);
       config = draftTargetConfigs.find((entry) => entry.id === resolvedTarget)!;
@@ -64,8 +65,8 @@ export async function POST(request: Request) {
       destination = pagePath;
     }
 
-    if (isDepartmentTarget && !isDepartmentPagePath(pagePath)) {
-      return NextResponse.json({ error: "Оберіть кафедру або факультет для цього матеріалу" }, { status: 400 });
+    if (isDepartmentTarget && !isEditorialPagePath(pagePath)) {
+      return NextResponse.json({ error: "Оберіть сторінку для цього матеріалу" }, { status: 400 });
     }
     if (!canEditPage(publisher, destination)) throw new Error("FORBIDDEN_SCOPE");
     const draft = await createEditorialDraft({

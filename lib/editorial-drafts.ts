@@ -17,6 +17,8 @@ export type EditorialDraftTarget =
   | "department_quality"
   | "department_photo"
   | "department_teacher"
+  | "page_hero"
+  | "page_partner"
   | "document";
 
 export type DraftField = {
@@ -47,7 +49,7 @@ export type DraftTargetConfig = {
   description: string;
   pagePath: string;
   contentKind?: ContentKind;
-  departmentEntryType?: "section" | "news" | "article" | "material" | "photo" | "teacher" | "quality";
+  departmentEntryType?: "hero" | "section" | "news" | "article" | "material" | "photo" | "teacher" | "partner" | "quality";
   fields: DraftField[];
 };
 
@@ -191,9 +193,35 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
     ],
   },
   {
+    id: "page_hero",
+    label: "Сторінка · обкладинка",
+    description: "Головний заголовок, вступний текст і титульне фото сторінки",
+    pagePath: "/",
+    departmentEntryType: "hero",
+    fields: [
+      { key: "title", label: "Головний заголовок" },
+      { key: "summary", label: "Вступний текст", type: "textarea" },
+      { key: "imageAlt", label: "Опис титульного фото" },
+    ],
+  },
+  {
+    id: "page_partner",
+    label: "Сторінка · партнер або компанія",
+    description: "Назва, логотип, напрям співпраці та сайт партнера",
+    pagePath: "/",
+    departmentEntryType: "partner",
+    fields: [
+      { key: "title", label: "Назва партнера" },
+      { key: "role", label: "Тип партнерства" },
+      { key: "summary", label: "Опис співпраці", type: "textarea" },
+      { key: "profileUrl", label: "Сайт партнера", type: "url" },
+      { key: "imageAlt", label: "Опис логотипа" },
+    ],
+  },
+  {
     id: "department_section",
-    label: "Кафедра · розділ сторінки",
-    description: "Опис кафедри, напрями роботи, досягнення або контакти",
+    label: "Сторінка · текстовий розділ",
+    description: "Опис, напрями роботи, досягнення або контакти на вибраній сторінці",
     pagePath: "/programs",
     departmentEntryType: "section",
     fields: [
@@ -205,8 +233,8 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
   },
   {
     id: "department_news",
-    label: "Кафедра · новина",
-    description: "Новина, оголошення або подія для конкретної кафедри",
+    label: "Сторінка · новина",
+    description: "Новина, оголошення або подія для конкретної сторінки",
     pagePath: "/programs",
     departmentEntryType: "news",
     fields: [
@@ -219,7 +247,7 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
   },
   {
     id: "department_article",
-    label: "Кафедра · стаття",
+    label: "Сторінка · стаття",
     description: "Розгорнутий авторський, методичний або аналітичний матеріал",
     pagePath: "/programs",
     departmentEntryType: "article",
@@ -233,7 +261,7 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
   },
   {
     id: "department_material",
-    label: "Кафедра · матеріал",
+    label: "Сторінка · матеріал",
     description: "Методичний файл, програма, презентація або корисне посилання",
     pagePath: "/programs",
     departmentEntryType: "material",
@@ -244,7 +272,7 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
   },
   {
     id: "department_quality",
-    label: "Кафедра · якість освіти",
+    label: "Сторінка · якість освіти",
     description: "Результати моніторингу, обговорення змін до ОП або щорічне оцінювання НПП",
     pagePath: "/programs",
     departmentEntryType: "quality",
@@ -258,7 +286,7 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
   },
   {
     id: "department_photo",
-    label: "Кафедра · фотогалерея",
+    label: "Сторінка · фотогалерея",
     description: "Фото з готовим заголовком, підписом і альтернативним описом",
     pagePath: "/programs",
     departmentEntryType: "photo",
@@ -270,7 +298,7 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
   },
   {
     id: "department_teacher",
-    label: "Кафедра · викладач",
+    label: "Сторінка · людина або викладач",
     description: "Профіль викладача з фото, посадою, біографією та науковим профілем",
     pagePath: "/programs",
     departmentEntryType: "teacher",

@@ -5,7 +5,7 @@ import type { Post } from "@/lib/data";
 import type { ContentItem, ContentKind } from "@/lib/content";
 import type { EditorialProfile, Publisher } from "@/lib/auth";
 import type { PageDocument } from "@/lib/documents";
-import { accessScopeLabel, canEditPage, contentKindPagePath } from "@/lib/editorial-access";
+import { accessScopeLabel, canEditPage, contentKindPagePath, editorialAccessOptions } from "@/lib/editorial-access";
 import { OperationsEditor } from "./OperationsEditor";
 import { AccessManager } from "./AccessManager";
 import { DocumentManager } from "./DocumentManager";
@@ -27,7 +27,7 @@ const viewTitles: Record<PanelView, { eyebrow: string; title: string; descriptio
   assistant: { eyebrow: "AI-помічник", title: "Розумний імпорт", description: "Передайте файл або фото — помічник визначить розділ і оформить матеріал у стилі сайту." },
   "news-editor": { eyebrow: "Публікації", title: "Новий матеріал", description: "Створіть або відредагуйте новину, оголошення чи історію Академії." },
   materials: { eyebrow: "Архів редакції", title: "Усі публікації", description: "Чернетки й опубліковані матеріали з швидким редагуванням." },
-  departments: { eyebrow: "Структура Академії", title: "Кафедри та факультети", description: "Новини, викладачі, фото, документи й матеріали окремих сторінок." },
+  departments: { eyebrow: "Увесь сайт", title: "Сторінки та матеріали", description: "Обкладинки, тексти, люди, викладачі, партнери, фото й матеріали всіх сторінок." },
   operations: { eyebrow: "Дані сайту", title: "Керування розділами", description: "Події, вступ, вакансії, бібліотека, розклад, наука та кваліфікаційні роботи." },
   documents: { eyebrow: "Файли", title: "Документи сторінок", description: "Завантаження, опис, розподіл за сторінками та контроль публікації." },
   finance: { eyebrow: "Особисті кабінети", title: "Студенти та оплата", description: "Договори, нарахування, платежі, прострочення та повідомлення." },
@@ -44,7 +44,7 @@ function PanelOverview({ posts, documents, departmentEntries, canManageNews, can
   const actions = [
     { id: "assistant" as const, icon: "AI", title: "Передати матеріал помічнику", text: "Word, PDF або фото → готова структурована чернетка", show: true, accent: true },
     { id: "news-editor" as const, icon: "+", title: "Створити публікацію", text: "Новина, оголошення, подія або важлива історія", show: canManageNews },
-    { id: "departments" as const, icon: "КФ", title: "Оновити кафедру", text: "Викладачі, статті, матеріали, фото та документи", show: canManageDepartment },
+    { id: "departments" as const, icon: "WEB", title: "Оновити сторінку", text: "Тексти, обкладинки, люди, партнери, фото та матеріали", show: canManageDepartment },
     { id: "documents" as const, icon: "PDF", title: "Додати документ", text: "Призначити файл потрібній сторінці й категорії", show: true },
     { id: "operations" as const, icon: "↗", title: "Оновити розділ", text: "Розклад, вступ, вакансії, бібліотека або наука", show: canManageOperations },
     { id: "access" as const, icon: "ID", title: "Додати редактора", text: "Створити акаунт і призначити потрібні сторінки", show: isAdmin },
@@ -69,7 +69,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
   const published = useMemo(() => posts.filter((post) => post.status === "published").length, [posts]);
   const canManageNews = canEditPage(publisher, "/news");
   const allowedKinds = Object.entries(contentKindPagePath).filter(([, path]) => canEditPage(publisher, path)).map(([kind]) => kind) as ContentKind[];
-  const canManageDepartment = publisher.role === "admin" || publisher.accessScopes.includes("*") || publisher.accessScopes.some((scope) => scope.startsWith("/programs/") || scope.startsWith("/departments/"));
+  const canManageDepartment = editorialAccessOptions.some((option) => option.group !== "all" && canEditPage(publisher, option.value));
   const scopeLabel = accessScopeLabel(publisher.accessScopes);
   const isAdmin = publisher.role === "admin";
   const activeTitle = viewTitles[activeView];
@@ -80,7 +80,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
   ];
   const contentNav: NavItem[] = [
     ...(canManageNews ? [{ id: "news-editor" as const, label: "Новий матеріал", icon: "+", hint: "Новина або оголошення" }, { id: "materials" as const, label: "Публікації", icon: "Н", hint: `${posts.length} матеріалів` }] : []),
-    ...(canManageDepartment ? [{ id: "departments" as const, label: "Кафедри", icon: "К", hint: "Сторінки й викладачі" }] : []),
+    ...(canManageDepartment ? [{ id: "departments" as const, label: "Сторінки", icon: "WEB", hint: "Увесь контент сайту" }] : []),
     ...(allowedKinds.length ? [{ id: "operations" as const, label: "Розділи сайту", icon: "Р", hint: "Події, вступ, розклад" }] : []),
     { id: "documents", label: "Документи", icon: "D", hint: `${initialDocuments.length} файлів` },
   ];
@@ -159,7 +159,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
     <aside className="panel-side panel-side-v2"><div className="panel-brand"><span>АП</span><b>Редакційна<br />панель</b></div><nav aria-label="Розділи редакційної панелі"><PanelNavGroup label="Головне" items={primaryNav} activeView={activeView} onOpen={open} /><PanelNavGroup label="Контент" items={contentNav} activeView={activeView} onOpen={open} /><PanelNavGroup label="Адміністрування" items={adminNav} activeView={activeView} onOpen={open} /><div className="panel-nav-group panel-nav-links"><small>Інструменти</small><a href="/panel/scheduler"><span>PL</span><div><b>Планувальник</b><i>Розклад занять</i></div></a><a href="/panel/workspace"><span>BW</span><div><b>BytesLab × Академія</b><i>Робочий простір</i></div></a></div></nav><div className="panel-user"><span>{isAdmin ? "Адміністратор" : scopeLabel}</span><b>{publisher.displayName}</b><form action="/auth/signout" method="post"><button type="submit">Вийти</button></form></div></aside>
     <main className="panel-main panel-main-v2">
       <header className="panel-top panel-top-v2"><div><span>{activeTitle.eyebrow} · {isAdmin ? "повний доступ" : scopeLabel}</span><h1>{editing && activeView === "news-editor" ? "Редагувати матеріал" : activeTitle.title}</h1><p>{activeTitle.description}</p></div><div className="panel-header-actions"><a href="/documents/editorial-panel-guide.pdf" target="_blank">Інструкція ↗</a><a className="primary" href="/" target="_blank">Відкрити сайт ↗</a></div></header>
-      <div className="panel-kpis"><div><span>Опубліковано</span><b>{published}</b><i>матеріалів</i></div><div><span>Документи</span><b>{initialDocuments.length}</b><i>у системі</i></div><div><span>Кафедри</span><b>{initialDepartmentEntries.length}</b><i>записів</i></div><button type="button" onClick={() => open("assistant")}><span>Швидка дія</span><b>Передати файл AI</b><i>→</i></button></div>
+      <div className="panel-kpis"><div><span>Опубліковано</span><b>{published}</b><i>матеріалів</i></div><div><span>Документи</span><b>{initialDocuments.length}</b><i>у системі</i></div><div><span>Матеріали сторінок</span><b>{initialDepartmentEntries.length}</b><i>записів</i></div><button type="button" onClick={() => open("assistant")}><span>Швидка дія</span><b>Передати файл AI</b><i>→</i></button></div>
 
       {activeView === "overview" && <PanelOverview posts={posts} documents={initialDocuments} departmentEntries={initialDepartmentEntries} canManageNews={canManageNews} canManageDepartment={canManageDepartment} canManageOperations={allowedKinds.length > 0} isAdmin={isAdmin} open={open} />}
       {activeView === "assistant" && <AiEditorialAssistant publisher={publisher} />}

@@ -20,7 +20,7 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
   const availableTargets = useMemo(
     () => draftTargetConfigs.filter((entry) => entry.id === "document"
       || (entry.departmentEntryType
-        ? editorialAccessOptions.some((option) => option.group === "department" && canEditPage(publisher, option.value))
+        ? editorialAccessOptions.some((option) => option.group !== "all" && canEditPage(publisher, option.value))
         : canEditPage(publisher, entry.pagePath))),
     [publisher],
   );
@@ -28,9 +28,8 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
     () => editorialAccessOptions.filter((option) => option.value !== "*" && canEditPage(publisher, option.value)),
     [publisher],
   );
-  const departmentOptions = useMemo(() => pageOptions.filter((option) => option.group === "department"), [pageOptions]);
   const [target, setTarget] = useState<AssistantTarget>("auto");
-  const [pagePath, setPagePath] = useState(departmentOptions[0]?.value || pageOptions[0]?.value || "/materials");
+  const [pagePath, setPagePath] = useState(pageOptions[0]?.value || "/materials");
   const [instruction, setInstruction] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [draft, setDraft] = useState<EditorialAiDraft | null>(null);
@@ -40,7 +39,7 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
   const resolvedTarget = draft?.target || (target === "auto" ? availableTargets[0]?.id || "document" : target);
   const config = draftTargetConfigs.find((entry) => entry.id === resolvedTarget)!;
   const targetNeedsPage = target === "auto" || target === "document" || Boolean(config.departmentEntryType);
-  const placementOptions = config.departmentEntryType ? departmentOptions : pageOptions;
+  const placementOptions = pageOptions;
 
   function chooseTarget(value: AssistantTarget) {
     setTarget(value); setDraft(null); setUploaded(null); setMessage("");
@@ -167,7 +166,7 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
           const result = await response.json() as { error?: string };
           if (!response.ok) throw new Error(result.error || `Не вдалося зберегти запис ${index + 1}`);
         }
-        setMessage(`${records.length} ${records.length === 1 ? "чернетку збережено" : "чернеток збережено"} для сторінки кафедри. Перевірте їх у модулі «Кафедри та факультети».`);
+        setMessage(`${records.length} ${records.length === 1 ? "чернетку збережено" : "чернеток збережено"} для вибраної сторінки. Перевірте її у модулі «Сторінки та матеріали».`);
       } else {
         const contentKind = publishConfig.contentKind;
         if (!contentKind) throw new Error("Для цього розділу не налаштовано публікацію");
@@ -195,7 +194,7 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
     <div className="materials-head ai-editorial-head"><div><span>AI-помічник редакції</span><h2>Надішліть матеріал — помічник оформить його сам</h2><p>Word, PDF, текст або фото перетворюються на охайну чернетку в стилі АПСВТ: без зламаних переносів, дублів і випадкової структури.</p><div className="ai-capabilities"><span>Визначає розділ</span><span>Розпізнає таблиці</span><span>Створює картки</span><span>Зберігає факти</span></div></div><b>Нічого не публікується без вашого підтвердження</b></div>
     <form className="ai-import-card" onSubmit={analyze}>
       <div className="ai-import-step"><span>01</span><label>Режим<select value={target} onChange={(event) => chooseTarget(event.target.value as AssistantTarget)}><option value="auto">Визначити автоматично</option>{availableTargets.map((entry) => <option value={entry.id} key={entry.id}>{entry.label}</option>)}</select><small>{target === "auto" ? "Помічник сам розпізнає новину, документ, розклад, профіль викладача, вакансію або інший матеріал." : config.description}</small></label></div>
-      {targetNeedsPage && <div className="ai-import-step"><span>02</span><label>Сторінка призначення<select value={pagePath} onChange={(event) => setPagePath(event.target.value)}>{placementOptions.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</select><small>Для автоматичного режиму оберіть кафедру, якщо матеріал стосується її сторінки.</small></label></div>}
+      {targetNeedsPage && <div className="ai-import-step"><span>02</span><label>Сторінка призначення<select value={pagePath} onChange={(event) => setPagePath(event.target.value)}>{placementOptions.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</select><small>Оберіть сторінку, на якій має з’явитися матеріал після перевірки.</small></label></div>}
       <div className="ai-import-step"><span>{targetNeedsPage ? "03" : "02"}</span><label className="ai-file-picker"><b>{file ? file.name : "Перетягніть або оберіть файл"}</b><small>{file ? `${(file.size / 1024 / 1024).toFixed(1)} МБ · готовий до аналізу` : "PDF, DOCX, TXT, JPG, PNG або WebP · до 12 МБ"}</small><input required type="file" accept=".pdf,.docx,.txt,.jpg,.jpeg,.png,.webp" disabled={busy} onChange={(event) => { setFile(event.target.files?.[0] || null); setDraft(null); }} /></label></div>
       <div className="ai-import-step ai-import-note"><span>{targetNeedsPage ? "04" : "03"}</span><label>Що потрібно зробити<textarea rows={4} value={instruction} onChange={(event) => setInstruction(event.target.value)} placeholder="Наприклад: кожну посаду зробити окремою карткою, дедлайн показати зверху, текст подати офіційно й зрозуміло." /><div className="ai-prompt-chips"><button type="button" onClick={() => setInstruction("Зробіть коротку новину, збережіть усі імена, дати й контакти, додайте зрозумілий заголовок.")}>Новина</button><button type="button" onClick={() => setInstruction("Розділіть дані на окремі картки, приберіть дублікати й не вигадуйте відсутні факти.")}>Картки</button><button type="button" onClick={() => setInstruction("Оформіть як офіційний документ: точна назва, короткий опис і правильна сторінка.")}>Документ</button></div></label></div>
       <button className="ai-analyze" type="submit" disabled={busy || !file}>{busy ? "Читаємо й оформлюємо…" : "Створити готову чернетку →"}</button>
