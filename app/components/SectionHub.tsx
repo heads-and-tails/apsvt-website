@@ -42,7 +42,6 @@ export function SectionHub({
   const reactId = useId().replace(/:/g, "");
   const directoryTitleId = `section-directory-${reactId}`;
   const activePanelId = `section-panel-${reactId}`;
-  const activeTitleId = `section-title-${reactId}`;
   const sectionContent = Children.toArray(children);
   const activeIndex = sections.findIndex((section) => section.id === activeId);
   const activeSection = activeIndex >= 0 ? sections[activeIndex] : null;
@@ -109,13 +108,14 @@ export function SectionHub({
       <div className="admissions-icon-grid">
         {sections.map((section) => {
           const isActive = section.id === activeId;
+          const panelId = `${activePanelId}-${section.id}`;
           return <button
             className={`admissions-icon-card${isActive ? " active" : ""}`}
             type="button"
             key={section.id}
             onClick={() => openSection(section.id)}
             aria-expanded={isActive}
-            aria-controls={activePanelId}
+            aria-controls={panelId}
           >
             <span className="admissions-card-icon" aria-hidden="true">{section.icon}</span>
             <span className="admissions-card-copy">
@@ -134,26 +134,33 @@ export function SectionHub({
       </div> : null}
     </div>
 
-    {activeSection ? <section
-      className="admissions-active-panel"
-      id={activePanelId}
-      ref={panelRef}
-      tabIndex={-1}
-      aria-labelledby={activeTitleId}
-    >
-      <div className="admissions-active-toolbar">
-        <div className="wrap">
-          <span className="admissions-card-icon" aria-hidden="true">{activeSection.icon}</span>
-          <div>
-            <small>Відкритий розділ · {activeSection.index}</small>
-            <h2 id={activeTitleId}>{activeSection.title}</h2>
+    {sections.map((section, index) => {
+      const isActive = section.id === activeId;
+      const panelId = `${activePanelId}-${section.id}`;
+      const titleId = `section-title-${reactId}-${section.id}`;
+      return <section
+        className="admissions-active-panel"
+        id={panelId}
+        ref={isActive ? panelRef : undefined}
+        tabIndex={-1}
+        aria-labelledby={titleId}
+        hidden={!isActive}
+        key={section.id}
+      >
+        <div className="admissions-active-toolbar">
+          <div className="wrap">
+            <span className="admissions-card-icon" aria-hidden="true">{section.icon}</span>
+            <div>
+              <small>Відкритий розділ · {section.index}</small>
+              <h2 id={titleId}>{section.title}</h2>
+            </div>
+            <button type="button" onClick={closeSection}>
+              <span aria-hidden="true">&#8592;</span> {backLabel}
+            </button>
           </div>
-          <button type="button" onClick={closeSection}>
-            <span aria-hidden="true">&#8592;</span> {backLabel}
-          </button>
         </div>
-      </div>
-      <div className="admissions-active-content">{sectionContent[activeIndex]}</div>
-    </section> : null}
+        <div className="admissions-active-content">{sectionContent[index]}</div>
+      </section>;
+    })}
   </section>;
 }
