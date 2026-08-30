@@ -71,7 +71,7 @@ export function AiEditorialAssistant({ publisher }: { publisher: Publisher }) {
       if (target === "auto") setTarget(result.target);
       setMessage(result.usedAi
         ? `Помічник визначив розділ «${draftTargetConfigs.find((entry) => entry.id === result.target)?.label || "Матеріал"}» і підготував чернетку. Перевірте факти.`
-        : "Текст розпізнано. AI-ключ ще не активовано, тому обов’язково відредагуйте чернетку.");
+        : "Текст розпізнано. Створено базову чернетку для ручної перевірки перед публікацією.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Не вдалося створити чернетку");
     } finally { setBusy(false); }
