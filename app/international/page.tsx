@@ -4,12 +4,13 @@ import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { PageDocuments } from "../components/PageDocuments";
 import { GreenFinEduResources } from "./GreenFinEduResources";
+import { GrantProjectsArchive } from "./GrantProjectsArchive";
 import { UkrainiansAbroadAdmission } from "../components/UkrainiansAbroadAdmission";
 import { SectionHub, type SectionHubItem } from "../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Міжнародне співробітництво та вступ іноземців",
-  description: "Партнери АПСВТ, академічна мобільність, вступ іноземних громадян, електронне запрошення на навчання, документи та офіційні джерела.",
+  description: "Партнери АПСВТ, гранти й звіти Erasmus+, академічна мобільність, вступ іноземних громадян, документи та офіційні джерела.",
 };
 export const dynamic = "force-dynamic";
 
@@ -166,6 +167,7 @@ const faq = [
 const internationalSections: readonly SectionHubItem[] = [
   { id: "partners", index: "01", title: "Міжнародні партнери", description: "Європейські заклади-партнери та академічні угоди Академії.", icon: "EU" },
   { id: "greenfinedu", index: "02", title: "GreenFinEDU", description: "Міжнародний освітній проєкт, матеріали та результати співпраці.", icon: "GF" },
+  { id: "grants", index: "02.1", title: "Гранти та звіти", description: "Архів Erasmus+, результати проєктів, дослідження та звітні матеріали.", icon: "EU" },
   { id: "partnerships-in-action", index: "03", title: "Партнерство в дії", description: "Новини, зустрічі, підписані угоди та фотоматеріали.", icon: "NEWS" },
   { id: "cooperation", index: "04", title: "Напрями співпраці", description: "Мобільність, дослідження, публікації, конференції та обмін досвідом.", icon: "↔" },
   { id: "international-opportunities", index: "05", title: "Міжнародні можливості", description: "Стипендії, навчання за кордоном і програми професійного розвитку.", icon: "GO" },
@@ -209,6 +211,8 @@ export default function Page() {
     </div></section>
 
     <GreenFinEduResources />
+
+    <GrantProjectsArchive />
 
     <section className="international-stories" id="partnerships-in-action"><div className="wrap">
       <div className="international-stories-head">

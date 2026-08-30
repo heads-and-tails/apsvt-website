@@ -46,7 +46,7 @@ const ukLinks: readonly NavItem[] = [
     { href: "/students/council", label: "Студентська рада" },
   ] },
   { href: "/international", label: "Міжнародне", children: [
-    { href: "/international#partners", label: "Партнери" }, { href: "/international#international-opportunities", label: "Міжнародні можливості" },
+    { href: "/international#partners", label: "Партнери" }, { href: "/international#grants", label: "Гранти та звіти" }, { href: "/international#international-opportunities", label: "Міжнародні можливості" },
     { href: "/international#ukrainians-abroad", label: "Українцям за кордоном" }, { href: "/international#foreign-applicants", label: "Іноземним вступникам" },
     { href: "/international#international-contact", label: "Контакти відділу" },
   ] },
