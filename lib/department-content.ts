@@ -16,6 +16,7 @@ export type DepartmentEntryStatus = "draft" | "published";
 export type DepartmentEntry = {
   id: string;
   pagePath: string;
+  sectionId: string;
   entryType: DepartmentEntryType;
   title: string;
   summary: string;
@@ -47,6 +48,7 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
   if (!value || typeof value !== "object") return false;
   const entry = value as Record<string, unknown>;
   const validBase = isEditorialPagePath(entry.pagePath)
+    && typeof entry.sectionId === "string"
     && isDepartmentEntryType(entry.entryType)
     && typeof entry.title === "string" && Boolean(entry.title.trim())
     && typeof entry.summary === "string"
@@ -85,6 +87,7 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
   return {
     id: item.id,
     pagePath: payload.pagePath || "",
+    sectionId: payload.sectionId || "",
     entryType: isDepartmentEntryType(payload.entryType) ? payload.entryType : "section",
     title: payload.title || "",
     summary: payload.summary || "",
@@ -109,6 +112,7 @@ function toContentPayload(input: DepartmentEntryInput): Record<string, string> {
   return {
     editorialSurface: "page",
     pagePath: input.pagePath,
+    sectionId: input.sectionId.trim(),
     entryType: input.entryType,
     title: input.title.trim(),
     summary: input.summary.trim(),

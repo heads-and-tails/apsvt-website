@@ -421,6 +421,7 @@ async function commitPendingDraft(chatId: string, publisher: Publisher) {
       }
       const entry = await createDepartmentEntry({
         pagePath,
+        sectionId: "",
         entryType: config.departmentEntryType,
         title: payload.title || draft.title,
         summary: payload.summary || draft.summary,

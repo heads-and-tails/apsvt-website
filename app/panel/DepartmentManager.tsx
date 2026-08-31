@@ -32,6 +32,8 @@ type ExistingPageElement = {
   groupSelector: string;
   groupLabel: string;
   groupType: CategorizedEntryType;
+  sectionId: string;
+  sectionLabel: string;
   kind: ExistingElementKind;
   tag: string;
   label: string;
@@ -47,6 +49,8 @@ type ExistingPageGroup = {
   label: string;
   preview: string;
   imageUrl: string;
+  sectionId: string;
+  sectionLabel: string;
   suggestedType: CategorizedEntryType;
   items: ExistingPageElement[];
   order: number;
@@ -118,6 +122,19 @@ function inventoryGroupType(group: Element): CategorizedEntryType {
   return "section";
 }
 
+function inventorySection(element: Element, root: Element, groupType: CategorizedEntryType): { id: string; label: string } {
+  const container = element.closest("section[id]") || element.closest("[id]");
+  if (container && root.contains(container)) {
+    const id = container.getAttribute("id")?.trim() || "";
+    if (id) {
+      const heading = container.querySelector("h1,h2,h3,h4,h5,h6");
+      const label = heading ? normalizedText(heading).slice(0, 90) : id.replace(/[-_]+/g, " ");
+      return { id, label: label || "Розділ сторінки" };
+    }
+  }
+  return { id: groupType, label: typeLabels[groupType].label };
+}
+
 function inventoryItemLabel(kind: ExistingElementKind, tag: string, value: string, alt: string): string {
   if (kind === "image") return alt || "Зображення";
   if (kind === "link") return value || "Посилання";
@@ -144,6 +161,8 @@ function groupExistingElements(elements: ExistingPageElement[]): ExistingPageGro
       label: item.groupLabel || item.label,
       preview: "",
       imageUrl: item.kind === "image" ? item.imageUrl : "",
+      sectionId: item.sectionId,
+      sectionLabel: item.sectionLabel,
       suggestedType: item.groupType,
       items: [item],
       order: item.order,
@@ -307,13 +326,14 @@ function extractExistingElements(payload: InventoryPayload): ExistingPageElement
     const rawText = normalizedText(element);
     const groupLabel = inventoryGroupLabel(group, rawText);
     const groupType = inventoryGroupType(group);
+    const section = inventorySection(element, root, groupType);
 
     if (tag === "img") {
       const image = element as HTMLImageElement;
       const source = absoluteUrl(image.getAttribute("src") || "", payload.pageUrl);
       if (!source) return;
       const alt = (image.getAttribute("alt") || "").trim();
-      elements.push({ selector, groupSelector, groupLabel, groupType, kind: "image", tag, label: inventoryItemLabel("image", tag, source, alt), value: source, imageUrl: source, imageAlt: alt, href: "", order: order++ });
+      elements.push({ selector, groupSelector, groupLabel, groupType, sectionId: section.id, sectionLabel: section.label, kind: "image", tag, label: inventoryItemLabel("image", tag, source, alt), value: source, imageUrl: source, imageAlt: alt, href: "", order: order++ });
       return;
     }
 
@@ -321,18 +341,19 @@ function extractExistingElements(payload: InventoryPayload): ExistingPageElement
       const anchor = element as HTMLAnchorElement;
       const href = absoluteUrl(anchor.getAttribute("href") || "", payload.pageUrl);
       if (!href || rawText.length < 2 || rawText.length > 500) return;
-      elements.push({ selector, groupSelector, groupLabel, groupType, kind: "link", tag, label: inventoryItemLabel("link", tag, rawText, ""), value: rawText, imageUrl: "", imageAlt: "", href, order: order++ });
+      elements.push({ selector, groupSelector, groupLabel, groupType, sectionId: section.id, sectionLabel: section.label, kind: "link", tag, label: inventoryItemLabel("link", tag, rawText, ""), value: rawText, imageUrl: "", imageAlt: "", href, order: order++ });
       return;
     }
 
     if (rawText.length < 2 || rawText.length > 2500) return;
-    elements.push({ selector, groupSelector, groupLabel, groupType, kind: "text", tag, label: inventoryItemLabel("text", tag, rawText, ""), value: rawText, imageUrl: "", imageAlt: "", href: "", order: order++ });
+    elements.push({ selector, groupSelector, groupLabel, groupType, sectionId: section.id, sectionLabel: section.label, kind: "text", tag, label: inventoryItemLabel("text", tag, rawText, ""), value: rawText, imageUrl: "", imageAlt: "", href: "", order: order++ });
   });
   return elements.sort((a, b) => a.order - b.order).slice(0, 400);
 }
 
-const emptyEntry = (pagePath: string, entryType: DepartmentEntryType): DepartmentEntryInput => ({
+const emptyEntry = (pagePath: string, entryType: DepartmentEntryType, sectionId = ""): DepartmentEntryInput => ({
   pagePath,
+  sectionId,
   entryType,
   title: "",
   summary: "",
@@ -379,6 +400,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
   const [pagePath, setPagePath] = useState(firstPage);
   const [entryType, setEntryType] = useState<DepartmentEntryType>("override");
   const [form, setForm] = useState<DepartmentEntryInput>(() => emptyEntry(firstPage, "override"));
+  const [activeSection, setActiveSection] = useState("all");
   const [editing, setEditing] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -403,30 +425,47 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     return () => controller.abort();
   }, [pagePath]);
 
-  const visible = useMemo(() => entries
-    .filter((entry) => entry.pagePath === pagePath && entry.entryType === entryType)
-    .sort((a, b) => a.sortOrder - b.sortOrder), [entries, pagePath, entryType]);
-
   const inventory = useMemo(
     () => inventoryResult.path === pagePath ? inventoryResult.items : [],
     [inventoryResult, pagePath],
   );
   const inventoryGroups = useMemo(() => groupExistingElements(inventory), [inventory]);
+  const pageSections = useMemo(() => {
+    const sections = new Map<string, { id: string; label: string; nativeCount: number; managedCount: number }>();
+    inventoryGroups.forEach((group) => {
+      const existing = sections.get(group.sectionId);
+      if (existing) existing.nativeCount += 1;
+      else sections.set(group.sectionId, { id: group.sectionId, label: group.sectionLabel, nativeCount: 1, managedCount: 0 });
+    });
+    entries.filter((entry) => entry.pagePath === pagePath && entry.sectionId).forEach((entry) => {
+      const existing = sections.get(entry.sectionId);
+      if (existing) existing.managedCount += 1;
+      else sections.set(entry.sectionId, { id: entry.sectionId, label: entry.sectionId.replace(/[-_]+/g, " "), nativeCount: 0, managedCount: 1 });
+    });
+    return Array.from(sections.values());
+  }, [entries, inventoryGroups, pagePath]);
+  const sectionInventoryGroups = useMemo(
+    () => activeSection === "all" ? inventoryGroups : inventoryGroups.filter((group) => group.sectionId === activeSection),
+    [activeSection, inventoryGroups],
+  );
+  const visible = useMemo(() => entries
+    .filter((entry) => entry.pagePath === pagePath && entry.entryType === entryType && (activeSection === "all" || entry.sectionId === activeSection))
+    .sort((a, b) => a.sortOrder - b.sortOrder), [activeSection, entries, pagePath, entryType]);
   const inventoryLoading = inventoryResult.path !== pagePath;
   const categorizedInventoryGroups = useMemo(() => new Map<CategorizedEntryType, ExistingPageGroupView[]>(
     departmentEntryTypes
       .filter((type): type is CategorizedEntryType => type !== "override")
-      .map((type) => [type, inventoryGroups.filter((group) => group.suggestedType === type).map((group) => ({ ...group, visibleItems: group.items }))]),
-  ), [inventoryGroups]);
+      .map((type) => [type, sectionInventoryGroups.filter((group) => group.suggestedType === type).map((group) => ({ ...group, visibleItems: group.items }))]),
+  ), [sectionInventoryGroups]);
   const filteredInventoryGroups = useMemo<ExistingPageGroupView[]>(() => {
     const query = inventoryQuery.trim().toLocaleLowerCase("uk");
-    return inventoryGroups.flatMap((group) => {
+    return sectionInventoryGroups.flatMap((group) => {
       const searchable = `${group.label} ${group.preview} ${group.items.map((item) => `${item.label} ${item.value} ${item.href}`).join(" ")}`.toLocaleLowerCase("uk");
       if (query && !searchable.includes(query)) return [];
       const visibleItems = inventoryFilter === "all" ? group.items : group.items.filter((item) => item.kind === inventoryFilter);
       return visibleItems.length ? [{ ...group, visibleItems }] : [];
     });
-  }, [inventoryFilter, inventoryGroups, inventoryQuery]);
+  }, [inventoryFilter, inventoryQuery, sectionInventoryGroups]);
   const overrideBySelector = useMemo(() => new Map(
     entries
       .filter((entry) => entry.pagePath === pagePath && entry.entryType === "override")
@@ -439,6 +478,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
 
   function choosePage(value: string) {
     setPagePath(value);
+    setActiveSection("all");
     setEditing(null);
     setForm(emptyEntry(value, entryType));
     setInventoryFilter("all");
@@ -446,20 +486,30 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     setMessage("");
   }
 
+  function chooseSection(value: string) {
+    setActiveSection(value);
+    setEditing(null);
+    setForm(emptyEntry(pagePath, entryType, value === "all" ? "" : value));
+    setInventoryQuery("");
+    setMessage("");
+  }
+
   function chooseType(value: DepartmentEntryType) {
     setEntryType(value);
     setEditing(null);
-    setForm(emptyEntry(pagePath, value));
+    setForm(emptyEntry(pagePath, value, activeSection === "all" ? "" : activeSection));
     setInventoryQuery("");
     setMessage("");
   }
 
   function startEdit(entry: DepartmentEntry) {
     setPagePath(entry.pagePath);
+    setActiveSection(entry.sectionId || "all");
     setEntryType(entry.entryType);
     setEditing(entry.id);
     setForm({
       pagePath: entry.pagePath,
+      sectionId: entry.sectionId,
       entryType: entry.entryType,
       title: entry.title,
       summary: entry.summary,
@@ -486,6 +536,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
         setEditing(existing.id);
         setForm({
           pagePath: existing.pagePath,
+          sectionId: existing.sectionId,
           entryType: "override",
           title: existing.title,
           summary: existing.summary,
@@ -507,9 +558,11 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       return;
     }
     if (!keepSelectedType) setEntryType("override");
+    setActiveSection(item.sectionId || "all");
     setEditing(null);
     setForm({
       ...emptyEntry(pagePath, "override"),
+      sectionId: item.sectionId,
       title: item.label || `${item.tag} · ${item.order + 1}`,
       summary: item.kind === "image" ? "" : item.value,
       body: item.selector,
@@ -525,7 +578,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
 
   function reset() {
     setEditing(null);
-    setForm(emptyEntry(pagePath, entryType));
+    setForm(emptyEntry(pagePath, entryType, activeSection === "all" ? "" : activeSection));
     setMessage("");
   }
 
@@ -566,7 +619,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     setEntries((current) => editing ? current.map((entry) => entry.id === editing ? result : entry) : [...current, result]);
     setMessage(result.status === "published" ? "Зміни опубліковано на сторінці" : "Чернетку збережено");
     setEditing(null);
-    setForm(emptyEntry(pagePath, entryType));
+    setForm(emptyEntry(pagePath, entryType, activeSection === "all" ? "" : activeSection));
     setBusy(false);
   }
 
@@ -578,7 +631,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       setEntries((current) => current.filter((item) => item.id !== entry.id));
       if (editing === entry.id) {
         setEditing(null);
-        setForm(emptyEntry(pagePath, entryType));
+        setForm(emptyEntry(pagePath, entryType, activeSection === "all" ? "" : activeSection));
       }
       setMessage(entry.entryType === "override" ? "Початковий вміст відновлено" : "Запис видалено зі сторінки");
     } else setMessage("Не вдалося видалити запис");
@@ -599,12 +652,14 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
   return <section className="department-manager" id="departments-editor">
     <div className="materials-head department-manager-head"><div><span>Увесь контент сайту</span><h2>Сторінки та матеріали</h2><p>Керуйте вже розміщеними текстами, фото й посиланнями, а також додавайте обкладинки, людей, партнерів, новини та файли.</p></div><a href={pagePath} target="_blank">Перевірити сторінку ↗</a></div>
     <div className="department-page-picker"><label>Сторінка<select value={pagePath} onChange={(event) => choosePage(event.target.value)}>{pagePickerGroups.map((group) => <optgroup label={group.label} key={group.label}>{group.options.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</optgroup>)}</select></label><div><b>{pageLabel(pagePath)}</b><span>{inventoryLoading ? "Зчитуємо вміст сторінки…" : `${inventoryGroups.length} блоків вже на сайті · ${entries.filter((entry) => entry.pagePath === pagePath).length} додано через панель`}</span></div></div>
-    <div className="department-tab-intro"><b>Що потрібно змінити?</b><span>Оберіть тип матеріалу. Усі варіанти видно одразу — без горизонтальної прокрутки.</span></div>
-    <div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} title={typeLabels[type].hint} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? inventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type).length + (categorizedInventoryGroups.get(type)?.length || 0)}</span></button>)}</div>
+    {pageSections.length > 0 && <section className="department-section-picker" aria-label="Розділи обраної сторінки"><header><div><small>Крок 1</small><h3>Оберіть розділ сторінки</h3></div><p>Панель покаже тільки вміст вибраного розділу — без довгого загального списку.</p></header><div role="tablist" aria-label="Розділи сторінки"><button type="button" role="tab" aria-selected={activeSection === "all"} className={activeSection === "all" ? "active" : ""} onClick={() => chooseSection("all")}><span>Усі</span><b>Усі розділи</b><small>{inventoryGroups.length + entries.filter((entry) => entry.pagePath === pagePath && entry.entryType !== "override").length}</small></button>{pageSections.map((section, index) => <button type="button" role="tab" aria-selected={activeSection === section.id} className={activeSection === section.id ? "active" : ""} onClick={() => chooseSection(section.id)} key={section.id}><span>{String(index + 1).padStart(2, "0")}</span><b>{section.label}</b><small>{section.nativeCount + section.managedCount}</small></button>)}</div></section>}
+    <div className="department-tab-intro"><b>{pageSections.length > 0 ? "Крок 2 · Що потрібно змінити?" : "Що потрібно змінити?"}</b><span>Оберіть тип матеріалу. Усі варіанти видно одразу — без горизонтальної прокрутки.</span></div>
+    <div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} title={typeLabels[type].hint} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? sectionInventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type && (activeSection === "all" || entry.sectionId === activeSection)).length + (categorizedInventoryGroups.get(type)?.length || 0)}</span></button>)}</div>
     <div className="operations-layout">
       <form className="operations-form" id="department-entry-editor" onSubmit={save}>
         <div className="operations-form-head"><div><small>{typeLabels[editorType].hint}</small><h3>{isOverride && !form.body ? "Оберіть елемент праворуч" : editing ? `Редагувати ${typeLabels[editorType].singular}` : `Додати ${typeLabels[editorType].singular}`}</h3></div>{(editing || (isOverride && form.body)) && <button type="button" onClick={reset}>Скасувати</button>}</div>
         {isOverride && !form.body ? <div className="existing-content-prompt"><b>Вміст сторінки впорядковано</b><p>Праворуч показані цілі розділи, картки людей, партнерів і матеріалів. Розкрийте блок та оберіть поле, яке потрібно змінити.</p></div> : <div className="operations-fields">
+          {!isOverride && pageSections.length > 0 && <label className="wide">Розділ сторінки<select required value={form.sectionId} onChange={(event) => change("sectionId", event.target.value)}><option value="">Оберіть розділ</option>{pageSections.map((section) => <option value={section.id} key={section.id}>{section.label}</option>)}</select></label>}
           <label className="wide">{isOverride ? "Елемент сторінки" : isTeacher ? "Ім’я та прізвище" : isPartner ? "Назва партнера / компанії" : isHero ? "Головний заголовок сторінки" : "Заголовок"}<input required readOnly={isOverride} value={form.title} onChange={(event) => change("title", event.target.value)} placeholder={isTeacher ? "ПІБ викладача" : isPartner ? "Назва організації" : "Зрозумілий заголовок"} /></label>
           {(editorType === "news" || editorType === "article" || isQuality) && <label>Дата<input type="date" value={form.date} onChange={(event) => change("date", event.target.value)} /></label>}
           {isTeacher && <><label>Посада / науковий ступінь<input required value={form.role} onChange={(event) => change("role", event.target.value)} /></label><label>Email<input type="email" value={form.email} onChange={(event) => change("email", event.target.value)} /></label><label>Науковий профіль<input type="url" value={form.profileUrl} onChange={(event) => change("profileUrl", event.target.value)} placeholder="ORCID, Google Scholar…" /></label></>}

@@ -218,6 +218,7 @@ function toDepartmentEntry(pagePath: string, material: ArchivedQualityMaterial, 
   return {
     id: `archive-quality-${pagePath.replace(/[^a-z0-9]+/gi, "-")}-${index}`,
     pagePath,
+    sectionId: "quality",
     entryType: "quality",
     title: material.title,
     summary: material.summary,
