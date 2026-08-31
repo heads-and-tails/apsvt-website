@@ -13,7 +13,7 @@ import { educationQualityRubrics, normalizeEducationQualityRubricId } from "@/li
 import { uploadEditorialFile } from "@/lib/editorial-upload-client";
 
 const typeLabels: Record<DepartmentEntryType, { label: string; singular: string; hint: string }> = {
-  override: { label: "Існуючий контент", singular: "зміну існуючого елемента", hint: "Тексти, фото й посилання, які вже розміщені на сторінці" },
+  override: { label: "Увесь вміст", singular: "зміну існуючого елемента", hint: "Усі тексти, фото й посилання, які вже розміщені на сторінці" },
   hero: { label: "Обкладинка", singular: "обкладинку сторінки", hint: "Головний заголовок, вступний текст і титульне зображення сторінки" },
   section: { label: "Розділи сторінки", singular: "текстовий розділ", hint: "Опис кафедри, напрями роботи, досягнення або контакти" },
   news: { label: "Новини", singular: "новину", hint: "Коротка актуальна новина кафедри або факультету" },
@@ -256,6 +256,8 @@ function CategorizedContentList({
   onRestore,
   onEditManaged,
   onRemoveManaged,
+  query,
+  onQueryChange,
 }: {
   pageName: string;
   type: CategorizedEntryType;
@@ -269,15 +271,23 @@ function CategorizedContentList({
   onRestore: (entry: DepartmentEntry) => void;
   onEditManaged: (entry: DepartmentEntry) => void;
   onRemoveManaged: (entry: DepartmentEntry) => void;
+  query: string;
+  onQueryChange: (value: string) => void;
 }) {
   const total = nativeGroups.length + managedEntries.length;
+  const normalizedQuery = query.trim().toLocaleLowerCase("uk");
+  const visibleNativeGroups = normalizedQuery ? nativeGroups.filter((group) => `${group.label} ${group.preview} ${group.items.map((item) => `${item.label} ${item.value} ${item.href}`).join(" ")}`.toLocaleLowerCase("uk").includes(normalizedQuery)) : nativeGroups;
+  const visibleManagedEntries = normalizedQuery ? managedEntries.filter((entry) => `${entry.title} ${entry.summary} ${entry.body} ${entry.role} ${entry.fileName}`.toLocaleLowerCase("uk").includes(normalizedQuery)) : managedEntries;
+  const visibleTotal = visibleNativeGroups.length + visibleManagedEntries.length;
   return <div className="operations-list department-entry-list categorized-content-list">
-    <div className="operations-list-head"><div><small>{pageName}</small><h3>{typeLabels[type].label}</h3></div><b>{total}</b></div>
+    <div className="operations-list-head"><div><small>{pageName}</small><h3>{typeLabels[type].label}</h3></div><b>{normalizedQuery ? `${visibleTotal}/${total}` : total}</b></div>
+    {total > 4 && <div className="categorized-content-controls"><label>Знайти у цьому розділі<input value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder={type === "teacher" ? "Ім’я, посада або дисципліна…" : type === "partner" ? "Назва партнера або тип співпраці…" : "Назва, текст або файл…"} /></label>{query && <button type="button" onClick={() => onQueryChange("")}>Очистити</button>}</div>}
     {loading && <p className="department-empty">Зчитуємо вже опублікований вміст сторінки…</p>}
     {!loading && error && <p className="department-empty">{error}</p>}
     {!loading && !error && total === 0 && <p className="department-empty">На сторінці ще немає матеріалів цього типу. Додайте перший запис у формі поруч.</p>}
-    {nativeGroups.length > 0 && <section className="categorized-existing-section"><header><div><small>Вже опубліковано на сайті</small><h4>{typeLabels[type].label}</h4></div><b>{nativeGroups.length}</b></header><p>Ці картки взяті безпосередньо з поточної сторінки. Розкрийте картку, щоб змінити фото, заголовок або текст.</p><ExistingGroupCards groups={nativeGroups} overrides={overrides} busy={busy} onEdit={onEditNative} onRestore={onRestore} /></section>}
-    {managedEntries.length > 0 && <section className="categorized-managed-section"><header><div><small>Додано через редакційну панель</small><h4>Нові записи</h4></div><b>{managedEntries.length}</b></header>{managedEntries.map((entry) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => onEditManaged(entry)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => onRemoveManaged(entry)}>Видалити</button></div></article>)}</section>}
+    {!loading && !error && total > 0 && visibleTotal === 0 && <p className="department-empty">За цим пошуком нічого не знайдено. Спробуйте коротший запит або очистіть поле.</p>}
+    {visibleNativeGroups.length > 0 && <section className="categorized-existing-section"><header><div><small>Вже опубліковано на сайті</small><h4>{typeLabels[type].label}</h4></div><b>{visibleNativeGroups.length}</b></header><p>Ці картки взяті безпосередньо з поточної сторінки. Розкрийте картку, щоб змінити фото, заголовок або текст.</p><ExistingGroupCards groups={visibleNativeGroups} overrides={overrides} busy={busy} onEdit={onEditNative} onRestore={onRestore} /></section>}
+    {visibleManagedEntries.length > 0 && <section className="categorized-managed-section"><header><div><small>Додано через редакційну панель</small><h4>Нові записи</h4></div><b>{visibleManagedEntries.length}</b></header>{visibleManagedEntries.map((entry) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => onEditManaged(entry)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => onRemoveManaged(entry)}>Видалити</button></div></article>)}</section>}
   </div>;
 }
 
@@ -343,10 +353,27 @@ function pageLabel(path: string): string {
   return editorialAccessOptions.find((option) => option.value === path)?.label || path;
 }
 
+const pagePickerGroupLabels = [
+  "Основні сторінки",
+  "Вступ, навчання та студенти",
+  "Наука, міжнародне та події",
+  "Кампус і сервіси",
+  "Факультети, програми та кафедри",
+] as const;
+
+function pagePickerGroup(path: string, group: "page" | "department"): (typeof pagePickerGroupLabels)[number] {
+  if (group === "department" || path === "/programs" || path === "/departments") return "Факультети, програми та кафедри";
+  if (path.startsWith("/admissions") || path.startsWith("/students") || path === "/tuition" || path === "/schedule" || path === "/exam-schedule" || path === "/academic-calendar") return "Вступ, навчання та студенти";
+  if (path.startsWith("/research") || path.startsWith("/international") || path.startsWith("/events")) return "Наука, міжнародне та події";
+  if (path.startsWith("/facilities") || path === "/materials") return "Кампус і сервіси";
+  return "Основні сторінки";
+}
+
 export function DepartmentManager({ initialEntries, publisher }: { initialEntries: DepartmentEntry[]; publisher: Publisher }) {
   const allowedPages = editorialAccessOptions.filter((option) => option.group !== "all" && canEditPage(publisher, option.value));
-  const generalPages = allowedPages.filter((option) => option.group === "page");
-  const departmentPages = allowedPages.filter((option) => option.group === "department");
+  const pagePickerGroups = pagePickerGroupLabels
+    .map((label) => ({ label, options: allowedPages.filter((option) => pagePickerGroup(option.value, option.group as "page" | "department") === label) }))
+    .filter((group) => group.options.length > 0);
   const firstPage = allowedPages[0]?.value || "/";
   const [entries, setEntries] = useState(initialEntries);
   const [pagePath, setPagePath] = useState(firstPage);
@@ -423,6 +450,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     setEntryType(value);
     setEditing(null);
     setForm(emptyEntry(pagePath, value));
+    setInventoryQuery("");
     setMessage("");
   }
 
@@ -570,8 +598,9 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
 
   return <section className="department-manager" id="departments-editor">
     <div className="materials-head department-manager-head"><div><span>Увесь контент сайту</span><h2>Сторінки та матеріали</h2><p>Керуйте вже розміщеними текстами, фото й посиланнями, а також додавайте обкладинки, людей, партнерів, новини та файли.</p></div><a href={pagePath} target="_blank">Перевірити сторінку ↗</a></div>
-    <div className="department-page-picker"><label>Сторінка<select value={pagePath} onChange={(event) => choosePage(event.target.value)}>{generalPages.length > 0 && <optgroup label="Загальні сторінки">{generalPages.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</optgroup>}{departmentPages.length > 0 && <optgroup label="Програми, факультети та кафедри">{departmentPages.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</optgroup>}</select></label><div><b>{pageLabel(pagePath)}</b><span>{entries.filter((entry) => entry.pagePath === pagePath).length} матеріалів</span></div></div>
-    <div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? inventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type).length + (categorizedInventoryGroups.get(type)?.length || 0)}</span></button>)}</div>
+    <div className="department-page-picker"><label>Сторінка<select value={pagePath} onChange={(event) => choosePage(event.target.value)}>{pagePickerGroups.map((group) => <optgroup label={group.label} key={group.label}>{group.options.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</optgroup>)}</select></label><div><b>{pageLabel(pagePath)}</b><span>{inventoryLoading ? "Зчитуємо вміст сторінки…" : `${inventoryGroups.length} блоків вже на сайті · ${entries.filter((entry) => entry.pagePath === pagePath).length} додано через панель`}</span></div></div>
+    <div className="department-tab-intro"><b>Що потрібно змінити?</b><span>Оберіть тип матеріалу. Усі варіанти видно одразу — без горизонтальної прокрутки.</span></div>
+    <div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} title={typeLabels[type].hint} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? inventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type).length + (categorizedInventoryGroups.get(type)?.length || 0)}</span></button>)}</div>
     <div className="operations-layout">
       <form className="operations-form" id="department-entry-editor" onSubmit={save}>
         <div className="operations-form-head"><div><small>{typeLabels[editorType].hint}</small><h3>{isOverride && !form.body ? "Оберіть елемент праворуч" : editing ? `Редагувати ${typeLabels[editorType].singular}` : `Додати ${typeLabels[editorType].singular}`}</h3></div>{(editing || (isOverride && form.body)) && <button type="button" onClick={reset}>Скасувати</button>}</div>
@@ -593,7 +622,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
         </div>}
         <div className="operations-save"><p>{message || (isOverride ? "Оберіть елемент сторінки у списку праворуч." : "Заповніть картку та збережіть зміни.")}</p><button disabled={busy || (isOverride && !form.body) || (editorType === "photo" && !form.imageUrl) || (isMaterial && !form.fileUrl)} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити" : isOverride ? "Опублікувати заміну" : "Додати на сторінку"}</button></div>
       </form>
-      {entryType === "override" ? <ExistingContentList pageName={pageLabel(pagePath)} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} totalElements={inventory.length} totalGroups={inventoryGroups.length} groups={filteredInventoryGroups} query={inventoryQuery} filter={inventoryFilter} overrides={overrideBySelector} busy={busy} onQueryChange={setInventoryQuery} onFilterChange={setInventoryFilter} onEdit={startInventoryEdit} onRestore={(entry) => void remove(entry)} /> : <CategorizedContentList pageName={pageLabel(pagePath)} type={entryType} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} nativeGroups={categorizedInventoryGroups.get(entryType) || []} managedEntries={visible} overrides={overrideBySelector} busy={busy} onEditNative={(item) => startInventoryEdit(item, true)} onRestore={(entry) => void remove(entry)} onEditManaged={startEdit} onRemoveManaged={(entry) => void remove(entry)} />}
+      {entryType === "override" ? <ExistingContentList pageName={pageLabel(pagePath)} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} totalElements={inventory.length} totalGroups={inventoryGroups.length} groups={filteredInventoryGroups} query={inventoryQuery} filter={inventoryFilter} overrides={overrideBySelector} busy={busy} onQueryChange={setInventoryQuery} onFilterChange={setInventoryFilter} onEdit={startInventoryEdit} onRestore={(entry) => void remove(entry)} /> : <CategorizedContentList pageName={pageLabel(pagePath)} type={entryType} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} nativeGroups={categorizedInventoryGroups.get(entryType) || []} managedEntries={visible} overrides={overrideBySelector} busy={busy} query={inventoryQuery} onQueryChange={setInventoryQuery} onEditNative={(item) => startInventoryEdit(item, true)} onRestore={(entry) => void remove(entry)} onEditManaged={startEdit} onRemoveManaged={(entry) => void remove(entry)} />}
     </div>
   </section>;
 }
