@@ -32,7 +32,7 @@ const faculties: FacultyGroup[] = [
     href: "/departments/law-faculty",
     departments: [
       { title: "Кафедра конституційного, адміністративного та фінансового права", description: "Публічне, адміністративне, фінансове й муніципальне право.", href: "/departments#public-law", programmes: [{ code: "D8", name: "Право", href: "/programs/law" }] },
-      { title: "Кафедра публічного управління та адміністрування", description: "Публічна політика, державна служба та управління громадами.", href: "/departments#public-administration", programmes: [{ code: "D4", name: "Публічне управління", href: "/programs/public-administration" }] },
+      { title: "Кафедра публічного управління та публічної служби", description: "Публічна політика, державна служба та управління громадами.", href: "/departments#public-administration", programmes: [{ code: "D4", name: "Публічне управління", href: "/programs/public-administration" }] },
       { title: "Кафедра цивільного, трудового та господарського права", description: "Приватне право, цивільний процес, трудові права й соціальний діалог.", href: "/departments/private-law", programmes: [{ code: "D8", name: "Право", href: "/programs/law" }] },
       { title: "Кафедра кримінального права, процесу та криміналістики", description: "Кримінальна юстиція, права людини та криміналістична практика.", href: "/departments/criminal-law", programmes: [{ code: "D8", name: "Право", href: "/programs/law" }] },
     ],
