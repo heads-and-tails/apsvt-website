@@ -624,6 +624,16 @@ section{padding-block:clamp(72px,8vw,112px)}
 @media(max-width:1100px){.desktop-mainnav{display:none}}
 @media(max-width:1280px) and (min-width:1101px){.desktop-mainnav{gap:10px}.desktop-mainnav a{font-size:10.5px}}
 
+/* Keep the full academy name inside the fixed-height desktop header. */
+@media(min-width:1101px){
+  .legacy-header .topbar{max-width:1440px;gap:16px}
+  .legacy-header .brand{flex:0 0 auto}
+  .legacy-header .brand-name{white-space:nowrap}
+  .legacy-header .header-search-button{width:44px;padding:0}
+  .legacy-header .header-search-button>b{display:none}
+}
+@media(min-width:1101px) and (max-width:1400px){.legacy-header .hdr-cta{display:none}}
+
 /* Weekly timetable: times in rows, weekdays in columns. */
 .schedule-weeks{display:grid;gap:34px}
 .schedule-week{min-width:0;max-width:100%;padding:0}
