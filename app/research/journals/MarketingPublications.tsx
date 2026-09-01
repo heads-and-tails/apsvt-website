@@ -52,7 +52,7 @@ const teachingPublications = publications.filter(
   (publication) => publication.kind === "Навчальний посібник",
 );
 
-const conferenceProceedings = [
+export const marketingConferenceProceedings = [
   {
     year: "2026",
     edition: "III Міжнародна науково-практична конференція",
@@ -157,8 +157,8 @@ export function MarketingPublications() {
             <h2>Наукові праці кафедри маркетингу</h2>
           </div>
           <p>
-            Монографії, навчальний посібник і три повні збірники матеріалів
-            конференцій кафедри. Усі шість видань доступні безпосередньо у PDF.
+            Монографії та навчальний посібник кафедри маркетингу. Збірники
+            матеріалів конференцій винесено до окремого розділу «Конференції».
           </p>
         </div>
 
@@ -183,68 +183,14 @@ export function MarketingPublications() {
         <div className="marketing-publication-subhead marketing-conference-subhead">
           <span>03</span>
           <div>
-            <h3>Збірники матеріалів конференцій</h3>
-            <p>
-              Усі три випуски міжнародної конференції кафедри за 2024, 2025 і
-              2026 роки.
-            </p>
+            <h3>Матеріали конференцій — в окремому каталозі</h3>
+            <p>Збірники за 2024, 2025 і 2026 роки структуровано у вкладці «Конференції».</p>
           </div>
         </div>
-        <div className="marketing-conference-grid">
-          {conferenceProceedings.map((publication) => (
-            <article className="marketing-conference-card" key={publication.year}>
-              <a
-                className="marketing-conference-cover"
-                href={publication.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Відкрити збірник за ${publication.year} рік`}
-              >
-                <img
-                  src={publication.cover}
-                  alt={`Титульна сторінка збірника конференції ${publication.year} року`}
-                />
-              </a>
-              <div className="marketing-conference-body">
-                <div className="marketing-publication-meta">
-                  <span>{publication.year}</span>
-                  <small>{publication.edition}</small>
-                </div>
-                <h3>{publication.title}</h3>
-                <p>{publication.description}</p>
-                <dl>
-                  <div>
-                    <dt>Дата</dt>
-                    <dd>{publication.date}</dd>
-                  </div>
-                  <div>
-                    <dt>Обсяг</dt>
-                    <dd>{publication.pages}</dd>
-                  </div>
-                  <div>
-                    <dt>Видання</dt>
-                    <dd>{publication.isbn}</dd>
-                  </div>
-                </dl>
-                <div className="marketing-publication-footer">
-                  <span>Київ · АПСВТ</span>
-                  <div>
-                    <a href={publication.href} target="_blank" rel="noreferrer">
-                      Відкрити PDF ↗
-                    </a>
-                    <a href={publication.doi} target="_blank" rel="noreferrer">
-                      DOI ↗
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
+        <div className="marketing-publication-footer">
+          <span>Кафедра маркетингу · АПСВТ</span>
+          <div><Link href="/research/conferences#marketing-proceedings">Відкрити збірники конференцій →</Link><Link href="/programs/marketing">Кафедра маркетингу →</Link></div>
         </div>
-
-        <Link className="marketing-department-link" href="/programs/marketing">
-          Кафедра маркетингу →
-        </Link>
       </div>
     </section>
   );

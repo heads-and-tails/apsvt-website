@@ -33,6 +33,17 @@ const programmeSections: readonly SectionHubItem[] = [
   { id: "international", index: "07", title: "Міжнародні можливості", description: "Мобільність, партнерські ініціативи та міжнародний досвід.", icon: "INT" },
 ];
 
+const marketingSections: readonly SectionHubItem[] = [
+  { id: "department", index: "01", title: "Про кафедру", description: "Місія, напрями роботи та освітнє середовище кафедри маркетингу.", icon: "D5" },
+  { id: "department-team", index: "02", title: "Науково-педагогічний склад", description: "Викладачі, освіта, наукові інтереси та професійні профілі.", icon: "NPP" },
+  { id: "curriculum", index: "03", title: "Освітні програми", description: "Рівні освіти, навчальні плани, обов’язкові й вибіркові компоненти.", icon: "OP", aliases: ["overview", "education-levels", "electives", "course-annotations"] },
+  { id: "science", index: "04", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI" },
+  { id: "programme-documents", index: "05", title: "Навчально-методичне забезпечення", description: "Офіційні програми, плани, дисципліни й матеріали кафедри.", icon: "PDF" },
+  { id: "marketing-student-life", index: "06", title: "Студентське життя та самоврядування", description: "Гурток MARKETHINK, студентські ініціативи й участь у житті Академії.", icon: "M" },
+  { id: "careers", index: "07", title: "Кар’єра і працевлаштування", description: "Професійні ролі, практика, роботодавці та кар’єрні можливості.", icon: "GO", aliases: ["practice"] },
+  { id: "department-news", index: "08", title: "Новини", description: "Події, публікації та оголошення кафедри маркетингу.", icon: "NEWS" },
+];
+
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
   const program=getProgram((await params).slug);
   return program?{title:program.title,description:`${program.title}: навчальний план, вартість, викладачі та кар'єра в АПСВТ.`}:{};
@@ -51,9 +62,10 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
         ? [{ label: "Науковий профіль", href: programmeLead.href }]
         : []
     : [];
+  const activeSections = slug === "marketing" ? marketingSections : programmeSections;
   return <main id="top" data-page-materials-server="true"><SiteHeader />
     <section className="program-hero" data-program={program.slug}><div className="program-hero-bg"><img src={program.image} alt="" /></div><div className="wrap program-hero-in"><Link href="/programs" className="back-link">← Усі програми</Link><span className="program-code">{program.code}</span><h1>{program.title}</h1><p>{program.short}</p></div></section><div className="hero-rule" />
-    <SectionHub sections={programmeSections} eyebrow={`Навігатор програми ${program.code}`} description="Оберіть навчальний план, кафедру, кар’єру, вступні матеріали або міжнародні можливості — відкриється тільки потрібний розділ.">
+    <SectionHub sections={activeSections} eyebrow={slug === "marketing" ? "Навігатор кафедри маркетингу" : `Навігатор програми ${program.code}`} description={slug === "marketing" ? "Оберіть склад кафедри, освітні програми, науку, матеріали, студентське життя, кар’єру або новини — відкриється тільки потрібний розділ." : "Оберіть навчальний план, кафедру, кар’єру, вступні матеріали або міжнародні можливості — відкриється тільки потрібний розділ."}>
     <section id="overview"><div className="wrap program-intro"><div><div className="idx">01 / Спеціальність і програма</div><h2>Навчання з практичним результатом</h2><p className="program-lede">{program.overview}</p><div className="focus-list">{program.focus.map((item,i)=><div key={item}><span>0{i+1}</span><b>{item}</b></div>)}</div></div><aside className="program-facts" id="education-levels"><div><span>Рівень</span><b>{program.levels}</b></div><div><span>Тривалість бакалаврату</span><b>{program.duration}</b></div><div><span>Бакалаврат, денна</span><b>{program.price}</b></div><div><span>Бакалаврат, заочна</span><b>{program.partTimePrice}</b></div>{program.masterPrice&&<div><span>Магістратура, денна</span><b>{program.masterPrice}</b></div>}{program.masterPartTimePrice&&<div><span>Магістратура, заочна</span><b>{program.masterPartTimePrice}</b></div>}<small>Вартість для вступників 2026 року, за один навчальний рік.</small><Link className="cta" href="/tuition#calculator"><span>Усі тарифи й оплата</span></Link></aside></div></section>
     <div>{slug === "law" ? <LawCurriculumPlan /> : <ProgrammeCurriculumPlan slug={slug} code={program.code} title={program.title} />}
     {slug === "law" && <LawCourseAnnotations />}</div>

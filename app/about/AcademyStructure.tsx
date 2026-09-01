@@ -14,15 +14,13 @@ const faculties: FacultyGroup[] = [
   {
     code: "ФЕСТТ",
     title: "Факультет економіки, соціальних технологій і туризму",
-    description: "Економіка, управління, цифрові технології, туризм і гостинність.",
+    description: "Економіка, управління, фінанси, маркетинг і цифрові технології.",
     href: "/departments/economics-social-tourism-faculty",
     departments: [
       { title: "Кафедра фінансів", description: "Фінансовий аналіз, банківська справа, страхування та сталі фінанси.", href: "/departments#finance", programmes: [{ code: "D2", name: "Фінанси", href: "/programs/finance" }] },
       { title: "Кафедра економіки підприємства та менеджменту", description: "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", href: "/departments#economics-management", programmes: [{ code: "D3", name: "Менеджмент", href: "/programs/management" }, { code: "D7", name: "Торгівля", href: "/programs/trade" }] },
       { title: "Кафедра маркетингу", description: "Ринкова аналітика, бренди, комунікації та digital.", href: "/departments#marketing", programmes: [{ code: "D5", name: "Маркетинг", href: "/programs/marketing" }] },
-      { title: "Кафедра спеціальних туристичних дисциплін", description: "Туризм, гостинність, рекреація та створення туристичних продуктів.", href: "/departments#tourism", programmes: [] },
       { title: "Кафедра інтелектуальних систем та цифрових технологій", description: "Інформаційні системи та цифрові освітні технології.", href: "/departments#digital-technologies", programmes: [{ code: "A5", name: "Професійна освіта · PhD", href: "/programs#doctoral-programmes" }] },
-      { title: "Кафедра енотехнологій і готельно-ресторанного сервісу", description: "Гостинність, сервіс та еногастрономічна культура.", href: "/departments#hospitality", programmes: [{ code: "Сервіс", name: "Готельно-ресторанний напрям", href: "/news/hospitality-management-lab" }] },
     ],
   },
   {
