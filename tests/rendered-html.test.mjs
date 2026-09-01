@@ -194,13 +194,18 @@ test("publishes international partnerships and the foreign applicant guide",asyn
   assert.match(html,/Studieninstitut POLS/);
   assert.match(html,/Transport and Telecommunication Institute/);
   assert.match(html,/Vysoká škola technická a ekonomická v Prešove/);
-  assert.match(html,/Міжнародні<br\/>можливості/);
+  assert.match(html,/Міжнародні можливості/);
   assert.match(html,/DAAD · Німеччина/);
   assert.match(html,/16 листопада 2026 · 23:59 за Києвом/);
   assert.match(html,/houseofeurope\.org\.ua\/opportunity\/947/);
   assert.match(html,/Chevening · Велика Британія/);
   assert.match(html,/6 жовтня 2026 · 11:00 UTC/);
   assert.match(html,/chevening\.org\/scholarship\/ukraine/);
+  assert.match(html,/Гранти та звіти/);
+  assert.match(html,/101127204/);
+  assert.match(html,/575275-EPP-1-2016-1-UA-EPPJMO-MODULE/);
+  assert.match(html,/materials\/conference-06-06-19-eacf33800\.html/);
+  assert.match(html,/research-report-2017-2018\.pdf/);
   assert.match(html,/Академія оформлює електронне запрошення на навчання/);
   assert.match(html,/apply\.studyinukraine\.gov\.ua\/home/);
   assert.match(html,/758-2024-%D0%BF#Text/);
@@ -547,6 +552,23 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   }
 });
 
+test("publishes the corrected master applicant ratings as 32 grouped PDFs",async()=>{
+  const html=await (await render("/admissions")).text();
+  assert.match(html,/32 PDF-документи/);
+  assert.match(html,/Рейтингові списки вступників від 24\.08\.2026/);
+  assert.match(html,/rankings\/2026-08-24-master\/law-full-time-recommended\.pdf/);
+  assert.match(html,/rankings\/2026-08-24-master\/clinical-psychology-part-time-other\.pdf/);
+  assert.doesNotMatch(html,/26 CSV-таблиць|master-ranking-01\.csv/);
+
+  const masterRankingDir=new URL("../public/documents/admissions/rankings/2026-08-24-master/",import.meta.url);
+  const masterRankingFiles=(await readdir(masterRankingDir)).filter((file)=>file.endsWith(".pdf"));
+  assert.equal(masterRankingFiles.length,32);
+  for(const file of masterRankingFiles){
+    const pdf=await readFile(new URL(file,masterRankingDir));
+    assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
+});
+
 test("announces and duplicates the published entrance results in news",async()=>{
   const [newsHtml,articleHtml,july31ArticleHtml,august6ArticleHtml]=await Promise.all([
     (await render("/news")).text(),
@@ -757,7 +779,7 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(html,/Вхід до панелі/);
   assert.match(html,/Підключення готується/);
 
-  const [panel,auth,migration,access,documents,documentMigration,pageDocuments,accessMigration,accessRules,multiAccessMigration]=await Promise.all([
+  const [panel,auth,migration,access,documents,documentMigration,pageDocuments,accessMigration,accessRules,multiAccessMigration,editorialEmail]=await Promise.all([
     readFile(new URL("../app/panel/page.tsx",import.meta.url),"utf8"),
     readFile(new URL("../lib/auth.ts",import.meta.url),"utf8"),
     readFile(new URL("../supabase/migrations/202607220001_editorial_panel.sql",import.meta.url),"utf8"),
@@ -768,6 +790,7 @@ test("ships a protected Supabase editorial panel",async()=>{
     readFile(new URL("../supabase/migrations/202607230002_editorial_access_scopes.sql",import.meta.url),"utf8"),
     readFile(new URL("../lib/editorial-access.ts",import.meta.url),"utf8"),
     readFile(new URL("../supabase/migrations/202607230003_editorial_multi_access_scopes.sql",import.meta.url),"utf8"),
+    readFile(new URL("../lib/editorial-email.ts",import.meta.url),"utf8"),
   ]);
   assert.doesNotMatch(panel,/apsvt-academy\.ikucha\.chatgpt\.site\/panel/);
   assert.match(panel,/initialProfiles/);
@@ -791,7 +814,9 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(auth,/editorial_must_change_password/);
   assert.match(auth,/status: "approved"/);
   assert.match(access,/\/api\/editorial\/users/);
-  assert.match(access,/Створити й надіслати пароль/);
+  assert.match(access,/Створити й надіслати доступ/);
+  assert.match(editorialEmail,/resetPasswordForEmail/);
+  assert.match(editorialEmail,/using Supabase fallback/);
   assert.match(documents,/purpose", "document"/);
   assert.match(documents,/\/api\/documents/);
   assert.match(documentMigration,/editorial_documents/);
@@ -802,7 +827,7 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(accessMigration,/access_scope/);
   assert.match(accessMigration,/private\.can_edit_page/);
   assert.match(accessRules,/canEditPage/);
-  assert.match(accessRules,/Кафедра психології/);
+  assert.match(accessRules,/Психологічний напрям/);
   assert.match(access,/type="checkbox"/);
   assert.match(access,/ScopePicker/);
   assert.match(accessRules,/accessScopes\.includes/);
@@ -853,12 +878,14 @@ test("ships the public BytesLab Academy workspace with protected management",asy
 });
 
 test("renders verified partner marks, the official emblem and designed faculty pages",async()=>{
-  const [finance,tourism,about,lawFaculty,economicFaculty,profiles,structure]=await Promise.all([
+  const [finance,tourism,about,lawFaculty,economicFaculty,psychologyFaculty,psychologyFacultySource,profiles,structure]=await Promise.all([
     (await render("/programs/finance")).text(),
     (await render("/programs/tourism")).text(),
     (await render("/about")).text(),
     (await render("/departments/law-faculty")).text(),
     (await render("/departments/economics-social-tourism-faculty")).text(),
+    (await render("/departments/psychology-social-development-faculty")).text(),
+    readFile(new URL("../app/departments/psychology-social-development-faculty/page.tsx",import.meta.url),"utf8"),
     readFile(new URL("../lib/programme-profiles.ts",import.meta.url),"utf8"),
     readFile(new URL("../app/about/AcademyStructure.tsx",import.meta.url),"utf8"),
   ]);
@@ -869,11 +896,15 @@ test("renders verified partner marks, the official emblem and designed faculty p
   assert.match(about,/brand\/apsvt-official-logo\.png/);
   assert.match(lawFaculty,/Від першого набору/);
   assert.match(lawFaculty,/Юридична клініка/);
-  assert.match(economicFaculty,/Вісім напрямів/);
+  assert.match(economicFaculty,/Шість напрямів/);
   assert.match(economicFaculty,/«Академія/);
   assert.match(economicFaculty,/Освітні траєкторії/);
+  assert.match(psychologyFaculty,/Факультет психології та соціального розвитку/);
+  assert.match(psychologyFacultySource,/Кафедра клінічної психології та психотерапії/);
+  assert.match(psychologyFacultySource,/Центр ментального здоров’я/);
   assert.match(profiles,/departmentHref: "\/departments\/law-faculty#departments"/);
   assert.match(profiles,/departmentHref: "\/departments\/economics-social-tourism-faculty#departments"/);
+  assert.match(profiles,/departmentHref: "\/departments\/psychology-social-development-faculty#departments"/);
   assert.match(structure,/structure-academy-root/);
   assert.match(structure,/structure-levels/);
   assert.match(structure,/Рівень 0/);
@@ -891,8 +922,29 @@ test("adds a global site search with programme, faculty and department results",
   assert.match(search,/role="dialog"/);
   assert.match(search,/useDeferredValue/);
   assert.match(index,/Юридичний факультет/);
-  assert.match(index,/Кафедра психології/);
+  assert.match(index,/Кафедра клінічної психології та психотерапії/);
   assert.match(index,/Туризм та рекреація/);
+});
+
+test("routes public-administration programme feedback to the requested address",async()=>{
+  const html=await (await render("/programs/public-administration")).text();
+  assert.match(html,/publ\.adm\.apsvt@gmail\.com/);
+  assert.match(html,/mailto:publ\.adm\.apsvt@gmail\.com/);
+});
+
+test("publishes the psychology and social development faculty as a separate structure",async()=>{
+  const [html,page,directory,structure]=await Promise.all([
+    (await render("/departments/psychology-social-development-faculty")).text(),
+    readFile(new URL("../app/departments/psychology-social-development-faculty/page.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/departments/page.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/about/AcademyStructure.tsx",import.meta.url),"utf8"),
+  ]);
+  assert.match(html,/ФПСР/);
+  assert.match(html,/3<\/b><span>кафедри/);
+  assert.match(page,/Кафедра психології бізнесу та управління/);
+  assert.match(page,/Соціальна робота та консультування/);
+  assert.match(directory,/psychology-social-development-faculty/);
+  assert.match(structure,/Факультет психології та соціального розвитку/);
 });
 
 test("publishes Moodle and the student council across student resources",async()=>{
@@ -1006,4 +1058,15 @@ test("publishes the criminal law, procedure and forensics department",async()=>{
   assert.match(departmentHtml,/Лабораторія криміналістики/);
   assert.match(facultyHtml,/href="\/departments\/criminal-law"/);
   assert.match(directoryHtml,/href="\/departments\/criminal-law"/);
+});
+
+test("publishes the private, labour and commercial law department",async()=>{
+  const [departmentHtml,directoryHtml]=await Promise.all([
+    (await render("/departments/private-law")).text(),
+    (await render("/departments")).text(),
+  ]);
+  assert.match(departmentHtml,/Кафедра цивільного, трудового та господарського права/);
+  assert.match(departmentHtml,/Катерина Біда/);
+  assert.match(departmentHtml,/D8 «Право»/);
+  assert.match(directoryHtml,/href="\/departments\/private-law"/);
 });

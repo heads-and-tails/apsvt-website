@@ -18,7 +18,7 @@ export const bachelorEntranceExamPrograms: EntranceExamProgram[] = [
   { title: "Біологія", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/biology.pdf`, pages: 12 },
   { title: "Фізика", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/physics.pdf`, pages: 10 },
   { title: "Хімія", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/chemistry.pdf`, pages: 11 },
-  { title: "Географія", meta: "Файл буде додано після надходження" },
+  { title: "Географія", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/geography.pdf`, pages: 14 },
   { title: "Українська література", meta: "Програма співбесіди НМТ", href: `${bachelorBase}/ukrainian-literature.pdf`, pages: 10 },
 ];
 

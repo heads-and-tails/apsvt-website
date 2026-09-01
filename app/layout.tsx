@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./expanded.css";
 import { SiteMotion } from "./components/SiteMotion";
+import { UniversalPageMaterials } from "./components/UniversalPageMaterials";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.socosvita.kiev.ua"),
@@ -32,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="uk">
-      <body><SiteMotion />{children}</body>
+      <body><SiteMotion />{children}<UniversalPageMaterials /></body>
     </html>
   );
 }

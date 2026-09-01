@@ -6,6 +6,7 @@ import {
   updateDepartmentEntry,
 } from "@/lib/department-content";
 import { requirePagePublisher } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +22,8 @@ export async function PATCH(request: Request, context: Context) {
     await requirePagePublisher(existing.pagePath);
     const publisher = await requirePagePublisher(body.pagePath);
     const entry = await updateDepartmentEntry(id, body, publisher.email);
+    revalidatePath(existing.pagePath);
+    if (existing.pagePath !== body.pagePath) revalidatePath(body.pagePath);
     return entry ? NextResponse.json(entry) : NextResponse.json({ error: "Запис не знайдено" }, { status: 404 });
   } catch (error) {
     const denied = error instanceof Error && (error.message === "UNAUTHORIZED" || error.message === "FORBIDDEN_SCOPE");
@@ -35,6 +38,7 @@ export async function DELETE(_: Request, context: Context) {
     if (!existing) return NextResponse.json({ error: "Запис не знайдено" }, { status: 404 });
     await requirePagePublisher(existing.pagePath);
     await deleteDepartmentEntry(id);
+    revalidatePath(existing.pagePath);
     return NextResponse.json({ ok: true });
   } catch (error) {
     const denied = error instanceof Error && (error.message === "UNAUTHORIZED" || error.message === "FORBIDDEN_SCOPE");

@@ -9,8 +9,10 @@ import { ApplicantDocumentLibrary } from "./ApplicantDocumentLibrary";
 import { EntranceExamSchedule } from "./EntranceExamSchedule";
 import { EntranceExamPrograms } from "./EntranceExamPrograms";
 import { EntranceExamResults } from "./EntranceExamResults";
+import { EnrollmentOrders } from "./EnrollmentOrders";
 import { ApplicantRankings } from "./ApplicantRankings";
 import { UkrainiansAbroadAdmission } from "../components/UkrainiansAbroadAdmission";
+import { AdmissionsSectionHub, type AdmissionsSectionMeta } from "./AdmissionsSectionHub";
 import { getPublicContent as getContentItems } from "@/lib/content";
 
 export const metadata: Metadata = { title: "Вступ 2026", description: "Маршрут вступу до АПСВТ у 2026 році: вибір програми, документи та персональна консультація." };
@@ -23,26 +25,29 @@ const steps = [
   ["04", "Підтвердьте вибір", "Виконайте вимоги до зарахування, підпишіть договір і отримайте студентський профіль."],
 ];
 
+const admissionsSections: readonly AdmissionsSectionMeta[] = [
+  { id: "route", index: "01", title: "Як вступити", description: "Чотири кроки від вибору програми до зарахування.", icon: "→" },
+  { id: "dates", index: "02", title: "Ключові дати", description: "Календар основних етапів вступної кампанії 2026.", icon: "24" },
+  { id: "tuition", index: "03", title: "Вартість і оплата", description: "Тарифи, договори та безпечні реквізити для оплати.", icon: "₴" },
+  { id: "documents", index: "04", title: "Що підготувати", description: "Основний пакет документів і контакти комісії.", icon: "DOC" },
+  { id: "ukrainians-abroad", index: "04.1", title: "Українцям за кордоном", description: "Алгоритм дистанційного вступу та підтвердження даних.", icon: "UA" },
+  { id: "entrance-exams", index: "05", title: "Розклад випробувань", description: "Дати співбесід та іспитів за рівнями освіти.", icon: "CAL", aliases: ["entrance-bachelor", "entrance-master", "entrance-phd"] },
+  { id: "entrance-programs", index: "06", title: "Програми випробувань", description: "Офіційні програми підготовки у форматі PDF.", icon: "PDF", aliases: ["programs-bachelor", "programs-master", "programs-phd"] },
+  { id: "entrance-results", index: "07", title: "Результати випробувань", description: "Опубліковані результати співбесід та іспитів.", icon: "✓", aliases: ["results-bachelor", "results-master"] },
+  { id: "enrollment-orders", index: "07.1", title: "Накази про зарахування", description: "Офіційні накази, впорядковані за датою і рівнем.", icon: "№" },
+  { id: "applicant-rankings", index: "08", title: "Рейтингові списки", description: "Списки вступників на бакалаврат і магістратуру.", icon: "TOP", aliases: ["rankings-bachelor", "rankings-master"] },
+  { id: "admission-rules", index: "09", title: "Правила і документи", description: "Нормативні документи приймальної комісії з пошуком.", icon: "§" },
+  { id: "document-assistant", index: "10", title: "Запитати помічника", description: "Швидка відповідь на основі офіційних документів.", icon: "?" },
+  { id: "test", index: "11", title: "Обрати програму", description: "Короткий тест для вибору освітньої траєкторії.", icon: "↗" },
+  { id: "consultation", index: "12", title: "Консультація", description: "Персональна відповідь команди вступу на ваш запит.", icon: "@" },
+];
+
 export default async function Page() {
   const timeline = await getContentItems("admission_timeline");
   return <main id="top"><SiteHeader />
     <section className="phero img admissions-hero"><div className="bgi"><img src="/apsvt-regional-students.png" alt="Міжнародна студентська спільнота Академії" /></div><div className="wrap"><div className="crumb">Головна / Вступ 2026</div><h1>Ваш маршрут<br />до Академії</h1><p className="lead">Від першого запитання до зарахування — з тестом на програму та персональною підтримкою команди.</p><div className="admissions-hero-actions"><a className="cta" href="#test"><span>Знайти свою програму</span></a><a className="cta ghost" href="#consultation"><span>Отримати консультацію</span></a></div></div></section><div className="phero-rule" />
 
-    <nav className="applicant-section-nav" aria-label="Навігація для вступника"><div className="wrap">
-      <a href="#route"><span>01</span><b>Як вступити</b></a>
-      <a href="#dates"><span>02</span><b>Ключові дати</b></a>
-      <a href="#tuition"><span>03</span><b>Вартість і оплата</b></a>
-      <a href="#documents"><span>04</span><b>Що підготувати</b></a>
-      <a href="#ukrainians-abroad"><span>04.1</span><b>Українцям за кордоном</b></a>
-      <a href="#entrance-exams"><span>05</span><b>Розклад випробувань</b></a>
-      <a href="#entrance-programs"><span>06</span><b>Програми випробувань</b></a>
-      <a href="#entrance-results"><span>07</span><b>Результати випробувань</b></a>
-      <a href="#applicant-rankings"><span>08</span><b>Рейтингові списки</b></a>
-      <a href="#admission-rules"><span>09</span><b>Правила і документи</b></a>
-      <a href="#document-assistant"><span>10</span><b>Запитати помічника</b></a>
-      <a href="#test"><span>11</span><b>Обрати програму</b></a>
-      <a href="#consultation"><span>12</span><b>Консультація</b></a>
-    </div></nav>
+    <AdmissionsSectionHub sections={admissionsSections}>
 
     <section id="route"><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Чотири кроки</div><h2>Від вибору до зарахування</h2></div></div><div className="steps">{steps.map(([number, title, description]) => <article className="step" key={number}><span>{number}</span><h3>{title}</h3><p>{description}</p></article>)}</div></div></section>
 
@@ -60,6 +65,8 @@ export default async function Page() {
 
     <EntranceExamResults />
 
+    <EnrollmentOrders />
+
     <ApplicantRankings />
 
     <ApplicantDocumentLibrary />
@@ -69,6 +76,8 @@ export default async function Page() {
     <ProgramFinder index="11 / Тест на програму" />
 
     <section id="consultation" className="admission-consultation"><div className="wrap admission-consultation-grid"><div className="admission-consultation-copy"><div className="idx">12 / Персональна консультація</div><h2>Розкажіть, що плануєте</h2><p className="lead">Три короткі кроки — і команда вступу підготує відповідь саме для вашого рівня, програми та ситуації.</p><div className="consultation-benefits"><div><span>01</span><p><b>Без листування навмання</b>Оберіть зручний канал і час відповіді.</p></div><div><span>02</span><p><b>Персональний маршрут</b>Отримайте перелік документів і наступних дій.</p></div><div><span>03</span><p><b>Спокійний вибір</b>Порівняйте програми до подання заяви.</p></div></div></div><ApplicantConsultationForm /></div></section>
+
+    </AdmissionsSectionHub>
 
     <SiteFooter />
   </main>;

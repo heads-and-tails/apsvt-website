@@ -43,7 +43,7 @@ export default async function PanelPage() {
     publisher.role === "admin" ? getStudentFinanceAdminData() : Promise.resolve({ available: false, profiles: [], contracts: [], charges: [], payments: [], notifications: [] }),
   ]);
   const posts = canEditPage(publisher, "/news") ? allPosts : [];
-  const content = allContent.filter((item) => item.payload.editorialSurface !== "department" && canEditPage(publisher, contentKindPagePath[item.kind]));
+  const content = allContent.filter((item) => !["department", "page"].includes(item.payload.editorialSurface) && canEditPage(publisher, contentKindPagePath[item.kind]));
   const documents = allDocuments.filter((document) => canEditPage(publisher, document.pagePath));
   const editableDepartmentEntries = departmentEntries.filter((entry) => canEditPage(publisher, entry.pagePath));
 

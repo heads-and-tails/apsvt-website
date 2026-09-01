@@ -1,10 +1,40 @@
 import { marketingTeam } from "@/lib/marketing-team";
 import { AcademicProfileCard } from "@/app/components/AcademicProfileCard";
+import type { DepartmentEntry } from "@/lib/department-content";
 
-export function MarketingTeam() {
+function normalizeName(value: string) {
+  return value.toLocaleLowerCase("uk-UA").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+}
+
+export function MarketingTeam({ entries = [] }: { entries?: DepartmentEntry[] }) {
+  const team = [
+    ...marketingTeam.map((member) => {
+      const override = entries.find((entry) => normalizeName(entry.title) === normalizeName(member.name));
+      return override ? {
+        ...member,
+        name: override.title || member.name,
+        role: override.role || member.role,
+        summary: override.summary || member.summary,
+        image: override.imageUrl || member.image,
+        profiles: override.profileUrl ? [{ label: "Науковий профіль", href: override.profileUrl }] : member.profiles,
+      } : member;
+    }),
+    ...entries
+      .filter((entry) => !marketingTeam.some((member) => normalizeName(member.name) === normalizeName(entry.title)))
+      .map((entry) => ({
+        name: entry.title,
+        role: entry.role,
+        image: entry.imageUrl,
+        summary: entry.summary,
+        education: entry.body,
+        interests: [],
+        profiles: entry.profileUrl ? [{ label: "Науковий профіль", href: entry.profileUrl }] : [],
+        lead: false,
+      })),
+  ];
   return <section className="marketing-team-section" id="department-team"><div className="wrap">
     <div className="sec-head marketing-team-head"><div><div className="idx">04 / Кафедра маркетингу</div><h2>Команда кафедри</h2></div><p>Викладачі поєднують академічні дослідження, практичний маркетинг, цифрові технології та міжнародні проєкти.</p></div>
-    <div className="academic-profile-grid">{marketingTeam.map((member, index) => <AcademicProfileCard
+    <div className="academic-profile-grid">{team.map((member, index) => <AcademicProfileCard
       key={member.name}
       index={index}
       badge={member.lead ? "Завідувачка кафедри" : undefined}

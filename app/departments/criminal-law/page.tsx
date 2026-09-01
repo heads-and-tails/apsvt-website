@@ -5,7 +5,10 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { PageDocuments } from "../../components/PageDocuments";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
-import { AcademicPageMap } from "../../components/AcademicPageMap";
+import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
+import { EducationQualitySection } from "../../components/EducationQualitySection";
+import { AcademicPartners } from "../../components/AcademicPartners";
+import { AcademicNews } from "../../components/AcademicNews";
 import "./criminal-law.css";
 
 export const metadata: Metadata = {
@@ -83,15 +86,14 @@ const faculty = [
   },
 ];
 
-const departmentPageMap = [
-  { label: "Про кафедру", note: "історія та професійні напрями", href: "#department-about" },
-  { label: "Спеціальність і програми", note: "D8 Право та дисципліни кафедри", href: "#department-education" },
-  { label: "Освітні матеріали", note: "плани, робочі програми й вибір", href: "#department-education" },
-  { label: "Склад кафедри", note: "науковці та юристи-практики", href: "#team" },
-  { label: "Наукова діяльність", note: "дослідження, публікації та гуртки", href: "#science" },
-  { label: "Практика й партнери", note: "лабораторія та професійні бази", href: "#practice" },
-  { label: "Якість освіти", note: "обговорення, анкети та оцінювання", href: "#quality" },
-  { label: "Новини кафедри", note: "події й актуальні матеріали", href: "#department-news" },
+const departmentSections: readonly SectionHubItem[] = [
+  { id: "department-about", index: "01", title: "Про кафедру", description: "Історія та три професійні напрями кафедри.", icon: "DEP" },
+  { id: "department-education", index: "02", title: "Програма й матеріали", description: "D8 «Право», навчальний план, дисципліни та документи.", icon: "DOC" },
+  { id: "team", index: "03", title: "Склад кафедри", description: "Науковці, викладачі та юристи-практики.", icon: "TEAM" },
+  { id: "science", index: "04", title: "Наукова діяльність", description: "Дослідження, публікації та студентські формати.", icon: "SCI" },
+  { id: "practice", index: "05", title: "Практика й партнери", description: "Криміналістична лабораторія та професійні бази.", icon: "LAB" },
+  { id: "quality", index: "06", title: "Якість освіти", description: "Обговорення програм, анкети та оцінювання.", icon: "✓" },
+  { id: "department-news", index: "07", title: "Новини й посилання", description: "Актуальні матеріали кафедри та корисні сторінки.", icon: "NEWS" },
 ];
 
 export default async function Page() {
@@ -111,7 +113,7 @@ export default async function Page() {
     </section>
     <div className="hero-rule" />
 
-    <AcademicPageMap kind="кафедра" title="Кафедра → програма → матеріали" items={departmentPageMap} />
+    <SectionHub sections={departmentSections} eyebrow="Навігатор кафедри" description="Оберіть команду, програму, практику, науку або новини — відкриється тільки потрібний розділ.">
 
     <section className="criminal-department-about" id="department-about"><div className="wrap criminal-department-about-grid">
       <div><div className="idx">01 / Про кафедру</div><h2>Три напрями. Одна професійна логіка.</h2></div>
@@ -133,12 +135,13 @@ export default async function Page() {
       <div className="criminal-department-research-grid"><div className="criminal-department-themes"><article><span>01</span><h3>Боротьба зі злочинністю та корупцією</h3><p>Як складова соціальної політики України на шляху розвитку громадянського суспільства.</p></article><article><span>02</span><h3>Кримінальна відповідальність у сфері праці</h3><p>Дотримання трудового законодавства й правові механізми відповідальності.</p></article></div><div className="criminal-department-metrics"><span><b>10</b>монографій</span><span><b>4</b>підручники</span><span><b>24</b>навчальні посібники</span><span><b>100+</b>наукових статей</span><span><b>50+</b>тез конференцій</span><small>Результати наукової роботи кафедри за останні п’ять років за наданими матеріалами.</small></div></div>
     </div></section>
 
-    <section className="criminal-department-practice" id="practice"><div className="wrap criminal-department-practice-grid"><div><div className="idx">05 / Практика й партнери</div><h2>Від матеріалів справи до процесуальної дії</h2><p>Студенти працюють із професійними сценаріями, беруть участь у тренінгах і судових симуляціях, проходять практику в правоохоронних органах, судах, адвокатських об’єднаннях та нотаріаті.</p><Link href="/programs/law/forensic-laboratory">Відкрити лабораторію криміналістики →</Link></div><div className="criminal-department-practice-list"><span><b>01</b>Дактилоскопічні дослідження</span><span><b>02</b>Фіксація слідів і робота з доказами</span><span><b>03</b>Криміналістичний аналіз документів</span><span><b>04</b>Моделювання слідчих дій</span></div></div></section>
+    <section className="criminal-department-practice" id="practice"><div className="wrap criminal-department-practice-grid"><div><div className="idx">05 / Практика й партнери</div><h2>Від матеріалів справи до процесуальної дії</h2><p>Студенти працюють із професійними сценаріями, беруть участь у тренінгах і судових симуляціях, проходять практику в правоохоронних органах, судах, адвокатських об’єднаннях та нотаріаті.</p><Link href="/programs/law/forensic-laboratory">Відкрити лабораторію криміналістики →</Link></div><div className="criminal-department-practice-list"><span><b>01</b>Дактилоскопічні дослідження</span><span><b>02</b>Фіксація слідів і робота з доказами</span><span><b>03</b>Криміналістичний аналіз документів</span><span><b>04</b>Моделювання слідчих дій</span></div></div><AcademicPartners slugs={["law"]} title="Професійні осередки та бази практики" /></section>
 
-    <section className="programme-quality" id="quality"><div className="wrap programme-quality-grid"><div><div className="idx">06 / Якість освіти</div><h2>Обговорення, опитування та оцінювання</h2><p>Пропозиції до програми, результати опитувань здобувачів і оцінювання викладачів зібрані в єдиному контурі якості Академії.</p></div><nav><a href="/documents/archive/may-2026/quality-system.pdf" target="_blank" rel="noreferrer">Система забезпечення якості ↗</a><a href="/documents/archive/may-2026/student-survey-questionnaires.pdf" target="_blank" rel="noreferrer">Анкети здобувачів ↗</a><Link href="/contacts">Надіслати пропозицію до програми →</Link></nav></div></section>
+    <EducationQualitySection entries={departmentEntries} pagePath="/departments/criminal-law" index="06" />
 
-    <section className="criminal-department-links"><div className="wrap"><Link href="/departments/law-faculty"><span>Юридичний факультет</span><b>Усі кафедри факультету →</b></Link><Link href="/programs/law"><span>Освітня програма</span><b>D8 «Право» →</b></Link><Link href="/programs/law/forensic-laboratory"><span>Практичний осередок</span><b>Лабораторія криміналістики →</b></Link></div></section>
-    <div id="department-news"><DepartmentEditorialContent entries={departmentEntries} /></div>
+    <div id="department-news"><AcademicNews slugs={["law"]} title="Новини кафедри та факультету" /><section className="criminal-department-links"><div className="wrap"><Link href="/departments/law-faculty"><span>Юридичний факультет</span><b>Усі кафедри факультету →</b></Link><Link href="/programs/law"><span>Освітня програма</span><b>D8 «Право» →</b></Link><Link href="/programs/law/forensic-laboratory"><span>Практичний осередок</span><b>Лабораторія криміналістики →</b></Link></div></section>
+    <DepartmentEditorialContent entries={departmentEntries} /></div>
+    </SectionHub>
     <PageDocuments pagePath="/departments/criminal-law" />
     <SiteFooter />
   </main>;

@@ -24,6 +24,20 @@ const ukLinks: readonly NavItem[] = [
     { href: "/programs/management", label: "Менеджмент" }, { href: "/programs/social-work", label: "Соціальна робота" },
     { href: "/programs/professional-education", label: "Професійна освіта · Digital" },
   ] },
+  { href: "/departments/law-faculty", label: "Юридичний факультет", children: [
+    { href: "/departments/law-faculty#faculty-about", label: "Про факультет" },
+    { href: "/departments/law-faculty#faculty-leadership", label: "Керівництво й деканат" },
+    { href: "/departments/law-faculty#departments", label: "Кафедри" },
+    { href: "/departments/law-faculty#faculty-practice-centres", label: "Клініка й лабораторія" },
+    { href: "/departments/law-faculty#faculty-practice-bases", label: "Бази практики" },
+    { href: "/departments/law-faculty#faculty-science", label: "Наука й гуртки" },
+    { href: "/departments/law-faculty#faculty-governance", label: "Вчена рада й самоврядування" },
+    { href: "/departments/law-faculty#law-teachers", label: "Колектив факультету" },
+    { href: "/departments/law-faculty#faculty-programmes", label: "Освітні програми" },
+    { href: "/departments/law-faculty#faculty-repository", label: "Репозитарій і обговорення" },
+    { href: "/departments/law-faculty#faculty-quality", label: "Якість і документи" },
+    { href: "/departments/law-faculty#department-news", label: "Новини факультету" },
+  ] },
   { href: "/admissions", label: "Вступнику", children: [
     { href: "/admissions#route", label: "Як вступити" }, { href: "/admissions#dates", label: "Ключові дати" },
     { href: "/tuition", label: "Вартість і оплата" }, { href: "/admissions#entrance-exams", label: "Розклад випробувань" },
@@ -41,11 +55,12 @@ const ukLinks: readonly NavItem[] = [
   ] },
   { href: "/people", label: "Люди", children: [
     { href: "/people", label: "Команда Академії" }, { href: "/departments", label: "Кафедри" },
-    { href: "/departments/law-faculty", label: "Юридичний факультет" }, { href: "/departments/economics-social-tourism-faculty", label: "Факультет економіки й туризму" },
+    { href: "/departments/economics-social-tourism-faculty", label: "Факультет економіки й туризму" },
+    { href: "/departments/psychology-social-development-faculty", label: "Факультет психології й розвитку" },
     { href: "/students/council", label: "Студентська рада" },
   ] },
   { href: "/international", label: "Міжнародне", children: [
-    { href: "/international#partners", label: "Партнери" }, { href: "/international#international-opportunities", label: "Міжнародні можливості" },
+    { href: "/international#partners", label: "Партнери" }, { href: "/international#grants", label: "Гранти та звіти" }, { href: "/international#international-opportunities", label: "Міжнародні можливості" },
     { href: "/international#ukrainians-abroad", label: "Українцям за кордоном" }, { href: "/international#foreign-applicants", label: "Іноземним вступникам" },
     { href: "/international#international-contact", label: "Контакти відділу" },
   ] },
@@ -102,6 +117,7 @@ const enLinks: readonly NavItem[] = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [openMenuGroup, setOpenMenuGroup] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const firstMenuControl = useRef<HTMLElement>(null);
@@ -123,6 +139,7 @@ export function SiteHeader() {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       setOpen(false);
+      setOpenMenuGroup(null);
       menuButton.current?.focus();
     };
 
@@ -136,14 +153,20 @@ export function SiteHeader() {
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 1101px)");
     const closeAtDesktopWidth = (event: MediaQueryListEvent) => {
-      if (event.matches) setOpen(false);
+      if (event.matches) {
+        setOpen(false);
+        setOpenMenuGroup(null);
+      }
     };
 
     desktop.addEventListener("change", closeAtDesktopWidth);
     return () => desktop.removeEventListener("change", closeAtDesktopWidth);
   }, []);
 
-  const closeMenu = () => setOpen(false);
+  const closeMenu = () => {
+    setOpen(false);
+    setOpenMenuGroup(null);
+  };
 
   useEffect(() => {
     const openSearch = (event: KeyboardEvent) => {
@@ -152,6 +175,7 @@ export function SiteHeader() {
       if ((event.key === "/" && !typing) || ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k")) {
         event.preventDefault();
         setOpen(false);
+        setOpenMenuGroup(null);
         setSearchOpen(true);
       }
     };
@@ -207,14 +231,9 @@ export function SiteHeader() {
                 <details
                   className={`menu-group ${activeTopLevelHref === item.href ? "active" : ""}`}
                   key={item.href}
-                  onPointerEnter={(event) => {
-                    if (window.innerWidth > 700 && window.matchMedia("(hover: hover) and (pointer: fine)").matches) event.currentTarget.open = true;
-                  }}
-                  onPointerLeave={(event) => {
-                    if (window.innerWidth > 700 && window.matchMedia("(hover: hover) and (pointer: fine)").matches) event.currentTarget.open = false;
-                  }}
+                  open={openMenuGroup === item.href}
                 >
-                  <summary ref={(node) => { if (index === 0) firstMenuControl.current = node; }} tabIndex={open ? 0 : -1}>
+                  <summary ref={(node) => { if (index === 0) firstMenuControl.current = node; }} tabIndex={open ? 0 : -1} onClick={(event) => { event.preventDefault(); setOpenMenuGroup((current) => current === item.href ? null : item.href); }}>
                     <span>{String(index + 1).padStart(2, "0")}</span><b>{item.label}</b><i aria-hidden="true">+</i>
                   </summary>
                   <div className="menu-subitems">
@@ -233,7 +252,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hdr-right">
-          <button className="header-search-button" type="button" onClick={() => { setOpen(false); setSearchOpen(true); }} aria-label={english ? "Search the site" : "Пошук по сайту"} aria-haspopup="dialog">
+          <button className="header-search-button" type="button" onClick={() => { closeMenu(); setSearchOpen(true); }} aria-label={english ? "Search the site" : "Пошук по сайту"} aria-haspopup="dialog">
             <span aria-hidden="true">⌕</span><b>{english ? "Search" : "Пошук"}</b>
           </button>
           <Link className="lang-toggle" href={english ? ukPath : enPath} aria-label={english ? "Українська версія" : "English version"} onClick={closeMenu}>
@@ -246,10 +265,7 @@ export function SiteHeader() {
             ref={menuButton}
             className={`burger ${open ? "active" : ""}`}
             type="button"
-            onClick={() => setOpen((current) => !current)}
-            onPointerEnter={() => {
-              if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && window.innerWidth > 700 && window.innerWidth <= 1100) setOpen(true);
-            }}
+            onClick={() => { setOpen((current) => !current); setOpenMenuGroup(null); }}
             aria-label={open ? (english ? "Close menu" : "Закрити меню") : (english ? "Open menu" : "Відкрити меню")}
             aria-controls="site-navigation"
             aria-haspopup="true"

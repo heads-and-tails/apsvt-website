@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 
 type LoginMode = "code" | "password";
 
-export function LoginForm() {
+export function LoginForm({ nextPath = "/panel" }: { nextPath?: string }) {
   const router = useRouter();
   const [mode, setMode] = useState<LoginMode>("password");
   const [email, setEmail] = useState("");
@@ -28,7 +28,7 @@ export function LoginForm() {
       email,
       options: {
         shouldCreateUser: false,
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/panel`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
       },
     });
     if (error) {
@@ -59,7 +59,7 @@ export function LoginForm() {
       setBusy(false);
       return;
     }
-    router.replace("/panel");
+    router.replace(nextPath);
     router.refresh();
   }
 
@@ -74,7 +74,7 @@ export function LoginForm() {
       setBusy(false);
       return;
     }
-    router.replace("/panel");
+    router.replace(nextPath);
     router.refresh();
   }
 

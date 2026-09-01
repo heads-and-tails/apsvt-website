@@ -1,15 +1,23 @@
-import { bachelorEntranceResults, bachelorEntranceResultsJuly31, masterInterviewVideo, type EntranceResultDocument } from "@/lib/entrance-results";
+import {
+  bachelorEntranceResults,
+  bachelorEntranceResultsJuly31,
+  masterEntranceResultsAugust7,
+  masterEntranceResultsAugust18,
+  masterEntranceResultsAugust19,
+  masterInterviewVideo,
+  type EntranceResultDocument,
+} from "@/lib/entrance-results";
 
 const masterInterviewResults = "/documents/admissions/results/2026-08-06/english-interview-master.pdf";
 
-function ResultBatch({ date, documents }: { date: string; documents: EntranceResultDocument[] }) {
+function ResultBatch({ date, documents, level = "Бакалаврат" }: { date: string; documents: EntranceResultDocument[]; level?: "Бакалаврат" | "Магістратура" }) {
   return <div className="entrance-result-batch">
     <h4>{`Результати вступних випробувань від ${date} 2026 року`}</h4>
     <p>Кожен документ відкривається окремо у форматі PDF.</p>
     <div className="entrance-result-documents">
       {documents.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
         <span>{String(index + 1).padStart(2, "0")}</span>
-        <div><small>Бакалаврат · {date} 2026</small><h5>{document.title}</h5></div>
+        <div><small>{level} · {date} 2026</small><h5>{document.title}</h5></div>
         <div className="entrance-result-action"><small>PDF · {document.pages} {document.pages === 1 ? "сторінка" : "сторінки"}</small><b>Відкрити ↗</b></div>
       </a>)}
     </div>
@@ -62,6 +70,9 @@ export function EntranceExamResults() {
 
     <article className="entrance-results-level" id="results-master">
       <header><span>02 / Магістратура</span><h3>Результати вступних випробувань</h3><p>Офіційні матеріали згруповано за датами проведення вступних випробувань.</p></header>
+      <ResultBatch date="19 серпня" documents={masterEntranceResultsAugust19} level="Магістратура" />
+      <ResultBatch date="18 серпня" documents={masterEntranceResultsAugust18} level="Магістратура" />
+      <ResultBatch date="7 серпня" documents={masterEntranceResultsAugust7} level="Магістратура" />
       <MasterResultBatch />
     </article>
   </div></section>;

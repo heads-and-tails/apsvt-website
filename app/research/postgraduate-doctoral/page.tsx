@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
+import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Аспірантура і докторантура",
@@ -41,6 +42,15 @@ const doctoralDocuments = [
   ["Вартість навчання в докторантурі у 2026 році", "/documents/research/postgraduate-doctoral/2026/doctoral-tuition-2026.pdf", "PDF · 1 сторінка"],
 ] as const;
 
+const postgraduateSections: readonly SectionHubItem[] = [
+  { id: "phd", index: "01", title: "Аспірантура і докторантура", description: "Порівняння двох маршрутів наукової кар’єри.", icon: "PhD" },
+  { id: "programmes", index: "02", title: "Програми PhD", description: "П’ять освітньо-наукових програм набору 2026 року.", icon: "5" },
+  { id: "admission", index: "03", title: "Вступ 2026", description: "Календар, випробування та послідовність підготовки аспіранта.", icon: "CAL" },
+  { id: "doctoral", index: "04", title: "Докторантура", description: "Галузі наук і спеціальності підготовки докторів наук.", icon: "DSc" },
+  { id: "cost", index: "05", title: "Вартість", description: "Затверджені суми для аспірантури, докторантури та іспитів.", icon: "₴" },
+  { id: "documents", index: "06", title: "Документи й контакти", description: "Накази, умови вступу, кошториси та консультація.", icon: "PDF" },
+];
+
 export default function Page() {
   return <main id="top" className="postgraduate-page">
     <SiteHeader />
@@ -64,16 +74,7 @@ export default function Page() {
     </section>
     <div className="phero-rule" />
 
-    <nav className="postgraduate-jump-nav" aria-label="Навігація сторінкою">
-      <div className="wrap">
-        <a href="#phd"><small>01</small><span>Аспірантура</span></a>
-        <a href="#programmes"><small>02</small><span>Програми PhD</span></a>
-        <a href="#admission"><small>03</small><span>Вступ 2026</span></a>
-        <a href="#doctoral"><small>04</small><span>Докторантура</span></a>
-        <a href="#cost"><small>05</small><span>Вартість</span></a>
-        <a href="#documents"><small>06</small><span>Документи</span></a>
-      </div>
-    </nav>
+    <SectionHub sections={postgraduateSections} eyebrow="Навігатор наукової кар’єри" description="Оберіть програми, вступ, вартість або документи — на сторінці відкриється тільки потрібний розділ.">
 
     <section id="phd" className="postgraduate-choice">
       <div className="wrap">
@@ -118,7 +119,7 @@ export default function Page() {
       </div>
     </section>
 
-    <section id="admission" className="postgraduate-admission">
+    <div><section id="admission" className="postgraduate-admission">
       <div className="wrap">
         <header className="postgraduate-section-head">
           <div><span className="idx">03 / Вступ 2026</span><h2>Календар основної сесії</h2></div>
@@ -152,7 +153,7 @@ export default function Page() {
           <li><span>04</span><div><h3>Завершення і захист</h3><p>Підготовка дисертації, проходження встановлених процедур та публічний захист.</p></div></li>
         </ol>
       </div>
-    </section>
+    </section></div>
 
     <section id="doctoral" className="postgraduate-doctoral">
       <div className="wrap">
@@ -183,7 +184,7 @@ export default function Page() {
       </div>
     </section>
 
-    <section id="documents" className="soft postgraduate-documents">
+    <div><section id="documents" className="soft postgraduate-documents">
       <div className="wrap">
         <header className="postgraduate-section-head">
           <div><span className="idx">07 / Офіційні матеріали</span><h2>Документи без пошуку по сайту</h2></div>
@@ -207,7 +208,8 @@ export default function Page() {
         <div><span>Консультація</span><h2>Потрібна допомога з вибором маршруту?</h2><p>Відділ аспірантури та докторантури допоможе уточнити програму, вступні випробування, перелік матеріалів і формат навчання. У наказах 2026 року відповідальною за напрям зазначено завідувачку аспірантури Тетяну Лесюк.</p></div>
         <div><Link className="cta" href="/admissions#consultation"><span>Отримати консультацію</span></Link><Link href="/contacts">Контакти Академії <b>→</b></Link></div>
       </div>
-    </section>
+    </section></div>
+    </SectionHub>
 
     <SiteFooter />
   </main>;

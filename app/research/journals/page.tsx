@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
+import { MarketingPublications } from "./MarketingPublications";
 
 export const metadata: Metadata = {
   title: "Наукові видання",
@@ -10,6 +12,8 @@ export const metadata: Metadata = {
 };
 
 const journalUrl = "/research/journals/visnyk";
+const monographUrl = "/documents/research/publications/metody-diahnostyky-ta-psykholohichnoho-suprovodu-2026.pdf";
+const monographDoi = "https://doi.org/10.56287/8285-65-4";
 
 const specialties = [
   "C1 Економіка",
@@ -37,6 +41,57 @@ export default function Page() {
         </div>
       </section>
       <div className="phero-rule" />
+
+      <section className="soft monograph-release" id="monograph-stress-2026">
+        <div className="wrap">
+          <article className="journal-feature monograph-feature">
+            <a
+              className="monograph-cover"
+              href={monographUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Відкрити колективну монографію у форматі PDF"
+            >
+              <Image
+                src="/images/research/metody-diahnostyky-2026-cover.jpg"
+                alt="Обкладинка монографії «Методи діагностики та психологічного супроводу життєдіяльності особистості в умовах стресу»"
+                width={1191}
+                height={1685}
+                priority
+              />
+              <span>Відкрити PDF ↗</span>
+            </a>
+            <div>
+              <div className="idx">Нове видання · 2026</div>
+              <h2>Методи діагностики та психологічного супроводу</h2>
+              <p className="lead">
+                Колективна монографія про психодіагностику, психологічну допомогу
+                в кризових ситуаціях і рекреаційні практики підтримки особистості
+                в умовах стресу.
+              </p>
+              <p>
+                За редакцією професорів Людмили Бегези, Наталії Максимової та
+                Катерини Мілютіної. Видання рекомендовано Вченою радою АПСВТ і
+                адресовано науковцям, викладачам, психологам, психотерапевтам,
+                фахівцям із соціальної роботи та здобувачам освіти.
+              </p>
+              <dl className="monograph-facts">
+                <div><dt>Формат</dt><dd>Колективна монографія · 390 с.</dd></div>
+                <div><dt>ISBN</dt><dd>978-617-8285-65-4</dd></div>
+                <div><dt>Ліцензія</dt><dd>CC BY 4.0</dd></div>
+              </dl>
+              <div className="journal-actions">
+                <a className="cta dark" href={monographUrl} target="_blank" rel="noreferrer">
+                  <span>Читати монографію →</span>
+                </a>
+                <a className="sec-link" href={monographDoi} target="_blank" rel="noreferrer">
+                  DOI 10.56287/8285-65-4 ↗
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
 
       <section>
         <div className="wrap">
@@ -83,11 +138,13 @@ export default function Page() {
         </div>
       </section>
 
+      <MarketingPublications />
+
       <section className="soft">
         <div className="wrap">
           <div className="sec-head">
             <div>
-              <div className="idx">01 / Спеціальності</div>
+              <div className="idx">02 / Спеціальності</div>
               <h2>Визнані напрями</h2>
             </div>
           </div>
@@ -106,7 +163,7 @@ export default function Page() {
         <div className="wrap">
           <div className="sec-head">
             <div>
-              <div className="idx">02 / Міжнародне партнерство</div>
+              <div className="idx">03 / Міжнародне партнерство</div>
               <h2>Consortio</h2>
             </div>
           </div>

@@ -37,13 +37,16 @@ export function AcademicPageMap({
         </div>
         <p>Розділи розташовані у сталій логіці, щоб не шукати програму, документи, команду чи результати оцінювання по різних сторінках.</p>
       </header>
-      <nav aria-label={`Розділи сторінки: ${kind}`}>
-        {items.map((item, index) => <a href={item.href} key={`${item.label}-${item.href}`}>
-          <span>{String(index + 1).padStart(2, "0")}</span>
-          <div><b>{item.label}</b><small>{item.note}</small></div>
-          <i aria-hidden="true">↓</i>
-        </a>)}
-      </nav>
+      <details className="academic-page-map-disclosure">
+        <summary><span>Швидка навігація</span><b>Показати розділи</b><small>{items.length} розділів</small><i aria-hidden="true">+</i></summary>
+        <nav aria-label={`Розділи сторінки: ${kind}`}>
+          {items.map((item, index) => <a href={item.href} key={`${item.label}-${item.href}`}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <div><b>{item.label}</b><small>{item.note}</small></div>
+            <i aria-hidden="true">↓</i>
+          </a>)}
+        </nav>
+      </details>
     </div>
   </section>;
 }

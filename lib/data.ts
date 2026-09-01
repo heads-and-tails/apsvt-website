@@ -27,8 +27,25 @@ import { applicantRankingsNewsSlug } from "@/lib/admissions-rankings";
 import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 
 const IMG = "https://images.unsplash.com";
+export const stakeholderDiscussionNewsSlug = "obhovorennia-osvitnikh-prohram-d8-d4-2026";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-stakeholder-discussion-d8-d4-2026",
+    slug: stakeholderDiscussionNewsSlug,
+    title: "Онлайн-обговорення освітніх програм D8 «Право» і D4 «Публічне управління та адміністрування»",
+    excerpt: "26 серпня о 12:00 стейкхолдерів запрошують до онлайн-обговорення освітніх програм юридичного факультету.",
+    body: "До відома стейкхолдерів освітніх програм зі спеціальностей D8 Право і D4 Публічне управління та адміністрування!\n\n26 серпня відбудеться онлайн-обговорення освітніх програм спеціальностей юридичного факультету. Початок — 12:00.\n\nMeeting ID: 303 650 3681.",
+    category: "Оголошення",
+    imageUrl: "/apsvt-event-real.jpg",
+    imageAlt: "Онлайн-обговорення освітніх програм юридичного факультету АПСВТ",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-08-25T09:00:00.000Z",
+    createdAt: "2026-08-25T09:00:00.000Z",
+    updatedAt: "2026-08-25T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-academic-competition-2-3-2026",
     slug: academicCompetitionNewsSlug,
@@ -290,7 +307,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
@@ -303,11 +320,14 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
       await ensureSupabasePosts();
       const client = options.includeDrafts ? createSupabaseAdmin() : createSupabasePublicClient();
       const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
-      let query = client.from("editorial_posts").select("*");
+      let query = client.from("editorial_posts").select("*")
+        .neq("category", "__telegram_editorial__")
+        .neq("category", "__byteslab_workspace__")
+        .neq("category", "__academy_scheduler__");
       if (!options.includeDrafts) query = query.eq("status", "published");
       const { data, error } = await query.order("featured", { ascending: false }).order("published_at", { ascending: false, nullsFirst: false }).limit(limit);
       if (error) throw error;
-      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>)).filter((post) => post.category !== "__byteslab_workspace__");
+      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>)).filter((post) => !post.category.startsWith("__"));
     } catch {
       // Keep the public site available with bundled editorial content.
     }
@@ -316,10 +336,12 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
     await ensurePosts();
     const database = await db();
     if (!database) throw new Error("D1_UNAVAILABLE");
-    const where = options.includeDrafts ? "" : "WHERE status = 'published'";
+    const where = options.includeDrafts
+      ? "WHERE substr(category,1,2) != '__'"
+      : "WHERE status = 'published' AND substr(category,1,2) != '__'";
     const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
     const result = await database.prepare(`SELECT * FROM posts ${where} ORDER BY featured DESC, COALESCE(published_at, created_at) DESC LIMIT ?`).bind(limit).all<Record<string, unknown>>();
-    return result.results.map(fromRow).filter((post) => post.category !== "__byteslab_workspace__");
+    return result.results.map(fromRow).filter((post) => !post.category.startsWith("__"));
   } catch {
     return seedPosts.filter((post) => options.includeDrafts || post.status === "published").slice(0, options.limit ?? 50);
   }
@@ -354,11 +376,15 @@ export function slugify(value: string): string {
 
 export async function createPost(input: PostInput, authorEmail: string): Promise<Post> {
   if (isSupabaseConfigured()) {
-    await ensureSupabasePosts();
     const now = new Date().toISOString();
     const post: Post = { ...input, id: crypto.randomUUID(), slug: slugify(input.slug || input.title), createdAt: now, updatedAt: now, authorEmail };
     if (post.status === "published" && !post.publishedAt) post.publishedAt = now;
-    const { data, error } = await createSupabaseAdmin().from("editorial_posts").insert(toSupabaseRow(post)).select("*").single();
+    const admin = createSupabaseAdmin();
+    let { data, error } = await admin.from("editorial_posts").insert(toSupabaseRow(post)).select("*").single();
+    if (error?.code === "23505") {
+      post.slug = `${post.slug}-${post.id.slice(0, 8)}`;
+      ({ data, error } = await admin.from("editorial_posts").insert(toSupabaseRow(post)).select("*").single());
+    }
     if (error) throw error;
     return fromRow(data as Record<string, unknown>);
   }

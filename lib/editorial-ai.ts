@@ -46,7 +46,32 @@ export function extractEditorialFileText(file: File, bytes: Uint8Array): string 
   return "";
 }
 
-function fallbackDraft(target: EditorialDraftTarget, fileName: string, text: string): EditorialAiDraft {
+export function detectEditorialTarget(
+  file: File,
+  bytes: Uint8Array,
+  instruction = "",
+): EditorialDraftTarget {
+  const text = `${file.name}\n${instruction}\n${extractEditorialFileText(file, bytes)}`.toLowerCase();
+  if (/(резюме|cv|curriculum vitae|orcid|google scholar|науков(ий|ого) ступін|кандидат наук|доктор наук)/i.test(text)) return "department_teacher";
+  if (/(ваканс|конкурс.*посад|на заміщення.*посад|штатн(а|ої) посад)/i.test(text)) return "vacancy";
+  if (/(розклад|графік).*(іспит|співбесід|вступн.*випробув|екзамен|сесі)/i.test(text)) return "schedule_exam";
+  if (/(розклад занять|навчальн.*розклад|пари|аудиторі)/i.test(text)) return "schedule_lesson";
+  if (/(кваліфікаційн.*робот|дипломн.*робот|бакалаврськ.*робот|магістерськ.*робот|науковий керівник)/i.test(text)) return "student_thesis";
+  if (/(бібліотечн.*шифр|підручник|навчальний посібник|монографія|isbn)/i.test(text)) return "library_book";
+  if (/(вступн.*кампан|подання заяв|зарахуван|вступник)/i.test(text)) return "admission_timeline";
+  if (/(конференц|семінар|вебінар|кругл.*стіл|запрошуємо.*\d{1,2}[./]|відбудеться)/i.test(text)) return "event";
+  if (/(науков.*збірник|науков.*видан|дослідницьк.*ресурс|doi|репозитар)/i.test(text)) return "research_resource";
+  if (file.type.startsWith("image/")) return "news";
+  if (/(новин|пресреліз|відбулася|відбувся|зустріч|підписали угоду|академія повідомляє)/i.test(text)) return "news";
+  return "document";
+}
+
+function fallbackDraft(
+  target: EditorialDraftTarget,
+  fileName: string,
+  text: string,
+  warning = "AI ще не активовано на сервері. Створено базовий чернетковий варіант із тексту файла — перевірте й відредагуйте його.",
+): EditorialAiDraft {
   const config = draftTargetConfigs.find((entry) => entry.id === target)!;
   const cleanTitle = fileName.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
   const paragraphs = text.split(/\n+/).map((item) => item.trim()).filter(Boolean);
@@ -68,7 +93,7 @@ function fallbackDraft(target: EditorialDraftTarget, fileName: string, text: str
     summary: second || "Текст розпізнано з файла. Перевірте поля перед публікацією.",
     body: text.slice(0, 20_000),
     records: generatedRecords.length ? generatedRecords : [payloadToDraftRecord(defaults, config.fields)],
-    warnings: ["AI ще не активовано на сервері. Створено базовий чернетковий варіант із тексту файла — перевірте й відредагуйте його."],
+    warnings: [warning],
     sourceFileName: fileName,
     usedAi: false,
   };
@@ -280,7 +305,18 @@ export async function createEditorialDraft(input: {
     }),
   });
   const result = await response.json() as OpenAiResponse;
-  if (!response.ok) throw new Error(result.error?.message || "OPENAI_REQUEST_FAILED");
+  if (!response.ok) {
+    const gatewayError = result.error?.message || "OPENAI_REQUEST_FAILED";
+    if (!directApiKey && /valid credit card/i.test(gatewayError)) {
+      return fallbackDraft(
+        input.target,
+        input.file.name,
+        extractedText,
+        "AI Gateway підключено, але Vercel очікує підтвердження платіжної картки. Після підтвердження AI запрацює автоматично; зараз створено базову чернетку для ручної перевірки.",
+      );
+    }
+    throw new Error(gatewayError);
+  }
   const text = outputText(result);
   if (!text) throw new Error("OPENAI_EMPTY_RESPONSE");
   return normalizeDraft(JSON.parse(text), input.target, input.file.name);

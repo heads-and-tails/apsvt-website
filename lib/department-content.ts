@@ -6,15 +6,17 @@ import {
   updateContentItem,
   type ContentItem,
 } from "@/lib/content";
-import { isDepartmentPagePath } from "@/lib/editorial-access";
+import { isEditorialPagePath } from "@/lib/editorial-access";
+import { educationQualityRubrics } from "@/lib/education-quality";
 
-export const departmentEntryTypes = ["section", "news", "article", "material", "photo", "teacher"] as const;
+export const departmentEntryTypes = ["override", "hero", "section", "news", "article", "material", "photo", "teacher", "partner", "quality"] as const;
 export type DepartmentEntryType = (typeof departmentEntryTypes)[number];
 export type DepartmentEntryStatus = "draft" | "published";
 
 export type DepartmentEntry = {
   id: string;
   pagePath: string;
+  sectionId: string;
   entryType: DepartmentEntryType;
   title: string;
   summary: string;
@@ -36,7 +38,7 @@ export type DepartmentEntry = {
 
 export type DepartmentEntryInput = Omit<DepartmentEntry, "id" | "createdAt" | "updatedAt" | "authorEmail">;
 
-const marker = "department";
+const markers = new Set(["department", "page"]);
 
 export function isDepartmentEntryType(value: unknown): value is DepartmentEntryType {
   return typeof value === "string" && departmentEntryTypes.includes(value as DepartmentEntryType);
@@ -45,7 +47,8 @@ export function isDepartmentEntryType(value: unknown): value is DepartmentEntryT
 export function isDepartmentEntryInput(value: unknown): value is DepartmentEntryInput {
   if (!value || typeof value !== "object") return false;
   const entry = value as Record<string, unknown>;
-  const validBase = isDepartmentPagePath(entry.pagePath)
+  const validBase = isEditorialPagePath(entry.pagePath)
+    && typeof entry.sectionId === "string"
     && isDepartmentEntryType(entry.entryType)
     && typeof entry.title === "string" && Boolean(entry.title.trim())
     && typeof entry.summary === "string"
@@ -61,14 +64,22 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
     && (entry.status === "draft" || entry.status === "published")
     && typeof entry.sortOrder === "number" && Number.isFinite(entry.sortOrder);
   if (!validBase) return false;
+  if (entry.entryType === "override") {
+    return typeof entry.body === "string"
+      && entry.body.startsWith("main > ")
+      && entry.body.length <= 1000
+      && typeof entry.role === "string"
+      && ["text", "image", "link"].includes(entry.role);
+  }
   if (entry.entryType === "photo" && !entry.imageUrl) return false;
   if (entry.entryType === "material" && !entry.fileUrl) return false;
   if (entry.entryType === "teacher" && !entry.role) return false;
+  if (entry.entryType === "quality" && !educationQualityRubrics.some((rubric) => rubric.id === entry.role)) return false;
   return true;
 }
 
 function isDepartmentContentItem(item: ContentItem): boolean {
-  return item.kind === "research_resource" && item.payload.editorialSurface === marker && isDepartmentPagePath(item.payload.pagePath);
+  return item.kind === "research_resource" && markers.has(item.payload.editorialSurface) && isEditorialPagePath(item.payload.pagePath);
 }
 
 function fromContentItem(item: ContentItem): DepartmentEntry {
@@ -76,6 +87,7 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
   return {
     id: item.id,
     pagePath: payload.pagePath || "",
+    sectionId: payload.sectionId || "",
     entryType: isDepartmentEntryType(payload.entryType) ? payload.entryType : "section",
     title: payload.title || "",
     summary: payload.summary || "",
@@ -98,8 +110,9 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
 
 function toContentPayload(input: DepartmentEntryInput): Record<string, string> {
   return {
-    editorialSurface: marker,
+    editorialSurface: "page",
     pagePath: input.pagePath,
+    sectionId: input.sectionId.trim(),
     entryType: input.entryType,
     title: input.title.trim(),
     summary: input.summary.trim(),

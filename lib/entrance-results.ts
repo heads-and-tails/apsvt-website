@@ -68,6 +68,80 @@ export const masterEntranceResultsAugust6: EntranceResultDocument[] = [
   },
 ];
 
+export const masterEntranceResultsAugust7: EntranceResultDocument[] = [
+  {
+    title: "Фаховий іспит з управління та адміністрування",
+    href: "/documents/admissions/results/2026-08-07/public-administration.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із соціальної роботи та консультування",
+    href: "/documents/admissions/results/2026-08-07/social-work-counselling.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із психології",
+    href: "/documents/admissions/results/2026-08-07/psychology.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із права",
+    href: "/documents/admissions/results/2026-08-07/law.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із менеджменту",
+    href: "/documents/admissions/results/2026-08-07/management.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із маркетингу",
+    href: "/documents/admissions/results/2026-08-07/marketing.pdf",
+    pages: 1,
+  },
+];
+
+export const masterEntranceResultsAugust18: EntranceResultDocument[] = [
+  {
+    title: "Співбесіда з англійської мови",
+    href: "/documents/admissions/results/2026-08-18/english-language-interview.pdf",
+    pages: 2,
+  },
+];
+
+export const masterEntranceResultsAugust19: EntranceResultDocument[] = [
+  {
+    title: "Фаховий іспит з управління та адміністрування",
+    href: "/documents/admissions/results/2026-08-19/public-administration.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із психології",
+    href: "/documents/admissions/results/2026-08-19/psychology.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із права",
+    href: "/documents/admissions/results/2026-08-19/law.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із менеджменту",
+    href: "/documents/admissions/results/2026-08-19/management.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із маркетингу",
+    href: "/documents/admissions/results/2026-08-19/marketing.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит з психології для спеціальності I10 «Соціальна робота та консультування»",
+    href: "/documents/admissions/results/2026-08-19/social-work-counselling.pdf",
+    pages: 1,
+  },
+];
+
 export function getEntranceResultDocumentsForNews(slug: string): EntranceResultDocument[] | null {
   if (slug === entranceResultsNewsSlugAugust6) return masterEntranceResultsAugust6;
   if (slug === entranceResultsNewsSlugJuly31) return bachelorEntranceResultsJuly31;

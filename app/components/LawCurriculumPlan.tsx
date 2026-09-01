@@ -106,6 +106,11 @@ export function LawCurriculumPlan() {
         <div><b>15</b><span>кредитів практики</span></div>
       </div>
 
+      <div className="curriculum-block-heading">
+        <div><span>Обов’язкова частина</span><h3>Програмні дисципліни</h3></div>
+        <p>Ці компоненти формують спільну правничу основу для всіх студентів. Відкрийте блок, щоб побачити дисципліни, кредити ЄКТС і форму контролю.</p>
+      </div>
+
       <div className="law-curriculum-groups">
         <details>
           <summary><span>01</span><div><small>Обов’язковий блок</small><h3>Загальна підготовка</h3></div><b>45 ЄКТС</b><i>+</i></summary>
@@ -119,15 +124,16 @@ export function LawCurriculumPlan() {
 
       <div className="law-curriculum-choice" id="electives">
         <div className="law-curriculum-choice-intro">
-          <div className="idx">03 / Індивідуальна траєкторія</div>
-          <h3>60 кредитів <em>обираєте ви</em></h3>
-          <p><b>15 ЄКТС</b> — дисципліни загальної підготовки. <b>45 ЄКТС</b> — професійні правничі дисципліни. Конкретний набір студент формує в індивідуальному навчальному плані.</p>
+          <div className="idx">03 / Дисципліни за вибором</div>
+          <h3>Вибіркові <em>дисципліни</em></h3>
+          <p><b>15 ЄКТС</b> — дисципліни загальної підготовки. <b>45 ЄКТС</b> — професійні правничі дисципліни. Конкретний набір студент формує з актуального каталогу в індивідуальному навчальному плані.</p>
         </div>
         <div className="law-curriculum-track-list">
           {electiveTracks.map((track, index) => <article key={track.title}>
             <span>{String(index + 1).padStart(2, "0")}</span>
-            <div><h4>{track.title}</h4><p>{track.examples}</p></div>
+            <div><h4>{track.title}</h4><ul>{track.examples.split(" · ").map((course) => <li key={course}>{course}</li>)}</ul></div>
           </article>)}
+          <p className="law-curriculum-elective-note">Точний перелік доступних дисциплін і семестр їх викладання Академія уточнює перед кожною процедурою вибору.</p>
         </div>
       </div>
 

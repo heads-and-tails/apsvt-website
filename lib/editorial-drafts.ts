@@ -4,9 +4,21 @@ export type EditorialDraftTarget =
   | "vacancy"
   | "news"
   | "event"
+  | "schedule_lesson"
+  | "schedule_exam"
+  | "library_book"
   | "admission_timeline"
   | "research_resource"
   | "student_thesis"
+  | "department_section"
+  | "department_news"
+  | "department_article"
+  | "department_material"
+  | "department_quality"
+  | "department_photo"
+  | "department_teacher"
+  | "page_hero"
+  | "page_partner"
   | "document";
 
 export type DraftField = {
@@ -37,6 +49,7 @@ export type DraftTargetConfig = {
   description: string;
   pagePath: string;
   contentKind?: ContentKind;
+  departmentEntryType?: "hero" | "section" | "news" | "article" | "material" | "photo" | "teacher" | "partner" | "quality";
   fields: DraftField[];
 };
 
@@ -81,6 +94,57 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
       { key: "title", label: "Назва події" },
       { key: "place", label: "Місце / формат" },
       { key: "description", label: "Опис", type: "textarea" },
+    ],
+  },
+  {
+    id: "schedule_lesson",
+    label: "Розклад занять",
+    description: "Дати, пари, групи, викладачі, аудиторії та формат занять",
+    pagePath: "/schedule",
+    contentKind: "lesson",
+    fields: [
+      { key: "date", label: "Дата" },
+      { key: "day", label: "День тижня" },
+      { key: "time", label: "Час", placeholder: "09:00–10:20" },
+      { key: "course", label: "Дисципліна" },
+      { key: "type", label: "Тип заняття", placeholder: "Лекція / практичне" },
+      { key: "group", label: "Група / курс" },
+      { key: "faculty", label: "Факультет / програма" },
+      { key: "teacher", label: "Викладач" },
+      { key: "room", label: "Аудиторія / онлайн" },
+    ],
+  },
+  {
+    id: "schedule_exam",
+    label: "Розклад іспитів",
+    description: "Іспити, співбесіди, консультації та інші контрольні заходи",
+    pagePath: "/exam-schedule",
+    contentKind: "exam",
+    fields: [
+      { key: "date", label: "Дата" },
+      { key: "time", label: "Час", placeholder: "10:00" },
+      { key: "faculty", label: "Факультет / програма" },
+      { key: "group", label: "Група / рівень" },
+      { key: "course", label: "Дисципліна" },
+      { key: "form", label: "Форма", placeholder: "Іспит / співбесіда" },
+      { key: "teacher", label: "Викладач / комісія" },
+      { key: "room", label: "Аудиторія / посилання" },
+    ],
+  },
+  {
+    id: "library_book",
+    label: "Бібліотека",
+    description: "Книги, посібники, шифри, тематики та статус доступності",
+    pagePath: "/facilities/library",
+    contentKind: "library_book",
+    fields: [
+      { key: "title", label: "Назва" },
+      { key: "author", label: "Автор / укладач" },
+      { key: "year", label: "Рік" },
+      { key: "topic", label: "Тематика" },
+      { key: "type", label: "Тип видання", placeholder: "Підручник / посібник" },
+      { key: "code", label: "Бібліотечний шифр" },
+      { key: "status", label: "Доступність", placeholder: "Доступна / у читальній залі" },
     ],
   },
   {
@@ -129,6 +193,125 @@ export const draftTargetConfigs: DraftTargetConfig[] = [
     ],
   },
   {
+    id: "page_hero",
+    label: "Сторінка · обкладинка",
+    description: "Головний заголовок, вступний текст і титульне фото сторінки",
+    pagePath: "/",
+    departmentEntryType: "hero",
+    fields: [
+      { key: "title", label: "Головний заголовок" },
+      { key: "summary", label: "Вступний текст", type: "textarea" },
+      { key: "imageAlt", label: "Опис титульного фото" },
+    ],
+  },
+  {
+    id: "page_partner",
+    label: "Сторінка · партнер або компанія",
+    description: "Назва, логотип, напрям співпраці та сайт партнера",
+    pagePath: "/",
+    departmentEntryType: "partner",
+    fields: [
+      { key: "title", label: "Назва партнера" },
+      { key: "role", label: "Тип партнерства" },
+      { key: "summary", label: "Опис співпраці", type: "textarea" },
+      { key: "profileUrl", label: "Сайт партнера", type: "url" },
+      { key: "imageAlt", label: "Опис логотипа" },
+    ],
+  },
+  {
+    id: "department_section",
+    label: "Сторінка · текстовий розділ",
+    description: "Опис, напрями роботи, досягнення або контакти на вибраній сторінці",
+    pagePath: "/programs",
+    departmentEntryType: "section",
+    fields: [
+      { key: "title", label: "Заголовок" },
+      { key: "summary", label: "Короткий опис", type: "textarea" },
+      { key: "body", label: "Повний текст", type: "textarea" },
+      { key: "imageAlt", label: "Опис зображення" },
+    ],
+  },
+  {
+    id: "department_news",
+    label: "Сторінка · новина",
+    description: "Новина, оголошення або подія для конкретної сторінки",
+    pagePath: "/programs",
+    departmentEntryType: "news",
+    fields: [
+      { key: "title", label: "Заголовок" },
+      { key: "date", label: "Дата", type: "date" },
+      { key: "summary", label: "Короткий анонс", type: "textarea" },
+      { key: "body", label: "Текст", type: "textarea" },
+      { key: "imageAlt", label: "Опис фото" },
+    ],
+  },
+  {
+    id: "department_article",
+    label: "Сторінка · стаття",
+    description: "Розгорнутий авторський, методичний або аналітичний матеріал",
+    pagePath: "/programs",
+    departmentEntryType: "article",
+    fields: [
+      { key: "title", label: "Заголовок" },
+      { key: "date", label: "Дата", type: "date" },
+      { key: "summary", label: "Короткий анонс", type: "textarea" },
+      { key: "body", label: "Текст статті", type: "textarea" },
+      { key: "imageAlt", label: "Опис фото" },
+    ],
+  },
+  {
+    id: "department_material",
+    label: "Сторінка · матеріал",
+    description: "Методичний файл, програма, презентація або корисне посилання",
+    pagePath: "/programs",
+    departmentEntryType: "material",
+    fields: [
+      { key: "title", label: "Назва матеріалу" },
+      { key: "summary", label: "Опис", type: "textarea" },
+    ],
+  },
+  {
+    id: "department_quality",
+    label: "Сторінка · якість освіти",
+    description: "Результати моніторингу, обговорення змін до ОП або щорічне оцінювання НПП",
+    pagePath: "/programs",
+    departmentEntryType: "quality",
+    fields: [
+      { key: "role", label: "Рубрика", placeholder: "monitoring / programme-discussion / npp-evaluation" },
+      { key: "title", label: "Назва матеріалу" },
+      { key: "date", label: "Дата", type: "date" },
+      { key: "summary", label: "Короткий опис", type: "textarea" },
+      { key: "body", label: "Повний текст", type: "textarea" },
+    ],
+  },
+  {
+    id: "department_photo",
+    label: "Сторінка · фотогалерея",
+    description: "Фото з готовим заголовком, підписом і альтернативним описом",
+    pagePath: "/programs",
+    departmentEntryType: "photo",
+    fields: [
+      { key: "title", label: "Назва фото" },
+      { key: "summary", label: "Підпис", type: "textarea" },
+      { key: "imageAlt", label: "Альтернативний опис" },
+    ],
+  },
+  {
+    id: "department_teacher",
+    label: "Сторінка · людина або викладач",
+    description: "Профіль викладача з фото, посадою, біографією та науковим профілем",
+    pagePath: "/programs",
+    departmentEntryType: "teacher",
+    fields: [
+      { key: "title", label: "Ім’я та прізвище" },
+      { key: "role", label: "Посада / науковий ступінь" },
+      { key: "summary", label: "Професійний профіль", type: "textarea" },
+      { key: "email", label: "Email" },
+      { key: "profileUrl", label: "ORCID / Google Scholar", type: "url" },
+      { key: "imageAlt", label: "Опис фото" },
+    ],
+  },
+  {
     id: "document",
     label: "Документ на сторінку",
     description: "Зрозуміла назва, категорія та короткий опис файла",
@@ -148,4 +331,3 @@ export function draftRecordToPayload(record: DraftRecord): Record<string, string
 export function payloadToDraftRecord(payload: Record<string, string>, fields: DraftField[]): DraftRecord {
   return { fields: fields.map((field) => ({ key: field.key, value: payload[field.key] || "" })) };
 }
-
