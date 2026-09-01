@@ -18,7 +18,7 @@ export function PsychologyFacultyTeam() {
         <div className="academic-profile-grid">
           {psychologyFacultyTeam.map((person, index) => (
             <AcademicProfileCard
-              key={person.name}
+              key={person.id}
               index={index}
               badge={person.lead ? "Керівництво факультету" : undefined}
               person={{
@@ -26,6 +26,7 @@ export function PsychologyFacultyTeam() {
                 role: person.role,
                 summary: person.summary,
                 image: person.image,
+                imageCrop: person.photoHasCaption ? "caption" : undefined,
                 tags: person.interests,
                 links: person.profiles || [],
               }}

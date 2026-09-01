@@ -1,8 +1,10 @@
 export type PsychologyFacultyMember = {
+  id: string;
   name: string;
   role: string;
   summary: string;
   image: string;
+  photoHasCaption?: boolean;
   interests: string[];
   profiles?: { label: string; href: string }[];
   lead?: boolean;
@@ -10,15 +12,7 @@ export type PsychologyFacultyMember = {
 
 export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
   {
-    name: "Наталія Балашова",
-    role: "завідувачка кафедри, кандидатка економічних наук, доцентка",
-    summary: "Координує академічну команду й розвиває культуру професійної соціальної роботи, у якій знання стають інструментом підтримки людини.",
-    image: "/people/psychology-faculty/nataliia-balashova.png",
-    interests: ["соціальна робота", "професійний розвиток", "академічна якість"],
-    profiles: [{ label: "Google Scholar", href: "https://scholar.google.com/citations?hl=ru&user=evhGWMUAAAAJ" }],
-    lead: true,
-  },
-  {
+    id: "liudmyla-beheza",
     name: "Людмила Бегеза",
     role: "докторка психологічних наук, професорка",
     summary: "Досліджує професійний розвиток особистості, психологію праці та підготовку кар’єрних радників.",
@@ -27,6 +21,17 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     profiles: [{ label: "Google Scholar", href: "https://scholar.google.com.ua/citations?user=8P5Oe1kAAAAJ&hl=ru" }],
   },
   {
+    id: "nataliia-balashova",
+    name: "Наталя Балашова",
+    role: "завідувачка кафедри, кандидатка економічних наук, доцентка",
+    summary: "Координує академічну команду й розвиває культуру професійної соціальної роботи, у якій знання стають інструментом підтримки людини.",
+    image: "/people/psychology-faculty/nataliia-balashova.png",
+    interests: ["соціальна робота", "професійний розвиток", "академічна якість"],
+    profiles: [{ label: "Google Scholar", href: "https://scholar.google.com/citations?hl=ru&user=evhGWMUAAAAJ" }],
+    lead: true,
+  },
+  {
+    id: "hlib-prib",
     name: "Гліб Пріб",
     role: "доктор медичних наук, професор",
     summary: "Досліджує психічне здоров’я, медико-соціальну експертизу та психологічну реабілітацію; автор понад 200 наукових і методичних праць.",
@@ -35,28 +40,35 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     profiles: [{ label: "Google Scholar", href: "https://scholar.google.com.ua/citations?hl=ru&user=kLThYfwAAAAJ" }],
   },
   {
+    id: "kateryna-miliutina",
     name: "Катерина Мілютіна",
     role: "докторка психологічних наук, професорка",
     summary: "Поєднує клінічну психологію, психодіагностику, математичну статистику, психологію персоналу та наративну психотерапію.",
     image: "/people/psychology-faculty/kateryna-miliutina.png",
+    photoHasCaption: true,
     interests: ["клінічна психологія", "психодіагностика", "наративна психотерапія"],
   },
   {
+    id: "olena-karahodina",
     name: "Олена Карагодіна",
     role: "докторка медичних наук, професорка",
     summary: "Працює з темами соціальної психіатрії, етики досліджень у сфері психічного здоров’я та психосоціальної допомоги вразливим групам.",
     image: "/people/psychology-faculty/olena-karahodina.png",
+    photoHasCaption: true,
     interests: ["соціальна психіатрія", "етика досліджень", "психосоціальна допомога"],
     profiles: [{ label: "Google Scholar", href: "https://scholar.google.com.ua/citations?hl=ru&user=bet3y9gAAAAJ" }],
   },
   {
+    id: "rostyslav-abdriakhimov",
     name: "Ростислав Абдряхімов",
     role: "доктор медичних наук, професор",
     summary: "Розвиває комунікативні навички у клінічній і бізнес-психології, міжнародні дослідницькі проєкти та адаптацію освітніх стандартів до європейських критеріїв.",
     image: "/people/psychology-faculty/rostyslav-abdriakhimov.png",
+    photoHasCaption: true,
     interests: ["клінічна комунікація", "бізнес-психологія", "міжнародні проєкти"],
   },
   {
+    id: "volodymyr-bilous",
     name: "Володимир Білоус",
     role: "кандидат медичних наук",
     summary: "Працює з діагностикою та корекцією психічних розладів, психологією стресу й травми, психосоматикою та сучасними методами психотерапії.",
@@ -64,20 +76,25 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     interests: ["ПТСР і резильєнтність", "психосоматика", "психотерапія"],
   },
   {
+    id: "svitlana-bondar-consulting",
     name: "Світлана Бондар",
     role: "докторка філософії (PhD) зі спеціальності C4 «Психологія»",
-    summary: "Поєднує психологічне консультування й тренінгові технології з організаційною, клінічною та військовою психологією, досліджує психічні й поведінкові розлади в умовах війни.",
+    summary: "Поєднує індивідуальне й групове психологічне консультування з тренінговими технологіями, організаційною психологією, психологією комунікацій та особистісного розвитку.",
     image: "/people/psychology-faculty/svitlana-bondar.png",
-    interests: ["консультування", "організаційна психологія", "військова психологія"],
+    photoHasCaption: true,
+    interests: ["консультування", "організаційна психологія", "психологія комунікацій"],
   },
   {
+    id: "olesia-borets",
     name: "Олеся Борець",
     role: "докторка філософії (PhD) зі спеціальності C4 «Психологія»",
     summary: "Досліджує емоційний інтелект і життєстійкість, підтримку вразливих груп, групову динаміку та профілактику емоційного вигорання.",
     image: "/people/psychology-faculty/olesia-borets.png",
+    photoHasCaption: true,
     interests: ["життєстійкість", "групова динаміка", "профілактика вигорання"],
   },
   {
+    id: "olena-morozova",
     name: "Олена Морозова",
     role: "кандидатка психологічних наук",
     summary: "Працює з життєвими стратегіями подружжя, віктимною поведінкою та наративною експозиційною терапією; долучена до волонтерських психологічних проєктів.",
@@ -85,6 +102,7 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     interests: ["сімейна психологія", "віктимна поведінка", "експозиційна терапія"],
   },
   {
+    id: "mariia-zhytynska",
     name: "Марія Житинська",
     role: "кандидатка педагогічних наук, доцентка",
     summary: "Розвиває навчання і дослідження у сферах соціальної роботи, геронтології, психології та інклюзії.",
@@ -92,6 +110,15 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     interests: ["соціальна робота", "геронтологія", "інклюзія"],
   },
   {
+    id: "svitlana-bondar-military",
+    name: "Світлана Бондар",
+    role: "докторка філософії (PhD) зі спеціальності C4 «Психологія»",
+    summary: "Досліджує військову й клінічну психологію, психічні та поведінкові розлади в умовах війни.",
+    image: "/people/psychology-faculty/svitlana-bondar-military.jpg",
+    interests: ["військова психологія", "клінічна психологія", "психічні розлади в умовах війни"],
+  },
+  {
+    id: "valentyn-teslenko",
     name: "Валентин Тесленко",
     role: "доктор педагогічних наук, професор",
     summary: "Формує освітній простір, у якому педагогічна майстерність, науковий пошук і гуманістичні цінності підтримують професійний розвиток майбутніх фахівців.",
@@ -100,6 +127,7 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     profiles: [{ label: "Google Scholar", href: "https://scholar.google.com/citations?hl=ru&user=xY2AJ8wAAAAJ" }],
   },
   {
+    id: "nataliia-serohina",
     name: "Наталія Серьогіна",
     role: "докторка наук з державного управління, професорка",
     summary: "Поєднує дослідження державного управління та соціальної політики з підготовкою рішень для підвищення якості життя суспільства.",
@@ -108,6 +136,7 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     profiles: [{ label: "Google Scholar", href: "https://scholar.google.com/citations?hl=ru&user=cqEwVQ8AAAAJ" }],
   },
   {
+    id: "mykola-sudakov",
     name: "Микола Судаков",
     role: "кандидат соціологічних наук, доцент",
     summary: "Розвиває соціологічне мислення та дослідницьку культуру здобувачів для глибокого розуміння суспільних процесів і вирішення соціальних проблем.",
@@ -116,6 +145,7 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     profiles: [{ label: "Google Scholar", href: "https://scholar.google.com/citations?hl=ru&user=uWIAVjgAAAAJ" }],
   },
   {
+    id: "albert-prib",
     name: "Альберт Пріб",
     role: "доцент, доктор філософії з підприємництва, торгівлі та біржової діяльності",
     summary: "Розвиває практичні компетентності, професійну етику й соціальну відповідальність майбутніх фахівців соціальної сфери.",
