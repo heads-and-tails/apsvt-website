@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { marketingTeam } from "@/lib/marketing-team";
 
 type Profile = { name: string; field: string; url: string };
 type Publication = { year: string; author: string; title: string; type: string; topic: string; href: string };
@@ -14,6 +15,10 @@ const scholarProfilesUk: Profile[] = [
   {name:"Володимир Ліпкан",field:"Національна безпека, кримінальне й інформаційне право",url:"https://scholar.google.com.ua/citations?hl=uk&user=mmE8GhkAAAAJ"},
   {name:"Ігор Діордіца",field:"Інформаційне право, кібербезпека, кримінальне право",url:"https://scholar.google.com.ua/citations?user=iaezWoQAAAAJ&hl=uk"},
   {name:"Галина Муляр",field:"Міжнародне судочинство, кримінально-виконавче право",url:"https://scholar.google.com.ua/citations?hl=uk&user=chKXb-QAAAAJ"},
+  ...marketingTeam.flatMap((member) => {
+    const scholar = member.profiles.find((profile) => profile.label === "Google Scholar");
+    return scholar ? [{ name: member.name, field: `Маркетинг · ${member.interests.slice(0, 2).join(", ")}`, url: scholar.href }] : [];
+  }),
 ];
 
 const scholarProfilesEn: Profile[] = [

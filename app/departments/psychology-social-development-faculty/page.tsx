@@ -7,9 +7,9 @@ import { DepartmentEditorialContent } from "../../components/DepartmentEditorial
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 import { EducationQualitySection } from "../../components/EducationQualitySection";
-import { AcademicPeople } from "../../components/AcademicPeople";
 import { AcademicPartners } from "../../components/AcademicPartners";
 import { AcademicNews } from "../../components/AcademicNews";
+import { PsychologyFacultyTeam } from "./PsychologyFacultyTeam";
 
 export const metadata: Metadata = {
   title: "Факультет психології та соціального розвитку",
@@ -32,10 +32,11 @@ const facultySections: readonly SectionHubItem[] = [
   { id: "departments", index: "02", title: "Кафедри", description: "Три кафедри психологічного й соціального напрямів.", icon: "3" },
   { id: "faculty-programmes", index: "03", title: "Освітні програми", description: "C4 «Психологія» та I10 «Соціальна робота».", icon: "OP" },
   { id: "faculty-organization", index: "04", title: "Організаційна діяльність", description: "Координація факультету та студентське представництво.", icon: "ORG" },
-  { id: "faculty-science", index: "05", title: "Наукова діяльність", description: "Кафедральні дослідження, гуртки та студентські проєкти.", icon: "SCI" },
-  { id: "faculty-practice", index: "06", title: "Практика й партнери", description: "Лабораторні формати, центр ментального здоров’я та професійні кейси.", icon: "LAB" },
-  { id: "faculty-quality", index: "07", title: "Якість освіти", description: "Обговорення, анкети, оцінювання та офіційні документи.", icon: "✓" },
-  { id: "department-news", index: "08", title: "Новини факультету", description: "Актуальні матеріали й події кафедр.", icon: "NEWS" },
+  { id: "faculty-team", index: "05", title: "Науково-педагогічний склад", description: "Профілі викладачів і наукові інтереси команди.", icon: "NPP" },
+  { id: "faculty-science", index: "06", title: "Наукова діяльність", description: "Кафедральні дослідження, гуртки та студентські проєкти.", icon: "SCI" },
+  { id: "faculty-practice", index: "07", title: "Практика й партнери", description: "Лабораторні формати, центр ментального здоров’я та професійні кейси.", icon: "LAB" },
+  { id: "faculty-quality", index: "08", title: "Якість освіти", description: "Обговорення, анкети, оцінювання та офіційні документи.", icon: "✓" },
+  { id: "department-news", index: "09", title: "Новини факультету", description: "Актуальні матеріали й події кафедр.", icon: "NEWS" },
 ];
 
 export default async function Page() {
@@ -53,13 +54,15 @@ export default async function Page() {
 
     <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">03 / Спеціальності й освітні програми</div><h2>Два напрями — зрозумілі траєкторії</h2></div><p>На сторінці кожної програми в одному порядку зібрані рівні освіти, навчальні плани, робочі програми дисциплін, вибіркові компоненти, склад кафедри та обговорення змін.</p></div><div className="faculty-programme-grid">{programmes.map(([code, title, description, href], index) => <Link href={href} key={`${code}-${title}`}><span>{String(index + 1).padStart(2, "0")}</span><b>{code}</b><h3>{title}</h3><p>{description}</p><i>→</i></Link>)}</div></div></section>
 
-    <section className="faculty-activity" id="faculty-organization"><div className="wrap faculty-activity-grid"><div><div className="idx">04 / Організаційна діяльність</div><h2>Факультет, команда і студентське представництво</h2><p>Організаційні рішення узгоджують керівництво факультету й академічна команда, а студентське представництво допомагає здобувачам долучатися до розвитку навчання та середовища.</p></div><nav><Link href="/people">Керівництво та викладачі →</Link><Link href="/students/council">Студентська рада →</Link><a href="mailto:k.psychology22@gmail.com">Зв’язатися з факультетом ↗</a></nav></div><AcademicPeople slugs={["psychology", "social-work"]} title="Люди факультету" /></section>
+    <section className="faculty-activity" id="faculty-organization"><div className="wrap faculty-activity-grid"><div><div className="idx">04 / Організаційна діяльність</div><h2>Факультет, команда і студентське представництво</h2><p>Організаційні рішення узгоджують керівництво факультету й академічна команда, а студентське представництво допомагає здобувачам долучатися до розвитку навчання та середовища.</p></div><nav><Link href="#faculty-team">Науково-педагогічний склад →</Link><Link href="/students/council">Студентська рада →</Link><a href="mailto:k.psychology22@gmail.com">Зв’язатися з факультетом ↗</a></nav></div></section>
 
-    <section className="programme-science" id="faculty-science"><div className="wrap programme-science-grid"><div><div className="idx">05 / Наукова діяльність</div><h2>Кафедральні дослідження та студентські проєкти</h2></div><div><p>Факультет поєднує психологічні та соціальні дослідження. Теми наукових гуртків, конференцій і студентських проєктів публікуються на сторінках відповідних програм та в науковому розділі Академії.</p><Link href="/research">Наука в Академії →</Link></div></div></section>
+    <PsychologyFacultyTeam />
 
-    <section className="law-practice-showcase festt-practice" id="faculty-practice"><div className="wrap"><div className="law-practice-head"><div><div className="idx">06 / Практика й партнери</div><h2>Від аудиторії — до професійного середовища</h2></div><p>Практика вбудована в освітню траєкторію: дослідницькі завдання, підтримка психічного здоров’я, партнерські кейси та стажування.</p></div><div className="law-practice-grid"><Link href="/programs/psychology#science"><span>01</span><small>Навчально-дослідна лабораторія</small><h3>Психологічно-соціальний інструментарій</h3><p>Студенти проєктують, перевіряють і адаптують інструменти для дослідження, діагностики та підтримки.</p><b>Перейти до досліджень →</b></Link><Link href="/programs/psychology#practice"><span>02</span><small>Психологічна підтримка</small><h3>Центр ментального здоров’я</h3><p>Простір підтримки психічного здоров’я та супроводу особистісного зростання здобувачів і співробітників.</p><b>Відкрити напрям →</b></Link><Link href="/programs/social-work#practice"><span>03</span><small>Професійне середовище</small><h3>Партнерські кейси</h3><p>Стейкголдерська підтримка навчання, розвиток практичних навичок і професійних компетентностей.</p><b>Дивитися партнерів →</b></Link></div></div><AcademicPartners slugs={["psychology", "social-work"]} /></section>
+    <section className="programme-science" id="faculty-science"><div className="wrap programme-science-grid"><div><div className="idx">06 / Наукова діяльність</div><h2>Кафедральні дослідження та студентські проєкти</h2></div><div><p>Факультет поєднує психологічні та соціальні дослідження. Теми наукових гуртків, конференцій і студентських проєктів публікуються на сторінках відповідних програм та в науковому розділі Академії.</p><Link href="/research">Наука в Академії →</Link></div></div></section>
 
-    <EducationQualitySection entries={departmentEntries} pagePath="/departments/psychology-social-development-faculty" index="07" id="faculty-quality" discussionEmail="k.psychology22@gmail.com" />
+    <section className="law-practice-showcase festt-practice" id="faculty-practice"><div className="wrap"><div className="law-practice-head"><div><div className="idx">07 / Практика й партнери</div><h2>Від аудиторії — до професійного середовища</h2></div><p>Практика вбудована в освітню траєкторію: дослідницькі завдання, підтримка психічного здоров’я, партнерські кейси та стажування.</p></div><div className="law-practice-grid"><Link href="/programs/psychology#science"><span>01</span><small>Навчально-дослідна лабораторія</small><h3>Психологічно-соціальний інструментарій</h3><p>Студенти проєктують, перевіряють і адаптують інструменти для дослідження, діагностики та підтримки.</p><b>Перейти до досліджень →</b></Link><Link href="/programs/psychology#practice"><span>02</span><small>Психологічна підтримка</small><h3>Центр ментального здоров’я</h3><p>Простір підтримки психічного здоров’я та супроводу особистісного зростання здобувачів і співробітників.</p><b>Відкрити напрям →</b></Link><Link href="/programs/social-work#practice"><span>03</span><small>Професійне середовище</small><h3>Партнерські кейси</h3><p>Стейкголдерська підтримка навчання, розвиток практичних навичок і професійних компетентностей.</p><b>Дивитися партнерів →</b></Link></div></div><AcademicPartners slugs={["psychology", "social-work"]} /></section>
+
+    <EducationQualitySection entries={departmentEntries} pagePath="/departments/psychology-social-development-faculty" index="08" id="faculty-quality" discussionEmail="k.psychology22@gmail.com" />
 
     <div id="department-news"><AcademicNews slugs={["psychology", "social-work"]} title="Новини факультету й кафедр" /><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>

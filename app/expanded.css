@@ -419,6 +419,57 @@ section{padding-block:clamp(72px,8vw,112px)}
 @media(max-width:820px){.marketing-conference-card{grid-template-columns:1fr}.marketing-conference-cover{border-right:0;border-bottom:1px solid var(--line)}.marketing-conference-cover img{height:auto;max-height:none}.marketing-conference-body dl{grid-template-columns:1fr 1fr}.marketing-conference-body dl>div:last-child{grid-column:1/-1}}
 @media(max-width:700px){.marketing-publications-head,.marketing-publications-grid{grid-template-columns:1fr}.marketing-publications-head{gap:24px}.marketing-publication-subhead{grid-template-columns:38px minmax(0,1fr);gap:10px}.marketing-conference-subhead{margin-top:40px}.marketing-publication-card:first-child{grid-column:auto;display:flex}.marketing-publication-card:first-child .marketing-publication-cover{height:auto;aspect-ratio:4/4.55;border-right:0;border-bottom:1px solid var(--line)}.marketing-publication-body,.marketing-conference-body{padding:21px}.marketing-conference-body dl{grid-template-columns:1fr}.marketing-conference-body dl>div:last-child{grid-column:auto}.marketing-conference-body h3{font-size:clamp(22px,7vw,31px)}.marketing-publication-footer{align-items:flex-start;flex-direction:column}.marketing-publication-footer>div{justify-content:flex-start}}
 
+.schedule-directory{background:#f0eee7;padding-block:clamp(62px,8vw,112px);scroll-margin-top:88px}
+.schedule-directory-head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.72fr);gap:clamp(36px,7vw,96px);align-items:end}
+.schedule-directory-head h2{font-size:clamp(42px,6.3vw,86px);line-height:.92;max-width:12ch;text-wrap:balance;margin-top:12px}
+.schedule-directory-head>p{font-size:15px;line-height:1.7;color:#596474;max-width:48ch}
+.schedule-directory-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink);margin:48px 0}
+.schedule-directory-nav a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;min-height:112px;padding:22px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);background:#fff}
+.schedule-directory-nav span,.schedule-collection>header>span{font:700 10px var(--mono);color:var(--cobalt);letter-spacing:.08em}
+.schedule-directory-nav b{font:700 17px/1.15 var(--disp);text-transform:uppercase}
+.schedule-directory-nav i{font:22px var(--mono);font-style:normal;color:var(--cobalt)}
+.schedule-collections{display:grid;gap:22px}
+.schedule-collection{scroll-margin-top:105px;background:var(--navy);color:#fff;padding:clamp(24px,4vw,48px)}
+.schedule-collection>header{display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;margin-bottom:30px}
+.schedule-collection>header>span{display:grid;place-items:center;width:48px;height:48px;background:var(--gold);color:var(--ink)}
+.schedule-collection h3{font-size:clamp(29px,4vw,52px);line-height:.95;text-transform:uppercase;text-wrap:balance}
+.schedule-collection header p{margin-top:10px;color:#c6d0e3;font-size:14px;line-height:1.6}
+.schedule-study-forms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.schedule-study-forms>details,.schedule-semesters>details{background:#f8f6ef;color:var(--ink);border:1px solid rgba(255,255,255,.2)}
+.schedule-study-forms summary,.schedule-semesters summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:18px;align-items:center;padding:20px 22px}
+.schedule-study-forms summary::-webkit-details-marker,.schedule-semesters summary::-webkit-details-marker{display:none}
+.schedule-study-forms summary span{font:700 18px var(--disp);text-transform:uppercase}
+.schedule-study-forms summary b{font:700 8px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#647083}
+.schedule-study-forms summary i{font:22px var(--mono);font-style:normal;color:var(--cobalt)}
+.schedule-study-forms details[open]>summary i{transform:rotate(45deg)}
+.schedule-semesters{display:grid;gap:8px;padding:0 12px 12px}
+.schedule-semesters>details{background:#fff;border-color:var(--line)}
+.schedule-semesters>details>summary span{font-size:14px}
+.schedule-course-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line);margin:0 12px 12px}
+.schedule-course-grid a{display:flex;min-height:72px;flex-direction:column;justify-content:space-between;gap:10px;padding:15px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#f3f1ea}
+.schedule-course-grid span{font:700 13px var(--disp);text-transform:uppercase}
+.schedule-course-grid b{font:700 8px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--cobalt)}
+.schedule-publish-note{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.2fr) auto;gap:32px;align-items:center;margin-top:30px;padding:28px;border:1px solid var(--ink);background:var(--gold);scroll-margin-top:105px}
+.schedule-publish-note span{font:700 8px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.schedule-publish-note h3{font-size:clamp(20px,2.3vw,30px);line-height:1.05;margin-top:8px;text-transform:uppercase}
+.schedule-publish-note p{font-size:13px;line-height:1.6}
+.schedule-publish-note>div:last-child{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.schedule-publish-note a{font:700 9px var(--mono);letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid var(--ink);padding-bottom:4px}
+@media(max-width:900px){.schedule-directory-head{grid-template-columns:1fr}.schedule-directory-nav{grid-template-columns:1fr}.schedule-study-forms{grid-template-columns:1fr}.schedule-publish-note{grid-template-columns:1fr}.schedule-publish-note>div:last-child{flex-direction:row;flex-wrap:wrap}}
+@media(max-width:620px){.schedule-directory-nav a{min-height:82px;padding:17px}.schedule-collection{margin-inline:-18px}.schedule-collection>header{grid-template-columns:42px minmax(0,1fr)}.schedule-collection>header>span{width:38px;height:38px}.schedule-study-forms summary,.schedule-semesters summary{padding:17px 15px;gap:10px}.schedule-study-forms summary b{display:none}.schedule-course-grid{grid-template-columns:1fr}.schedule-publish-note{margin-inline:-18px;padding:23px}}
+
+.marketing-student-life{background:#eeece5;scroll-margin-top:88px}
+.marketing-student-life-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink);margin-top:42px}
+.marketing-student-life-grid article{display:flex;min-height:330px;flex-direction:column;padding:clamp(24px,3vw,38px);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);background:#f8f6ef}
+.marketing-student-life-grid article:first-child{background:var(--gold)}
+.marketing-student-life-grid span{font:700 9px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cobalt)}
+.marketing-student-life-grid h3{font-size:clamp(30px,3.6vw,50px);line-height:.94;margin:28px 0 18px;text-transform:uppercase;text-wrap:balance}
+.marketing-student-life-grid p{font-size:14px;line-height:1.65;color:#535e6e}
+.marketing-student-life-grid a{margin-top:auto;padding-top:26px;font:700 9px var(--mono);letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.programme-science-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.programme-science-links a{display:inline-flex;padding:11px 13px;background:var(--gold);color:var(--ink);font:700 9px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+@media(max-width:850px){.marketing-student-life-grid{grid-template-columns:1fr}.marketing-student-life-grid article{min-height:270px}}
+
 .operations{margin-top:90px;padding-top:70px;border-top:2px solid var(--navy)}
 .operations-heading{align-items:start}
 .operations-heading p{margin-top:8px;font-size:13px;color:#657084}
