@@ -604,23 +604,37 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     event.preventDefault();
     setBusy(true);
     setMessage("Зберігаємо зміни…");
-    const payload = { ...form, pagePath, entryType: form.entryType };
-    const response = await fetch(editing ? `/api/department-content/${editing}` : "/api/department-content", {
-      method: editing ? "PATCH" : "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const result = await response.json() as DepartmentEntry & { error?: string };
-    if (!response.ok) {
-      setMessage(result.error || "Не вдалося зберегти запис");
+    try {
+      const payload = { ...form, pagePath, entryType: form.entryType };
+      const response = await fetch(editing ? `/api/department-content/${editing}` : "/api/department-content", {
+        method: editing ? "PATCH" : "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+        cache: "no-store",
+      });
+      const result = await response.json() as DepartmentEntry & { error?: string };
+      if (!response.ok) {
+        setMessage(result.error || "Не вдалося зберегти запис");
+        return;
+      }
+      setEntries((current) => editing ? current.map((entry) => entry.id === editing ? result : entry) : [...current, result]);
+      if (result.status === "published") {
+        const verification = await fetch(`/api/page-materials?path=${encodeURIComponent(pagePath)}&verify=${Date.now()}`, { cache: "no-store" });
+        const published = verification.ok ? await verification.json() as DepartmentEntry[] : [];
+        const confirmed = published.some((entry) => entry.id === result.id);
+        setMessage(confirmed
+          ? "Зміни опубліковано й перевірено на публічній сторінці"
+          : "Зміни збережено, але публічна сторінка ще не підтвердила оновлення. Повторіть через хвилину.");
+      } else {
+        setMessage("Чернетку збережено");
+      }
+      setEditing(null);
+      setForm(emptyEntry(pagePath, entryType, activeSection === "all" ? "" : activeSection));
+    } catch (error) {
+      setMessage(error instanceof Error ? `Не вдалося зв’язатися із сайтом: ${error.message}` : "Не вдалося зберегти запис");
+    } finally {
       setBusy(false);
-      return;
     }
-    setEntries((current) => editing ? current.map((entry) => entry.id === editing ? result : entry) : [...current, result]);
-    setMessage(result.status === "published" ? "Зміни опубліковано на сторінці" : "Чернетку збережено");
-    setEditing(null);
-    setForm(emptyEntry(pagePath, entryType, activeSection === "all" ? "" : activeSection));
-    setBusy(false);
   }
 
   async function remove(entry: DepartmentEntry) {

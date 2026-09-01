@@ -28,5 +28,5 @@ export async function GET(request: Request) {
     profileUrl: entry.profileUrl,
     status: entry.status,
     sortOrder: entry.sortOrder,
-  })));
+  })), { headers: { "Cache-Control": "private, no-store, max-age=0" } });
 }

@@ -39,7 +39,19 @@ const preapprovedDepartmentEditors = new Map<string, { displayName: string; acce
   ["natalya.balashova75@gmail.com", { displayName: "Балашова Наталія", accessScopes: ["/programs/social-work"] }],
   ["kim2505@ukr.net", { displayName: "Бондар Світлана", accessScopes: ["/departments/languages-humanities"] }],
   ["markovec28@gmail.com", { displayName: "Неля Василець", accessScopes: ["/programs/management", "/programs/trade"] }],
-  ["tsabenok26@ukr.net", { displayName: "Лебідь Тетяна Ігорівна", accessScopes: ["/programs/law"] }],
+  ["tsabenok26@ukr.net", {
+    displayName: "Лебідь Тетяна Ігорівна",
+    accessScopes: [
+      "/departments/law-faculty",
+      "/departments/constitutional-law",
+      "/departments/private-law",
+      "/departments/criminal-law",
+      "/programs/public-administration",
+      "/programs/law",
+      "/programs/law/legal-clinic",
+      "/programs/law/forensic-laboratory",
+    ],
+  }],
 ]);
 
 function profileFromRow(row: ProfileRow, mustChangePassword = false): EditorialProfile {

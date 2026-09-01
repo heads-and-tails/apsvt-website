@@ -6,6 +6,7 @@ import {
 } from "@/lib/department-content";
 import { requirePagePublisher, requirePublisher } from "@/lib/auth";
 import { canEditPage } from "@/lib/editorial-access";
+import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
     if (!isDepartmentEntryInput(body)) return NextResponse.json({ error: "Заповніть обов’язкові поля" }, { status: 400 });
     const publisher = await requirePagePublisher(body.pagePath);
     const entry = await createDepartmentEntry(body, publisher.email);
+    revalidatePath(body.pagePath);
     console.log(JSON.stringify({
       level: "info",
       message: "Department entry created",
