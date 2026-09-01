@@ -33,7 +33,7 @@ export function AcademicProfileCard({
   const hasDetails = Boolean(person.details || links.length);
 
   return <article className="academic-profile-card">
-    <div className={`academic-profile-photo${person.imageCrop === "caption" ? " academic-profile-photo--caption" : ""}`}>
+    <div className={`academic-profile-photo faculty-portrait-surface${person.imageCrop === "caption" ? " academic-profile-photo--caption" : ""}`}>
       {person.image
         ? <img src={person.image} alt={person.name} />
         : <span aria-label={`Фото ${person.name} готується до публікації`}>{initials(person.name)}</span>}

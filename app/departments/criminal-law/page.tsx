@@ -108,7 +108,7 @@ export default async function Page() {
           <p>Кафедра поєднує фундаментальну правничу підготовку, реальні професійні сценарії та практику в лабораторії криміналістики.</p>
           <div className="criminal-department-hero-actions"><a href="#team">Команда кафедри ↓</a><Link href="/programs/law/forensic-laboratory">Лабораторія криміналістики ↗</Link></div>
         </div>
-        <figure className="criminal-department-hero-portrait"><img src="/people/law/criminal/iryna-zavydniak.jpg" alt="Ірина Завидняк, завідувачка кафедри" /><figcaption><small>Завідувачка кафедри</small><strong>Ірина Завидняк</strong><span>кандидатка юридичних наук, доцентка</span></figcaption></figure>
+        <figure className="criminal-department-hero-portrait"><div className="criminal-department-hero-photo faculty-portrait-surface"><img src="/people/law/criminal/iryna-zavydniak.jpg" alt="Ірина Завидняк, завідувачка кафедри" /></div><figcaption><small>Завідувачка кафедри</small><strong>Ірина Завидняк</strong><span>кандидатка юридичних наук, доцентка</span></figcaption></figure>
       </div>
     </section>
     <div className="hero-rule" />
@@ -125,7 +125,7 @@ export default async function Page() {
     <section className="criminal-department-team" id="team"><div className="wrap">
       <div className="sec-head"><div><div className="idx">03 / Склад кафедри</div><h2>Науковці та юристи-практики</h2></div><p>Однаковий формат карток допомагає швидко побачити роль, науковий ступінь, дисципліни та професійний досвід кожного викладача.</p></div>
       <div className="criminal-department-team-grid">{faculty.map((person, index) => <article className={index === 0 ? "is-head" : ""} key={person.fullName}>
-        <div className="criminal-department-person-image"><img src={person.image} alt={person.fullName} style={{ objectPosition: person.position }} /><span>{String(index + 1).padStart(2, "0")}</span></div>
+        <div className="criminal-department-person-image faculty-portrait-surface"><img src={person.image} alt={person.fullName} style={{ objectPosition: person.position }} /><span>{String(index + 1).padStart(2, "0")}</span></div>
         <div className="criminal-department-person-copy"><small>{person.role}</small><h3>{person.name}</h3><p className="criminal-department-degree">{person.degree}</p><details><summary>Дисципліни й біографія <span>+</span></summary><div><h4>Викладає</h4><ul>{person.disciplines.map((discipline) => <li key={discipline}>{discipline}</li>)}</ul><h4>Професійний профіль</h4><p>{person.bio}</p>{(person.orcid || person.scholar) && <nav>{person.orcid && <a href={person.orcid} target="_blank" rel="noreferrer">ORCID ↗</a>}{person.scholar && <a href={person.scholar} target="_blank" rel="noreferrer">Google Scholar ↗</a>}</nav>}</div></details></div>
       </article>)}</div>
     </div></section>
