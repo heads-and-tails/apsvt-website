@@ -8,6 +8,7 @@ export type AcademicProfileCardData = {
   role: string;
   summary: string;
   image?: string;
+  imageCrop?: "caption";
   tags?: string[];
   details?: string;
   links?: AcademicProfileLink[];
@@ -32,7 +33,7 @@ export function AcademicProfileCard({
   const hasDetails = Boolean(person.details || links.length);
 
   return <article className="academic-profile-card">
-    <div className="academic-profile-photo">
+    <div className={`academic-profile-photo${person.imageCrop === "caption" ? " academic-profile-photo--caption" : ""}`}>
       {person.image
         ? <img src={person.image} alt={person.name} />
         : <span aria-label={`Фото ${person.name} готується до публікації`}>{initials(person.name)}</span>}

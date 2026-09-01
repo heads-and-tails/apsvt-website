@@ -1630,6 +1630,8 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .academic-profile-photo{position:relative;display:grid;place-items:center;width:100%;aspect-ratio:4/5;overflow:hidden;background:linear-gradient(145deg,var(--navy),#2c4380);color:var(--gold)}
 .academic-profile-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 18%;filter:none;transition:transform .45s ease}
 .academic-profile-card:hover .academic-profile-photo img{transform:scale(1.025)}
+.academic-profile-photo--caption img{object-position:center top;transform:scale(1.13);transform-origin:center top}
+.academic-profile-card:hover .academic-profile-photo--caption img{transform:scale(1.16)}
 .academic-profile-photo>span{font:700 clamp(58px,6vw,86px)/1 var(--disp);letter-spacing:-.06em}
 .academic-profile-photo>b{position:absolute;left:14px;bottom:14px;padding:8px 9px;background:var(--gold);color:var(--ink);font:10px var(--mono);font-weight:500}
 .academic-profile-photo>em{position:absolute;top:14px;left:14px;max-width:calc(100% - 28px);padding:8px 10px;background:var(--gold);color:var(--ink);font:700 8px/1.35 var(--mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase}
