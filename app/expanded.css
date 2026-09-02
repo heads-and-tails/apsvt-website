@@ -980,6 +980,11 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .marketing-team-head{align-items:end}
 .marketing-team-head h2{font-size:clamp(42px,6.5vw,88px);line-height:.9;max-width:10ch}
 .marketing-team-head>p{max-width:42ch;font-size:15px;line-height:1.65;color:#596474}
+.marketing-membership-callout{display:grid;grid-template-columns:minmax(160px,.32fr) minmax(0,1.25fr) auto;gap:clamp(20px,3vw,42px);align-items:center;margin:34px 0 1px;padding:clamp(24px,3vw,38px);background:var(--navy);color:var(--paper);border-left:6px solid var(--gold)}
+.marketing-membership-callout>span{font:700 10px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--gold)}
+.marketing-membership-callout>p{max-width:76ch;font-size:14px;line-height:1.7;color:#dce5f8}
+.marketing-membership-callout>p a{color:#fff;text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:2px;text-underline-offset:4px}
+.marketing-membership-link{white-space:nowrap;padding:12px 14px;background:var(--gold);color:var(--ink);font:700 9px var(--mono);letter-spacing:.06em;text-transform:uppercase}
 .marketing-lead{display:grid;grid-template-columns:minmax(300px,.78fr) minmax(0,1.22fr);background:var(--navy);color:var(--paper);margin-top:50px}
 .marketing-lead-photo{min-height:650px;overflow:hidden;background:#ccd0d3}
 .marketing-lead-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top}
@@ -1022,6 +1027,8 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .department-directory>a>b{font:28px var(--mono);color:var(--gold);text-align:right}
 
 @media(max-width:1000px){
+  .marketing-membership-callout{grid-template-columns:minmax(140px,.3fr) minmax(0,1fr)}
+  .marketing-membership-link{grid-column:2;justify-self:start}
   .marketing-lead{grid-template-columns:minmax(250px,.86fr) minmax(0,1.14fr)}
   .marketing-lead-photo{min-height:590px}
   .marketing-team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1031,6 +1038,8 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
   .marketing-team-head{display:block}
   .marketing-team-head h2{font-size:clamp(40px,13vw,56px)}
   .marketing-team-head>p{margin-top:20px}
+  .marketing-membership-callout{grid-template-columns:1fr;gap:15px;margin:28px -18px 1px;padding:26px 22px}
+  .marketing-membership-link{grid-column:auto}
   .marketing-lead{grid-template-columns:1fr;margin-inline:-18px;margin-top:34px}
   .marketing-lead-photo{min-height:0;aspect-ratio:3/4}
   .marketing-lead-copy{padding:28px 22px 32px}
