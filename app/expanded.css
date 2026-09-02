@@ -297,6 +297,23 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
   .programme-department-focus span{max-width:100%;overflow-wrap:anywhere}
 }
 
+/* Marketing department: only source-confirmed material remains public. */
+.marketing-department-empty{min-height:440px;display:flex;align-items:center;background:#f4f2eb;scroll-margin-top:88px}
+.marketing-department-empty:nth-of-type(even){background:#fff}
+.marketing-department-empty h2{max-width:13ch;margin:18px 0 22px;font-size:clamp(42px,7vw,90px);line-height:.9;text-wrap:balance}
+.marketing-department-empty p{max-width:48ch;color:#5f6876;font-size:17px;line-height:1.65}
+.marketing-science-clean{background:var(--navy);color:#fff;scroll-margin-top:88px}
+.marketing-science-clean .sec-head>p{max-width:42ch;color:#c8d2e4}
+.marketing-science-clean-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin-top:46px;background:#69748a;border:1px solid #69748a}
+.marketing-science-clean-grid>a{position:relative;min-height:330px;padding:34px;background:#f7f5ef;color:var(--ink)}
+.marketing-science-clean-grid>a:first-child{background:var(--gold)}
+.marketing-science-clean-grid span{font:700 11px var(--mono);color:var(--cobalt)}
+.marketing-science-clean-grid small{display:block;margin-top:34px;font:700 9px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:#536177}
+.marketing-science-clean-grid h3{max-width:15ch;margin:15px 0;font-size:clamp(28px,3.5vw,48px);line-height:.95;text-wrap:balance}
+.marketing-science-clean-grid p{max-width:44ch;color:#5f6876;line-height:1.6}
+.marketing-science-clean-grid b{position:absolute;right:28px;bottom:24px;color:var(--cobalt);font:34px var(--mono)}
+@media(max-width:700px){.marketing-department-empty{min-height:360px}.marketing-science-clean-grid{grid-template-columns:1fr;margin-inline:-18px}.marketing-science-clean-grid>a{min-height:300px;padding:28px 22px}}
+
 /* Final responsive alignment overrides. */
 .leader-info h3{font-size:clamp(22px,2.1vw,30px)}
 .erasmus-note{grid-template-columns:145px minmax(0,1fr)}

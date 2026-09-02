@@ -1,6 +1,6 @@
 "use client";
 
-import { Children, type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { Children, Fragment, isValidElement, type ReactNode, useEffect, useId, useRef, useState } from "react";
 
 export type SectionHubItem = {
   id: string;
@@ -26,6 +26,14 @@ function readHash() {
   return decodeURIComponent(window.location.hash.replace(/^#/, ""));
 }
 
+function flattenSectionChildren(children: ReactNode): ReactNode[] {
+  return Children.toArray(children).flatMap((child) =>
+    isValidElement<{ children?: ReactNode }>(child) && child.type === Fragment
+      ? flattenSectionChildren(child.props.children)
+      : [child],
+  );
+}
+
 export function SectionHub({
   sections,
   children,
@@ -42,7 +50,7 @@ export function SectionHub({
   const reactId = useId().replace(/:/g, "");
   const directoryTitleId = `section-directory-${reactId}`;
   const activePanelId = `section-panel-${reactId}`;
-  const sectionContent = Children.toArray(children);
+  const sectionContent = flattenSectionChildren(children);
   const activeIndex = sections.findIndex((section) => section.id === activeId);
   const activeSection = activeIndex >= 0 ? sections[activeIndex] : null;
 
