@@ -4,6 +4,21 @@ import { useMemo, useState } from "react";
 import type { DocumentStatus, PageDocument, PageDocumentInput } from "@/lib/documents";
 import type { Publisher } from "@/lib/auth";
 import { canEditPage, editorialAccessOptions } from "@/lib/editorial-access";
+import {
+  buildScheduleDocumentCategory,
+  defaultScheduleDocumentSelection,
+  parseScheduleDocumentCategory,
+  scheduleCollections,
+  scheduleCourses,
+  scheduleDocumentCategoryLabel,
+  scheduleSemesters,
+  scheduleStudyForms,
+  type ScheduleCollectionId,
+  type ScheduleCourseId,
+  type ScheduleDocumentSelection,
+  type ScheduleSemesterId,
+  type ScheduleStudyFormId,
+} from "@/lib/schedule-documents";
 
 const pageOptions = editorialAccessOptions.map((option) => [option.value, option.value === "*" ? "Усі доступні сторінки" : option.label] as const);
 
@@ -29,6 +44,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
   const [documents, setDocuments] = useState(initialDocuments);
   const [form, setForm] = useState<PageDocumentInput>({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" });
   const [editing, setEditing] = useState<string | null>(null);
+  const [scheduleSelection, setScheduleSelection] = useState<ScheduleDocumentSelection>(defaultScheduleDocumentSelection);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const published = useMemo(() => documents.filter((document) => document.status === "published").length, [documents]);
@@ -64,10 +80,13 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
 
   async function save(event: React.FormEvent) {
     event.preventDefault(); setBusy(true); setMessage("Зберігаємо документ…");
+    const payload = form.pagePath === "/schedule"
+      ? { ...form, category: buildScheduleDocumentCategory(scheduleSelection) }
+      : form;
     const response = await fetch(editing ? `/api/documents/${editing}` : "/api/documents", {
       method: editing ? "PATCH" : "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(payload),
     });
     const result = await response.json() as PageDocument & { error?: string };
     if (!response.ok) {
@@ -77,7 +96,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
     }
     setDocuments((current) => editing ? current.map((item) => item.id === editing ? result : item) : [result, ...current]);
     setMessage(result.status === "published" ? "Документ опубліковано на вибраній сторінці" : "Чернетку документа збережено");
-    setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setBusy(false);
+    setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setScheduleSelection(defaultScheduleDocumentSelection); setBusy(false);
   }
 
   function edit(item: PageDocument) {
@@ -94,11 +113,12 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
       status: item.status,
       sortOrder: item.sortOrder,
     });
+    setScheduleSelection(parseScheduleDocumentCategory(item.category) || defaultScheduleDocumentSelection);
     setMessage("");
     window.document.querySelector("#document-editor")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function reset() { setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setMessage(""); }
+  function reset() { setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setScheduleSelection(defaultScheduleDocumentSelection); setMessage(""); }
 
   async function remove(document: PageDocument) {
     if (!confirm(`Видалити «${document.title}» зі сторінки?`)) return;
@@ -129,16 +149,25 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
         <label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName}</b><span>Файл готовий до публікації</span></> : <><b>Оберіть файл</b><span>PDF, DOC, DOCX, XLS, XLSX, PPT або PPTX</span></>}<input type="file" required={!form.fileUrl} disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); }} /></label>
         <div className="document-fields">
           <label>Назва документа<input required value={form.title} onChange={(event) => change("title", event.target.value)} /></label>
-          <label>Категорія<input required value={form.category} onChange={(event) => change("category", event.target.value)} placeholder="Наказ, положення, програма…" /></label>
+          {form.pagePath !== "/schedule" && <label>Категорія<input required value={form.category} onChange={(event) => change("category", event.target.value)} placeholder="Наказ, положення, програма…" /></label>}
           <label className="wide">Короткий опис<textarea rows={3} value={form.description} onChange={(event) => change("description", event.target.value)} /></label>
           <label>Сторінка<select value={form.pagePath} onChange={(event) => change("pagePath", event.target.value)}>{allowedPageOptions.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label>
           <label>Статус<select value={form.status} onChange={(event) => change("status", event.target.value as DocumentStatus)}><option value="published">Опублікувати</option><option value="draft">Чернетка</option></select></label>
           <label>Порядок<input type="number" min={0} value={form.sortOrder} onChange={(event) => change("sortOrder", Number(event.target.value))} /></label>
+          {form.pagePath === "/schedule" && <fieldset className="schedule-document-fields wide">
+            <legend>Де показати файл у розкладі</legend>
+            <p>Після збереження файл автоматично з’явиться саме в обраному курсі.</p>
+            <label>Розділ<select value={scheduleSelection.collectionId} onChange={(event) => setScheduleSelection((current) => ({ ...current, collectionId: event.target.value as ScheduleCollectionId }))}>{scheduleCollections.map((option) => <option value={option.id} key={option.id}>{option.label}</option>)}</select></label>
+            <label>Форма навчання<select value={scheduleSelection.formId} onChange={(event) => setScheduleSelection((current) => ({ ...current, formId: event.target.value as ScheduleStudyFormId }))}>{scheduleStudyForms.map((option) => <option value={option.id} key={option.id}>{option.label}</option>)}</select></label>
+            <label>Семестр<select value={scheduleSelection.semesterId} onChange={(event) => setScheduleSelection((current) => ({ ...current, semesterId: event.target.value as ScheduleSemesterId }))}>{scheduleSemesters.map((option) => <option value={option.id} key={option.id}>{option.label}</option>)}</select></label>
+            <label>Курс / рівень<select value={scheduleSelection.courseId} onChange={(event) => setScheduleSelection((current) => ({ ...current, courseId: event.target.value as ScheduleCourseId }))}>{scheduleCourses.map((option) => <option value={option.id} key={option.id}>{option.label}</option>)}</select></label>
+            <label className="wide">Спеціальність<input value={scheduleSelection.specialty} onChange={(event) => setScheduleSelection((current) => ({ ...current, specialty: event.target.value }))} placeholder="Наприклад: D8 Право" /></label>
+          </fieldset>}
         </div>
         <div className="operations-save"><p>{message || "Після збереження файл з’явиться на вибраній сторінці."}</p><button disabled={busy || !form.fileUrl} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити документ" : "Додати на сторінку"}</button></div>
       </form>
       <div className="document-list"><div className="operations-list-head"><div><small>Усі файли</small><h3>Документи сторінок</h3></div><b>{documents.length}</b></div>
-        {documents.map((document) => <article key={document.id}><div><small>{pageLabel(document.pagePath)} · {document.status === "published" ? "Опубліковано" : "Чернетка"}</small><h4>{document.title}</h4><p>{document.category} · {document.fileName}</p></div><div><a href={document.fileUrl} target="_blank" rel="noreferrer">Відкрити ↗</a><button type="button" onClick={() => edit(document)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => void remove(document)}>Видалити</button></div></article>)}
+        {documents.map((document) => <article key={document.id}><div><small>{pageLabel(document.pagePath)} · {document.status === "published" ? "Опубліковано" : "Чернетка"}</small><h4>{document.title}</h4><p>{document.pagePath === "/schedule" ? scheduleDocumentCategoryLabel(document.category) : document.category} · {document.fileName}</p></div><div><a href={document.fileUrl} target="_blank" rel="noreferrer">Відкрити ↗</a><button type="button" onClick={() => edit(document)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => void remove(document)}>Видалити</button></div></article>)}
       </div>
     </div>
   </section>;
