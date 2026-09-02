@@ -34,6 +34,11 @@ export function MarketingTeam({ entries = [] }: { entries?: DepartmentEntry[] })
   ];
   return <section className="marketing-team-section" id="department-team"><div className="wrap">
     <div className="sec-head marketing-team-head"><div><div className="idx">04 / Кафедра маркетингу</div><h2>Команда кафедри</h2></div><p>Викладачі поєднують академічні дослідження, практичний маркетинг, цифрові технології та міжнародні проєкти.</p></div>
+    <aside className="marketing-membership-callout" aria-label="Професійне членство викладачів кафедри">
+      <span>Професійна спільнота</span>
+      <p>Викладачі кафедри є членами ГО «<a href="https://uam.in.ua/" target="_blank" rel="noreferrer">Українська Асоціація Маркетингу</a>» та користуються доступом до професійного обміну знаннями, експертних матеріалів, галузевих перекладів міжнародних документів і актуальних досліджень, які поширює УАМ.</p>
+      <a className="marketing-membership-link" href="https://uam.in.ua/" target="_blank" rel="noreferrer">Відкрити сайт УАМ ↗</a>
+    </aside>
     <div className="academic-profile-grid">{team.map((member, index) => <AcademicProfileCard
       key={member.name}
       index={index}
