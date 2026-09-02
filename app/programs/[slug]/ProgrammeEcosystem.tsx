@@ -105,7 +105,8 @@ export function ProgrammeEcosystem({ slug, entries = [] }: { slug: string; entri
           summary: person.summary,
           image: person.image,
           tags: person.interests,
-          links: person.href ? [{ label: "Науковий профіль", href: person.href }] : [],
+          details: "details" in person ? person.details : undefined,
+          links: "links" in person && person.links ? person.links : (person.href ? [{ label: "Науковий профіль", href: person.href }] : []),
         }}
       />)}</div>
     </div></section>}
