@@ -1,15 +1,11 @@
 import Link from "next/link";
-
-const studyForms = ["Денна форма", "Заочна форма"] as const;
-const semesters = ["І семестр", "ІІ семестр"] as const;
-const courses = [
-  "1 курс",
-  "2 курс",
-  "3 курс",
-  "4 курс",
-  "1 курс магістратури",
-  "2 курс магістратури",
-] as const;
+import type { PageDocument } from "@/lib/documents";
+import {
+  parseScheduleDocumentCategory,
+  scheduleCourses,
+  scheduleSemesters,
+  scheduleStudyForms,
+} from "@/lib/schedule-documents";
 
 const collections = [
   {
@@ -32,7 +28,20 @@ const collections = [
   },
 ] as const;
 
-export function ScheduleDocumentDirectory() {
+function fileSize(value: number): string {
+  if (!value) return "";
+  if (value < 1024 * 1024) return `${Math.max(1, Math.round(value / 1024))} КБ`;
+  return `${(value / (1024 * 1024)).toFixed(1)} МБ`;
+}
+
+export function ScheduleDocumentDirectory({ documents }: { documents: PageDocument[] }) {
+  const structuredDocuments = documents.flatMap((document) => {
+    const selection = parseScheduleDocumentCategory(document.category);
+    return selection ? [{ document, selection }] : [];
+  });
+  const structuredIds = new Set(structuredDocuments.map(({ document }) => document.id));
+  const otherDocuments = documents.filter((document) => !structuredIds.has(document.id));
+
   return (
     <section className="schedule-directory" id="documents-by-course">
       <div className="wrap">
@@ -68,28 +77,39 @@ export function ScheduleDocumentDirectory() {
                 </div>
               </header>
               <div className="schedule-study-forms">
-                {studyForms.map((form) => (
-                  <details key={`${collection.id}-${form}`}>
+                {scheduleStudyForms.map((form) => (
+                  <details key={`${collection.id}-${form.id}`}>
                     <summary>
-                      <span>{form}</span>
+                      <span>{form.label}</span>
                       <b>Обрати семестр</b>
                       <i>+</i>
                     </summary>
                     <div className="schedule-semesters">
-                      {semesters.map((semester) => (
-                        <details key={`${collection.id}-${form}-${semester}`}>
+                      {scheduleSemesters.map((semester) => (
+                        <details key={`${collection.id}-${form.id}-${semester.id}`}>
                           <summary>
-                            <span>{semester}</span>
+                            <span>{semester.label}</span>
                             <b>6 рівнів навчання</b>
                             <i>+</i>
                           </summary>
                           <div className="schedule-course-grid">
-                            {courses.map((course) => (
-                              <a href="#published-schedule-files" key={course}>
-                                <span>{course}</span>
-                                <b>Знайти файли →</b>
-                              </a>
-                            ))}
+                            {scheduleCourses.map((course) => {
+                              const courseDocuments = structuredDocuments.filter(({ selection }) =>
+                                selection.collectionId === collection.id
+                                && selection.formId === form.id
+                                && selection.semesterId === semester.id
+                                && selection.courseId === course.id);
+                              return <div className="schedule-course-cell" key={course.id}>
+                                <span>{course.label}</span>
+                                {courseDocuments.length ? <div className="schedule-course-files">{courseDocuments.map(({ document, selection }) => (
+                                  <a href={document.fileUrl} target="_blank" rel="noreferrer" key={document.id}>
+                                    <b>{selection.specialty || document.title}</b>
+                                    {selection.specialty && <small>{document.title}</small>}
+                                    <i>{fileSize(document.fileSize) || "Відкрити"} ↗</i>
+                                  </a>
+                                ))}</div> : <small>Файли ще не опубліковано</small>}
+                              </div>;
+                            })}
                           </div>
                         </details>
                       ))}
@@ -100,6 +120,11 @@ export function ScheduleDocumentDirectory() {
             </article>
           ))}
         </div>
+
+        {otherDocuments.length > 0 && <div className="schedule-other-files">
+          <div><span>Інші опубліковані матеріали</span><h3>Файли без прив’язки до курсу</h3></div>
+          <div>{otherDocuments.map((document) => <a href={document.fileUrl} target="_blank" rel="noreferrer" key={document.id}><b>{document.title}</b><small>{document.category}{fileSize(document.fileSize) ? ` · ${fileSize(document.fileSize)}` : ""}</small><i>Відкрити ↗</i></a>)}</div>
+        </div>}
 
         <div className="schedule-publish-note" id="published-schedule-files">
           <div>
