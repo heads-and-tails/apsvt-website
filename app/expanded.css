@@ -3083,3 +3083,21 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
   .documents-catalogue-head-simple h2{max-width:100%}
   .documents-catalogue-head h2{font-size:clamp(31px,9.2vw,40px);line-height:1.02}
 }
+
+/* Finance programme: the department requested a dedicated contact destination. */
+.finance-contact{background:var(--gold);color:var(--ink)}
+.finance-contact-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.65fr);gap:clamp(34px,7vw,104px);align-items:end}
+.finance-contact h2{max-width:15ch;margin:13px 0 22px;font-size:clamp(36px,4.5vw,66px);line-height:.96}
+.finance-contact-grid>div:first-child>p{max-width:68ch;font-size:15px;line-height:1.65}
+.finance-contact-card{min-height:270px;padding:28px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;background:var(--navy);color:#fff;border:1px solid var(--ink);box-shadow:12px 12px 0 var(--cobalt)}
+.finance-contact-card small{font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.finance-contact-card h3{margin:18px 0 26px;font-size:clamp(25px,2.5vw,38px);line-height:1}
+.finance-contact-card>a{font:700 12px/1.45 var(--body);overflow-wrap:anywhere}
+.finance-contact-card>a:last-child{margin-top:28px;padding-top:16px;border-top:1px solid rgba(255,255,255,.3);font:700 9px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--gold)}
+
+@media(max-width:820px){
+  .finance-contact-grid{grid-template-columns:1fr}.finance-contact h2{max-width:18ch}.finance-contact-card{min-height:230px}
+}
+@media(max-width:560px){
+  .finance-contact h2{max-width:100%;font-size:clamp(30px,9vw,40px)}.finance-contact-card{min-height:0;padding:22px;box-shadow:7px 7px 0 var(--cobalt)}
+}
