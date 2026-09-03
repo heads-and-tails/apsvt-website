@@ -7,8 +7,8 @@ export function PsychologyFacultyTeam() {
       <div className="wrap">
         <div className="sec-head programme-team-head">
           <div>
-            <div className="idx">05 / Науково-педагогічний склад</div>
-            <h2>Команда факультету</h2>
+            <div className="idx">06 / Науково-педагогічний склад</div>
+            <h2>Науково-педагогічний склад факультету</h2>
           </div>
           <p>
             Психологи, медики, соціальні працівники, педагоги й дослідники, які
@@ -20,7 +20,6 @@ export function PsychologyFacultyTeam() {
             <AcademicProfileCard
               key={person.id}
               index={index}
-              badge={person.lead ? "Керівництво факультету" : undefined}
               person={{
                 name: person.name,
                 role: person.role,

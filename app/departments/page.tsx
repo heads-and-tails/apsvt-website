@@ -40,9 +40,9 @@ const facultyGroups = [
     description: "Психічне здоров’я, психологічне благополуччя, соціальна підтримка та професійний розвиток.",
     profileHref: "/departments/psychology-social-development-faculty",
     departments: [
-      { id: "clinical-psychology", title: "Кафедра клінічної психології та психотерапії", text: "Психічне здоров’я, діагностика, консультування та психотерапевтичні підходи.", href: "/programs/psychology#department", programmes: [{ code: "C4", title: "Психологія · клінічна траєкторія", href: "/programs/psychology" }] },
-      { id: "business-psychology", title: "Кафедра психології бізнесу та управління", text: "Організаційна психологія, професійний розвиток, команди та управління змінами.", href: "/programs/psychology#department", programmes: [{ code: "C4", title: "Психологія бізнесу та управління", href: "/programs/psychology" }] },
-      { id: "social-work", title: "Кафедра соціально-трудових відносин та соціальної роботи", text: "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", href: "/programs/social-work#department", programmes: [{ code: "I10", title: "Соціальна робота та консультування", href: "/programs/social-work" }] },
+      { id: "clinical-psychology", title: "Кафедра клінічної психології та психотерапії", text: "Психічне здоров’я, діагностика, консультування та психотерапевтичні підходи.", href: "/departments/psychology-social-development-faculty/clinical-psychology", programmes: [{ code: "C4", title: "Психологія · клінічна траєкторія", href: "/programs/psychology" }] },
+      { id: "business-psychology", title: "Кафедра психології бізнесу та управління", text: "Організаційна психологія, професійний розвиток, команди та управління змінами.", href: "/departments/psychology-social-development-faculty/business-psychology", programmes: [{ code: "C4", title: "Психологія бізнесу та управління", href: "/programs/psychology" }] },
+      { id: "social-work", title: "Кафедра соціально-трудових відносин та соціальної роботи", text: "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", href: "/departments/psychology-social-development-faculty/social-work", programmes: [{ code: "I10", title: "Соціальна робота та консультування", href: "/programs/social-work" }] },
     ],
   },
   {
