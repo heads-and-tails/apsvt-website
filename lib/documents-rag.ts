@@ -11,6 +11,8 @@ type IndexedPassage = {
   text: string;
 };
 
+export type AdditionalDocumentsRagSource = Pick<IndexedPassage, "id" | "title" | "href" | "text">;
+
 export type DocumentsRagSource = {
   id: string;
   title: string;
@@ -74,7 +76,7 @@ function tokenKey(token: string) {
   return token;
 }
 
-const passages = (index.pages as IndexedPassage[]).map((passage) => {
+function preparePassage(passage: IndexedPassage) {
   const frequency = new Map<string, number>();
   for (const token of tokens(`${passage.title} ${passage.text}`)) {
     const key = tokenKey(token);
@@ -86,7 +88,9 @@ const passages = (index.pages as IndexedPassage[]).map((passage) => {
     normalizedText: normalize(passage.text),
     frequency,
   };
-});
+}
+
+const passages = (index.pages as IndexedPassage[]).map(preparePassage);
 
 function excerptFor(passage: IndexedPassage, queryKeys: string[]) {
   const lower = passage.text.toLocaleLowerCase("uk-UA");
@@ -114,7 +118,10 @@ function excerptFor(passage: IndexedPassage, queryKeys: string[]) {
   return `${start > 0 ? "…" : ""}${excerpt}${end < passage.text.length ? "…" : ""}`;
 }
 
-export function answerDocumentsQuestion(rawQuestion: string): DocumentsRagAnswer {
+export function answerDocumentsQuestion(
+  rawQuestion: string,
+  additionalSources: AdditionalDocumentsRagSource[] = [],
+): DocumentsRagAnswer {
   const question = rawQuestion.trim().slice(0, 600);
   const normalizedQuestion = normalize(question);
   const queryKeys = [...new Set(tokens(question).map(tokenKey))];
@@ -131,7 +138,18 @@ export function answerDocumentsQuestion(rawQuestion: string): DocumentsRagAnswer
     .filter((hint) => hint.terms.some((term) => normalizedQuestion.includes(term)))
     .flatMap((hint) => hint.titles);
 
-  const scored = passages.map((passage) => {
+  const searchablePassages = [
+    ...passages,
+    ...additionalSources.map((source) => preparePassage({
+      ...source,
+      file: source.id,
+      documentId: source.id,
+      category: "departments",
+      page: null,
+    })),
+  ];
+
+  const scored = searchablePassages.map((passage) => {
     let score = 0;
     let coverage = 0;
     for (const key of queryKeys) {

@@ -138,6 +138,12 @@ test("finance programmes offer direct bachelor and master navigation without pho
   assert.doesNotMatch(html,/academic-profile-photo[^>]*>[\s\S]{0,500}<em>Керівник кафедри<\/em>/);
 });
 
+test("documents catalogue includes the shared faculty and department section",async()=>{
+  const html=await (await render("/documents")).text();
+  assert.match(html,/Документи кафедр і факультетів/);
+  assert.match(html,/Матеріали, які кафедри та факультети публікують через редакційну панель/);
+});
+
 test("links the recovered May 2026 news archive from the public news section",async()=>{
   const [newsHtml,archiveHtml]=await Promise.all([
     (await render("/news")).text(),

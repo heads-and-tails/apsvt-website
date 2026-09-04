@@ -73,6 +73,12 @@ export const documentCategories = [
     title: "Методичні та наукові матеріали",
     description: "Збірники конференцій, звіти про наукову роботу та методичні матеріали для навчання й досліджень.",
   },
+  {
+    id: "departments",
+    number: "13",
+    title: "Документи кафедр і факультетів",
+    description: "Матеріали, які кафедри та факультети публікують через редакційну панель.",
+  },
 ] as const;
 
 export type DocumentCategoryId = typeof documentCategories[number]["id"];
@@ -83,7 +89,7 @@ export type OfficialDocument = {
   title: string;
   description: string;
   href: string;
-  format: "PDF" | "DOCX" | "PPTX" | "WEB";
+  format: "PDF" | "DOCX" | "XLSX" | "PPTX" | "WEB";
   pages?: number;
   updated?: string;
   status?: "current" | "reference";

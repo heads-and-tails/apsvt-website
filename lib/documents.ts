@@ -101,6 +101,17 @@ export async function getPublicDocuments(pagePath: string): Promise<PageDocument
   return (data as DocumentRow[]).map(fromRow);
 }
 
+export async function getPublishedDocuments(): Promise<PageDocument[]> {
+  if (!isSupabaseConfigured()) return [];
+  const { data, error } = await createSupabasePublicClient()
+    .from("editorial_documents")
+    .select("*")
+    .eq("status", "published")
+    .order("updated_at", { ascending: false });
+  if (error) return [];
+  return (data as DocumentRow[]).map(fromRow);
+}
+
 export async function getDocumentById(id: string): Promise<PageDocument | null> {
   if (!isSupabaseConfigured()) return null;
   const { data, error } = await createSupabaseAdmin()
