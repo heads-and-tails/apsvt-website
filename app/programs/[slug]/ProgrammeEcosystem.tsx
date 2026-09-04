@@ -73,7 +73,7 @@ export function ProgrammeEcosystem({ slug, entries = [] }: { slug: string; entri
   return <>
     <section className="programme-department" id="department"><div className="wrap programme-department-grid">
       <div>
-        <div className="idx">04 / Кафедра і академічне середовище</div>
+        <div className="idx">{slug === "finance" ? "02 / Кафедра і освітнє середовище" : "04 / Кафедра і академічне середовище"}</div>
         <h2>{profile.department}</h2>
         <p className="programme-department-faculty">{profile.faculty}</p>
       </div>
@@ -85,7 +85,7 @@ export function ProgrammeEcosystem({ slug, entries = [] }: { slug: string; entri
     </div></section>
 
     <section className="programme-documents" id="programme-documents"><div className="wrap">
-      <div className="programme-documents-head"><div><div className="idx">05 / Документи програми</div><h2>Програма, плани та дисципліни</h2></div><Link href="/documents">Увесь каталог документів →</Link></div>
+      <div className="programme-documents-head"><div><div className="idx">{slug === "finance" ? "02.1 / Документи програми" : "05 / Документи програми"}</div><h2>Програма, плани та дисципліни</h2></div><Link href="/documents">Увесь каталог документів →</Link></div>
       <div className="programme-resource-strip" aria-label="Типи матеріалів програми"><a href="#curriculum"><b>01</b><span>Навчальний план</span></a><a href="#electives"><b>02</b><span>Вибіркові дисципліни</span></a><Link href="/materials"><b>03</b><span>Робочі програми дисциплін</span></Link><a href="#quality"><b>04</b><span>Обговорення змін до ОП</span></a></div>
       <div className="programme-document-list">{[...officialProgrammeDocuments, ...profile.documents].filter((document, index, documents) => documents.findIndex((item) => item.href === document.href) === index).map((document, index) => {
         const external = document.href.startsWith("http");
@@ -94,8 +94,8 @@ export function ProgrammeEcosystem({ slug, entries = [] }: { slug: string; entri
     </div></section>
 
     {slug !== "marketing" && team.length > 0 && <section className="programme-team" id="team"><div className="wrap">
-      <div className="sec-head programme-team-head"><div><div className="idx">06 / Склад кафедри</div><h2>Викладачі й практики</h2></div><p>Короткі професійні профілі команди, яка формує зміст навчання, супроводжує практику та студентські дослідження.</p></div>
-      <div className="academic-profile-grid">{team.map((person, index) => <AcademicProfileCard
+      <div className="sec-head programme-team-head"><div><div className="idx">{slug === "finance" ? "02.2 / Склад кафедри" : "06 / Склад кафедри"}</div><h2>Викладачі й практики</h2></div><p>Короткі професійні профілі команди, яка формує зміст навчання, супроводжує практику та студентські дослідження.</p></div>
+      <div className={`academic-profile-grid${slug === "finance" ? " finance-academic-profile-grid" : ""}`}>{team.map((person, index) => <AcademicProfileCard
         key={person.name}
         index={index}
         badge={person.role.toLowerCase().includes("завідувач") ? "Керівник кафедри" : undefined}
@@ -113,12 +113,12 @@ export function ProgrammeEcosystem({ slug, entries = [] }: { slug: string; entri
 
     {slug === "marketing" && <MarketingTeam entries={editorialTeachers} />}
 
-    <section className="programme-science" id="science"><div className="wrap programme-science-grid"><div><div className="idx">07 / Наукова діяльність кафедри</div><h2>Дослідження, гуртки та проєкти</h2></div><div>{slug === "marketing" ? <><p>Кафедра розвиває дослідження з маркетингової аналітики, digital, брендингу та поведінки споживачів. Монографії й навчальні видання зібрані у «Наукових виданнях», а повні збірники 2024–2026 років — окремо у «Конференціях».</p><div className="programme-science-links"><Link href="/research/journals#marketing-publications">Монографії та навчальні видання →</Link><Link href="/research/conferences#marketing-proceedings">Збірники конференцій →</Link><Link href="/research">Профілі дослідників →</Link></div></> : <><p>Наукова робота розвиває напрями кафедри: {profile.departmentFocus.join(", ")}. Актуальні студентські гуртки, конференції й теми досліджень кафедра оголошує на початку навчального року.</p><Link href="/research">Наука в Академії →</Link></>}</div></div></section>
+    <section className="programme-science" id="science"><div className="wrap programme-science-grid"><div><div className="idx">{slug === "finance" ? "02.3 / Наукова діяльність кафедри" : "07 / Наукова діяльність кафедри"}</div><h2>Дослідження, гуртки та проєкти</h2></div><div>{slug === "marketing" ? <><p>Кафедра розвиває дослідження з маркетингової аналітики, digital, брендингу та поведінки споживачів. Монографії й навчальні видання зібрані у «Наукових виданнях», а повні збірники 2024–2026 років — окремо у «Конференціях».</p><div className="programme-science-links"><Link href="/research/journals#marketing-publications">Монографії та навчальні видання →</Link><Link href="/research/conferences#marketing-proceedings">Збірники конференцій →</Link><Link href="/research">Профілі дослідників →</Link></div></> : <><p>Наукова робота розвиває напрями кафедри: {profile.departmentFocus.join(", ")}. Актуальні студентські гуртки, конференції й теми досліджень кафедра оголошує на початку навчального року.</p><Link href="/research">Наука в Академії →</Link></>}</div></div></section>
 
     {slug === "marketing" && <section className="marketing-student-life" id="marketing-student-life"><div className="wrap"><div className="sec-head"><div><div className="idx">06 / Студентське життя</div><h2>MARKETHINK і студентські ініціативи</h2></div><p>Окремий простір для наукового гуртка кафедри, проєктів, самоврядування та професійного розвитку студентів.</p></div><div className="marketing-student-life-grid"><article><span>01 / Науковий гурток</span><h3>MARKETHINK</h3><p>Дослідження ринку, брендів, поведінки споживачів і digital-комунікацій. Студенти готують доповіді, публікації та презентації для конференцій.</p><Link href="/research/conferences">Конференції та збірники →</Link></article><article><span>02 / Самоврядування</span><h3>Студентські ініціативи</h3><p>Участь у студентській раді, організації подій, волонтерських і комунікаційних проєктах Академії.</p><Link href="/students/council">Студентська рада →</Link></article><article><span>03 / Професійний розвиток</span><h3>Кар’єрні проєкти</h3><p>Кейси з роботодавцями, портфоліо, тренінги, практика та перші професійні контакти.</p><a href="#practice">Практика й партнери →</a></article></div></div></section>}
 
     <section className="programme-practice" id="practice"><div className="wrap">
-      <div className="sec-head programme-practice-head"><div><div className="idx">08 / Практика і професійне середовище</div><h2>Партнери: де знання стають досвідом</h2></div><div><p>{profile.practiceNote}</p><a href={profile.practiceSourceHref} target={profile.practiceSourceHref.startsWith("/") ? undefined : "_blank"} rel={profile.practiceSourceHref.startsWith("/") ? undefined : "noreferrer"}>{profile.practiceSource} ↗</a></div></div>
+      <div className="sec-head programme-practice-head"><div><div className="idx">{slug === "finance" ? "02.4 / Практика і професійне середовище" : "08 / Практика і професійне середовище"}</div><h2>Партнери: де знання стають досвідом</h2></div><div><p>{profile.practiceNote}</p><a href={profile.practiceSourceHref} target={profile.practiceSourceHref.startsWith("/") ? undefined : "_blank"} rel={profile.practiceSourceHref.startsWith("/") ? undefined : "noreferrer"}>{profile.practiceSource} ↗</a></div></div>
       <div className="programme-partners">{partners.map((partner) => <AcademicPartnerCard partner={partner} key={partner.name} />)}</div>
       <p className="programme-practice-disclaimer">Місця практики й стажування залежать від навчального року, наявності договору та індивідуальної траєкторії. Актуальне направлення підтверджує кафедра.</p>
     </div></section>
