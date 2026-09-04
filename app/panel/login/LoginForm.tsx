@@ -35,7 +35,7 @@ export function LoginForm({ nextPath = "/panel" }: { nextPath?: string }) {
       setMessage("Акаунт із такою поштою не знайдено або надсилання тимчасово недоступне.");
     } else {
       setCodeSent(true);
-      setMessage("Код входу надіслано на пошту. Він діє один раз і має 6 цифр.");
+      setMessage("Код входу надіслано на пошту. Він діє один раз і має 8 цифр.");
     }
     setBusy(false);
   }
@@ -46,8 +46,8 @@ export function LoginForm({ nextPath = "/panel" }: { nextPath?: string }) {
       await requestCode();
       return;
     }
-    if (!/^[0-9]{6}$/.test(code)) {
-      setMessage("Введіть 6 цифр із листа.");
+    if (!/^[0-9]{8}$/.test(code)) {
+      setMessage("Введіть 8 цифр із листа.");
       return;
     }
     setBusy(true);
@@ -90,7 +90,7 @@ export function LoginForm({ nextPath = "/panel" }: { nextPath?: string }) {
     </div>
     {mode === "code" ? <form className="editorial-login" onSubmit={verifyCode}>
       <label>Робоча електронна пошта<input type="email" autoComplete="email" required value={email} onChange={(event) => { setEmail(event.target.value); setCodeSent(false); setCode(""); }} placeholder="name@socosvita.kiev.ua" /></label>
-      {codeSent && <label>Одноразовий код<input className="editorial-code-input" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" /></label>}
+      {codeSent && <label>Одноразовий код<input className="editorial-code-input" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{8}" maxLength={8} required value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, "").slice(0, 8))} placeholder="00000000" /></label>}
       {message && <p className="auth-error" role="status">{message}</p>}
       <button disabled={busy} type="submit">{busy ? "Зачекайте…" : codeSent ? "Підтвердити код →" : "Отримати код →"}</button>
       {codeSent && <button className="auth-activate" disabled={busy} type="button" onClick={() => void requestCode()}>Надіслати новий код</button>}
