@@ -1676,8 +1676,8 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .academic-profile-card:hover .academic-profile-photo--caption img{transform:scale(1.16)}
 .academic-profile-photo>span{font:700 clamp(58px,6vw,86px)/1 var(--disp);letter-spacing:-.06em}
 .academic-profile-photo>b{position:absolute;left:14px;bottom:14px;padding:8px 9px;background:var(--gold);color:var(--ink);font:10px var(--mono);font-weight:500}
-.academic-profile-photo>em{position:absolute;top:14px;left:14px;max-width:calc(100% - 28px);padding:8px 10px;background:var(--gold);color:var(--ink);font:700 8px/1.35 var(--mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase}
 .academic-profile-copy{display:flex;min-width:0;flex-direction:column;padding:25px}
+.academic-profile-badge{align-self:flex-start;margin:0 0 14px;padding:8px 10px;background:var(--gold);color:var(--ink);font:700 8px/1.35 var(--mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;box-shadow:5px 5px 0 var(--cobalt)}
 .academic-profile-copy>small{display:block;min-height:40px;color:var(--cobalt);font:600 10px/1.45 var(--body);text-transform:none}
 .academic-profile-copy>h3{margin:12px 0 16px;font-size:clamp(25px,2.25vw,33px);line-height:.98;overflow-wrap:anywhere;text-wrap:balance}
 .academic-profile-copy>p{color:rgba(9,14,24,.68);font-size:13px;line-height:1.65}
@@ -3119,6 +3119,23 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
 }
 
 /* Finance programme: the department requested a dedicated contact destination. */
+.finance-level-selector{min-height:calc(100svh - 92px);padding:0;display:flex;align-items:stretch;background:var(--navy);color:#fff;scroll-margin-top:88px}
+.finance-level-selector>.wrap{width:100%;padding-top:clamp(42px,6vh,74px);padding-bottom:clamp(42px,6vh,74px);display:grid;grid-template-rows:auto 1fr;gap:34px}
+.finance-level-selector-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.7fr);gap:22px 60px;align-items:end}
+.finance-level-selector-head .idx{grid-column:1/-1;color:var(--gold)}
+.finance-level-selector-head h2{font-size:clamp(40px,5.5vw,76px);line-height:.92}
+.finance-level-selector-head p{max-width:52ch;color:#c9d3e8;font-size:14px;line-height:1.65}
+.finance-level-selector-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;min-height:420px}
+.finance-level-link{position:relative;min-width:0;padding:clamp(24px,3.2vw,44px);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.42);transition:transform .25s ease,box-shadow .25s ease}
+.finance-level-link.bachelor{background:var(--gold);color:var(--ink)}
+.finance-level-link.master{background:var(--cobalt);color:#fff}
+.finance-level-link:hover,.finance-level-link:focus-visible{transform:translateY(-6px);box-shadow:12px 12px 0 #fff;outline:0}
+.finance-level-link>span{position:absolute;top:20px;right:26px;font:700 clamp(54px,7vw,104px)/1 var(--disp);letter-spacing:-.07em;opacity:.17}
+.finance-level-link>small{font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.finance-level-link>strong{margin:auto 0 22px;font:700 clamp(52px,7vw,104px)/.84 var(--disp);letter-spacing:-.055em;text-transform:uppercase;text-wrap:balance}
+.finance-level-link>p{max-width:42ch;font-size:13px;line-height:1.6;opacity:.78}
+.finance-level-link>b{margin-top:26px;padding-top:17px;border-top:1px solid currentColor;font:700 9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+#finance-bachelor,#finance-master{scroll-margin-top:88px}
 .finance-contact{background:var(--gold);color:var(--ink)}
 .finance-contact-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.65fr);gap:clamp(34px,7vw,104px);align-items:end}
 .finance-contact h2{max-width:15ch;margin:13px 0 22px;font-size:clamp(36px,4.5vw,66px);line-height:.96}
@@ -3150,11 +3167,13 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
 .finance-applicant-links span{grid-column:2;grid-row:1/3;color:var(--cobalt);font:24px var(--disp)}
 
 @media(max-width:820px){
+  .finance-level-selector-head{grid-template-columns:1fr}.finance-level-selector-head .idx{grid-column:auto}.finance-level-selector-grid{min-height:390px}
   .finance-contact-grid,.finance-applicants-grid{grid-template-columns:1fr}.finance-contact h2{max-width:18ch}.finance-contact-card{min-height:230px}
   .finance-master-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .finance-academic-profile-grid{grid-template-columns:1fr}
 }
 @media(max-width:560px){
+  .finance-level-selector{min-height:0}.finance-level-selector>.wrap{gap:24px}.finance-level-selector-grid{grid-template-columns:1fr;min-height:0}.finance-level-link{min-height:270px}.finance-level-link>strong{font-size:clamp(45px,15vw,68px)}
   .finance-contact h2{max-width:100%;font-size:clamp(30px,9vw,40px)}.finance-contact-card{min-height:0;padding:22px;box-shadow:7px 7px 0 var(--cobalt)}
   .finance-master-grid{grid-template-columns:1fr}
   .finance-master-grid article{min-height:180px}

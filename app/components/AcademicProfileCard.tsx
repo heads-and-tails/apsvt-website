@@ -37,10 +37,10 @@ export function AcademicProfileCard({
       {person.image
         ? <img src={person.image} alt={person.name} />
         : <span aria-label={`Фото ${person.name} готується до публікації`}>{initials(person.name)}</span>}
-      {badge && <em>{badge}</em>}
       <b>{String(index + 1).padStart(2, "0")}</b>
     </div>
     <div className="academic-profile-copy">
+      {badge && <em className="academic-profile-badge">{badge}</em>}
       <small>{person.role}</small>
       <h3>{person.name}</h3>
       <p>{person.summary}</p>

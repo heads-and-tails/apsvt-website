@@ -128,6 +128,16 @@ test("uses one scannable academic order and keeps May 2026 archive documents loc
   }
 });
 
+test("finance programmes offer direct bachelor and master navigation without photo overlays",async()=>{
+  const html=await (await render("/programs/finance#overview")).text();
+  assert.match(html,/href="#finance-bachelor"/);
+  assert.match(html,/href="#finance-master"/);
+  assert.match(html,/id="finance-bachelor"/);
+  assert.match(html,/id="finance-master"/);
+  assert.match(html,/academic-profile-badge/);
+  assert.doesNotMatch(html,/academic-profile-photo[^>]*>[\s\S]{0,500}<em>Керівник кафедри<\/em>/);
+});
+
 test("links the recovered May 2026 news archive from the public news section",async()=>{
   const [newsHtml,archiveHtml]=await Promise.all([
     (await render("/news")).text(),
