@@ -34,6 +34,7 @@ export async function POST(request: Request) {
       { command: "menu", description: "Головне меню" },
       { command: "new", description: "Створити матеріал за допомогою AI" },
       { command: "drafts", description: "Мої доступні чернетки" },
+      { command: "schedule", description: "Додати або замінити розклад" },
       { command: "status", description: "Статус розкладу" },
       { command: "me", description: "Мої права доступу" },
       { command: "help", description: "Інструкція" },

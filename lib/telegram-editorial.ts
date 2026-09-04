@@ -57,6 +57,16 @@ import {
   reserveTelegramUpdate,
   setTelegramEditorialState,
 } from "@/lib/telegram-editorial-store";
+import {
+  buildScheduleDocumentCategory,
+  defaultScheduleDocumentSelection,
+  parseScheduleDocumentCategory,
+  scheduleCollections,
+  scheduleCourses,
+  scheduleSemesters,
+  scheduleStudyForms,
+  type ScheduleDocumentSelection,
+} from "@/lib/schedule-documents";
 
 export type TelegramUser = {
   id: number;
@@ -108,6 +118,11 @@ type PendingDraft = {
   draft: EditorialAiDraft;
   source: UploadedSource | null;
   pagePath: string;
+};
+
+type ScheduleUploadState = {
+  selection: ScheduleDocumentSelection;
+  replaceId?: string;
 };
 
 type DraftListItem = {
@@ -197,6 +212,11 @@ function inferMimeType(fileName: string, declared = "") {
   const extension = fileName.split(".").pop()?.toLowerCase();
   if (extension === "pdf") return "application/pdf";
   if (extension === "docx") return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+  if (extension === "doc") return "application/msword";
+  if (extension === "xlsx") return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  if (extension === "xls") return "application/vnd.ms-excel";
+  if (extension === "pptx") return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+  if (extension === "ppt") return "application/vnd.ms-powerpoint";
   if (extension === "txt") return "text/plain";
   if (extension === "png") return "image/png";
   if (extension === "webp") return "image/webp";
@@ -213,7 +233,12 @@ function toFile(bytes: Uint8Array, fileName: string, mimeType: string) {
 async function uploadSource(file: File, bytes: Uint8Array, publisher: Publisher): Promise<UploadedSource | null> {
   const isImage = file.type.startsWith("image/");
   const isDocument = file.type === "application/pdf"
-    || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    || file.type === "application/msword"
+    || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    || file.type === "application/vnd.ms-excel"
+    || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    || file.type === "application/vnd.ms-powerpoint"
+    || file.type === "application/vnd.openxmlformats-officedocument.presentationml.presentation";
   if (!isImage && !isDocument) return null;
   const maxSize = isImage ? 8 * 1024 * 1024 : 20 * 1024 * 1024;
   if (bytes.byteLength > maxSize) throw new Error(isImage ? "Фото має бути менше 8 МБ" : "Документ має бути менше 20 МБ");
@@ -280,7 +305,7 @@ async function sendMenu(chatId: string, publisher: Publisher, siteUrl: string) {
 
 async function sendHelp(chatId: string, siteUrl: string) {
   await sendTelegramMessage(chatId,
-    "<b>Як працювати з ботом</b>\n\n1. Надішліть текст, фото, PDF або Word.\n2. AI визначить розділ і оформить матеріал.\n3. Перевірте короткий попередній перегляд.\n4. Натисніть «Зберегти чернетку» або «Опублікувати».\n\nКоманди: /menu, /new, /news, /event, /document, /teacher, /material, /drafts, /me, /cancel, /logout.\n\nБот застосовує ті самі права доступу, що й панель на сайті.",
+    "<b>Як працювати з ботом</b>\n\n1. Надішліть текст, фото, PDF або Word.\n2. AI визначить розділ і оформить матеріал.\n3. Перевірте короткий попередній перегляд.\n4. Натисніть «Зберегти чернетку» або «Опублікувати».\n\nДля розкладу натисніть «📅 Розклад» або введіть /schedule: оберіть курс один раз і надішліть одразу кілька файлів.\n\nКоманди: /menu, /new, /news, /event, /document, /schedule, /teacher, /material, /drafts, /me, /cancel, /logout.\n\nБот застосовує ті самі права доступу, що й панель на сайті.",
     [[{ text: "Повна редакційна панель", url: `${siteUrl}/panel` }]],
   );
 }
@@ -291,6 +316,144 @@ async function sendAccess(chatId: string, publisher: Publisher) {
     : publisher.accessScopes.map(pageLabel).join("\n• ");
   await sendTelegramMessage(chatId,
     `<b>${escapeTelegramHtml(publisher.displayName)}</b>\n${escapeTelegramHtml(publisher.email)}\nРоль: ${publisher.role === "admin" ? "Адміністратор" : "Редактор"}\n\n<b>Доступ:</b>\n• ${escapeTelegramHtml(scopes)}`,
+  );
+}
+
+function currentScheduleSelection(): ScheduleDocumentSelection {
+  const month = new Date().getMonth();
+  return {
+    ...defaultScheduleDocumentSelection,
+    semesterId: month >= 7 || month === 0 ? "semester-1" : "semester-2",
+  };
+}
+
+function scheduleSelectionText(selection: ScheduleDocumentSelection) {
+  const values = [
+    scheduleCollections.find((item) => item.id === selection.collectionId)?.label,
+    scheduleStudyForms.find((item) => item.id === selection.formId)?.label,
+    scheduleSemesters.find((item) => item.id === selection.semesterId)?.label,
+    scheduleCourses.find((item) => item.id === selection.courseId)?.label,
+    selection.specialty,
+  ].filter(Boolean);
+  return values.map((value) => escapeTelegramHtml(value || "")).join(" · ");
+}
+
+function scheduleCourseButtons(): TelegramButton[][] {
+  return rowButtons(scheduleCourses.map((course) => ({
+    text: course.label,
+    callback_data: `ed:sch:course:${course.id}`,
+  })), 2);
+}
+
+async function sendScheduleMenu(chatId: string, publisher: Publisher, siteUrl: string) {
+  if (!canEditPage(publisher, "/schedule")) throw new Error("Ваш акаунт не має доступу до розкладу");
+  const count = (await getAllDocuments()).filter((item) => item.pagePath === "/schedule").length;
+  await sendTelegramMessage(chatId,
+    `<b>Керування розкладом</b>\n\nОберіть курс один раз, а потім надішліть один або кілька PDF, Word чи Excel. Усі файли потраплять до одного комплекту.\n\nЗараз у розкладі: <b>${count}</b> файлів.`,
+    [
+      [{ text: "➕ Додати комплект", callback_data: "ed:sch:add" }, { text: "📚 Поточні файли", callback_data: "ed:sch:list" }],
+      [{ text: "🖥 Відкрити зручну панель", url: `${siteUrl}/panel?view=schedule` }],
+      [{ text: "← Головне меню", callback_data: "ed:menu" }],
+    ],
+  );
+}
+
+async function beginScheduleUpload(chatId: string) {
+  await setTelegramEditorialState<ScheduleUploadState>(chatId, "schedule-setup", { selection: currentScheduleSelection() }, 180);
+  await sendTelegramMessage(chatId,
+    "<b>Крок 1 із 2 · тип розкладу</b>\nОберіть, що завантажуєте. Після цього бот запитає курс.",
+    [
+      [{ text: "Заняття · денна", callback_data: "ed:sch:mode:c:f" }, { text: "Заняття · заочна", callback_data: "ed:sch:mode:c:p" }],
+      [{ text: "Сесія · денна", callback_data: "ed:sch:mode:e:f" }, { text: "Сесія · заочна", callback_data: "ed:sch:mode:e:p" }],
+      [{ text: "Навчальний процес", callback_data: "ed:sch:mode:g:f" }],
+      [{ text: "Скасувати", callback_data: "ed:cancel" }],
+    ],
+  );
+}
+
+async function listScheduleDocuments(chatId: string, publisher: Publisher) {
+  if (!canEditPage(publisher, "/schedule")) throw new Error("Ваш акаунт не має доступу до розкладу");
+  const documents = (await getAllDocuments())
+    .filter((item) => item.pagePath === "/schedule")
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    .slice(0, 12);
+  if (!documents.length) {
+    await sendTelegramMessage(chatId, "Опублікованих файлів розкладу ще немає.", [[{ text: "➕ Додати комплект", callback_data: "ed:sch:add" }]]);
+    return;
+  }
+  await sendTelegramMessage(chatId, `<b>Останні файли розкладу · ${documents.length}</b>\nОберіть «Замінити», щоб зберегти курс і семестр, або «Видалити».`);
+  for (const document of documents) {
+    await sendTelegramMessage(chatId,
+      `<b>${escapeTelegramHtml(document.title)}</b>\n${escapeTelegramHtml(document.category)}`,
+      [[
+        { text: "🔄 Замінити", callback_data: `ed:sch:replace:${document.id}` },
+        { text: "🗑 Видалити", callback_data: `ed:sch:askdel:${document.id}` },
+      ]],
+    );
+  }
+}
+
+async function handleScheduleDocument(message: TelegramMessage, publisher: Publisher, state: ScheduleUploadState) {
+  const chatId = String(message.chat.id);
+  if (!canEditPage(publisher, "/schedule")) throw new Error("Ваш акаунт не має доступу до розкладу");
+  if (!message.document) throw new Error("Надішліть документ PDF, Word, Excel або PowerPoint");
+  if ((message.document.file_size || 0) > 20 * 1024 * 1024) throw new Error("Документ має бути менше 20 МБ");
+  const fileName = message.document.file_name || "schedule-document";
+  const mimeType = inferMimeType(fileName, message.document.mime_type);
+  const allowed = new Set([
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ]);
+  if (!allowed.has(mimeType)) throw new Error("Для розкладу підтримуються PDF, Word, Excel і PowerPoint");
+  await sendTelegramChatAction(chatId, "upload_document");
+  const remote = await getTelegramFile(message.document.file_id);
+  if (!remote) throw new Error("Не вдалося завантажити файл із Telegram");
+  const file = toFile(remote.bytes, fileName, mimeType);
+  const source = await uploadSource(file, remote.bytes, publisher);
+  if (!source) throw new Error("Не вдалося зберегти документ");
+
+  if (state.replaceId) {
+    const existing = await getDocumentById(state.replaceId);
+    if (!existing || existing.pagePath !== "/schedule") throw new Error("Файл для заміни не знайдено");
+    await updateDocument(existing.id, {
+      title: existing.title,
+      description: existing.description,
+      category: existing.category,
+      pagePath: existing.pagePath,
+      fileUrl: source.url,
+      fileName: source.fileName,
+      mimeType: source.mimeType,
+      fileSize: source.fileSize,
+      status: existing.status,
+      sortOrder: existing.sortOrder,
+    }, publisher.email);
+    await clearTelegramEditorialState(chatId);
+    await sendTelegramMessage(chatId, `<b>Файл замінено.</b>\n${escapeTelegramHtml(existing.title)}\nКурс, семестр і місце на сайті збережено.`, [[{ text: "📚 Поточні файли", callback_data: "ed:sch:list" }]]);
+    return;
+  }
+
+  const title = fileName.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
+  const category = buildScheduleDocumentCategory(state.selection);
+  await createDocument({
+    title: title || "Розклад",
+    description: `Розклад · ${category}`,
+    category,
+    pagePath: "/schedule",
+    fileUrl: source.url,
+    fileName: source.fileName,
+    mimeType: source.mimeType,
+    fileSize: source.fileSize,
+    status: "published",
+    sortOrder: Date.now(),
+  }, publisher.email);
+  await sendTelegramMessage(chatId,
+    `<b>Опубліковано:</b> ${escapeTelegramHtml(title || "Розклад")}\n${scheduleSelectionText(state.selection)}\n\nНадішліть наступний файл — він потрапить до того самого комплекту.`,
+    [[{ text: "✅ Завершити комплект", callback_data: "ed:sch:done" }, { text: "📚 Поточні файли", callback_data: "ed:sch:list" }]],
   );
 }
 
@@ -536,6 +699,77 @@ async function handleEditorialCallback(callback: TelegramCallbackQuery, publishe
   if (data === "ed:menu") {
     await answerTelegramCallback(callback.id, "Головне меню");
     await sendMenu(chatId, publisher, siteUrl);
+  } else if (data === "ed:sch:add") {
+    if (!canEditPage(publisher, "/schedule")) throw new Error("У вас немає доступу до розкладу");
+    await answerTelegramCallback(callback.id, "Створюємо комплект");
+    await beginScheduleUpload(chatId);
+  } else if (data === "ed:sch:list") {
+    await answerTelegramCallback(callback.id, "Відкриваю файли");
+    await listScheduleDocuments(chatId, publisher);
+  } else if (data.startsWith("ed:sch:mode:")) {
+    const state = await getTelegramEditorialState<ScheduleUploadState>(chatId);
+    if (!state || state.stage !== "schedule-setup") throw new Error("Налаштування застаріло. Почніть комплект ще раз");
+    const [, , , collectionAlias, formAlias] = data.split(":");
+    const collectionId = collectionAlias === "e" ? "exam-session" : collectionAlias === "g" ? "education-process" : "class-schedule";
+    const formId = formAlias === "p" ? "part-time" : "full-time";
+    const next = { ...state.data, selection: { ...state.data.selection, collectionId, formId } } satisfies ScheduleUploadState;
+    await setTelegramEditorialState(chatId, "schedule-setup", next, 180);
+    await answerTelegramCallback(callback.id, "Тип обрано");
+    await sendTelegramMessage(chatId, "<b>Крок 2 із 2 · курс</b>\nОберіть курс або рівень освіти.", [...scheduleCourseButtons(), [{ text: "Скасувати", callback_data: "ed:cancel" }]]);
+  } else if (data.startsWith("ed:sch:course:")) {
+    const state = await getTelegramEditorialState<ScheduleUploadState>(chatId);
+    const courseId = data.slice("ed:sch:course:".length);
+    const course = scheduleCourses.find((item) => item.id === courseId);
+    if (!state || state.stage !== "schedule-setup" || !course) throw new Error("Налаштування застаріло. Почніть комплект ще раз");
+    const next = { ...state.data, selection: { ...state.data.selection, courseId: course.id } } satisfies ScheduleUploadState;
+    await setTelegramEditorialState(chatId, "schedule-files", next, 180);
+    await answerTelegramCallback(callback.id, "Курс обрано");
+    await sendTelegramMessage(chatId,
+      `<b>Комплект готовий</b>\n${scheduleSelectionText(next.selection)}\n\nТепер надішліть PDF, Word або Excel. Можна виділити кілька файлів одразу — кожен буде опубліковано в цьому комплекті.`,
+      [[
+        { text: "І семестр", callback_data: "ed:sch:semester:semester-1" },
+        { text: "ІІ семестр", callback_data: "ed:sch:semester:semester-2" },
+      ], [{ text: "Скасувати", callback_data: "ed:cancel" }]],
+    );
+  } else if (data.startsWith("ed:sch:semester:")) {
+    const state = await getTelegramEditorialState<ScheduleUploadState>(chatId);
+    const semesterId = data.slice("ed:sch:semester:".length);
+    const semester = scheduleSemesters.find((item) => item.id === semesterId);
+    if (!state || state.stage !== "schedule-files" || !semester) throw new Error("Комплект застарів. Створіть його ще раз");
+    const next = { ...state.data, selection: { ...state.data.selection, semesterId: semester.id } } satisfies ScheduleUploadState;
+    await setTelegramEditorialState(chatId, "schedule-files", next, 180);
+    await answerTelegramCallback(callback.id, `${semester.label} обрано`);
+    await sendTelegramMessage(chatId, `<b>${escapeTelegramHtml(semester.label)}.</b> Надішліть один або кілька файлів.`, [[{ text: "Скасувати", callback_data: "ed:cancel" }]]);
+  } else if (data === "ed:sch:done") {
+    await clearTelegramEditorialState(chatId);
+    await answerTelegramCallback(callback.id, "Комплект завершено");
+    await sendScheduleMenu(chatId, publisher, siteUrl);
+  } else if (data.startsWith("ed:sch:replace:")) {
+    const id = data.slice("ed:sch:replace:".length);
+    const document = await getDocumentById(id);
+    if (!document || document.pagePath !== "/schedule" || !canEditPage(publisher, document.pagePath)) throw new Error("Документ недоступний");
+    await setTelegramEditorialState<ScheduleUploadState>(chatId, "schedule-files", {
+      selection: parseScheduleDocumentCategory(document.category) || currentScheduleSelection(),
+      replaceId: document.id,
+    }, 60);
+    await answerTelegramCallback(callback.id, "Надішліть новий файл");
+    await sendTelegramMessage(chatId, `<b>Заміна файла</b>\n${escapeTelegramHtml(document.title)}\n\nНадішліть новий PDF, Word або Excel. Курс і семестр залишаться без змін.`, [[{ text: "Скасувати", callback_data: "ed:cancel" }]]);
+  } else if (data.startsWith("ed:sch:askdel:")) {
+    const id = data.slice("ed:sch:askdel:".length);
+    const document = await getDocumentById(id);
+    if (!document || document.pagePath !== "/schedule" || !canEditPage(publisher, document.pagePath)) throw new Error("Документ недоступний");
+    await answerTelegramCallback(callback.id, "Потрібне підтвердження");
+    await sendTelegramMessage(chatId, `Видалити з розкладу «${escapeTelegramHtml(document.title)}»?`, [[
+      { text: "Так, видалити", callback_data: `ed:sch:del:${document.id}` },
+      { text: "Скасувати", callback_data: "ed:cancel" },
+    ]]);
+  } else if (data.startsWith("ed:sch:del:")) {
+    const id = data.slice("ed:sch:del:".length);
+    const document = await getDocumentById(id);
+    if (!document || document.pagePath !== "/schedule" || !canEditPage(publisher, document.pagePath)) throw new Error("Документ недоступний");
+    await deleteDocument(document.id);
+    await answerTelegramCallback(callback.id, "Видалено");
+    await sendTelegramMessage(chatId, "🗑 Файл видалено з розкладу.", [[{ text: "📚 Поточні файли", callback_data: "ed:sch:list" }]]);
   } else if (data.startsWith("scheduler:")) {
     const [, decision, runId] = data.split(":");
     if (!canEditPage(publisher, "/schedule") || !["approve", "reject"].includes(decision)) throw new Error("У вас немає права погоджувати розклад");
@@ -556,7 +790,7 @@ async function handleEditorialCallback(callback: TelegramCallbackQuery, publishe
     await sendAccess(chatId, publisher);
   } else if (data === "ed:menu:schedule") {
     await answerTelegramCallback(callback.id, "Розклад");
-    await sendTelegramMessage(chatId, "Керування розкладом доступне командами /status і /availability.", [[{ text: "Планувальник", url: `${siteUrl}/panel/scheduler` }]]);
+    await sendScheduleMenu(chatId, publisher, siteUrl);
   } else if (data === "ed:menu:help") {
     await answerTelegramCallback(callback.id, "Інструкція");
     await sendHelp(chatId, siteUrl);
@@ -676,7 +910,12 @@ async function handleMessage(message: TelegramMessage, publisher: Publisher, sit
   const chatId = String(message.chat.id);
   const text = (message.text || "").trim();
   const command = commandName(text);
-  if (command === "start" || command === "menu") await sendMenu(chatId, publisher, siteUrl);
+  const scheduleState = message.document
+    ? await getTelegramEditorialState<ScheduleUploadState>(chatId)
+    : null;
+  if (message.document && scheduleState?.stage === "schedule-files") {
+    await handleScheduleDocument(message, publisher, scheduleState.data);
+  } else if (command === "start" || command === "menu") await sendMenu(chatId, publisher, siteUrl);
   else if (command === "help") await sendHelp(chatId, siteUrl);
   else if (command === "me") await sendAccess(chatId, publisher);
   else if (command === "drafts") await sendDrafts(chatId, publisher);
@@ -696,6 +935,8 @@ async function handleMessage(message: TelegramMessage, publisher: Publisher, sit
     await sendTelegramMessage(chatId, payload
       ? `<b>${escapeTelegramHtml(payload.name)}</b>\nСтатус: ${escapeTelegramHtml(payload.status)}\nЗанять: ${payload.scheduledCount} · конфліктів: ${payload.conflictCount}`
       : `Чернеток розкладу поки немає.\n${siteUrl}/panel/scheduler`);
+  } else if (command === "schedule" && !commandBody(text) && !message.document) {
+    await sendScheduleMenu(chatId, publisher, siteUrl);
   } else if (command === "login") {
     await sendTelegramMessage(chatId, "Цей Telegram уже підключений до редакційного акаунта.", [[{ text: "Головне меню", callback_data: "ed:menu" }]]);
   } else if (command === "new" && !commandBody(text) && !message.document && !message.photo?.length) {

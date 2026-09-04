@@ -18,7 +18,7 @@ function SignOutButton() {
   return <form action="/auth/signout" method="post"><button className="auth-signout" type="submit">Вийти з акаунта</button></form>;
 }
 
-export default async function PanelPage() {
+export default async function PanelPage({ searchParams }: { searchParams: Promise<{ view?: string }> }) {
   if (!isSupabaseConfigured()) {
     if (process.env.NODE_ENV !== "development") {
       return <main className="auth-page"><div className="auth-card"><span className="auth-mark">АП</span><span className="kicker blue">Редакційний доступ</span><h1>Панель готується</h1><p>Безпечне підключення Supabase ще не активовано у Vercel. Публічний сайт працює без змін.</p><Link className="back-home" href="/">← Повернутися на сайт</Link></div></main>;
@@ -33,6 +33,8 @@ export default async function PanelPage() {
     return <main className="auth-page"><div className="auth-card"><span className="auth-mark">АП</span><span className="kicker blue">Очікує погодження</span><h1>Запит отримано</h1><p>Акаунт <b>{user?.email}</b> успішно створено, але ще не має доступу до редакційної панелі. Адміністратор має погодити його та призначити роль.</p><SignOutButton/><Link className="back-home" href="/">← Повернутися на сайт</Link></div></main>;
   }
   if (publisher.mustChangePassword) redirect("/panel/reset-password?initial=1");
+  const requestedView = (await searchParams).view;
+  const initialView = requestedView === "schedule" && canEditPage(publisher, "/schedule") ? "schedule" as const : "overview" as const;
 
   const [allPosts, allContent, allDocuments, departmentEntries, profiles, studentFinance] = await Promise.all([
     getPosts({ includeDrafts: true, limit: 100 }),
@@ -47,5 +49,5 @@ export default async function PanelPage() {
   const documents = allDocuments.filter((document) => canEditPage(publisher, document.pagePath));
   const editableDepartmentEntries = departmentEntries.filter((entry) => canEditPage(publisher, entry.pagePath));
 
-  return <PanelEditor initialPosts={posts} initialContent={content} initialDocuments={documents} initialDepartmentEntries={editableDepartmentEntries} publisher={publisher} initialProfiles={profiles} initialStudentFinance={studentFinance} />;
+  return <PanelEditor initialPosts={posts} initialContent={content} initialDocuments={documents} initialDepartmentEntries={editableDepartmentEntries} publisher={publisher} initialProfiles={profiles} initialStudentFinance={studentFinance} initialView={initialView} />;
 }

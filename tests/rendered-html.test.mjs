@@ -1070,3 +1070,25 @@ test("publishes the private, labour and commercial law department",async()=>{
   assert.match(departmentHtml,/D8 «Право»/);
   assert.match(directoryHtml,/href="\/departments\/private-law"/);
 });
+
+test("supports bulk schedule files in the panel and the Telegram bot",async()=>{
+  const [panel,manager,bulkRoute,documents,telegram,styles]=await Promise.all([
+    readFile(new URL("../app/panel/PanelEditor.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/panel/ScheduleDocumentManager.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/api/documents/bulk/route.ts",import.meta.url),"utf8"),
+    readFile(new URL("../lib/documents.ts",import.meta.url),"utf8"),
+    readFile(new URL("../lib/telegram-editorial.ts",import.meta.url),"utf8"),
+    readFile(new URL("../app/expanded.css",import.meta.url),"utf8"),
+  ]);
+  assert.match(panel,/ScheduleDocumentManager/);
+  assert.match(panel,/panel\?view=schedule|initialView/);
+  assert.match(manager,/type="file" multiple/);
+  assert.match(manager,/\/api\/documents\/bulk/);
+  assert.match(manager,/Замінити файл/);
+  assert.match(bulkRoute,/documents\.length > 20/);
+  assert.match(documents,/createDocuments/);
+  assert.match(telegram,/schedule-files/);
+  assert.match(telegram,/ed:sch:replace/);
+  assert.match(telegram,/Надішліть наступний файл/);
+  assert.match(styles,/@media\(max-width:700px\).*schedule-manager-intro/s);
+});

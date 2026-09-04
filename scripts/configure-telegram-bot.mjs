@@ -27,6 +27,7 @@ await api("setMyCommands", {
     { command: "drafts", description: "Переглянути чернетки" },
     { command: "news", description: "Підготувати новину" },
     { command: "document", description: "Додати документ" },
+    { command: "schedule", description: "Додати або замінити розклад" },
     { command: "teacher", description: "Додати профіль викладача" },
     { command: "me", description: "Мій редакційний доступ" },
     { command: "status", description: "Статус останнього розкладу" },
