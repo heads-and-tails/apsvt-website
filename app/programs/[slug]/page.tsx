@@ -20,6 +20,7 @@ import { SectionHub, type SectionHubItem } from "@/app/components/SectionHub";
 import { EducationQualitySection } from "@/app/components/EducationQualitySection";
 import { AcademicNews } from "@/app/components/AcademicNews";
 import { MarketingTeam } from "./MarketingTeam";
+import { MarketingCareers, MarketingDepartmentAbout } from "./MarketingDepartmentContent";
 
 export const dynamic = "force-dynamic";
 export function generateStaticParams(){return programs.map((program)=>({slug:program.slug}));}
@@ -82,10 +83,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       ? "Оберіть програми, освітнє середовище, міжнародні проєкти, якість, вступ, новини або контакти — відкриється тільки потрібний розділ."
       : "Оберіть навчальний план, кафедру, кар’єру, вступні матеріали або міжнародні можливості — відкриється тільки потрібний розділ.";
   const marketingSectionContent = slug === "marketing" ? [
-    <section className="programme-department" id="department" key="marketing-about"><div className="wrap programme-department-grid">
-      <div><div className="idx">01 / Про кафедру</div><h2>Кафедра маркетингу</h2><p className="programme-department-faculty">Факультет економіки, соціальних технологій і туризму</p></div>
-      <div className="programme-department-copy"><p>Кафедра забезпечує підготовку здобувачів за спеціальністю D5 «Маркетинг» на бакалаврському та магістерському рівнях.</p><div className="programme-department-focus"><span>бакалаврат</span><span>магістратура</span><span>освітня програма D5</span></div><Link href="/departments/economics-social-tourism-faculty#departments">Кафедра у структурі Академії →</Link></div>
-    </div></section>,
+    <MarketingDepartmentAbout key="marketing-about" />,
     <MarketingTeam entries={departmentEntries.filter((entry) => entry.entryType === "teacher")} key="marketing-team" />,
     <ProgrammeCurriculumPlan slug={slug} code={program.code} title={program.title} key="marketing-programmes" />,
     <section className="marketing-science-clean" id="science" key="marketing-science"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Наукова діяльність</div><h2>Наукова діяльність кафедри</h2></div><p>У розділі залишено лише матеріали, підтверджені кафедрою.</p></div><div className="marketing-science-clean-grid">
@@ -99,7 +97,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       <Link href="/research/journals#marketing-publications"><span>04</span><div><small>Повні тексти</small><h3>Монографії та навчальний посібник кафедри</h3></div><b>→</b></Link>
     </div></div></section>,
     <section className="marketing-student-life" id="marketing-student-life" key="marketing-student-life"><div className="wrap"><div className="sec-head"><div><div className="idx">06 / Студентське життя та самоврядування</div><h2>Навчання поза аудиторією</h2></div><p>Підтверджені сторінки студентської наукової та громадської активності.</p></div><div className="marketing-student-life-grid"><article><span>01 / Науковий гурток</span><h3>MARKETHINK</h3><p>Матеріали гуртка та участі студентів кафедри у наукових заходах.</p><Link href="/materials/3331-0b35c55db.html">Відкрити матеріали →</Link></article><article><span>02 / Самоврядування</span><h3>Студентська рада</h3><p>Представництво студентів, ініціативи, події та участь у житті Академії.</p><Link href="/students/council">Перейти до студентської ради →</Link></article></div></div></section>,
-    <section id="careers" key="marketing-careers"><div className="wrap career-layout"><div><div className="idx">07 / Працевлаштування</div><h2>Професійні напрями</h2><p className="program-lede">Базові напрями роботи, зазначені для освітньої траєкторії D5 «Маркетинг».</p><div className="career-list">{program.careers.map((career, index) => <div key={career}><span>{String(index + 1).padStart(2, "0")}</span><b>{career}</b></div>)}</div></div><aside className="programme-lead-card"><AcademicProfileCard badge="Завідувачка кафедри" person={{ name: program.lead, role: program.leadRole, summary: "Координує освітню програму та роботу кафедри маркетингу.", image: programmeLead?.image, links: programmeLeadLinks }} /></aside></div></section>,
+    <MarketingCareers key="marketing-careers" />,
     <div id="department-news" key="marketing-news"><AcademicNews slugs={[slug]} title="Новини кафедри маркетингу" /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType))} /></div>,
   ] : null;
   const financeSectionContent = slug === "finance" ? [

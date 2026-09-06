@@ -3184,3 +3184,68 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
   .finance-academic-profile-grid .academic-profile-copy>h3{font-size:22px}
   .finance-academic-profile-grid .academic-profile-tags{display:none}
 }
+
+/* Marketing department content supplied by the department, September 2026 */
+.marketing-about,.marketing-careers{scroll-margin-top:88px;overflow:hidden}
+.marketing-about{padding:86px 0 0;background:#f5f2ea}
+.marketing-about-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:clamp(36px,7vw,100px);align-items:end;padding-bottom:54px;border-bottom:1px solid var(--ink)}
+.marketing-about-hero h2,.marketing-careers-head h2{max-width:12ch;margin-top:14px;font-size:clamp(43px,6.4vw,92px);line-height:.88;text-wrap:balance}
+.marketing-about-hero>p{max-width:38ch;font-size:clamp(18px,2vw,25px);line-height:1.45}
+.marketing-about-faculty{margin-top:24px;font:700 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}
+.marketing-about-chapter{display:grid;grid-template-columns:minmax(240px,.68fr) minmax(0,1.32fr);gap:clamp(36px,7vw,96px);padding:64px 0;border-bottom:1px solid var(--line)}
+.marketing-about-chapter>div:first-child span,.marketing-mission-grid article>span,.marketing-career-grid article>span,.marketing-career-directions>div:first-child>span{font:700 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}
+.marketing-about-chapter h3,.marketing-mission-grid h3,.marketing-career-directions h3{margin-top:18px;font-size:clamp(30px,3.8vw,54px);line-height:.96;text-wrap:balance}
+.marketing-rich-copy{columns:2;column-gap:38px}
+.marketing-rich-copy p{break-inside:avoid;margin:0 0 22px;font-size:15px;line-height:1.72;color:#394251;text-wrap:pretty}
+.marketing-mission-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:64px;border:1px solid var(--ink)}
+.marketing-mission-grid article{padding:clamp(28px,4vw,48px)}
+.marketing-mission-grid article+article{border-left:1px solid var(--ink)}
+.marketing-mission-grid h3{margin:22px 0 28px}
+.marketing-mission-grid p{margin-top:18px;font-size:14px;line-height:1.7;color:#465160}
+.marketing-focus-card{background:var(--navy);color:#fff}
+.marketing-focus-card>span{color:var(--gold)!important}
+.marketing-focus-card p{color:#cbd4e5}
+.marketing-focus-cloud{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0}
+.marketing-focus-cloud b{padding:8px 11px;border:1px solid #5b6780;font:700 9px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.marketing-principles{display:grid;grid-template-columns:minmax(250px,.7fr) minmax(0,1.3fr);gap:clamp(36px,7vw,96px);padding:84px 0}
+.marketing-principles header h3{max-width:10ch;margin-top:16px;font-size:clamp(35px,4.7vw,66px);line-height:.92}
+.marketing-principles article{display:grid;grid-template-columns:54px 1fr;gap:18px;padding:20px 0;border-top:1px solid var(--line)}
+.marketing-principles article:last-child{border-bottom:1px solid var(--line)}
+.marketing-principles article>span{font:700 10px var(--mono);color:var(--cobalt)}
+.marketing-principles h4{font-size:17px;text-transform:uppercase}
+.marketing-principles article p{max-width:65ch;margin-top:7px;font-size:13px;line-height:1.6;color:#59616d}
+.marketing-about-research{margin-inline:calc(50% - 50vw);padding-inline:max(24px,calc((100vw - var(--wrap))/2));background:var(--navy);color:#fff;border:0}
+.marketing-about-research .marketing-rich-copy p{color:#cbd4e5}
+.marketing-about-outcome{margin-inline:calc(50% - 50vw);padding:82px max(24px,calc((100vw - var(--wrap))/2));background:var(--gold)}
+.marketing-about-outcome h3{max-width:14ch;margin:18px 0 28px;font-size:clamp(40px,6vw,84px);line-height:.9}
+.marketing-about-outcome p{max-width:76ch;margin:16px 0;font-size:15px;line-height:1.65}
+.marketing-about-outcome strong{display:block;max-width:18ch;margin:34px 0;font-size:clamp(28px,4vw,52px);line-height:1}
+.marketing-about-outcome>b{display:block;max-width:52ch;margin-top:36px;font-size:18px;line-height:1.5;text-transform:uppercase}
+.marketing-careers{padding:86px 0;background:#fff}
+.marketing-careers-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:clamp(40px,7vw,100px);align-items:end;margin-bottom:48px}
+.marketing-careers-head h2{max-width:13ch}
+.marketing-careers-head>p{font-size:18px;line-height:1.6;color:#4c5665}
+.marketing-career-video{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);background:var(--navy);color:#fff}
+.marketing-career-video video{display:block;width:100%;height:100%;min-height:360px;object-fit:cover;background:#000}
+.marketing-career-video>div{padding:clamp(28px,4vw,52px)}
+.marketing-career-video span,.marketing-employment-result span{font:700 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.marketing-career-video h3{margin:22px 0;font-size:clamp(30px,3.5vw,50px);line-height:.95}
+.marketing-career-video p{font-size:14px;line-height:1.72;color:#cbd4e5}
+.marketing-career-directions{display:grid;grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr);gap:clamp(40px,7vw,100px);padding:76px 0}
+.marketing-career-directions h3{margin:20px 0 24px}
+.marketing-career-directions>div:first-child p{font-size:15px;line-height:1.72;color:#4f5968}
+.marketing-career-directions .career-list b{font-size:14px}
+.marketing-career-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+.marketing-career-grid article{padding:clamp(28px,4vw,46px);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.marketing-career-grid h3{max-width:14ch;margin:24px 0;font-size:clamp(28px,3.5vw,48px);line-height:.95}
+.marketing-career-grid p{margin-top:15px;font-size:14px;line-height:1.7;color:#4f5968}
+.marketing-career-grid article:first-child{background:var(--gold)}
+.marketing-employment-result{display:grid;grid-template-columns:minmax(250px,.75fr) minmax(0,1.25fr);gap:clamp(40px,7vw,100px);padding:70px clamp(28px,5vw,62px);background:var(--cobalt);color:#fff}
+.marketing-employment-result strong{display:block;margin-top:18px;font-size:clamp(58px,9vw,132px);line-height:.8}
+.marketing-employment-result p{margin-bottom:18px;font-size:15px;line-height:1.7;color:#e2e7f1}
+.marketing-career-footer{padding:80px 0 6px}
+.marketing-career-footer h3{max-width:19ch;margin:18px 0 28px;font-size:clamp(36px,5vw,70px);line-height:.92}
+.marketing-career-footer p{max-width:72ch;font-size:16px;line-height:1.7;color:#4c5665}
+.marketing-career-footer>b{display:block;margin-top:34px;padding-top:24px;border-top:4px solid var(--gold);font-size:18px;text-transform:uppercase}
+@media(max-width:900px){.marketing-about-hero,.marketing-careers-head,.marketing-career-video,.marketing-career-directions,.marketing-employment-result{grid-template-columns:1fr}.marketing-about-chapter,.marketing-principles{grid-template-columns:1fr;gap:30px}.marketing-rich-copy{columns:1}.marketing-mission-grid{grid-template-columns:1fr}.marketing-mission-grid article+article{border-left:0;border-top:1px solid var(--ink)}.marketing-career-video video{min-height:0;aspect-ratio:16/9}}
+@media(max-width:650px){.marketing-about,.marketing-careers{padding-top:58px}.marketing-about-hero{padding-bottom:38px}.marketing-about-hero h2,.marketing-careers-head h2{font-size:clamp(40px,14vw,62px);overflow-wrap:normal;word-break:normal;hyphens:none}.marketing-about-chapter{padding:44px 0}.marketing-mission-grid,.marketing-career-grid{margin-inline:-18px}.marketing-career-grid{grid-template-columns:1fr}.marketing-principles{padding:58px 0}.marketing-about-research{padding-inline:18px}.marketing-about-outcome{padding:58px 18px}.marketing-career-video{margin-inline:-18px}.marketing-career-directions{padding:58px 0}.marketing-employment-result{margin-inline:-18px;padding:46px 24px}.marketing-career-footer{padding-top:58px}}
