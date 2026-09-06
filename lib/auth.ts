@@ -44,7 +44,7 @@ const preapprovedDepartmentEditors = new Map<string, { displayName: string; acce
   ["markovec28@gmail.com", { displayName: "Неля Василець", accessScopes: ["/programs/management", "/programs/trade"] }],
   ["educ_dep2@socosvita.kiev.ua", {
     displayName: "Навчально-методичний відділ",
-    accessScopes: ["/students", "/schedule", "/exam-schedule", "/academic-calendar"],
+    accessScopes: ["/schedule", "/exam-schedule"],
   }],
   ["tsabenok26@ukr.net", {
     displayName: "Лебідь Тетяна Ігорівна",

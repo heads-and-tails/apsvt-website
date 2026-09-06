@@ -141,6 +141,14 @@ export async function getDepartmentEntries(pagePath: string): Promise<Department
   return entries.sort((a, b) => a.sortOrder - b.sortOrder || a.createdAt.localeCompare(b.createdAt));
 }
 
+export async function getPublishedDepartmentEntries(): Promise<DepartmentEntry[]> {
+  const entries = (await getContentItems("research_resource"))
+    .filter(isDepartmentContentItem)
+    .map(fromContentItem)
+    .filter((entry) => entry.status === "published");
+  return entries.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
+
 export async function getDepartmentEntryById(id: string): Promise<DepartmentEntry | null> {
   const item = (await getAllContent()).find((entry) => entry.id === id && isDepartmentContentItem(entry));
   return item ? fromContentItem(item) : null;

@@ -5,6 +5,7 @@ import {
   documentCategories,
   officialDocuments,
   type DocumentCategoryId,
+  type OfficialDocument,
 } from "@/lib/official-documents";
 import { DOCUMENTS_SECTION_EVENT } from "./DocumentsMap";
 
@@ -12,7 +13,9 @@ function normalize(value: string) {
   return value.toLocaleLowerCase("uk-UA").replace(/[’'`ʼ]/g, "").trim();
 }
 
-export function DocumentsCatalogue() {
+const emptyManagedDocuments: OfficialDocument[] = [];
+
+export function DocumentsCatalogue({ managedDocuments = emptyManagedDocuments }: { managedDocuments?: OfficialDocument[] }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"all" | DocumentCategoryId>("all");
   const [pendingSection, setPendingSection] = useState<DocumentCategoryId | null>(null);
@@ -32,16 +35,23 @@ export function DocumentsCatalogue() {
 
   const groups = useMemo(() => {
     const needle = normalize(query);
+    const seen = new Set(officialDocuments.map((document) => document.href.trim().toLocaleLowerCase("uk-UA")));
+    const documents = [...officialDocuments, ...managedDocuments.filter((document) => {
+      const key = document.href.trim().toLocaleLowerCase("uk-UA");
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })];
     return documentCategories.map((item) => ({
       ...item,
-      documents: officialDocuments.filter((document) => {
+      documents: documents.filter((document) => {
         if (document.category !== item.id) return false;
         if (category !== "all" && document.category !== category) return false;
         if (!needle) return true;
         return normalize(`${document.title} ${document.description} ${document.format} ${document.updated || ""}`).includes(needle);
       }),
     })).filter((item) => item.documents.length > 0);
-  }, [category, query]);
+  }, [category, managedDocuments, query]);
 
   const count = groups.reduce((sum, group) => sum + group.documents.length, 0);
 

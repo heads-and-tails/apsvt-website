@@ -7,7 +7,6 @@ export type PsychologyFacultyMember = {
   photoHasCaption?: boolean;
   interests: string[];
   profiles?: { label: string; href: string }[];
-  lead?: boolean;
 };
 
 export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
@@ -28,14 +27,14 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     image: "/people/psychology-faculty/nataliia-balashova.png",
     interests: ["соціальна робота", "професійний розвиток", "академічна якість"],
     profiles: [{ label: "Google Scholar", href: "https://scholar.google.com/citations?hl=ru&user=evhGWMUAAAAJ" }],
-    lead: true,
   },
   {
     id: "hlib-prib",
     name: "Гліб Пріб",
     role: "доктор медичних наук, професор",
     summary: "Досліджує психічне здоров’я, медико-соціальну експертизу та психологічну реабілітацію; автор понад 200 наукових і методичних праць.",
-    image: "/people/psychology-faculty/hlib-prib.jpg",
+    image: "/people/psychology-faculty/hlib-prib-2026.png",
+    photoHasCaption: true,
     interests: ["психічне здоров’я", "реабілітація", "медико-соціальна експертиза"],
     profiles: [{ label: "Google Scholar", href: "https://scholar.google.com.ua/citations?hl=ru&user=kLThYfwAAAAJ" }],
   },
@@ -110,12 +109,12 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     interests: ["соціальна робота", "геронтологія", "інклюзія"],
   },
   {
-    id: "svitlana-bondar-military",
-    name: "Світлана Бондар",
-    role: "докторка філософії (PhD) зі спеціальності C4 «Психологія»",
-    summary: "Досліджує військову й клінічну психологію, психічні та поведінкові розлади в умовах війни.",
-    image: "/people/psychology-faculty/svitlana-bondar-military.jpg",
-    interests: ["військова психологія", "клінічна психологія", "психічні розлади в умовах війни"],
+    id: "tetiana-lapinska",
+    name: "Тетяна Лапінська",
+    role: "викладачка кафедри психології бізнесу та управління",
+    summary: "Входить до науково-педагогічного складу факультету та бере участь у підготовці здобувачів психологічного напряму.",
+    image: "/people/psychology-faculty/tetiana-lapinska.jpg",
+    interests: ["психологія", "професійна підготовка"],
   },
   {
     id: "valentyn-teslenko",
@@ -152,5 +151,13 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     image: "/people/psychology-faculty/albert-prib.jpg",
     interests: ["практичні компетентності", "професійна етика", "соціальна відповідальність"],
     profiles: [{ label: "ORCID", href: "https://orcid.org/0000-0002-0441-5532" }],
+  },
+  {
+    id: "olha-yakovenko",
+    name: "Ольга Яковенко",
+    role: "комунікаційна менеджерка факультету",
+    summary: "Забезпечує комунікаційну підтримку факультету та взаємодію між його академічними підрозділами.",
+    image: "/people/psychology-faculty/olha-yakovenko.jpeg",
+    interests: ["комунікації", "організаційна підтримка"],
   },
 ];

@@ -95,7 +95,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
       return;
     }
     setDocuments((current) => editing ? current.map((item) => item.id === editing ? result : item) : [result, ...current]);
-    setMessage(result.status === "published" ? "Документ опубліковано на вибраній сторінці" : "Чернетку документа збережено");
+    setMessage(result.status === "published" ? "Документ опубліковано на вибраній сторінці та автоматично додано до загального каталогу" : "Чернетку документа збережено");
     setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setScheduleSelection(defaultScheduleDocumentSelection); setBusy(false);
   }
 
@@ -139,7 +139,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
         <article><span>01</span><div><b>Оберіть файл</b><p>Натисніть «Оберіть файл» у формі нижче. Для офіційних документів найкраще використовувати PDF до 20 МБ.</p></div></article>
         <article><span>02</span><div><b>Заповніть картку</b><p>Додайте зрозумілу назву, категорію та короткий опис без технічних скорочень у назві файла.</p></div></article>
         <article><span>03</span><div><b>Призначте сторінку</b><p>Для матеріалів вступної кампанії оберіть сторінку «Вступ». Порядок 10, 20, 30 дозволяє пізніше вставляти нові документи між ними.</p></div></article>
-        <article><span>04</span><div><b>Опублікуйте</b><p>Оберіть статус «Опублікувати» й натисніть «Додати на сторінку». Для заміни базового файла завантажте новий із тим самим номером порядку.</p></div></article>
+        <article><span>04</span><div><b>Опублікуйте</b><p>Оберіть статус «Опублікувати» й натисніть «Додати на сторінку». Файл автоматично з’явиться також у загальному каталозі документів. Для заміни базового файла завантажте новий із тим самим номером порядку.</p></div></article>
       </div>
       <p className="document-guide-slots"><b>Позиції вкладки «Вступнику»:</b> 10 — Правила прийому · 20 — Приймальна комісія · 30 — Положення про комісії · 40–100 — Порядки · 110 — Додаток.</p>
     </details>

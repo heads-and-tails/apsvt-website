@@ -128,6 +128,22 @@ test("uses one scannable academic order and keeps May 2026 archive documents loc
   }
 });
 
+test("finance programmes offer direct bachelor and master navigation without photo overlays",async()=>{
+  const html=await (await render("/programs/finance#overview")).text();
+  assert.match(html,/href="#finance-bachelor"/);
+  assert.match(html,/href="#finance-master"/);
+  assert.match(html,/id="finance-bachelor"/);
+  assert.match(html,/id="finance-master"/);
+  assert.match(html,/academic-profile-badge/);
+  assert.doesNotMatch(html,/academic-profile-photo[^>]*>[\s\S]{0,500}<em>Керівник кафедри<\/em>/);
+});
+
+test("documents catalogue includes the shared faculty and department section",async()=>{
+  const html=await (await render("/documents")).text();
+  assert.match(html,/Документи кафедр і факультетів/);
+  assert.match(html,/Матеріали, які кафедри та факультети публікують через редакційну панель/);
+});
+
 test("links the recovered May 2026 news archive from the public news section",async()=>{
   const [newsHtml,archiveHtml]=await Promise.all([
     (await render("/news")).text(),
@@ -1069,4 +1085,26 @@ test("publishes the private, labour and commercial law department",async()=>{
   assert.match(departmentHtml,/Катерина Біда/);
   assert.match(departmentHtml,/D8 «Право»/);
   assert.match(directoryHtml,/href="\/departments\/private-law"/);
+});
+
+test("supports bulk schedule files in the panel and the Telegram bot",async()=>{
+  const [panel,manager,bulkRoute,documents,telegram,styles]=await Promise.all([
+    readFile(new URL("../app/panel/PanelEditor.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/panel/ScheduleDocumentManager.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/api/documents/bulk/route.ts",import.meta.url),"utf8"),
+    readFile(new URL("../lib/documents.ts",import.meta.url),"utf8"),
+    readFile(new URL("../lib/telegram-editorial.ts",import.meta.url),"utf8"),
+    readFile(new URL("../app/expanded.css",import.meta.url),"utf8"),
+  ]);
+  assert.match(panel,/ScheduleDocumentManager/);
+  assert.match(panel,/panel\?view=schedule|initialView/);
+  assert.match(manager,/type="file" multiple/);
+  assert.match(manager,/\/api\/documents\/bulk/);
+  assert.match(manager,/Замінити файл/);
+  assert.match(bulkRoute,/documents\.length > 20/);
+  assert.match(documents,/createDocuments/);
+  assert.match(telegram,/schedule-files/);
+  assert.match(telegram,/ed:sch:replace/);
+  assert.match(telegram,/Надішліть наступний файл/);
+  assert.match(styles,/@media\(max-width:700px\).*schedule-manager-intro/s);
 });

@@ -101,6 +101,17 @@ export async function getPublicDocuments(pagePath: string): Promise<PageDocument
   return (data as DocumentRow[]).map(fromRow);
 }
 
+export async function getPublishedDocuments(): Promise<PageDocument[]> {
+  if (!isSupabaseConfigured()) return [];
+  const { data, error } = await createSupabasePublicClient()
+    .from("editorial_documents")
+    .select("*")
+    .eq("status", "published")
+    .order("updated_at", { ascending: false });
+  if (error) return [];
+  return (data as DocumentRow[]).map(fromRow);
+}
+
 export async function getDocumentById(id: string): Promise<PageDocument | null> {
   if (!isSupabaseConfigured()) return null;
   const { data, error } = await createSupabaseAdmin()
@@ -120,6 +131,16 @@ export async function createDocument(input: PageDocumentInput, authorEmail: stri
     .single<DocumentRow>();
   if (error) throw error;
   return fromRow(data);
+}
+
+export async function createDocuments(inputs: PageDocumentInput[], authorEmail: string): Promise<PageDocument[]> {
+  if (!inputs.length) return [];
+  const { data, error } = await createSupabaseAdmin()
+    .from("editorial_documents")
+    .insert(inputs.map((input) => toRow(input, authorEmail)))
+    .select("*");
+  if (error) throw error;
+  return (data as DocumentRow[]).map(fromRow);
 }
 
 export async function updateDocument(id: string, input: PageDocumentInput, authorEmail: string): Promise<PageDocument | null> {

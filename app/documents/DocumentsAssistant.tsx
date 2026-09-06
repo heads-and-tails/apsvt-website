@@ -22,7 +22,7 @@ const examples = [
   "Що робити у випадку булінгу або харасменту?",
 ];
 
-export function DocumentsAssistant() {
+export function DocumentsAssistant({ managedDocumentsCount = 0 }: { managedDocumentsCount?: number }) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState<Answer | null>(null);
   const [error, setError] = useState("");
@@ -59,7 +59,7 @@ export function DocumentsAssistant() {
   return <section className="documents-rag" id="assistant"><div className="wrap">
     <div className="documents-rag-head">
       <div><div className="idx">03 / RAG-помічник</div><h2>Запитайте.<br />Перевірте джерело.</h2></div>
-      <div><b>27 документів · 438 фрагментів</b><p>Помічник не шукає відповідь у відкритому інтернеті — тільки у відібраних офіційних документах Академії.</p></div>
+      <div><b>27 повнотекстових документів{managedDocumentsCount > 0 ? ` · ${managedDocumentsCount} матеріалів кафедр` : ""}</b><p>Помічник не шукає відповідь у відкритому інтернеті — тільки в офіційних документах Академії. Нові матеріали кафедр можна знайти за назвою та описом.</p></div>
     </div>
 
     <div className="documents-rag-grid">
