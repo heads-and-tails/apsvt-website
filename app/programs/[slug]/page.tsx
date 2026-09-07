@@ -91,7 +91,23 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       <Link href="/research/journals#marketing-publications"><span>02</span><small>Наукові видання</small><h3>Монографії кафедри</h3><p>Дві колективні монографії, підготовлені викладачами кафедри.</p><b>→</b></Link>
       <Link href="/research/journals#marketing-publications"><span>03</span><small>Навчальне видання</small><h3>Соціально відповідальний маркетинг</h3><p>Навчальний посібник кафедри.</p><b>→</b></Link>
       <Link href="/materials/3331-0b35c55db.html"><span>04</span><small>Науковий гурток</small><h3>MARKETHINK</h3><p>Матеріали гуртка та участі студентів у конференціях.</p><b>→</b></Link>
-    </div></div></section>,
+    </div>
+    <article className="marketing-international-expertise" id="marketing-international-expertise">
+      <header><div className="idx">05 / Міжнародний вимір</div><h3>Міжнародна та експертна діяльність НПП кафедри</h3></header>
+      <div className="marketing-international-copy">
+        <p>Кафедра маркетингу Академії праці, соціальних відносин і туризму розвиває міжнародну академічну та наукову співпрацю, спрямовану на інтеграцію науково-педагогічних працівників і здобувачів освіти у міжнародний освітній та науковий простір.</p>
+        <p>Викладачі кафедри беруть участь у міжнародних наукових проєктах, науково-практичних конференціях і симпозіумах, роботі організаційних комітетів та редакційних і експертних структур наукових видань, міжнародних програмах професійного розвитку й інших формах академічної співпраці.</p>
+        <p>Міжнародна та експертна діяльність НПП сприяє професійному розвитку викладачів, розширенню академічних контактів, обміну науковими результатами та сучасними освітніми практиками, а також використанню набутого досвіду під час реалізації та оновлення освітніх компонентів ОПП «Маркетинг».</p>
+      </div>
+      <details className="marketing-project-folder">
+        <summary><span><small>Матеріали кафедри</small><strong>Участь у міжнародних проєктах</strong></span><b aria-hidden="true">+</b></summary>
+        <div className="marketing-project-card">
+          <div><span>Учасниця міжнародного наукового проєкту</span><h4>Ольга Базарна · SWorld</h4><p>Із травня 2026 року Ольга Вікторівна Базарна бере участь у міжнародному науковому проєкті SWorld (Україна, Молдова, Болгарія, Німеччина, США та інші країни).</p><p>Вона є членкинею організаційного комітету міжнародних науково-практичних конференцій і симпозіумів, а також редакційних колегій міжнародних наукових журналів «Modern engineering and innovative technologies» та «SWorldJournal».</p></div>
+          <div className="marketing-project-links"><a href="/documents/marketing/bazarna-sworld-certificate-2026.pdf" target="_blank" rel="noreferrer">Сертифікат участі · PDF ↗</a><a href="https://www.proconference.org" target="_blank" rel="noreferrer">Наукові конференції SWorld ↗</a><a href="https://desymp.promonograph.org" target="_blank" rel="noreferrer">Міжнародні симпозіуми ↗</a></div>
+        </div>
+      </details>
+    </article>
+    </div></section>,
     <section className="programme-documents" id="programme-documents" key="marketing-methodical"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">05 / Навчально-методичне забезпечення</div><h2>Офіційні програми й матеріали</h2></div><Link href="/documents#education">Усі освітні документи →</Link></div><div className="programme-document-list">
       {program.materials.map((material, index) => <a href={material.href} target={material.href.endsWith(".pdf") ? "_blank" : undefined} rel={material.href.endsWith(".pdf") ? "noreferrer" : undefined} key={material.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{material.href.endsWith(".pdf") ? "PDF · офіційний документ" : "Матеріали кафедри"}</small><h3>{material.label}</h3></div><b>{material.href.endsWith(".pdf") ? "↗" : "→"}</b></a>)}
       <Link href="/research/journals#marketing-publications"><span>04</span><div><small>Повні тексти</small><h3>Монографії та навчальний посібник кафедри</h3></div><b>→</b></Link>

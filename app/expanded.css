@@ -313,7 +313,27 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .marketing-science-clean-grid h3{max-width:15ch;margin:15px 0;font-size:clamp(28px,3.5vw,48px);line-height:.95;text-wrap:balance}
 .marketing-science-clean-grid p{max-width:44ch;color:#5f6876;line-height:1.6}
 .marketing-science-clean-grid b{position:absolute;right:28px;bottom:24px;color:var(--cobalt);font:34px var(--mono)}
-@media(max-width:700px){.marketing-department-empty{min-height:360px}.marketing-science-clean-grid{grid-template-columns:1fr;margin-inline:-18px}.marketing-science-clean-grid>a{min-height:300px;padding:28px 22px}}
+.marketing-international-expertise{margin-top:clamp(56px,8vw,96px);padding-top:clamp(48px,6vw,72px);border-top:1px solid #69748a}
+.marketing-international-expertise>header{display:grid;grid-template-columns:minmax(0,.8fr) minmax(320px,1.2fr);gap:clamp(28px,6vw,84px);align-items:start}
+.marketing-international-expertise>header h3{max-width:17ch;margin:14px 0 0;font-size:clamp(34px,4.8vw,68px);line-height:.94;text-wrap:balance}
+.marketing-international-copy{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,4vw,52px);margin:46px 0 54px;padding-top:28px;border-top:1px solid #69748a}
+.marketing-international-copy p{margin:0;color:#cbd4e5;font-size:15px;line-height:1.72;text-wrap:pretty}
+.marketing-project-folder{background:var(--gold);color:var(--ink)}
+.marketing-project-folder summary{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:138px;padding:28px 34px;cursor:pointer;list-style:none}
+.marketing-project-folder summary::-webkit-details-marker{display:none}
+.marketing-project-folder summary small,.marketing-project-card>div:first-child>span{display:block;margin-bottom:10px;font:700 10px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.marketing-project-folder summary strong{display:block;font-size:clamp(25px,3vw,40px);line-height:1;text-wrap:balance}
+.marketing-project-folder summary>b{font:42px/1 var(--mono);transition:transform .2s ease}
+.marketing-project-folder[open] summary>b{transform:rotate(45deg)}
+.marketing-project-card{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:clamp(32px,6vw,82px);padding:0 34px 40px;border-top:1px solid rgba(10,20,38,.35)}
+.marketing-project-card>div{padding-top:34px}
+.marketing-project-card h4{margin:12px 0 20px;font-size:clamp(30px,4vw,52px);line-height:.98}
+.marketing-project-card p{max-width:68ch;margin:0 0 16px;color:#283243;line-height:1.65}
+.marketing-project-links{display:flex;flex-direction:column;gap:1px}
+.marketing-project-links a{padding:18px 20px;background:var(--navy);color:#fff;font-weight:800;line-height:1.25}
+.marketing-project-links a:hover{background:var(--cobalt)}
+@media(max-width:900px){.marketing-international-expertise>header,.marketing-international-copy,.marketing-project-card{grid-template-columns:1fr}.marketing-international-copy{gap:22px}.marketing-project-card{gap:10px}}
+@media(max-width:700px){.marketing-department-empty{min-height:360px}.marketing-science-clean-grid{grid-template-columns:1fr;margin-inline:-18px}.marketing-science-clean-grid>a{min-height:300px;padding:28px 22px}.marketing-international-expertise{margin-inline:-18px;padding-inline:18px}.marketing-international-expertise>header h3{overflow-wrap:normal;word-break:normal;hyphens:none}.marketing-project-folder{margin-inline:-18px}.marketing-project-folder summary{min-height:120px;padding:24px 20px}.marketing-project-card{padding:0 20px 28px}.marketing-project-links a{padding:16px}}
 
 /* Final responsive alignment overrides. */
 .leader-info h3{font-size:clamp(22px,2.1vw,30px)}
