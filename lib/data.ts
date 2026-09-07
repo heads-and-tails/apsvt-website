@@ -28,8 +28,25 @@ import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 
 const IMG = "https://images.unsplash.com";
 export const stakeholderDiscussionNewsSlug = "obhovorennia-osvitnikh-prohram-d8-d4-2026";
+export const studyUaExpoNewsSlug = "study-ua-osvitnia-vystavka-kyiv-2026";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-study-ua-expo-kyiv-2026",
+    slug: studyUaExpoNewsSlug,
+    title: "Study.ua запрошує на ювілейну освітню виставку в Києві",
+    excerpt: "26–27 вересня у КВЦ «Парковий» родини зможуть особисто познайомитися з англомовними школами й університетами з різних країн.",
+    body: "26–27 вересня 2026 року в Києві відбудеться ювілейна освітня виставка від Study.ua. Подія орієнтована на батьків і учнів 6–11 класів, які розглядають навчання за кордоном та хочуть напряму поспілкуватися з представниками закордонних закладів освіти.\n\n## Що буде на виставці\n\nОрганізатори анонсують 580 освітніх пропозицій із 27 країн. Відвідувачі зможуть дізнатися про англомовні школи й університети, умови вступу, підготовку документів, навчальні програми та можливості для міжнародної освіти.\n\n## Коли і де\n\n- 26–27 вересня 2026 року\n- Київ, КВЦ «Парковий»\n- Презентації відбуватимуться о 10:00, 11:30, 13:00, 14:30 і 16:00\n\nУчасть безкоштовна за попередньою реєстрацією на офіційній сторінці організатора.",
+    category: "Міжнародні можливості",
+    imageUrl: "/study-ua-expo-kyiv-2026.png",
+    imageAlt: "Міжнародна освіта та навчання за кордоном",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-09-07T09:00:00.000Z",
+    createdAt: "2026-09-07T09:00:00.000Z",
+    updatedAt: "2026-09-07T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-stakeholder-discussion-d8-d4-2026",
     slug: stakeholderDiscussionNewsSlug,
@@ -307,7 +324,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
