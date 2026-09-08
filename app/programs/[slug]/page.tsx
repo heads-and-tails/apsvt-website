@@ -21,6 +21,7 @@ import { EducationQualitySection } from "@/app/components/EducationQualitySectio
 import { AcademicNews } from "@/app/components/AcademicNews";
 import { MarketingTeam } from "./MarketingTeam";
 import { MarketingCareers, MarketingDepartmentAbout } from "./MarketingDepartmentContent";
+import { MarketingStudentLife } from "./MarketingStudentLife";
 
 export const dynamic = "force-dynamic";
 export function generateStaticParams(){return programs.map((program)=>({slug:program.slug}));}
@@ -112,7 +113,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       {program.materials.map((material, index) => <a href={material.href} target={material.href.endsWith(".pdf") ? "_blank" : undefined} rel={material.href.endsWith(".pdf") ? "noreferrer" : undefined} key={material.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{material.href.endsWith(".pdf") ? "PDF · офіційний документ" : "Матеріали кафедри"}</small><h3>{material.label}</h3></div><b>{material.href.endsWith(".pdf") ? "↗" : "→"}</b></a>)}
       <Link href="/research/journals#marketing-publications"><span>04</span><div><small>Повні тексти</small><h3>Монографії та навчальний посібник кафедри</h3></div><b>→</b></Link>
     </div></div></section>,
-    <section className="marketing-student-life" id="marketing-student-life" key="marketing-student-life"><div className="wrap"><div className="sec-head"><div><div className="idx">06 / Студентське життя та самоврядування</div><h2>Навчання поза аудиторією</h2></div><p>Підтверджені сторінки студентської наукової та громадської активності.</p></div><div className="marketing-student-life-grid"><article><span>01 / Науковий гурток</span><h3>MARKETHINK</h3><p>Матеріали гуртка та участі студентів кафедри у наукових заходах.</p><Link href="/materials/3331-0b35c55db.html">Відкрити матеріали →</Link></article><article><span>02 / Самоврядування</span><h3>Студентська рада</h3><p>Представництво студентів, ініціативи, події та участь у житті Академії.</p><Link href="/students/council">Перейти до студентської ради →</Link></article></div></div></section>,
+    <MarketingStudentLife key="marketing-student-life" />,
     <MarketingCareers key="marketing-careers" />,
     <div id="department-news" key="marketing-news"><AcademicNews slugs={[slug]} title="Новини кафедри маркетингу" /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType))} /></div>,
   ] : null;
