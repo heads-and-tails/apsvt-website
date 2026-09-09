@@ -14,6 +14,7 @@ export async function GET(request: Request) {
   return NextResponse.json(entries.map((entry) => ({
     id: entry.id,
     pagePath: entry.pagePath,
+    sectionId: entry.sectionId,
     entryType: entry.entryType,
     title: entry.title,
     summary: entry.summary,

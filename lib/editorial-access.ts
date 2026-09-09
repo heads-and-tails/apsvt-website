@@ -1,3 +1,5 @@
+import { lawFacultySubpages } from "./law-faculty-structure";
+
 export type EditorialAccessOption = {
   value: string;
   label: string;
@@ -42,6 +44,7 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/stories", label: "Історії Академії", group: "page" },
   { value: "/departments/economics-social-tourism-faculty", label: "Факультет економіки, соціальних технологій і туризму", group: "department" },
   { value: "/departments/law-faculty", label: "Юридичний факультет", group: "department" },
+  ...lawFacultySubpages.map((page): EditorialAccessOption => ({ value: page.path, label: `Юридичний факультет · ${page.parentTitle} · ${page.title}`, group: "department" })),
   { value: "/departments/psychology-social-development-faculty", label: "Факультет психології та соціального розвитку", group: "department" },
   { value: "/departments/psychology-social-development-faculty/clinical-psychology", label: "Кафедра клінічної психології та психотерапії", group: "department" },
   { value: "/departments/psychology-social-development-faculty/business-psychology", label: "Кафедра психології бізнесу та управління", group: "department" },
@@ -96,6 +99,10 @@ export function serializeEditorialAccessScopes(value: string[]): string {
 
 export function canEditPage(profile: { role: string; accessScopes: string[] }, pagePath: string): boolean {
   if (profile.role === "admin" || profile.accessScopes.includes("*")) return true;
+  if (profile.accessScopes.includes("/departments/law-faculty")) {
+    const facultyPages = ["/departments/constitutional-law", "/departments/private-law", "/departments/criminal-law", "/programs/public-administration", "/programs/law"];
+    if (facultyPages.some((path) => pagePath === path || pagePath.startsWith(`${path}/`))) return true;
+  }
   return profile.accessScopes.some((scope) => scope === pagePath || (scope !== "/" && pagePath.startsWith(`${scope}/`)));
 }
 

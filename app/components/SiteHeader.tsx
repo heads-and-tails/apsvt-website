@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SiteSearch } from "./SiteSearch";
+import { lawFacultyPath, lawFacultyStructure } from "@/lib/law-faculty-structure";
 
 type NavItem = {
   href: string;
@@ -18,26 +19,13 @@ const ukLinks: readonly NavItem[] = [
     { href: "/vacancies", label: "Вакансії" }, { href: "/news", label: "Новини" }, { href: "/news/archive", label: "Архів новин" }, { href: "/contacts", label: "Контакти" },
   ] },
   { href: "/programs", label: "Освіта", children: [
-    { href: "/programs", label: "Усі програми" }, { href: "/programs/law", label: "Право" },
+    { href: "/programs", label: "Усі програми" }, { href: "/departments/law-faculty#faculty-programmes", label: "Право" },
     { href: "/programs/public-administration", label: "Публічне управління" }, { href: "/programs/psychology", label: "Психологія" },
     { href: "/programs/finance", label: "Фінанси" }, { href: "/programs/marketing", label: "Маркетинг" },
     { href: "/programs/management", label: "Менеджмент" }, { href: "/programs/social-work", label: "Соціальна робота" },
     { href: "/programs/professional-education", label: "Професійна освіта · Digital" },
   ] },
-  { href: "/departments/law-faculty", label: "Юридичний факультет", children: [
-    { href: "/departments/law-faculty#faculty-about", label: "Про факультет" },
-    { href: "/departments/law-faculty#faculty-leadership", label: "Керівництво й деканат" },
-    { href: "/departments/law-faculty#departments", label: "Кафедри" },
-    { href: "/departments/law-faculty#faculty-practice-centres", label: "Клініка й лабораторія" },
-    { href: "/departments/law-faculty#faculty-practice-bases", label: "Бази практики" },
-    { href: "/departments/law-faculty#faculty-science", label: "Наука й гуртки" },
-    { href: "/departments/law-faculty#faculty-governance", label: "Вчена рада й самоврядування" },
-    { href: "/departments/law-faculty#law-teachers", label: "Колектив факультету" },
-    { href: "/departments/law-faculty#faculty-programmes", label: "Освітні програми" },
-    { href: "/departments/law-faculty#faculty-repository", label: "Репозитарій і обговорення" },
-    { href: "/departments/law-faculty#faculty-quality", label: "Якість і документи" },
-    { href: "/departments/law-faculty#department-news", label: "Новини факультету" },
-  ] },
+  { href: lawFacultyPath, label: "Юридичний факультет", children: lawFacultyStructure.map((section) => ({ href: `${lawFacultyPath}#${section.id}`, label: section.title })) },
   { href: "/admissions", label: "Вступнику", children: [
     { href: "/admissions#route", label: "Як вступити" }, { href: "/admissions#dates", label: "Ключові дати" },
     { href: "/tuition", label: "Вартість і оплата" }, { href: "/admissions#entrance-exams", label: "Розклад випробувань" },

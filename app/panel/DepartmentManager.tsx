@@ -11,6 +11,8 @@ import {
 import { canEditPage, editorialAccessOptions } from "@/lib/editorial-access";
 import { educationQualityRubrics, normalizeEducationQualityRubricId } from "@/lib/education-quality";
 import { uploadEditorialFile } from "@/lib/editorial-upload-client";
+import { editorialSectionsForPage } from "@/lib/editorial-sections";
+import { lawFacultyPath, lawFacultyLegacySections, lawFacultySubpages } from "@/lib/law-faculty-structure";
 
 const typeLabels: Record<DepartmentEntryType, { label: string; singular: string; hint: string }> = {
   override: { label: "Увесь вміст", singular: "зміну існуючого елемента", hint: "Усі тексти, фото й посилання, які вже розміщені на сторінці" },
@@ -432,15 +434,17 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
   const inventoryGroups = useMemo(() => groupExistingElements(inventory), [inventory]);
   const pageSections = useMemo(() => {
     const sections = new Map<string, { id: string; label: string; nativeCount: number; managedCount: number }>();
+    editorialSectionsForPage(pagePath).forEach((section) => sections.set(section.id, { ...section, nativeCount: 0, managedCount: 0 }));
     inventoryGroups.forEach((group) => {
       const existing = sections.get(group.sectionId);
       if (existing) existing.nativeCount += 1;
       else sections.set(group.sectionId, { id: group.sectionId, label: group.sectionLabel, nativeCount: 1, managedCount: 0 });
     });
     entries.filter((entry) => entry.pagePath === pagePath && entry.sectionId).forEach((entry) => {
-      const existing = sections.get(entry.sectionId);
+      const sectionId = pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId;
+      const existing = sections.get(sectionId);
       if (existing) existing.managedCount += 1;
-      else sections.set(entry.sectionId, { id: entry.sectionId, label: entry.sectionId.replace(/[-_]+/g, " "), nativeCount: 0, managedCount: 1 });
+      else sections.set(sectionId, { id: sectionId, label: sectionId.replace(/[-_]+/g, " "), nativeCount: 0, managedCount: 1 });
     });
     return Array.from(sections.values());
   }, [entries, inventoryGroups, pagePath]);
@@ -449,7 +453,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     [activeSection, inventoryGroups],
   );
   const visible = useMemo(() => entries
-    .filter((entry) => entry.pagePath === pagePath && entry.entryType === entryType && (activeSection === "all" || entry.sectionId === activeSection))
+    .filter((entry) => entry.pagePath === pagePath && entry.entryType === entryType && (activeSection === "all" || (pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId) === activeSection))
     .sort((a, b) => a.sortOrder - b.sortOrder), [activeSection, entries, pagePath, entryType]);
   const inventoryLoading = inventoryResult.path !== pagePath;
   const categorizedInventoryGroups = useMemo(() => new Map<CategorizedEntryType, ExistingPageGroupView[]>(
@@ -503,13 +507,14 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
   }
 
   function startEdit(entry: DepartmentEntry) {
+    const sectionId = entry.pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId;
     setPagePath(entry.pagePath);
-    setActiveSection(entry.sectionId || "all");
+    setActiveSection(sectionId || "all");
     setEntryType(entry.entryType);
     setEditing(entry.id);
     setForm({
       pagePath: entry.pagePath,
-      sectionId: entry.sectionId,
+      sectionId,
       entryType: entry.entryType,
       title: entry.title,
       summary: entry.summary,
@@ -670,7 +675,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     <div className="department-page-picker"><label>Сторінка<select value={pagePath} onChange={(event) => choosePage(event.target.value)}>{pagePickerGroups.map((group) => <optgroup label={group.label} key={group.label}>{group.options.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</optgroup>)}</select></label><div><b>{pageLabel(pagePath)}</b><span>{inventoryLoading ? "Зчитуємо вміст сторінки…" : `${inventoryGroups.length} блоків вже на сайті · ${entries.filter((entry) => entry.pagePath === pagePath).length} додано через панель`}</span></div></div>
     {pageSections.length > 0 && <section className="department-section-picker" aria-label="Розділи обраної сторінки"><header><div><small>Крок 1</small><h3>Оберіть розділ сторінки</h3></div><p>Панель покаже тільки вміст вибраного розділу — без довгого загального списку.</p></header><div role="tablist" aria-label="Розділи сторінки"><button type="button" role="tab" aria-selected={activeSection === "all"} className={activeSection === "all" ? "active" : ""} onClick={() => chooseSection("all")}><span>Усі</span><b>Усі розділи</b><small>{inventoryGroups.length + entries.filter((entry) => entry.pagePath === pagePath && entry.entryType !== "override").length}</small></button>{pageSections.map((section, index) => <button type="button" role="tab" aria-selected={activeSection === section.id} className={activeSection === section.id ? "active" : ""} onClick={() => chooseSection(section.id)} key={section.id}><span>{String(index + 1).padStart(2, "0")}</span><b>{section.label}</b><small>{section.nativeCount + section.managedCount}</small></button>)}</div></section>}
     <div className="department-tab-intro"><b>{pageSections.length > 0 ? "Крок 2 · Що потрібно змінити?" : "Що потрібно змінити?"}</b><span>Оберіть тип матеріалу. Усі варіанти видно одразу — без горизонтальної прокрутки.</span></div>
-    <div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} title={typeLabels[type].hint} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? sectionInventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type && (activeSection === "all" || entry.sectionId === activeSection)).length + (categorizedInventoryGroups.get(type)?.length || 0)}</span></button>)}</div>
+    {pagePath === lawFacultyPath && activeSection !== "all" && <nav className="faculty-subpage-links" aria-label="Редагування підрозділів">{lawFacultySubpages.filter((page) => page.sectionId === activeSection).map((page) => <button type="button" key={page.path} onClick={() => choosePage(page.path)}>{page.title} →</button>)}</nav>}<div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} title={typeLabels[type].hint} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? sectionInventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type && (activeSection === "all" || (pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId) === activeSection)).length + (categorizedInventoryGroups.get(type)?.length || 0)}</span></button>)}</div>
     <div className="operations-layout">
       <form className="operations-form" id="department-entry-editor" onSubmit={save}>
         <div className="operations-form-head"><div><small>{typeLabels[editorType].hint}</small><h3>{isOverride && !form.body ? "Оберіть елемент праворуч" : editing ? `Редагувати ${typeLabels[editorType].singular}` : `Додати ${typeLabels[editorType].singular}`}</h3></div>{(editing || (isOverride && form.body)) && <button type="button" onClick={reset}>Скасувати</button>}</div>

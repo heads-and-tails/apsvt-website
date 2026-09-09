@@ -9,6 +9,7 @@ export type SectionHubItem = {
   description: string;
   icon: string;
   aliases?: readonly string[];
+  links?: readonly { href: string; title: string }[];
 };
 
 type SectionHubProps = {
@@ -20,6 +21,7 @@ type SectionHubProps = {
   promptTitle?: string;
   promptDescription?: string;
   backLabel?: string;
+  extraContent?: readonly ReactNode[];
 };
 
 function readHash() {
@@ -43,6 +45,7 @@ export function SectionHub({
   promptTitle = "Оберіть одну іконку",
   promptDescription = "Матеріали з’являться тут після натискання.",
   backLabel = "До всіх розділів",
+  extraContent,
 }: SectionHubProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const catalogRef = useRef<HTMLDivElement>(null);
@@ -80,7 +83,8 @@ export function SectionHub({
   useEffect(() => {
     if (!activeId) return;
     const frame = window.requestAnimationFrame(() => {
-      panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const target = document.getElementById(readHash());
+      (target && panelRef.current?.contains(target) ? target : panelRef.current)?.scrollIntoView({ behavior: "smooth", block: "start" });
       panelRef.current?.focus({ preventScroll: true });
     });
     return () => window.cancelAnimationFrame(frame);
@@ -167,7 +171,11 @@ export function SectionHub({
             </button>
           </div>
         </div>
-        <div className="admissions-active-content">{sectionContent[index]}</div>
+        <div className="admissions-active-content">
+          {!!section.links?.length && <nav className="wrap faculty-subpage-links" aria-label={`${section.title}: підрозділи`}>{section.links.map((link) => <a key={link.href} href={link.href}>{link.title}<span aria-hidden="true">→</span></a>)}</nav>}
+          {sectionContent[index]}
+          {extraContent?.[index]}
+        </div>
       </section>;
     })}
   </section>;
