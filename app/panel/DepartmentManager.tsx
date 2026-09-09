@@ -124,7 +124,14 @@ function inventoryGroupType(group: Element): CategorizedEntryType {
   return "section";
 }
 
-function inventorySection(element: Element, root: Element, groupType: CategorizedEntryType): { id: string; label: string } {
+function inventorySection(element: Element, root: Element, groupType: CategorizedEntryType, declared: { id: string; label: string }[] = []): { id: string; label: string } {
+  if (declared.length) {
+    for (let ancestor: Element | null = element; ancestor && root.contains(ancestor); ancestor = ancestor.parentElement) {
+      const section = declared.find(({ id }) => id === ancestor!.id);
+      if (section) return section;
+    }
+    if (groupType === "hero") return { id: "hero", label: typeLabels.hero.label };
+  }
   const container = element.closest("section[id]") || element.closest("[id]");
   if (container && root.contains(container)) {
     const id = container.getAttribute("id")?.trim() || "";
@@ -317,6 +324,7 @@ function extractExistingElements(payload: InventoryPayload): ExistingPageElement
   const root = documentSnapshot.querySelector("main");
   if (!root) return [];
   const elements: ExistingPageElement[] = [];
+  const declaredSections = editorialSectionsForPage(payload.pagePath);
   let order = 0;
   root.querySelectorAll(`${inventoryTextSelector},img,a[href]`).forEach((element) => {
     if (element.closest(inventoryExcludedSelector)) return;
@@ -328,7 +336,7 @@ function extractExistingElements(payload: InventoryPayload): ExistingPageElement
     const rawText = normalizedText(element);
     const groupLabel = inventoryGroupLabel(group, rawText);
     const groupType = inventoryGroupType(group);
-    const section = inventorySection(element, root, groupType);
+    const section = inventorySection(element, root, groupType, declaredSections);
 
     if (tag === "img") {
       const image = element as HTMLImageElement;
