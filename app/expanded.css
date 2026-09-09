@@ -1024,6 +1024,27 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 
 /* Marketing department: editorial profiles extracted from the department CVs. */
 .marketing-team-section{background:#ecebe4;scroll-margin-top:88px}
+/* Source-authored profiles: retain every paragraph and expand one biography at a time. */
+.marketing-verbatim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start;margin-top:32px}
+.marketing-verbatim-card{min-width:0;padding:24px;background:#f8f6ef;border:1px solid var(--line)}
+.marketing-verbatim-overview{display:grid;grid-template-columns:140px minmax(0,1fr);gap:24px;align-items:center}
+.marketing-verbatim-photo{position:relative;aspect-ratio:3/4;overflow:hidden;background:#e3e5e8}
+.marketing-verbatim-photo img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.marketing-verbatim-photo>span{position:absolute;top:8px;left:8px;padding:6px;background:var(--gold);font:700 10px var(--mono)}
+.marketing-verbatim-overview h3{font-size:clamp(19px,1.7vw,25px);line-height:1.3;letter-spacing:0;text-transform:none;overflow-wrap:normal;word-break:normal;hyphens:none;margin:0}
+.marketing-verbatim-overview p{font-size:14px;line-height:1.6;margin:12px 0 0}
+.marketing-verbatim-card>details{margin-top:24px}
+.marketing-verbatim-card>details>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;list-style:none;padding:16px 0;border-block:1px solid var(--line);font:700 12px/1.5 var(--mono)}
+.marketing-verbatim-card>details>summary::-webkit-details-marker{display:none}
+.marketing-verbatim-card>details>summary>span{font-size:22px;color:var(--cobalt)}
+.marketing-verbatim-card>details[open]>summary>span{transform:rotate(45deg)}
+.marketing-verbatim-card>details>summary:focus-visible{outline:3px solid var(--cobalt);outline-offset:4px}
+.marketing-verbatim-text{padding-top:10px}
+.marketing-verbatim-text :is(p,h4){white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;text-transform:none;letter-spacing:normal;max-width:100%;margin:16px 0 0;font:400 15px/1.75 var(--sans,Arial,sans-serif)}
+.marketing-verbatim-text h4{font-weight:700;color:var(--ink);margin-top:26px}
+.marketing-verbatim-text a{color:var(--cobalt);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+@media(max-width:980px){.marketing-verbatim-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.marketing-verbatim-card{padding:18px}.marketing-verbatim-overview{grid-template-columns:100px minmax(0,1fr);gap:16px}.marketing-verbatim-overview h3{font-size:18px}.marketing-verbatim-overview p{font-size:13px}}
 .marketing-team-head{align-items:end}
 .marketing-team-head h2{font-size:clamp(42px,6.5vw,88px);line-height:.9;max-width:10ch}
 .marketing-team-head>p{max-width:42ch;font-size:15px;line-height:1.65;color:#596474}
