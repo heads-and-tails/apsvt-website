@@ -127,7 +127,7 @@ function inventoryGroupType(group: Element): CategorizedEntryType {
 function inventorySection(element: Element, root: Element, groupType: CategorizedEntryType, declared: { id: string; label: string }[] = []): { id: string; label: string } {
   if (declared.length) {
     for (let ancestor: Element | null = element; ancestor && root.contains(ancestor); ancestor = ancestor.parentElement) {
-      const section = declared.find(({ id }) => id === ancestor!.id);
+      const section = declared.find(({ id }) => id === ancestor!.id || (ancestor!.classList.contains("admissions-active-panel") && ancestor!.id.endsWith(`-${id}`)));
       if (section) return section;
     }
     if (groupType === "hero") return { id: "hero", label: typeLabels.hero.label };
