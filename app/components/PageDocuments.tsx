@@ -6,9 +6,9 @@ function fileSize(value: number): string {
   return `${(value / (1024 * 1024)).toFixed(1)} МБ`;
 }
 
-export async function PageDocuments({ pagePath }: { pagePath: string }) {
+export async function PageDocuments({ pagePath, emptyMessage }: { pagePath: string; emptyMessage?: string }) {
   const documents = await getPublicDocuments(pagePath);
-  if (!documents.length) return null;
+  if (!documents.length) return emptyMessage ? <div className="wrap"><p className="academic-empty-state">{emptyMessage}</p></div> : null;
 
   return <section className="page-documents"><div className="wrap">
     <div className="sec-head"><div><div className="idx">Документи сторінки</div><h2>Файли та офіційні матеріали</h2></div><p>Актуальні документи, додані редакцією Академії.</p></div>

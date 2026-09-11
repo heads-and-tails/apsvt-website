@@ -1,4 +1,5 @@
 import { lawFacultyPath, lawFacultyStructure, lawFacultySubpages } from "./law-faculty-structure";
+import { digitalDepartmentPath, digitalDepartmentSections, professionalEducationProgrammes, professionalEducationSections } from "./professional-education";
 
 export const financeProjectSections = [
   { id: "greenfinedu", label: "Jean Monnet GreenFinEDU" },
@@ -8,6 +9,8 @@ export const financeProjectSections = [
 ] as const;
 
 export function editorialSectionsForPage(path: string): { id: string; label: string }[] {
+  if (path === digitalDepartmentPath) return [...digitalDepartmentSections];
+  if (professionalEducationProgrammes.some((page) => page.path === path)) return [...professionalEducationSections];
   if (path === lawFacultyPath) return lawFacultyStructure.map(({ id, title }) => ({ id, label: title }));
   const page = lawFacultySubpages.find((item) => item.path === path);
   if (page) return [{ id: "content", label: page.title }];

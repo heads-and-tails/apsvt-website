@@ -1,4 +1,5 @@
 import { lawFacultySubpages } from "./law-faculty-structure";
+import { digitalDepartmentPath, digitalDepartmentTitle, professionalEducationProgrammes } from "./professional-education";
 
 export type EditorialAccessOption = {
   value: string;
@@ -63,6 +64,8 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/departments/criminal-law", label: "Кафедра кримінального права, процесу та криміналістики", group: "department" },
   { value: "/programs/social-work", label: "Кафедра соціальної роботи", group: "department" },
   { value: "/programs/professional-education", label: "Професійна освіта · Цифрові технології", group: "department" },
+  ...professionalEducationProgrammes.map((page): EditorialAccessOption => ({ value: page.path, label: `${page.title} · ${page.degree}`, group: "department" })),
+  { value: digitalDepartmentPath, label: digitalDepartmentTitle, group: "department" },
   { value: "/departments/languages-humanities", label: "Кафедра іноземних мов та гуманітарних дисциплін", group: "department" },
 ];
 
