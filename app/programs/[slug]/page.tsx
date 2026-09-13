@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { PageDocuments } from "../../components/PageDocuments";
@@ -23,10 +23,10 @@ import { MarketingTeam } from "./MarketingTeam";
 import { MarketingCareers, MarketingDepartmentAbout } from "./MarketingDepartmentContent";
 import { MarketingStudentLife } from "./MarketingStudentLife";
 import { FinanceInternational, financeProjectSections } from "./FinanceInternational";
-import { ProfessionalEducationLinks } from "@/app/components/ProfessionalEducationLinks";
+import { digitalDepartmentPath } from "@/lib/professional-education";
 
 export const dynamic = "force-dynamic";
-export function generateStaticParams(){return programs.map((program)=>({slug:program.slug}));}
+export function generateStaticParams(){return programs.filter((program)=>program.slug !== "professional-education").map((program)=>({slug:program.slug}));}
 
 const programmeSections: readonly SectionHubItem[] = [
   { id: "overview", index: "01", title: "Про програму", description: "Зміст, результати навчання, рівні освіти та вартість.", icon: "OP", aliases: ["education-levels"] },
@@ -66,6 +66,7 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
 
 export default async function Page({params}:{params:Promise<{slug:string}>}){
   const slug=(await params).slug;const program=getProgram(slug);if(!program)notFound();
+  if (slug === "professional-education") redirect(`${digitalDepartmentPath}#programmes`);
   const departmentEntries = await getDepartmentEntries(`/programs/${slug}`);
   const programmeProfile = getProgrammeProfile(slug);
   const programmeTeam = slug === "marketing" ? marketingTeam : programmeProfile?.team || [];
@@ -142,7 +143,6 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   const specialSectionContent = marketingSectionContent || financeSectionContent;
   return <main id="top" data-page-materials-server="true"><SiteHeader />
     <section className="program-hero" data-program={program.slug}><div className="program-hero-bg"><img src={program.image} alt="" /></div><div className="wrap program-hero-in"><Link href="/programs" className="back-link">← Усі програми</Link><span className="program-code">{program.code}</span><h1>{program.title}</h1><p>{program.short}</p></div></section><div className="hero-rule" />
-    {slug === "professional-education" && <ProfessionalEducationLinks showDepartment />}
     <SectionHub sections={activeSections} eyebrow={slug === "marketing" ? "Навігатор кафедри маркетингу" : slug === "finance" ? "Навігатор кафедри фінансів" : `Навігатор програми ${program.code}`} description={navigatorDescription}>
     {specialSectionContent || <>
     <section id="overview"><div className="wrap program-intro"><div><div className="idx">01 / Спеціальність і програма</div><h2>Навчання з практичним результатом</h2><p className="program-lede">{program.overview}</p><div className="focus-list">{program.focus.map((item,i)=><div key={item}><span>0{i+1}</span><b>{item}</b></div>)}</div></div><aside className="program-facts" id="education-levels"><div><span>Рівень</span><b>{program.levels}</b></div><div><span>Тривалість бакалаврату</span><b>{program.duration}</b></div><div><span>Бакалаврат, денна</span><b>{program.price}</b></div><div><span>Бакалаврат, заочна</span><b>{program.partTimePrice}</b></div>{program.masterPrice&&<div><span>Магістратура, денна</span><b>{program.masterPrice}</b></div>}{program.masterPartTimePrice&&<div><span>Магістратура, заочна</span><b>{program.masterPartTimePrice}</b></div>}<small>Вартість для вступників 2026 року, за один навчальний рік.</small><Link className="cta" href="/tuition#calculator"><span>Усі тарифи й оплата</span></Link></aside></div></section>
