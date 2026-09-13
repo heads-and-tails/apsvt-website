@@ -23,7 +23,7 @@ const ukLinks: readonly NavItem[] = [
     { href: "/programs/public-administration", label: "Публічне управління" }, { href: "/programs/psychology", label: "Психологія" },
     { href: "/programs/finance", label: "Фінанси" }, { href: "/programs/marketing", label: "Маркетинг" },
     { href: "/programs/management", label: "Менеджмент" }, { href: "/programs/social-work", label: "Соціальна робота" },
-    { href: "/programs/professional-education", label: "Професійна освіта · Digital" },
+    { href: "/departments/digital-technologies#programmes", label: "Професійна освіта · 5 програм" },
   ] },
   { href: lawFacultyPath, label: "Юридичний факультет", children: lawFacultyStructure.map((section) => ({ href: `${lawFacultyPath}#${section.id}`, label: section.title })) },
   { href: "/admissions", label: "Вступнику", children: [

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./expanded.css";
+import "./academic-hierarchy.css";
 import { SiteMotion } from "./components/SiteMotion";
 import { UniversalPageMaterials } from "./components/UniversalPageMaterials";
 

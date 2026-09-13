@@ -5,6 +5,8 @@ export type EditorialAccessOption = {
   value: string;
   label: string;
   group: "all" | "page" | "department";
+  parentPath?: string;
+  legacy?: boolean;
 };
 
 export const editorialAccessOptions: EditorialAccessOption[] = [
@@ -63,9 +65,9 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/departments/private-law", label: "Кафедра цивільного, трудового та господарського права", group: "department" },
   { value: "/departments/criminal-law", label: "Кафедра кримінального права, процесу та криміналістики", group: "department" },
   { value: "/programs/social-work", label: "Кафедра соціальної роботи", group: "department" },
-  { value: "/programs/professional-education", label: "Професійна освіта · Цифрові технології", group: "department" },
-  ...professionalEducationProgrammes.map((page): EditorialAccessOption => ({ value: page.path, label: `${page.title} · ${page.degree}`, group: "department" })),
+  { value: "/programs/professional-education", label: "Професійна освіта · попередня сторінка", group: "department", legacy: true },
   { value: digitalDepartmentPath, label: digitalDepartmentTitle, group: "department" },
+  ...professionalEducationProgrammes.map((page): EditorialAccessOption => ({ value: page.path, label: `${page.title} · ${page.degree}`, group: "department", parentPath: digitalDepartmentPath })),
   { value: "/departments/languages-humanities", label: "Кафедра іноземних мов та гуманітарних дисциплін", group: "department" },
 ];
 
@@ -102,6 +104,7 @@ export function serializeEditorialAccessScopes(value: string[]): string {
 
 export function canEditPage(profile: { role: string; accessScopes: string[] }, pagePath: string): boolean {
   if (profile.role === "admin" || profile.accessScopes.includes("*")) return true;
+  if (profile.accessScopes.includes(digitalDepartmentPath) && professionalEducationProgrammes.some((page) => page.path === pagePath)) return true;
   if (profile.accessScopes.includes("/departments/law-faculty")) {
     const facultyPages = ["/departments/constitutional-law", "/departments/private-law", "/departments/criminal-law", "/programs/public-administration", "/programs/law"];
     if (facultyPages.some((path) => pagePath === path || pagePath.startsWith(`${path}/`))) return true;

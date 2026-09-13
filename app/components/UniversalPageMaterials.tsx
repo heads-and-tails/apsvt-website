@@ -47,6 +47,7 @@ export function UniversalPageMaterials() {
     if (isIgnoredPath(pathname)) return;
     const hero = entries.find((entry) => entry.entryType === "hero");
     if (!hero) return;
+    if (document.querySelector('[data-editorial-hero-server="true"]')) return;
     const heading = document.querySelector<HTMLElement>("main h1");
     const summary = document.querySelector<HTMLElement>(
       ".program-hero-in > p, .phero .hero-copy > p, .phero .wrap > p, .detail-deck, main h1 + p",

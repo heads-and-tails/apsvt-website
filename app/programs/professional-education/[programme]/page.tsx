@@ -6,7 +6,7 @@ import { SiteFooter } from "@/app/components/SiteFooter";
 import { PageDocuments } from "@/app/components/PageDocuments";
 import { EditableAcademicSections } from "@/app/components/EditableAcademicSections";
 import { getDepartmentEntries } from "@/lib/department-content";
-import { digitalDepartmentPath, digitalDepartmentTitle, professionalEducationPath, professionalEducationProgrammes, professionalEducationSections } from "@/lib/professional-education";
+import { digitalDepartmentPath, digitalDepartmentTitle, professionalEducationProgrammes, professionalEducationSections } from "@/lib/professional-education";
 
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ programme: string }> };
@@ -21,11 +21,13 @@ export default async function Page({ params }: Props) {
   const page = professionalEducationProgrammes.find((item) => item.slug === programme);
   if (!page) notFound();
   const entries = await getDepartmentEntries(page.path);
-  return <main id="top" data-page-materials-server="true"><SiteHeader />
+  const hero = entries.find((entry) => entry.entryType === "hero");
+  return <main id="top" data-page-materials-server="true" data-editorial-hero-server="true"><SiteHeader />
     <section className="faculty-subpage-hero professional-programme-hero"><div className="wrap">
-      <nav aria-label="Навігаційний ланцюжок"><Link href="/programs">Освітні програми</Link><span> / </span><Link href={`${professionalEducationPath}#programme-levels`}>Професійна освіта</Link><span> / {page.degree}</span></nav>
-      <span className="professional-degree">{page.degree}</span><h1>{page.title}</h1><p>{page.level}</p>
-      <Link href={digitalDepartmentPath}>{digitalDepartmentTitle} →</Link>
+      <nav aria-label="Навігаційний ланцюжок"><Link href="/departments">Кафедри</Link><span> / </span><Link href={digitalDepartmentPath}>{digitalDepartmentTitle}</Link><span> / {page.degree}</span></nav>
+      <span className="professional-degree">{page.degree}</span><h1>{hero?.title || page.title}</h1><p>{page.level}</p>
+      {hero?.summary && <p>{hero.summary}</p>}{hero?.imageUrl && <img className="academic-editorial-cover" src={hero.imageUrl} alt={hero.imageAlt || hero.title} />}
+      <Link href={`${digitalDepartmentPath}#programmes`}>← Усі освітні програми кафедри</Link>
     </div></section>
     <details className="wrap faculty-sibling-nav"><summary>Інші програми та рівні освіти</summary><nav className="faculty-subpage-links" aria-label="Інші освітні програми">{professionalEducationProgrammes.map((item) => <Link href={item.path} aria-current={item.slug === page.slug ? "page" : undefined} key={item.slug}>{item.title} · {item.degree}</Link>)}</nav></details>
     <EditableAcademicSections sections={professionalEducationSections} entries={entries} pagePath={page.path} content={{

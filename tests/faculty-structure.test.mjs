@@ -18,6 +18,30 @@ function load(relative) {
 const structure = load('lib/law-faculty-structure.ts');
 const access = load('lib/editorial-access.ts');
 const registry = load('lib/editorial-sections.ts');
+const digital = load('lib/professional-education.ts');
+
+test('digital department owns five separately editable programmes in the requested order', () => {
+  assert.deepEqual(digital.professionalEducationProgrammes.map(p => p.slug), ['digital-bachelor', 'digital-master', 'information-security-bachelor', 'information-security-master', 'phd']);
+  const editor = { role: 'editor', accessScopes: [digital.digitalDepartmentPath] };
+  for (const page of digital.professionalEducationProgrammes) {
+    assert.equal(access.editorialAccessOptions.find(p => p.value === page.path).parentPath, digital.digitalDepartmentPath);
+    assert.ok(access.canEditPage(editor, page.path));
+    assert.equal(registry.editorialSectionsForPage(page.path).length, 9);
+  }
+  assert.equal(registry.editorialSectionsForPage(digital.digitalDepartmentPath).length, 10);
+  for (const page of ['/programs/law', '/programs/finance', '/panel', '/programs/professional-education/unknown']) assert.equal(access.canEditPage(editor, page), false);
+  assert.ok(access.editorialAccessOptions.find(p => p.value === digital.professionalEducationPath).legacy);
+  assert.ok(access.canEditPage({role:'editor', accessScopes:[digital.professionalEducationPath]}, digital.professionalEducationProgrammes[0].path));
+});
+
+test('department renders the saved cover and old programme landing redirects', () => {
+  const source = fs.readFileSync(path.join(root, 'app/departments/digital-technologies/page.tsx'), 'utf8');
+  assert.ok(source.includes('hero?.imageUrl'));
+  assert.ok(source.includes('hero?.summary'));
+  assert.ok(source.includes('data-editorial-hero-server="true"'));
+  const legacy = fs.readFileSync(path.join(root, 'app/programs/professional-education/page.tsx'), 'utf8');
+  assert.ok(legacy.includes('redirect(`${digitalDepartmentPath}#programmes`)'));
+});
 
 test('faculty sections are separate and normative documents replace quality', () => {
   const ids = structure.lawFacultyStructure.map((section) => section.id);

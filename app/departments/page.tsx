@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { doctoralProgrammes } from "@/lib/academy-resources";
+import { professionalEducationProgrammes } from "@/lib/professional-education";
 
 export const metadata: Metadata = {
   title: "Кафедри Академії",
@@ -19,7 +20,7 @@ const facultyGroups = [
       { id: "finance", title: "Кафедра фінансів", text: "Фінансовий аналіз, банківська справа, страхування та сталі фінанси.", href: "/departments#finance", programmes: [{ code: "D2", title: "Фінанси", href: "/programs/finance" }] },
       { id: "economics-management", title: "Кафедра економіки підприємства та менеджменту", text: "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", href: "/departments#economics-management", programmes: [{ code: "D3", title: "Менеджмент", href: "/programs/management" }, { code: "D7", title: "Торгівля", href: "/programs/trade" }] },
       { id: "marketing", title: "Кафедра маркетингу", text: "Ринкова аналітика, бренди, комунікації, digital і поведінка споживачів.", href: "/departments#marketing", programmes: [{ code: "D5", title: "Маркетинг", href: "/programs/marketing" }] },
-      { id: "digital-technologies", title: "Кафедра інтелектуальних систем та цифрових технологій", text: "Інформаційні системи, цифрові освітні технології та управління інформаційною безпекою.", href: "/departments/digital-technologies", programmes: [{ code: "A5", title: "Професійна освіта · Бакалавр · Магістр · PhD", href: "/programs/professional-education#programme-levels" }] },
+      { id: "digital-technologies", title: "Кафедра інтелектуальних систем та цифрових технологій", text: "Інформаційні системи, цифрові освітні технології та управління інформаційною безпекою.", href: "/departments/digital-technologies", programmes: professionalEducationProgrammes.map((page) => ({ code: "A5", title: `${page.title} · ${page.degree}`, href: page.path })) },
     ],
   },
   {
