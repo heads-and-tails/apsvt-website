@@ -1182,6 +1182,10 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .september-results-group>summary>span{display:block;margin-top:10px;font:12px var(--mono);color:var(--cobalt)}
 .september-results-group>summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
 .september-results-group .entrance-result-documents{padding:0 16px 16px}
+#results-september-9-2026{color:var(--ink);margin-top:32px}
+#results-september-9-2026 .entrance-result-documents small{color:#515d70}
+#results-september-9-2026 .entrance-result-documents>a>span,#results-september-9-2026 .entrance-result-action b{color:var(--cobalt)}
+#results-september-9-2026 .entrance-result-documents>a:hover{background:#f1f3ff}
 .entrance-session-folder>summary{min-height:190px;padding:26px;display:grid;grid-template-columns:150px minmax(0,1fr) 48px;gap:26px;align-items:center;list-style:none;cursor:pointer;background:var(--gold);transition:background-color .2s,color .2s}
 .entrance-session-folder>summary::-webkit-details-marker{display:none}
 .entrance-session-folder>summary>span{align-self:start;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}
