@@ -3,6 +3,7 @@ import {
   bachelorEntranceResultsJuly31,
   bachelorEntranceResultsSeptember9,
   bachelorEntranceResultsSeptember9Nrk6Nrk7,
+  bachelorEntranceResultsSeptember11,
   masterEntranceResultsAugust7,
   masterEntranceResultsAugust18,
   masterEntranceResultsAugust19,
@@ -11,6 +12,23 @@ import {
 } from "@/lib/entrance-results";
 
 const masterInterviewResults = "/documents/admissions/results/2026-08-06/english-interview-master.pdf";
+
+function September11Results() {
+  return <details className="entrance-session-folder" id="results-september-11-2026">
+    <summary>
+      <span>11.09.2026 / Бакалаврат</span>
+      <div><small>4 документи · PDF</small><h3>Результати вступних випробувань від 11 вересня 2026 року</h3><p>Натисніть, щоб відкрити надіслані результати вступних випробувань.</p></div>
+      <i aria-hidden="true">+</i>
+    </summary>
+    <div className="entrance-result-documents september-results-documents">
+      {bachelorEntranceResultsSeptember11.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <div><small>Бакалаврат · 11 вересня 2026</small><h5>{document.title}</h5></div>
+        <div className="entrance-result-action"><small>PDF · 1 сторінка</small><b>Відкрити ↗</b></div>
+      </a>)}
+    </div>
+  </details>;
+}
 
 function SeptemberResults() {
   const groups = [
@@ -92,6 +110,7 @@ export function EntranceExamResults() {
 
     <article className="entrance-results-level" id="results-bachelor">
       <header><span>01 / Бакалаврат</span><h3>Офіційні відомості за датами проведення</h3><p>Нові записи розміщено першими; попередні результати залишаються доступними в архіві сторінки.</p></header>
+      <September11Results />
       <SeptemberResults />
       <ResultBatch date="31 липня" documents={bachelorEntranceResultsJuly31} />
       <ResultBatch date="29 липня" documents={bachelorEntranceResults} />

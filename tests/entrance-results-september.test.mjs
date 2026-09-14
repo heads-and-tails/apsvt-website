@@ -28,3 +28,18 @@ test("September result date and basis folders stay collapsed by default", () => 
   assert.doesNotMatch(block, /<details[^>]*\bopen\b/);
   assert.match(component, /<SeptemberResults \/>/);
 });
+
+test("September 11 results include four intact one-page PDFs in a collapsed record", () => {
+  const links = [...source.matchAll(/href: "(\/documents\/admissions\/results\/2026-09-11\/[^\"]+)"/g)].map((match) => match[1]);
+  assert.equal(links.length, 4);
+  assert.equal(new Set(links).size, 4);
+  for (const link of links) {
+    const path = new URL(`../public${link}`, import.meta.url);
+    assert.equal(readFileSync(path).subarray(0, 5).toString(), "%PDF-");
+    assert.match(execFileSync("pdfinfo", [path.pathname], { encoding: "utf8" }), /Pages:\s+1\b/);
+  }
+  const block = component.slice(component.indexOf("function September11Results"), component.indexOf("function SeptemberResults"));
+  assert.match(block, /Результати вступних випробувань від 11 вересня 2026 року/);
+  assert.doesNotMatch(block, /<details[^>]*\bopen\b/);
+  assert.ok(component.indexOf("<September11Results />") < component.indexOf("<SeptemberResults />"));
+});

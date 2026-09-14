@@ -21,6 +21,13 @@ export const bachelorEntranceResultsSeptember9Nrk6Nrk7: EntranceResultDocument[]
   { title: "Співбесіда з української мови", href: "/documents/admissions/results/2026-09-09/nrk6-nrk7/ukrainian-language.pdf", pages: 1 },
 ];
 
+export const bachelorEntranceResultsSeptember11: EntranceResultDocument[] = [
+  { title: "Співбесіда з української мови", href: "/documents/admissions/results/2026-09-11/ukrainian-language.pdf", pages: 1 },
+  { title: "Співбесіда з української літератури", href: "/documents/admissions/results/2026-09-11/ukrainian-literature.pdf", pages: 1 },
+  { title: "Співбесіда з історії України", href: "/documents/admissions/results/2026-09-11/history-of-ukraine.pdf", pages: 1 },
+  { title: "Співбесіда з математики", href: "/documents/admissions/results/2026-09-11/mathematics.pdf", pages: 1 },
+];
+
 export const entranceResultsNewsSlugJuly31 = "rezultaty-vstupnykh-vyprobuvan-31-lypnia-2026";
 export const entranceResultsNewsSlugAugust6 = "rezultaty-vstupnykh-vyprobuvan-6-serpnia-2026";
 export const masterInterviewVideo = "https://apsvt-academy.ikucha.chatgpt.site/media/admissions/results/2026-08-06/english-interview.mp4";
