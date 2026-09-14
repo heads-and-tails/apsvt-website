@@ -1,0 +1,23 @@
+.teacher-resume { margin-top: 24px; border-top: 2px solid var(--cobalt, #2851ff); }
+.teacher-resume > summary, .teacher-resume-preview > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 0; font: 700 16px/1.5 var(--sans, sans-serif); color: var(--ink, #101727); cursor: pointer; list-style: none; }
+.teacher-resume > summary::-webkit-details-marker, .teacher-resume-preview > summary::-webkit-details-marker { display: none; }
+.teacher-resume > summary span { color: var(--cobalt, #2851ff); font-size: 24px; transition: transform .15s; }
+.teacher-resume[open] > summary span { transform: rotate(45deg); }
+.teacher-resume > summary:focus-visible, .teacher-resume-preview > summary:focus-visible, .teacher-resume-toolbar button:focus-visible { outline: 3px solid var(--cobalt, #2851ff); outline-offset: 3px; }
+.teacher-resume-text { min-width: 0; padding-bottom: 12px; color: var(--ink, #101727); font-size: 16px; line-height: 1.7; overflow-wrap: anywhere; text-align: left; }
+.teacher-resume-text p { margin: 0 0 16px; white-space: pre-wrap; color: inherit; }
+.teacher-resume-text h4 { margin: 24px 0 10px; font: 700 18px/1.4 var(--sans, sans-serif); text-transform: none; letter-spacing: normal; }
+.teacher-resume-text > :first-child { margin-top: 0; }
+.teacher-resume-text ul, .teacher-resume-text ol { padding-left: 24px; margin: 12px 0 20px; }
+.teacher-resume-text li { margin: 8px 0; }
+.teacher-resume-text a, .department-teacher-grid .teacher-resume-text a { font: inherit; color: #173ebc; text-transform: none; border: 0; text-decoration: underline; text-underline-offset: 3px; }
+.teacher-resume-editor { min-width: 0; }
+.teacher-resume-editor > label { font-weight: 700; }
+.teacher-resume-editor > p { font: 400 14px/1.6 var(--sans, sans-serif); text-transform: none; letter-spacing: normal; color: #4b5563; }
+.teacher-resume-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 10px; }
+.teacher-resume-toolbar button { min-height: 44px; padding: 8px 14px; font: 600 14px/1.4 var(--sans, sans-serif); cursor: pointer; color: var(--ink, #101727); background: #f4f6fa; border: 1px solid #b8c1d1; }
+.teacher-resume-editor textarea { width: 100%; min-height: 260px; padding: 14px; resize: vertical; border: 1px solid #b8c1d1; border-radius: 0; background: white; color: var(--ink, #101727); font: 400 16px/1.6 var(--sans, sans-serif); }
+.teacher-resume-preview { margin-top: 16px; padding: 0 16px; border: 1px solid #b8c1d1; background: white; }
+.teacher-resume-preview > summary::after { content: "+"; }
+.teacher-resume-preview[open] > summary::after { content: "−"; }
+@media (prefers-reduced-motion: reduce) { .teacher-resume > summary span { transition: none; } }
