@@ -1174,6 +1174,14 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .entrance-level-nav small{font:9px var(--mono);text-transform:uppercase;color:#687181;margin-top:8px}
 .entrance-level-nav a:hover{background:var(--navy);color:#fff}.entrance-level-nav a:hover span,.entrance-level-nav a:hover small{color:var(--gold)}
 .entrance-session-folder{margin:0 0 82px;background:#fff;border:1px solid var(--ink)}
+.september-results-groups{padding:clamp(16px,3vw,32px)}
+.september-results-group{border:1px solid #d5d9df;margin-bottom:16px}
+.september-results-group:last-child{margin-bottom:0}
+.september-results-group>summary{cursor:pointer;padding:20px;background:var(--cream,#f4f2ec);list-style:inside}
+.september-results-group>summary h4{display:inline;font-size:clamp(19px,2.4vw,28px);line-height:1.2;overflow-wrap:break-word}
+.september-results-group>summary>span{display:block;margin-top:10px;font:12px var(--mono);color:var(--cobalt)}
+.september-results-group>summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
+.september-results-group .entrance-result-documents{padding:0 16px 16px}
 .entrance-session-folder>summary{min-height:190px;padding:26px;display:grid;grid-template-columns:150px minmax(0,1fr) 48px;gap:26px;align-items:center;list-style:none;cursor:pointer;background:var(--gold);transition:background-color .2s,color .2s}
 .entrance-session-folder>summary::-webkit-details-marker{display:none}
 .entrance-session-folder>summary>span{align-self:start;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}

@@ -1,6 +1,8 @@
 import {
   bachelorEntranceResults,
   bachelorEntranceResultsJuly31,
+  bachelorEntranceResultsSeptember9,
+  bachelorEntranceResultsSeptember9Nrk6Nrk7,
   masterEntranceResultsAugust7,
   masterEntranceResultsAugust18,
   masterEntranceResultsAugust19,
@@ -9,6 +11,32 @@ import {
 } from "@/lib/entrance-results";
 
 const masterInterviewResults = "/documents/admissions/results/2026-08-06/english-interview-master.pdf";
+
+function SeptemberResults() {
+  const groups = [
+    { title: "Перший курс", documents: bachelorEntranceResultsSeptember9 },
+    { title: "Основа вступу — НРК6 або НРК7", documents: bachelorEntranceResultsSeptember9Nrk6Nrk7 },
+  ];
+  return <details className="entrance-session-folder" id="results-september-9-2026">
+    <summary>
+      <span>09.09.2026 / Бакалаврат</span>
+      <div><small>9 документів · PDF</small><h3>Результати вступних випробувань від 9 вересня 2026 року</h3><p>Відкрийте запис та оберіть потрібну групу результатів.</p></div>
+      <i aria-hidden="true">+</i>
+    </summary>
+    <div className="september-results-groups">
+      {groups.map((group) => <details className="september-results-group" key={group.title}>
+        <summary><h4>{group.title}</h4><span>{group.documents.length} PDF · Відкрити</span></summary>
+        <div className="entrance-result-documents">
+          {group.documents.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <div><small>9 вересня 2026 · {group.title}</small><h5>{document.title}</h5></div>
+            <div className="entrance-result-action"><small>PDF · 1 сторінка</small><b>Відкрити ↗</b></div>
+          </a>)}
+        </div>
+      </details>)}
+    </div>
+  </details>;
+}
 
 function ResultBatch({ date, documents, level = "Бакалаврат" }: { date: string; documents: EntranceResultDocument[]; level?: "Бакалаврат" | "Магістратура" }) {
   return <div className="entrance-result-batch">
@@ -64,6 +92,7 @@ export function EntranceExamResults() {
 
     <article className="entrance-results-level" id="results-bachelor">
       <header><span>01 / Бакалаврат</span><h3>Офіційні відомості за датами проведення</h3><p>Нові записи розміщено першими; попередні результати залишаються доступними в архіві сторінки.</p></header>
+      <SeptemberResults />
       <ResultBatch date="31 липня" documents={bachelorEntranceResultsJuly31} />
       <ResultBatch date="29 липня" documents={bachelorEntranceResults} />
     </article>
