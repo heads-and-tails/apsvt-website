@@ -7,7 +7,7 @@ import { SectionHub, type SectionHubItem } from "../components/SectionHub";
 
 export const metadata: Metadata = {
   title: "Вартість навчання та оплата",
-  description: "Офіційна вартість навчання в АПСВТ на 2026/27 рік, банківські реквізити, безпечний помічник оплати та договори.",
+  description: "Офіційна вартість навчання в АПСВТ на 2026/27 рік для українських та іноземних студентів, банківські реквізити, безпечний помічник оплати та договори.",
 };
 
 const entrantRates = [
@@ -34,11 +34,33 @@ const continuingRates = [
   ["Магістратура, II курс", "Вступ 2025/26", "20 400", "17 400"],
 ];
 
+const foreignRates = [
+  {
+    title: "Іноземні студенти (всі спеціальності)",
+    course: "I–IV курс",
+    full: ["1 500", "750", "150"],
+    part: ["1 500", "750", "150"],
+  },
+  {
+    title: "Іноземні студенти (всі спеціальності)",
+    course: "Магістр — I",
+    full: ["1 600", "800", "160"],
+    part: ["1 600", "800", "160"],
+  },
+  {
+    title: "Іноземні студенти — підготовче відділення (українська мова)",
+    course: "Підготовче відділення",
+    full: ["1 500", "750", "150"],
+    part: null,
+  },
+] as const;
+
 const tuitionSections: readonly SectionHubItem[] = [
   { id: "prices", index: "01", title: "Вступникам 2026", description: "Офіційна вартість бакалаврату й магістратури за рік, семестр і місяць.", icon: "₴" },
   { id: "continuing", index: "02", title: "Старші курси", description: "Річна оплата для студентів залежно від курсу та року вступу.", icon: "II" },
-  { id: "payment", index: "03", title: "Оплата навчання", description: "Помічник платежу, банківські реквізити та перевірка зарахування.", icon: "PAY", aliases: ["calculator"] },
-  { id: "contracts", index: "04", title: "Договори", description: "Офіційні шаблони договорів і правила безпечного підписання.", icon: "DOC" },
+  { id: "foreign-students", index: "03", title: "Іноземним студентам", description: "Вартість у доларах США для I–IV курсів, магістратури й підготовчого відділення.", icon: "USD" },
+  { id: "payment", index: "04", title: "Оплата навчання", description: "Помічник платежу, банківські реквізити та перевірка зарахування.", icon: "PAY", aliases: ["calculator"] },
+  { id: "contracts", index: "05", title: "Договори", description: "Офіційні шаблони договорів і правила безпечного підписання.", icon: "DOC" },
 ];
 
 export default function Page() {
@@ -48,7 +70,7 @@ export default function Page() {
     <SectionHub
       sections={tuitionSections}
       eyebrow="Навігатор оплати"
-      description="Оберіть, що саме потрібно: тарифи, вартість старших курсів, оплата або договори. Інші блоки залишаться згорнутими."
+      description="Оберіть, що саме потрібно: тарифи, вартість для іноземних студентів, оплата або договори. Інші блоки залишаться згорнутими."
     >
 
     <section id="prices"><div className="wrap"><div className="tuition-section-head single"><div><div className="idx">01 / Вступникам 2026 року</div><h2>Вартість навчання<br />для вступників</h2></div></div>
@@ -63,12 +85,23 @@ export default function Page() {
       <div className="tuition-table-wrap"><table className="tuition-table"><thead><tr><th>Курс</th><th>Рік вступу</th><th>Денна / рік</th><th>Заочна / рік</th></tr></thead><tbody>{continuingRates.map((row) => <tr key={row[0]}><td data-label="Курс">{row[0]}</td><td data-label="Рік вступу">{row[1]}</td><td data-label="Денна / рік"><b>{row[2]} ₴</b></td><td data-label="Заочна / рік"><b>{row[3]} ₴</b></td></tr>)}</tbody></table></div>
     </div></section>
 
-    <section className="tuition-payment-section" id="payment"><div className="wrap"><div className="tuition-section-head inverse"><div><div className="idx">03 / Оплата навчання</div><h2>Оплата<br />навчання</h2></div><p>Сформуйте суму й призначення платежу, а потім перевірте реквізити перед підтвердженням у банку.</p></div><TuitionPaymentAssistant />
+    <section className="tuition-foreign" id="foreign-students"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">03 / Для іноземних студентів</div><h2>Вартість для<br />іноземців</h2></div><p>Тарифи для іноземних студентів I–IV курсів і магістратури 2026 року вступу на 2026–2027 навчальний рік.</p></div>
+      <div className="foreign-rate-grid">{foreignRates.map((rate, index) => <article key={`${rate.course}-${index}`} className="foreign-rate-card">
+        <header><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{rate.title}</h3><p>{rate.course}</p></div></header>
+        <div className="foreign-rate-modes">
+          <div><h4>Денна форма навчання</h4><dl><div><dt>За рік</dt><dd>{rate.full[0]} <small>USD</small></dd></div><div><dt>За семестр</dt><dd>{rate.full[1]} <small>USD</small></dd></div><div><dt>За 1 місяць</dt><dd>{rate.full[2]} <small>USD</small></dd></div></dl></div>
+          <div className={!rate.part ? "is-unavailable" : undefined}><h4>Заочна форма навчання</h4>{rate.part ? <dl><div><dt>За рік</dt><dd>{rate.part[0]} <small>USD</small></dd></div><div><dt>За семестр</dt><dd>{rate.part[1]} <small>USD</small></dd></div><div><dt>За 1 місяць</dt><dd>{rate.part[2]} <small>USD</small></dd></div></dl> : <p>Не передбачено документом</p>}</div>
+        </div>
+      </article>)}</div>
+      <div className="foreign-rate-notes"><span>Важливо</span><div><p>Вартість послуг на навчання збільшено на індекс інфляції за 2025 рік — 8%.</p><p>Платежі які будуть здійснюватися на території України, здійснюються у національній валюті відповідно до офіційного курсу валют Національного банку України з вказаною датою платежу.</p></div></div>
+    </div></section>
+
+    <section className="tuition-payment-section" id="payment"><div className="wrap"><div className="tuition-section-head inverse"><div><div className="idx">04 / Оплата навчання</div><h2>Оплата<br />навчання</h2></div><p>Сформуйте суму й призначення платежу, а потім перевірте реквізити перед підтвердженням у банку.</p></div><TuitionPaymentAssistant />
       <div className="payment-verification"><span>!</span><div><b>Банківські реквізити для оплати навчання</b><p>Перед першим або великим платежем підтвердьте IBAN і призначення платежу у бухгалтерії Академії.</p></div><a href="tel:+380964508504">Світлана Василівна<br /><b>+38 096 450 85 04</b></a></div>
       <div className="tuition-portal-link"><div><span>Для студентів Академії</span><h3>Перевірте, чи зараховано платіж</h3><p>В особистому кабінеті видно актуальний залишок, прострочення, підтверджені оплати та договори.</p></div><Link href="/student">Відкрити особистий кабінет →</Link></div>
     </div></section>
 
-    <div><section id="contracts"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">04 / Документи</div><h2>Договори<br />для навчання</h2></div><p>Офіційні шаблони, опубліковані Академією. Приймальна комісія заповнює остаточний договір; він набирає чинності після зарахування.</p></div>
+    <div><section id="contracts"><div className="wrap"><div className="tuition-section-head"><div><div className="idx">05 / Документи</div><h2>Договори<br />для навчання</h2></div><p>Офіційні шаблони, опубліковані Академією. Приймальна комісія заповнює остаточний договір; він набирає чинності після зарахування.</p></div>
       <div className="tuition-contract-grid"><a href="/documents/tuition/contract-paid-educational-service.docx" download><span>DOCX · шаблон 2025</span><div><b>Договір про надання платної освітньої послуги</b><p>Для підготовки фахівців за кошти фізичної або юридичної особи.</p></div><strong>Завантажити ↓</strong></a><a href="/documents/tuition/contract-education.docx" download><span>DOCX · шаблон 2025</span><div><b>Договір про навчання в Академії</b><p>Основний договір між Академією та здобувачем освіти.</p></div><strong>Завантажити ↓</strong></a></div>
       <p className="tuition-contract-note">Не підписуйте порожній шаблон і не надсилайте персональні дані через невідомі форми. Остаточну версію та порядок підписання погоджуйте з Приймальною комісією.</p>
     </div></section>
