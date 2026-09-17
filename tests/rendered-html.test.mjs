@@ -480,6 +480,25 @@ test("enriches programme pages with departments, practice partners, people and l
   assert.match(marketing,/nadiia-pysarenko\.webp/);
 });
 
+test("publishes the marketing students' 2025 and 2026 research achievements",async()=>{
+  const marketing=await (await render("/programs/marketing")).text();
+  assert.match(marketing,/id="marketing-student-achievements"/);
+  assert.match(marketing,/Наукові здобутки здобувачів/);
+  assert.match(marketing,/href="\/documents\/marketing\/student-achievements\/2026\.pdf"/);
+  assert.match(marketing,/href="\/documents\/marketing\/student-achievements\/2025\.pdf"/);
+  assert.equal((marketing.match(/marketing-achievement-list/g) || []).length >= 1,true);
+
+  const achievementFiles=[
+    ["2025.pdf",359055],
+    ["2026.pdf",443926],
+  ];
+  for(const [file,size] of achievementFiles){
+    const bytes=await readFile(new URL(`../public/documents/marketing/student-achievements/${file}`,import.meta.url));
+    assert.equal(bytes.subarray(0,5).toString(),"%PDF-");
+    assert.equal(bytes.length,size);
+  }
+});
+
 test("answers document questions from the curated RAG index with sources",async()=>{
   const app=await worker();
   const response=await app.fetch(new Request("http://localhost/api/documents/ask",{

@@ -96,6 +96,13 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       <Link href="/research/journals#marketing-publications"><span>03</span><small>Навчальне видання</small><h3>Соціально відповідальний маркетинг</h3><p>Навчальний посібник кафедри.</p><b>→</b></Link>
       <Link href="/materials/3331-0b35c55db.html"><span>04</span><small>Науковий гурток</small><h3>MARKETHINK</h3><p>Матеріали гуртка та участі студентів у конференціях.</p><b>→</b></Link>
     </div>
+    <details className="marketing-project-folder marketing-student-achievements" id="marketing-student-achievements">
+      <summary><span><small>Матеріали здобувачів</small><strong>Наукові здобутки здобувачів</strong></span><b aria-hidden="true">+</b></summary>
+      <div className="marketing-achievement-list">
+        <a href="/documents/marketing/student-achievements/2026.pdf" target="_blank" rel="noreferrer"><span>2026</span><div><small>Календарний рік</small><h4>Наукові здобутки здобувачів</h4></div><b>PDF · 20 сторінок ↗</b></a>
+        <a href="/documents/marketing/student-achievements/2025.pdf" target="_blank" rel="noreferrer"><span>2025</span><div><small>Календарний рік</small><h4>Наукові здобутки здобувачів</h4></div><b>PDF · 17 сторінок ↗</b></a>
+      </div>
+    </details>
     <article className="marketing-international-expertise" id="marketing-international-expertise">
       <header><div className="idx">05 / Міжнародний вимір</div><h3>Міжнародна та експертна діяльність НПП кафедри</h3></header>
       <div className="marketing-international-copy">
