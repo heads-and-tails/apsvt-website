@@ -1175,6 +1175,7 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .entrance-level-nav small{font:9px var(--mono);text-transform:uppercase;color:#687181;margin-top:8px}
 .entrance-level-nav a:hover{background:var(--navy);color:#fff}.entrance-level-nav a:hover span,.entrance-level-nav a:hover small{color:var(--gold)}
 .entrance-session-folder{margin:0 0 82px;background:#fff;border:1px solid var(--ink)}
+.entrance-level-session{margin:42px 0 0}
 .september-results-groups{padding:clamp(16px,3vw,32px)}
 .september-results-group{border:1px solid #d5d9df;margin-bottom:16px}
 .september-results-group:last-child{margin-bottom:0}

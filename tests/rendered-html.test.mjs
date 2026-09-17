@@ -518,6 +518,16 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   assert.match(html,/results\/2026-07-29\/mathematics\.pdf/);
   assert.match(html,/results\/2026-07-29\/history-of-ukraine\.pdf/);
   assert.match(html,/results\/2026-07-29\/english-language\.pdf/);
+  const bachelorSection=html.indexOf('id="entrance-bachelor"');
+  const bachelorAdditional=html.indexOf('id="entrance-bachelor-additional"');
+  const bachelorAdditionalPdf=html.indexOf("additional-session-2026/bachelor-interviews.pdf");
+  const masterSection=html.indexOf('id="entrance-master"');
+  const masterAdditional=html.indexOf('id="entrance-master-additional"');
+  const masterAdditionalPdf=html.indexOf("additional-session-2026/master-interviews-professional-exams.pdf");
+  const phdSection=html.indexOf('id="entrance-phd"');
+  assert.ok(bachelorSection<bachelorAdditional && bachelorAdditional<bachelorAdditionalPdf && bachelorAdditionalPdf<masterSection);
+  assert.ok(masterSection<masterAdditional && masterAdditional<masterAdditionalPdf && masterAdditionalPdf<phdSection);
+  assert.match(html,/8–11 вересня 2026/);
   assert.match(html,/02 \/ Магістратура/);
   assert.match(html,/Рейтингові списки<br\/>вступників/);
   assert.match(html,/25 PDF-документів/);
@@ -539,6 +549,12 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   ];
   for(const file of files){
     const pdf=await readFile(new URL(`../public/documents/admissions/${file}`,import.meta.url));
+    assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
+
+  const additionalSessionFiles=["bachelor-interviews.pdf","master-interviews-professional-exams.pdf"];
+  for(const file of additionalSessionFiles){
+    const pdf=await readFile(new URL(`../public/documents/admissions/entrance-exams/additional-session-2026/${file}`,import.meta.url));
     assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
   }
 
