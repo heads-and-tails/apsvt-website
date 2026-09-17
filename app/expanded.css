@@ -1210,6 +1210,9 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .entrance-session-folder>summary>i{width:46px;height:46px;display:grid;place-items:center;background:var(--navy);color:var(--gold);font:normal 27px/1 var(--disp);transition:transform .2s}
 .entrance-session-folder>summary:hover,.entrance-session-folder>summary:focus-visible{background:var(--navy);color:#fff;outline:0}.entrance-session-folder>summary:hover>span,.entrance-session-folder>summary:focus-visible>span{color:var(--gold)}.entrance-session-folder>summary:hover small,.entrance-session-folder>summary:focus-visible small,.entrance-session-folder>summary:hover p,.entrance-session-folder>summary:focus-visible p{color:#c5cfe0}
 .entrance-session-folder[open]>summary>i{transform:rotate(45deg)}
+.entrance-level-session>summary small{display:block;font-size:10px;font-weight:700;color:var(--cobalt)}
+.entrance-level-session>summary h3{max-width:none;margin:8px 0 7px;font-size:clamp(40px,5.2vw,72px);line-height:.88;letter-spacing:-.035em}
+.entrance-level-session>summary h4{margin-bottom:12px;font:600 clamp(18px,2vw,26px)/1.05 var(--disp);text-transform:uppercase}
 .entrance-session-documents{padding:0 26px 26px}
 .entrance-session-documents>a{min-height:125px;padding:20px 6px;display:grid;grid-template-columns:48px minmax(0,1fr) 160px;gap:18px;align-items:center;border-bottom:1px solid var(--ink);transition:background-color .2s,padding .2s}.entrance-session-documents>a:last-child{border-bottom:0}
 .entrance-session-documents>a:hover,.entrance-session-documents>a:focus-visible{padding-inline:16px;background:#f0eee8;outline:0}

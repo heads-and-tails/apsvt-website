@@ -94,7 +94,7 @@ export function EntranceExamSchedule() {
       <details className="entrance-session-folder entrance-level-session" id="entrance-bachelor-additional">
         <summary>
           <span>Бакалаврат</span>
-          <div><small>Додаткова сесія · вересень 2026</small><h3>Графік проведення співбесід</h3><p>Офіційний графік консультації та співбесід 8, 9 і 11 вересня.</p></div>
+          <div><small>Вересень 2026</small><h3>Додаткова сесія</h3><h4>Графік проведення співбесід</h4><p>Офіційний графік консультації та співбесід 8, 9 і 11 вересня.</p></div>
           <i aria-hidden="true">+</i>
         </summary>
         <div className="entrance-session-documents">
@@ -115,7 +115,7 @@ export function EntranceExamSchedule() {
       <details className="entrance-session-folder entrance-level-session" id="entrance-master-additional">
         <summary>
           <span>Магістратура</span>
-          <div><small>Додаткова сесія · вересень 2026</small><h3>Графік співбесід і фахових іспитів</h3><p>Офіційний графік консультацій, співбесід та фахових вступних випробувань.</p></div>
+          <div><small>Вересень 2026</small><h3>Додаткова сесія</h3><h4>Графік співбесід і фахових іспитів</h4><p>Офіційний графік консультацій, співбесід та фахових вступних випробувань.</p></div>
           <i aria-hidden="true">+</i>
         </summary>
         <div className="entrance-session-documents">
