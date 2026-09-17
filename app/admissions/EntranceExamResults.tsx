@@ -32,7 +32,7 @@ function September11Results() {
 
 function SeptemberResults() {
   const groups = [
-    { title: "Перший курс", documents: bachelorEntranceResultsSeptember9 },
+    { title: null, documents: bachelorEntranceResultsSeptember9 },
     { title: "Основа вступу — НРК6 або НРК7", documents: bachelorEntranceResultsSeptember9Nrk6Nrk7 },
   ];
   return <details className="entrance-session-folder" id="results-september-9-2026">
@@ -42,12 +42,12 @@ function SeptemberResults() {
       <i aria-hidden="true">+</i>
     </summary>
     <div className="september-results-groups">
-      {groups.map((group) => <details className="september-results-group" key={group.title}>
-        <summary><h4>{group.title}</h4><span>{group.documents.length} PDF · Відкрити</span></summary>
+      {groups.map((group) => <details className="september-results-group" key={group.documents[0].href}>
+        <summary>{group.title && <h4>{group.title}</h4>}<span style={group.title ? undefined : { display: "inline", marginTop: 0 }}>{group.documents.length} PDF · Відкрити</span></summary>
         <div className="entrance-result-documents">
           {group.documents.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
             <span>{String(index + 1).padStart(2, "0")}</span>
-            <div><small>9 вересня 2026 · {group.title}</small><h5>{document.title}</h5></div>
+            <div><small>9 вересня 2026{group.title && ` · ${group.title}`}</small><h5>{document.title}</h5></div>
             <div className="entrance-result-action"><small>PDF · 1 сторінка</small><b>Відкрити ↗</b></div>
           </a>)}
         </div>
