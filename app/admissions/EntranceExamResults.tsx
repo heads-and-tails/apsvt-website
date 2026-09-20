@@ -51,7 +51,7 @@ function SeptemberResults() {
             <div className="entrance-result-action"><small>PDF · 1 сторінка</small><b>Відкрити ↗</b></div>
           </a>)}
         </div>
-      </details>
+      </details>)}
     </div>
   </details>;
 }
