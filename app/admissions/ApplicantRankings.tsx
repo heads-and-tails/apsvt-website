@@ -4,6 +4,8 @@ import {
   bachelorRankingDocumentCount,
   masterApplicantRankings,
   masterRankingDocumentCount,
+  september16ApplicantRankings,
+  september16RankingDocumentCount,
 } from "@/lib/admissions-rankings";
 import type { ApplicantRankingGroup } from "@/lib/admissions-rankings";
 
@@ -30,12 +32,17 @@ export function ApplicantRankings() {
     </div>
 
     <nav className="applicant-ranking-level-nav" aria-label="Рейтингові списки за рівнями освіти">
-      <a href="#rankings-bachelor"><span>01</span><b>Бакалаврат</b><small>{`${bachelorRankingDocumentCount} PDF-документів`}</small></a>
+      <a href="#rankings-september-16"><span>01</span><b>Бакалаврат</b><small>{`${bachelorRankingDocumentCount + september16RankingDocumentCount} PDF-документів`}</small></a>
       <a href="#rankings-master"><span>02</span><b>Магістратура</b><small>{`${masterRankingDocumentCount} PDF-документи`}</small></a>
     </nav>
 
+    <article className="applicant-ranking-level" id="rankings-september-16">
+      <header><span>01 / Бакалаврат</span><div><h3>Рейтингові списки від 16 вересня 2026 року</h3><p>Новий комплект із 18 офіційних PDF згруповано за освітньою програмою, формою навчання та курсом вступу.</p></div></header>
+      <RankingGroups groups={september16ApplicantRankings} />
+    </article>
+
     <article className="applicant-ranking-level" id="rankings-bachelor">
-      <header><span>01 / Бакалаврат</span><div><h3>Рейтингові списки від 03 серпня 2026 року</h3><p>Документи згруповано за освітньою програмою, формою навчання та курсом вступу.</p></div></header>
+      <header><span>Архів / Бакалаврат</span><div><h3>Рейтингові списки від 03 серпня 2026 року</h3><p>Документи згруповано за освітньою програмою, формою навчання та курсом вступу.</p></div></header>
       <RankingGroups groups={bachelorApplicantRankings} />
     </article>
 

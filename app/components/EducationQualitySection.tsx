@@ -33,6 +33,15 @@ export function EducationQualitySection({
     seen.add(key);
     return true;
   });
+  const isLawFacultyPage = Boolean(pagePath && (
+    pagePath.startsWith("/departments/law-faculty")
+    || pagePath.startsWith("/departments/constitutional-law")
+    || pagePath.startsWith("/departments/criminal-law")
+    || pagePath.startsWith("/departments/private-law")
+    || pagePath.startsWith("/programs/law")
+    || pagePath.startsWith("/programs/public-administration")
+  ));
+  const visibleRubrics = educationQualityRubrics.filter((rubric) => rubric.id !== "qualification-works" || !isLawFacultyPage);
 
   return <section className="education-quality" id={id}>
     <div className="wrap">
@@ -42,7 +51,7 @@ export function EducationQualitySection({
       </header>
 
       <div className="education-quality-rubrics">
-        {educationQualityRubrics.map((rubric) => {
+        {visibleRubrics.map((rubric) => {
           const items = qualityEntries.filter((entry) => normalizeEducationQualityRubricId(entry.role, `${entry.title} ${entry.summary}`) === rubric.id);
           return <details key={rubric.id} className="education-quality-rubric">
             <summary>
@@ -55,7 +64,7 @@ export function EducationQualitySection({
                 <div><small>{entry.date || "Матеріал кафедри"}</small><h4>{entry.title}</h4>{entry.summary && <p>{entry.summary}</p>}</div>
                 {entry.body && <div className="education-quality-copy">{paragraphs(entry.body).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>}
                 {entry.fileUrl && <a href={entry.fileUrl} target="_blank" rel="noreferrer">{entry.fileName || "Відкрити документ"} ↗</a>}
-              </article>)}</div> : <div className="education-quality-empty"><p>Матеріали цієї рубрики готуються до публікації кафедрою.</p>{rubric.id === "programme-discussion" && (discussionEmail ? <a href={`mailto:${discussionEmail}?subject=${encodeURIComponent("Пропозиція до освітньої програми")}`}>Надіслати пропозицію кафедрі →</a> : <Link href="/contacts">Надіслати пропозицію →</Link>)}</div>}
+              </article>)}</div> : <div className="education-quality-empty"><p>Матеріали цієї рубрики готуються до публікації кафедрою.</p>{rubric.id === "programme-discussion" && (discussionEmail ? <a href={`mailto:${discussionEmail}?subject=${encodeURIComponent("Пропозиція до освітньої програми")}`}>Надіслати пропозицію кафедрі →</a> : <Link href="/contacts">Надіслати пропозицію →</Link>)}{rubric.id === "qualification-works" && <Link href="/research/theses">Перейти до репозитарію кваліфікаційних робіт →</Link>}</div>}
             </div>
           </details>;
         })}

@@ -38,7 +38,7 @@ function SeptemberResults() {
   return <details className="entrance-session-folder" id="results-september-9-2026">
     <summary>
       <span>09.09.2026 / Бакалаврат</span>
-      <div><small>9 документів · PDF</small><h3>Результати вступних випробувань від 9 вересня 2026 року</h3><p>Відкрийте запис та оберіть потрібну групу результатів.</p></div>
+      <div><small>9 документів · PDF</small><h3>Результати вступних випробувань від 9 вересня 2026 року</h3><p>Відкрийте запис, оберіть потрібний документ або окрему групу за основою вступу.</p></div>
       <i aria-hidden="true">+</i>
     </summary>
     <div className="september-results-groups">
