@@ -493,6 +493,17 @@ export const officialDocuments: OfficialDocument[] = [
     status: "current",
   },
   {
+    id: "academy-development-strategy-2026",
+    category: "governance",
+    title: "Стратегія розвитку Академії до 2026 року",
+    description: "Стратегічні напрями освітньої, наукової, міжнародної, управлінської та соціальної діяльності Академії.",
+    href: "/documents/academy/strategy-development-to-2026.pdf",
+    format: "PDF",
+    pages: 10,
+    updated: "до 2026",
+    status: "current",
+  },
+  {
     id: "academy-statute-2017",
     category: "governance",
     title: "Статут Академії праці, соціальних відносин і туризму",

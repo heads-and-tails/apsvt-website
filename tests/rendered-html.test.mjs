@@ -205,6 +205,24 @@ test("publishes academic competition 2 and 3 in news",async()=>{
   assert.match(articleHtml,/konkurs-2-3-movy-psykholohiia-2026\.docx/);
 });
 
+test("publishes the Mental Health conference and Academy strategy",async()=>{
+  const articleHtml=await (await render("/news/mental-health-conference-2026")).text();
+  assert.match(articleHtml,/ІІ Міжнародна науково-практична конференція/);
+  assert.match(articleHtml,/8 жовтня · 10:00/);
+  assert.match(articleHtml,/922 7548 7678/);
+  assert.match(articleHtml,/mental-health-conference-2026-information-letter\.docx/);
+
+  const documentsHtml=await (await render("/documents#governance")).text();
+  assert.match(documentsHtml,/Стратегія розвитку Академії до 2026 року/);
+  assert.match(documentsHtml,/strategy-development-to-2026\.pdf/);
+  assert.match(documentsHtml,/statute-2017\.pdf/);
+
+  const strategy=await readFile(new URL("../public/documents/academy/strategy-development-to-2026.pdf",import.meta.url));
+  const conferenceLetter=await readFile(new URL("../public/documents/news/mental-health-conference-2026-information-letter.docx",import.meta.url));
+  assert.equal(strategy.subarray(0,4).toString(),"%PDF");
+  assert.equal(conferenceLetter.subarray(0,2).toString(),"PK");
+});
+
 test("publishes international partnerships and the foreign applicant guide",async()=>{
   const html=await (await render("/international")).text();
   assert.match(html,/Studieninstitut POLS/);

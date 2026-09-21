@@ -29,8 +29,25 @@ import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 const IMG = "https://images.unsplash.com";
 export const stakeholderDiscussionNewsSlug = "obhovorennia-osvitnikh-prohram-d8-d4-2026";
 export const studyUaExpoNewsSlug = "study-ua-osvitnia-vystavka-kyiv-2026";
+export const mentalHealthConferenceNewsSlug = "mental-health-conference-2026";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-mental-health-conference-2026",
+    slug: mentalHealthConferenceNewsSlug,
+    title: "ІІ Міжнародна науково-практична конференція «Mental health: особистісний та організаційний виміри»",
+    excerpt: "8 жовтня о 10:00 Академія запрошує партнерів, науковців, молодих учених і здобувачів освіти до участі у конференції в офлайн- та онлайн-форматі.",
+    body: "8 жовтня 2026 року в Академії праці, соціальних відносин і туризму відбудеться ІІ Міжнародна науково-практична конференція «Mental health: особистісний та організаційний виміри».\n\n## Організатори\n\n- Академія праці, соціальних відносин і туризму\n- Факультет психології та соціального розвитку\n- Європейська психологічна асоціація\n- Східноукраїнський національний університет імені Володимира Даля\n\n## Час і формат\n\nПочаток — о 10:00 в аудиторії 307. Пленарне та панельні засідання проходитимуть в офлайн- та онлайн-форматі за допомогою Zoom.\n\nМісце проведення: Академія праці, соціальних відносин і туризму, м. Київ, вул. Кільцева дорога, 3-А.\n\nДо участі запрошуються партнери, науково-педагогічні працівники, молоді вчені та здобувачі вищої освіти України й зарубіжжя. Робочі мови конференції — українська та англійська.\n\n## Координатори\n\n- Житинська Марія Олександрівна: +38 (098) 036 02 77\n- Борець Олеся Анатоліївна: +38 (096) 350 88 48",
+    category: "Наука",
+    imageUrl: "/apsvt-event-real.jpg",
+    imageAlt: "Міжнародна науково-практична конференція в Академії",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-09-21T09:00:00.000Z",
+    createdAt: "2026-09-21T09:00:00.000Z",
+    updatedAt: "2026-09-21T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-study-ua-expo-kyiv-2026",
     slug: studyUaExpoNewsSlug,
@@ -324,7 +341,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { getPostBySlug, getPosts, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
+import { getPostBySlug, getPosts, mentalHealthConferenceNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
@@ -42,6 +42,7 @@ export default async function Page({ params }: Props) {
   const isAcademicCompetitionNews = post.slug === academicCompetitionNewsSlug;
   const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
   const isStudyUaExpoNews = post.slug === studyUaExpoNewsSlug;
+  const isMentalHealthConferenceNews = post.slug === mentalHealthConferenceNewsSlug;
 
   return <main id="top">
     <SiteHeader />
@@ -64,6 +65,17 @@ export default async function Page({ params }: Props) {
           <div><span>Місце</span><strong>Київ · КВЦ «Парковий»</strong></div>
           <a href="https://expokyiv.study.ua/" target="_blank" rel="noreferrer">Безкоштовна реєстрація ↗</a>
         </div>}
+        {isMentalHealthConferenceNews && <>
+          <div className="stakeholder-zoom-card">
+            <div><span>Дата й час</span><time dateTime="2026-10-08T10:00:00+03:00">8 жовтня · 10:00</time></div>
+            <div><span>Zoom</span><strong>922 7548 7678 · p7uAm0</strong></div>
+            <a href="https://us04web.zoom.us/j/92275487678?pwd=dnZHbW1yNjRvRGdHb3E5MDMyTDE4UT09" target="_blank" rel="noreferrer">Приєднатися до конференції ↗</a>
+          </div>
+          <div className="news-result-files">
+            <span>Інформаційний лист конференції</span>
+            <a href="/documents/news/mental-health-conference-2026-information-letter.docx" download><b>01</b><strong>Повна інформація для учасників</strong><small>DOCX · завантажити ↗</small></a>
+          </div>
+        </>}
         {entranceResultDocuments && <div className="news-result-files">
           <span>Результати за предметами</span>
           {entranceResultDocuments.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
