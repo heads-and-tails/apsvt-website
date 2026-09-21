@@ -39,8 +39,8 @@ export const seedPosts: Post[] = [
     excerpt: "8 жовтня о 10:00 Академія запрошує партнерів, науковців, молодих учених і здобувачів освіти до участі у конференції в офлайн- та онлайн-форматі.",
     body: "8 жовтня 2026 року в Академії праці, соціальних відносин і туризму відбудеться ІІ Міжнародна науково-практична конференція «Mental health: особистісний та організаційний виміри».\n\n## Організатори\n\n- Академія праці, соціальних відносин і туризму\n- Факультет психології та соціального розвитку\n- Європейська психологічна асоціація\n- Східноукраїнський національний університет імені Володимира Даля\n\n## Час і формат\n\nПочаток — о 10:00 в аудиторії 307. Пленарне та панельні засідання проходитимуть в офлайн- та онлайн-форматі за допомогою Zoom.\n\nМісце проведення: Академія праці, соціальних відносин і туризму, м. Київ, вул. Кільцева дорога, 3-А.\n\nДо участі запрошуються партнери, науково-педагогічні працівники, молоді вчені та здобувачі вищої освіти України й зарубіжжя. Робочі мови конференції — українська та англійська.\n\n## Координатори\n\n- Житинська Марія Олександрівна: +38 (098) 036 02 77\n- Борець Олеся Анатоліївна: +38 (096) 350 88 48",
     category: "Наука",
-    imageUrl: "/apsvt-event-real.jpg",
-    imageAlt: "Міжнародна науково-практична конференція в Академії",
+    imageUrl: "/mental-health-conference-science-2026.jpg",
+    imageAlt: "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці",
     status: "published",
     featured: true,
     publishedAt: "2026-09-21T09:00:00.000Z",
@@ -309,6 +309,9 @@ export async function ensurePosts(): Promise<void> {
     database.prepare("UPDATE posts SET image_url = ?, image_alt = ? WHERE id = ? AND image_url LIKE 'https://images.unsplash.com/%'").bind(post.imageUrl, post.imageAlt, post.id),
   );
   if (regionalPhotoUpdates.length) await database.batch(regionalPhotoUpdates);
+  await database.prepare("UPDATE posts SET image_url = ?, image_alt = ? WHERE id = ? AND image_url = ?")
+    .bind("/mental-health-conference-science-2026.jpg", "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці", "seed-mental-health-conference-2026", "/apsvt-event-real.jpg")
+    .run();
   initialized = true;
 }
 
@@ -345,6 +348,11 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
+  const imageUpdate = await admin.from("editorial_posts").update({
+    image_url: "/mental-health-conference-science-2026.jpg",
+    image_alt: "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці",
+  }).eq("id", "seed-mental-health-conference-2026").eq("image_url", "/apsvt-event-real.jpg");
+  if (imageUpdate.error) throw imageUpdate.error;
   supabaseSeeded = true;
 }
 
