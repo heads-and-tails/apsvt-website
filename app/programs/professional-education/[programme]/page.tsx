@@ -32,9 +32,10 @@ export default async function Page({ params }: Props) {
     <details className="wrap faculty-sibling-nav"><summary>Інші програми та рівні освіти</summary><nav className="faculty-subpage-links" aria-label="Інші освітні програми">{professionalEducationProgrammes.map((item) => <Link href={item.path} aria-current={item.slug === page.slug ? "page" : undefined} key={item.slug}>{item.title} · {item.degree}</Link>)}</nav></details>
     <EditableAcademicSections sections={professionalEducationSections} entries={entries} pagePath={page.path} content={{
       overview: <div className="wrap"><p>{page.title}</p><p>{page.level} · {page.degree}</p></div>,
-      ...(page.document ? { "programme-documents": <div className="wrap"><a className="academic-inline-link" href={page.document} target="_blank" rel="noreferrer">{page.title} · {page.degree} · PDF ↗</a></div> } : {}),
+      "programme-documents": <>{page.document && <div className="wrap"><a className="academic-inline-link" href={page.document} target="_blank" rel="noreferrer">Чинна освітня програма · {page.degree} · PDF ↗</a></div>}<PageDocuments pagePath={page.path} includeCategoryPrefixes={["Освітня програма", "ОПП", "ОНП"]} title="Освітні програми за роками" description="Редакції освітньої програми згруповано за роком затвердження або вступу." emptyMessage={page.document ? undefined : "Освітні програми за роками ще не оприлюднено."} /></>,
+      curriculum: <PageDocuments pagePath={page.path} includeCategoryPrefixes={["Навчальний план"]} title="Навчальні плани за роками" description="Для кожного року можна опублікувати окремий навчальний план." emptyMessage="Навчальні плани за роками ще не оприлюднено." />,
       admissions: <div className="wrap"><Link className="academic-inline-link" href={page.slug === "phd" ? "/research/postgraduate-doctoral#admission" : "/admissions"}>Загальна інформація щодо вступу →</Link></div>,
-      documents: <PageDocuments pagePath={page.path} emptyMessage="Документи ще не оприлюднено." />,
+      documents: <PageDocuments pagePath={page.path} excludeCategoryPrefixes={["Освітня програма", "ОПП", "ОНП", "Навчальний план"]} emptyMessage="Інші документи ще не оприлюднено." />,
     }} />
     <SiteFooter />
   </main>;

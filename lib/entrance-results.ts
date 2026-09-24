@@ -165,6 +165,42 @@ export const masterEntranceResultsAugust19: EntranceResultDocument[] = [
   },
 ];
 
+export const masterEntranceResultsSeptember16: EntranceResultDocument[] = [
+  {
+    title: "Співбесіда з англійської мови",
+    href: "/documents/admissions/results/2026-09-16/english-language-interview.pdf",
+    pages: 1,
+  },
+];
+
+export const masterEntranceResultsSeptember17: EntranceResultDocument[] = [
+  {
+    title: "Фаховий іспит із професійної освіти",
+    href: "/documents/admissions/results/2026-09-17/professional-education.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із соціальної роботи та консультування",
+    href: "/documents/admissions/results/2026-09-17/social-work-counselling.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит з управління та адміністрування",
+    href: "/documents/admissions/results/2026-09-17/public-administration.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із психології",
+    href: "/documents/admissions/results/2026-09-17/psychology.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із фінансів, банківської справи, страхування та фондового ринку",
+    href: "/documents/admissions/results/2026-09-17/finance-banking-insurance.pdf",
+    pages: 1,
+  },
+];
+
 export function getEntranceResultDocumentsForNews(slug: string): EntranceResultDocument[] | null {
   if (slug === entranceResultsNewsSlugAugust6) return masterEntranceResultsAugust6;
   if (slug === entranceResultsNewsSlugJuly31) return bachelorEntranceResultsJuly31;
