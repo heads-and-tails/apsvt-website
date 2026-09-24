@@ -7,6 +7,8 @@ import {
   masterEntranceResultsAugust7,
   masterEntranceResultsAugust18,
   masterEntranceResultsAugust19,
+  masterEntranceResultsSeptember16,
+  masterEntranceResultsSeptember17,
   masterInterviewVideo,
   type EntranceResultDocument,
 } from "@/lib/entrance-results";
@@ -57,9 +59,12 @@ function SeptemberResults() {
 }
 
 function ResultBatch({ date, documents, level = "Бакалаврат" }: { date: string; documents: EntranceResultDocument[]; level?: "Бакалаврат" | "Магістратура" }) {
-  return <div className="entrance-result-batch">
-    <h4>{`Результати вступних випробувань від ${date} 2026 року`}</h4>
-    <p>Кожен документ відкривається окремо у форматі PDF.</p>
+  return <details className="entrance-session-folder entrance-result-batch">
+    <summary>
+      <span>{date} 2026 / {level}</span>
+      <div><small>{documents.length} {documents.length === 1 ? "документ" : "документів"} · PDF</small><h3>{`Результати вступних випробувань від ${date} 2026 року`}</h3><p>Натисніть, щоб відкрити офіційні результати.</p></div>
+      <i aria-hidden="true">+</i>
+    </summary>
     <div className="entrance-result-documents">
       {documents.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
         <span>{String(index + 1).padStart(2, "0")}</span>
@@ -67,13 +72,12 @@ function ResultBatch({ date, documents, level = "Бакалаврат" }: { date
         <div className="entrance-result-action"><small>PDF · {document.pages} {document.pages === 1 ? "сторінка" : "сторінки"}</small><b>Відкрити ↗</b></div>
       </a>)}
     </div>
-  </div>;
+  </details>;
 }
 
 function MasterResultBatch() {
-  return <div className="entrance-result-batch">
-    <h4>Результати вступних випробувань від 6 серпня 2026 року</h4>
-    <p>Матеріали співбесіди з англійської мови для вступників на магістерські програми.</p>
+  return <details className="entrance-session-folder entrance-result-batch">
+    <summary><span>6 серпня 2026 / Магістратура</span><div><small>2 матеріали · PDF та відео</small><h3>Результати вступних випробувань від 6 серпня 2026 року</h3><p>Матеріали співбесіди з англійської мови для вступників на магістерські програми.</p></div><i aria-hidden="true">+</i></summary>
     <div className="entrance-result-documents">
       <a href={masterInterviewResults} target="_blank" rel="noreferrer">
         <span>01</span>
@@ -93,7 +97,7 @@ function MasterResultBatch() {
       </video>
       <p>Відеозапис можна переглянути безпосередньо на сторінці або відкрити в окремій вкладці.</p>
     </div>
-  </div>;
+  </details>;
 }
 
 export function EntranceExamResults() {
@@ -118,6 +122,8 @@ export function EntranceExamResults() {
 
     <article className="entrance-results-level" id="results-master">
       <header><span>02 / Магістратура</span><h3>Результати вступних випробувань</h3><p>Офіційні матеріали згруповано за датами проведення вступних випробувань.</p></header>
+      <ResultBatch date="17 вересня" documents={masterEntranceResultsSeptember17} level="Магістратура" />
+      <ResultBatch date="16 вересня" documents={masterEntranceResultsSeptember16} level="Магістратура" />
       <ResultBatch date="19 серпня" documents={masterEntranceResultsAugust19} level="Магістратура" />
       <ResultBatch date="18 серпня" documents={masterEntranceResultsAugust18} level="Магістратура" />
       <ResultBatch date="7 серпня" documents={masterEntranceResultsAugust7} level="Магістратура" />
