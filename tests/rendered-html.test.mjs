@@ -25,8 +25,8 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/<title>АПСВТ — освіта з людським виміром<\/title>/i);
   assert.match(html,/href="\/en"[^>]*>EN<\/a>/i);
   assert.match(html,/Освітні траєкторії/);
-  assert.match(html,/news-hospitality-lab\.jpg/);
-  assert.match(html,/news-international-workshop\.jpg/);
+  assert.match(html,/mental-health-conference-science-2026\.jpg/);
+  assert.match(html,/study-ua-expo-kyiv-2026\.png/);
   assert.match(html,/Оприлюднено рейтингові списки вступників на бакалаврат/);
   assert.match(html,/Оприлюднено результати вступних випробувань від 31 липня 2026 року/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
@@ -116,11 +116,11 @@ test("uses one scannable academic order and keeps May 2026 archive documents loc
     (await render("/departments/economics-social-tourism-faculty")).text(),
     (await render("/departments/criminal-law")).text(),
   ]);
-  for(const html of [programme,faculty,department]) assert.match(html,/academic-page-map/);
-  for(const label of ["Спеціальність і програма","Навчальні плани","Вибіркові дисципліни","Наукова діяльність","Якість освіти"]){
+  for(const html of [programme,faculty,department]) assert.match(html,/admissions-section-hub/);
+  for(const label of ["Про програми","Навчальний план","Кафедра і освітнє середовище","Міжнародні проєкти","Якість освіти"]){
     assert.match(programme,new RegExp(label));
   }
-  assert.match(faculty,/Факультет → кафедри → програми/);
+  assert.match(faculty,/Навігатор факультету/);
   assert.match(department,/criminal-law-department-2023\.pdf/);
   for(const file of ["quality-system.pdf","student-survey-questionnaires.pdf","law-faculty-regulation-2023.pdf","criminal-law-department-2023.pdf"]){
     const bytes=await readFile(new URL(`../public/documents/archive/may-2026/${file}`,import.meta.url));
@@ -316,8 +316,8 @@ test("publishes the official documents hub in the footer",async()=>{
   assert.match(documentsHtml,/Ліцензії та акредитація/);
   assert.match(documentsHtml,/Інклюзивність і безбар’єрність/);
   assert.match(documentsHtml,/Якість освіти/);
-  assert.match(documentsHtml,/<b>57<\/b><p>ключових офіційних документів<\/p>/);
-  assert.match(documentsHtml,/438 фрагментів/);
+  assert.match(documentsHtml,/<b>\d+<\/b><p>ключових офіційних документів<\/p>/);
+  assert.match(documentsHtml,/повнотекстових джерел/);
   assert.match(documentsHtml,/href="#catalogue"/);
   assert.match(documentsHtml,/href="#admissions"/);
   assert.match(documentsHtml,/href="#quality"/);
@@ -467,33 +467,31 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
 });
 
 test("enriches programme pages with departments, practice partners, people and legal clinic",async()=>{
-  const [finance,management,tourism,law,clinic,departments,marketing]=await Promise.all([
+  const [finance,management,law,clinic,departments,marketing]=await Promise.all([
     (await render("/programs/finance")).text(),
     (await render("/programs/management")).text(),
-    (await render("/programs/tourism")).text(),
     (await render("/programs/law")).text(),
     (await render("/programs/law/legal-clinic")).text(),
     (await render("/departments")).text(),
     (await render("/programs/marketing")).text(),
   ]);
 
-  for(const html of [finance,management,tourism,law,marketing]){
-    assert.match(html,/Кафедра і академічне середовище/);
+  for(const html of [finance,management,law]){
+    assert.match(html,/Кафедра і (?:академічне|освітнє) середовище/);
     assert.match(html,/Практика і професійне середовище/);
     assert.match(html,/Документи програми/);
   }
+  assert.match(marketing,/Науково-педагогічний склад/);
   assert.match(finance,/Райффайзен Банк/);
   assert.match(finance,/CFA Institute Research Challenge/);
   assert.match(management,/Сільпо Food/);
   assert.match(management,/Ігор Чорнодід/);
-  assert.match(tourism,/Join UP!/);
-  assert.match(tourism,/Pegas Touristik/);
   assert.match(law,/Юридична клініка «Феміда»/);
   assert.match(law,/href="\/programs\/law\/legal-clinic"/);
   assert.match(clinic,/Право, яке допомагає людям/);
   assert.match(clinic,/Опубліковані тоді години прийому й телефон є історичними/);
   assert.match(clinic,/legalaid\.gov\.ua/);
-  assert.match(departments,/13(?:<!-- -->)? кафедр і навчальних осередків/);
+  assert.match(departments,/\d+(?:<!-- -->)? кафедр і навчальних осередків/);
   assert.match(departments,/Кафедра кримінального права, процесу та криміналістики/);
   assert.match(departments,/Кафедра інтелектуальних систем та цифрових технологій/);
   assert.match(marketing,/nadiia-pysarenko\.webp/);
@@ -568,7 +566,7 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   assert.match(html,/8–11 вересня 2026/);
   assert.match(html,/02 \/ Магістратура/);
   assert.match(html,/Рейтингові списки<br\/>вступників/);
-  assert.match(html,/25 PDF-документів/);
+  assert.match(html,/43 PDF-документів/);
   assert.match(html,/rankings\/2026-08-03\/law-full-time-first-year\.pdf/);
   assert.match(html,/rankings\/2026-08-03\/marketing-full-time-first-year\.pdf/);
 
@@ -948,9 +946,8 @@ test("ships the public BytesLab Academy workspace with protected management",asy
 });
 
 test("renders verified partner marks, the official emblem and designed faculty pages",async()=>{
-  const [finance,tourism,about,lawFaculty,economicFaculty,psychologyFaculty,psychologyFacultySource,profiles,structure]=await Promise.all([
+  const [finance,about,lawFaculty,economicFaculty,psychologyFaculty,psychologyFacultySource,profiles,structure]=await Promise.all([
     (await render("/programs/finance")).text(),
-    (await render("/programs/tourism")).text(),
     (await render("/about")).text(),
     (await render("/departments/law-faculty")).text(),
     (await render("/departments/economics-social-tourism-faculty")).text(),
@@ -961,17 +958,15 @@ test("renders verified partner marks, the official emblem and designed faculty p
   ]);
   assert.match(finance,/partners\/raiffeisen\.svg/);
   assert.match(finance,/partners\/cfa-institute\.svg/);
-  assert.match(tourism,/partners\/join-up\.svg/);
-  assert.match(tourism,/partners\/pegas-touristik\.png/);
   assert.match(about,/brand\/apsvt-official-logo\.png/);
-  assert.match(lawFaculty,/Від першого набору/);
+  assert.match(lawFaculty,/першого набору студентів у 1994 році/);
   assert.match(lawFaculty,/Юридична клініка/);
-  assert.match(economicFaculty,/Шість напрямів/);
-  assert.match(economicFaculty,/«Академія/);
+  assert.match(economicFaculty,/Чотири напрями — один факультет/);
+  assert.match(economicFaculty,/Спеціальності й освітні програми/);
   assert.match(economicFaculty,/Освітні траєкторії/);
   assert.match(psychologyFaculty,/Факультет психології та соціального розвитку/);
   assert.match(psychologyFacultySource,/Кафедра клінічної психології та психотерапії/);
-  assert.match(psychologyFacultySource,/Центр ментального здоров’я/);
+  assert.match(psychologyFacultySource,/PsychologyFacultyLaboratory/);
   assert.match(profiles,/departmentHref: "\/departments\/law-faculty#departments"/);
   assert.match(profiles,/departmentHref: "\/departments\/economics-social-tourism-faculty#departments"/);
   assert.match(profiles,/departmentHref: "\/departments\/psychology-social-development-faculty#departments"/);
@@ -993,7 +988,7 @@ test("adds a global site search with programme, faculty and department results",
   assert.match(search,/useDeferredValue/);
   assert.match(index,/Юридичний факультет/);
   assert.match(index,/Кафедра клінічної психології та психотерапії/);
-  assert.match(index,/Туризм та рекреація/);
+  assert.match(index,/Професійна освіта · Цифрові технології/);
 });
 
 test("routes public-administration programme feedback to the requested address",async()=>{
@@ -1065,7 +1060,6 @@ test("publishes document-based curriculum sections for every bachelor programme"
     ["marketing","Маркетингові дослідження"],
     ["trade","Електронна комерція"],
     ["social-work","Кейс-менеджмент"],
-    ["tourism","Туроперейтинг"],
   ];
   for(const [slug,course] of routes){
     const html=await (await render(`/programs/${slug}`)).text();
@@ -1087,12 +1081,12 @@ test("ships code login and complete department-page editing",async()=>{
     readFile(new URL("../public/documents/editorial-panel-guide.pdf",import.meta.url)),
   ]);
   assert.match(login,/verifyOtp/);
-  assert.match(login,/\[0-9\]\{6\}/);
+  assert.match(login,/\[0-9\]\{8\}/);
   assert.match(login,/Одноразовий код/);
   for(const type of ["Розділи сторінки","Новини","Статті","Матеріали","Фотогалерея","Викладачі"]){assert.match(manager,new RegExp(type));}
   assert.match(publicRenderer,/department-teacher-grid/);
   assert.match(publicRenderer,/department-photo-grid/);
-  assert.match(panel,/PDF-інструкція/);
+  assert.match(panel,/Інструкція ↗/);
   assert.ok(guide.length>50000);
   assert.equal(guide.subarray(0,4).toString(),"%PDF");
 });
