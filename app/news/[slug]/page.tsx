@@ -68,8 +68,8 @@ export default async function Page({ params }: Props) {
         {isMentalHealthConferenceNews && <>
           <div className="stakeholder-zoom-card">
             <div><span>Дата й час</span><time dateTime="2026-10-08T10:00:00+03:00">8 жовтня · 10:00</time></div>
-            <div><span>Zoom</span><strong>922 7548 7678 · p7uAm0</strong></div>
-            <a href="https://us04web.zoom.us/j/92275487678?pwd=dnZHbW1yNjRvRGdHb3E5MDMyTDE4UT09" target="_blank" rel="noreferrer">Приєднатися до конференції ↗</a>
+            <div><span>Zoom</span><strong>820 3384 7880</strong></div>
+            <a href="https://us02web.zoom.us/j/82033847880?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp.1" target="_blank" rel="noreferrer">Приєднатися до конференції ↗</a>
           </div>
           <div className="news-result-files">
             <span>Інформаційний лист конференції</span>

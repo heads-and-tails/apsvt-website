@@ -209,7 +209,9 @@ test("publishes the Mental Health conference and Academy strategy",async()=>{
   const articleHtml=await (await render("/news/mental-health-conference-2026")).text();
   assert.match(articleHtml,/ІІ Міжнародна науково-практична конференція/);
   assert.match(articleHtml,/8 жовтня · 10:00/);
-  assert.match(articleHtml,/922 7548 7678/);
+  assert.match(articleHtml,/820 3384 7880/);
+  assert.match(articleHtml,/us02web\.zoom\.us\/j\/82033847880\?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp\.1/);
+  assert.doesNotMatch(articleHtml,/92275487678|922 7548 7678/);
   assert.match(articleHtml,/mental-health-conference-science-2026\.jpg/);
   assert.match(articleHtml,/mental-health-conference-2026-information-letter\.docx/);
 
