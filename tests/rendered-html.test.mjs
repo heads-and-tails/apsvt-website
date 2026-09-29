@@ -709,7 +709,7 @@ test("publishes entrance-examination programmes and duplicates doctoral files on
   assert.match(law,/legal-clinic-regulation\.pdf/);
   assert.match(law,/forensic-lab-regulation\.pdf/);
   assert.match(publicAdministration,/exam-programs\/2026\/phd\/public-administration\.pdf/);
-  assert.match(publicAdministration,/Кафедра Публічного Управління та Публічної Служби/);
+  assert.match(publicAdministration,/<h1>Кафедра Публічного Управління та Публічної Служби<\/h1>/);
   for(const name of ["Кафедра конституційного, адміністративного та фінансового права","Кафедра Публічного Управління та Публічної Служби","Кафедра цивільного, трудового та господарського права","Кафедра кримінального права, процесу та криміналістики"]){
     assert.match(lawFaculty,new RegExp(name));
   }
