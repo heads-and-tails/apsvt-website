@@ -55,7 +55,7 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/programs/psychology", label: "Психологічний напрям", group: "department" },
   { value: "/programs/finance", label: "Кафедра фінансів", group: "department" },
   { value: "/programs/management", label: "Кафедра економіки та менеджменту", group: "department" },
-  { value: "/programs/public-administration", label: "Кафедра публічного управління", group: "department" },
+  { value: "/programs/public-administration", label: "Кафедра Публічного Управління та Публічної Служби", group: "department" },
   { value: "/programs/marketing", label: "Кафедра маркетингу", group: "department" },
   { value: "/programs/trade", label: "Кафедра економіки та менеджменту · Торгівля", group: "department" },
   { value: "/programs/law", label: "Освітня траєкторія D8 «Право»", group: "department" },
