@@ -19,7 +19,12 @@ export function DepartmentEditorialContent({ entries }: { entries: DepartmentEnt
   if (!entries.length) return null;
   return <div className="department-public-content" data-editorial-rendered="true">
     {groups.map((group, groupIndex) => {
-      const items = entries.filter((entry) => entry.entryType === group.type);
+      const items = entries.filter((entry) => entry.entryType === group.type).sort((a, b) => {
+        if (group.type !== "news") return a.sortOrder - b.sortOrder;
+        const aDate = a.date || a.createdAt;
+        const bDate = b.date || b.createdAt;
+        return bDate.localeCompare(aDate) || b.createdAt.localeCompare(a.createdAt);
+      });
       if (!items.length) return null;
       return <section className={`department-public-section department-public-${group.type}`} id={`department-${group.type}`} key={group.type}>
         <div className="wrap">
