@@ -138,7 +138,7 @@ export function ScheduleDocumentDirectory({ documents }: { documents: PageDocume
           </p>
           <div>
             <Link href="/academic-calendar">Навчальний календар →</Link>
-            <a href="#live-schedule">Інтерактивний розклад →</a>
+            <a href="#exam-session">Розклад заліків та іспитів →</a>
           </div>
         </div>
       </div>

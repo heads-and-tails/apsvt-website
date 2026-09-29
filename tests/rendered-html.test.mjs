@@ -163,8 +163,10 @@ test("renders editorially managed public information",async()=>{
   assert.match(admissionsHtml,/Ключові дати 2026/);
 
   const scheduleHtml=await (await render("/schedule")).text();
-  assert.match(scheduleHtml,/Основи менеджменту/);
-  assert.match(scheduleHtml,/Графік іспитів і заліків/);
+  assert.match(scheduleHtml,/Офіційні навчальні ресурси/);
+  assert.match(scheduleHtml,/Розклад заліків та іспитів/);
+  assert.doesNotMatch(scheduleHtml,/Основи менеджменту/);
+  assert.match(scheduleHtml,/moodle\.socosvita\.kiev\.ua/);
 
   const libraryHtml=await (await render("/facilities/library")).text();
   assert.match(libraryHtml,/Конституційне право України/);

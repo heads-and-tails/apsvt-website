@@ -101,7 +101,7 @@ export function ScheduleBrowser({ lessons }: { lessons: Lesson[] }) {
         <b>{period === allValue ? "Усі опубліковані розклади" : period}</b>
         <span>{filtered.length} {filtered.length === 1 ? "заняття" : "занять"}</span>
       </div>
-      <Link className="session-link" href="/schedule#session">Графік сесії <b>↓</b></Link>
+      <Link className="session-link" href="/schedule#exam-session">Графік сесії <b>↓</b></Link>
     </div>
 
     <div className="schedule-controls four">

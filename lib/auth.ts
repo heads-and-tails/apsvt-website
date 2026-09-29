@@ -42,6 +42,10 @@ const preapprovedDepartmentEditors = new Map<string, { displayName: string; acce
   ["natalya.balashova75@gmail.com", { displayName: "Балашова Наталія", accessScopes: ["/programs/social-work"] }],
   ["kim2505@ukr.net", { displayName: "Бондар Світлана", accessScopes: ["/departments/languages-humanities"] }],
   ["markovec28@gmail.com", { displayName: "Неля Василець", accessScopes: ["/programs/management", "/programs/trade"] }],
+  ["batsurovska_ilona@outlook.com", {
+    displayName: "Бацуровська Ілона Вікторівна",
+    accessScopes: ["/departments/digital-technologies"],
+  }],
   ["educ_dep2@socosvita.kiev.ua", {
     displayName: "Навчально-методичний відділ",
     accessScopes: ["/schedule", "/exam-schedule"],
