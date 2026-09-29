@@ -426,6 +426,9 @@ test("publishes curated Academy, doctoral and GreenFinEDU resources in their rel
   assert.match(studentGuide,/Що зробити насамперед/);
   assert.match(studentGuide,/first-year-guide-2024\.pdf/);
   assert.match(regulations,/Оберіть положення/);
+  assert.match(regulations,/Положення про порядок оскарження процедури проведення контрольних заходів та їх результатів/);
+  assert.match(regulations,/appeal-control-procedures-results\.pdf/);
+  assert.doesNotMatch(regulations,/academic-tests-plagiarism-check\.pdf/);
   assert.match(individualPlan,/Індивідуальний навчальний план/);
   assert.match(individualPlan,/individual-study-plan-2019\.pdf/);
   assert.match(teacherOfYear,/Професійна майстерність і визнання/);

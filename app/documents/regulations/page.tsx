@@ -10,11 +10,11 @@ export const metadata: Metadata = {
 
 const regulations = [
   {
-    year: "2026",
-    title: "Порядок перевірки академічних тестів на плагіат",
-    description: "Офіційний порядок перевірки академічних тестів, оформлення результатів та дотримання принципів академічної доброчесності.",
-    href: "/documents/regulations/academic-tests-plagiarism-check.pdf",
-    pages: "7 сторінок",
+    year: "2019",
+    title: "Положення про порядок оскарження процедури проведення контрольних заходів та їх результатів",
+    description: "Порядок подання й розгляду апеляцій щодо процедури проведення контрольних заходів, об’єктивності оцінювання та отриманих результатів.",
+    href: "/documents/regulations/appeal-control-procedures-results.pdf",
+    pages: "8 сторінок",
     direct: true,
   },
   {
