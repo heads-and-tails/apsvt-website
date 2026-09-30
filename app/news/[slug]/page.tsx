@@ -15,6 +15,18 @@ export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 
+const conferenceOrganizers = [
+  "ОДЕСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ І.І. МЕЧНИКОВА",
+  "УКРАЇНСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ",
+];
+
+function addConferenceOrganizers(body: string) {
+  if (conferenceOrganizers.every((organizer) => body.includes(organizer))) return body;
+  const organizerList = conferenceOrganizers.map((organizer) => `- ${organizer}`).join("\n");
+  if (body.includes("## Організатори")) return body.replace("## Організатори", `## Організатори\n\n${organizerList}`);
+  return `${body}\n\n## Організатори\n\n${organizerList}`;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
@@ -43,6 +55,7 @@ export default async function Page({ params }: Props) {
   const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
   const isStudyUaExpoNews = post.slug === studyUaExpoNewsSlug;
   const isMentalHealthConferenceNews = post.slug === mentalHealthConferenceNewsSlug;
+  const articleBody = isMentalHealthConferenceNews ? addConferenceOrganizers(post.body) : post.body;
 
   return <main id="top">
     <SiteHeader />
@@ -54,7 +67,7 @@ export default async function Page({ params }: Props) {
     <section className="article-section"><div className="wrap detail-layout">
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
-        <EditorialRichText text={post.body} />
+        <EditorialRichText text={articleBody} />
         {isStakeholderDiscussionNews && <div className="stakeholder-zoom-card">
           <div><span>Онлайн-зустріч</span><time dateTime="2026-08-26T12:00:00+03:00">26 серпня · 12:00</time></div>
           <div><span>Meeting ID</span><strong>303 650 3681</strong></div>

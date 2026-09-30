@@ -101,6 +101,9 @@ export function EntranceExamSchedule() {
           <a href="/documents/admissions/entrance-exams/additional-session-2026/bachelor-interviews.pdf" target="_blank" rel="noreferrer">
             <span>01</span><div><small>Бакалаврат · 8–11 вересня 2026</small><h4>Графік проведення співбесід</h4><p>Консультація та співбесіди в Академії й дистанційно.</p></div><b>PDF · 1 сторінка ↗</b>
           </a>
+          <a href="/documents/admissions/entrance-exams/additional-session-2026/bachelor-interviews-september-2026.pdf" target="_blank" rel="noreferrer">
+            <span>02</span><div><small>Бакалаврат · додаткова сесія</small><h4>Оновлений графік проведення співбесід</h4><p>Офіційний графік, надісланий Приймальною комісією.</p></div><b>PDF · 1 сторінка ↗</b>
+          </a>
         </div>
       </details>
     </article>
@@ -122,6 +125,9 @@ export function EntranceExamSchedule() {
           <a href="/documents/admissions/entrance-exams/additional-session-2026/master-interviews-professional-exams.pdf" target="_blank" rel="noreferrer">
             <span>01</span><div><small>Магістратура · 15–17 вересня 2026</small><h4>Графік співбесід і фахових іспитів</h4><p>Консультації, іноземна мова та фахові випробування.</p></div><b>PDF · 4 сторінки ↗</b>
           </a>
+          <a href="/documents/admissions/entrance-exams/additional-session-2026/master-entrance-exams-september-2026.pdf" target="_blank" rel="noreferrer">
+            <span>02</span><div><small>Магістратура · додаткова сесія</small><h4>Оновлений графік вступних випробувань</h4><p>Офіційний графік, надісланий Приймальною комісією.</p></div><b>PDF · 4 сторінки ↗</b>
+          </a>
         </div>
       </details>
     </article>
@@ -133,6 +139,18 @@ export function EntranceExamSchedule() {
         <div className="entrance-program-head" role="row"><span>Код</span><span>Спеціальність</span><span>Аудиторія</span></div>
         {phdPrograms.map(([code, speciality, room]) => <div className="entrance-program-row" role="row" key={code}><b>{code}</b><strong>{speciality}</strong><em>ауд. {room}</em></div>)}
       </div>
+      <details className="entrance-session-folder entrance-level-session" id="entrance-phd-additional">
+        <summary>
+          <span>Аспірантура</span>
+          <div><small>Додаткова сесія · 2026</small><h3>Додаткова сесія</h3><h4>Графік вступних випробувань</h4><p>Офіційний графік вступних випробувань до аспірантури.</p></div>
+          <i aria-hidden="true">+</i>
+        </summary>
+        <div className="entrance-session-documents">
+          <a href="/documents/admissions/entrance-exams/additional-session-2026/phd-entrance-exams.pdf" target="_blank" rel="noreferrer">
+            <span>01</span><div><small>Аспірантура · додаткова сесія</small><h4>Графік вступних випробувань</h4><p>Офіційний документ Приймальної комісії.</p></div><b>PDF · 2 сторінки ↗</b>
+          </a>
+        </div>
+      </details>
     </article>
 
     <div className="entrance-format-note"><span>i</span><div><b>Дистанційна участь</b><p>Meeting ID, код доступу та спеціальні умови наведено в офіційних PDF. Перед випробуванням перевірте актуальність реквізитів у Приймальній комісії.</p></div><a href="mailto:pk@socosvita.kiev.ua">pk@socosvita.kiev.ua →</a></div>

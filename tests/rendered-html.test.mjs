@@ -627,12 +627,15 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   }
 });
 
-test("publishes the corrected master applicant ratings as 32 grouped PDFs",async()=>{
+test("publishes the master applicant ratings from August and September as 47 grouped PDFs",async()=>{
   const html=await (await render("/admissions")).text();
-  assert.match(html,/32 PDF-документи/);
+  assert.match(html,/47 PDF-документів/);
   assert.match(html,/Рейтингові списки вступників від 24\.08\.2026/);
+  assert.match(html,/Рейтингові списки вступників від 23\.09\.2026/);
   assert.match(html,/rankings\/2026-08-24-master\/law-full-time-recommended\.pdf/);
   assert.match(html,/rankings\/2026-08-24-master\/clinical-psychology-part-time-other\.pdf/);
+  assert.match(html,/rankings\/2026-09-23-master\/law-full-time\.pdf/);
+  assert.match(html,/rankings\/2026-09-23-master\/professional-education-part-time\.pdf/);
   assert.doesNotMatch(html,/26 CSV-таблиць|master-ranking-01\.csv/);
 
   const masterRankingDir=new URL("../public/documents/admissions/rankings/2026-08-24-master/",import.meta.url);
@@ -640,6 +643,14 @@ test("publishes the corrected master applicant ratings as 32 grouped PDFs",async
   assert.equal(masterRankingFiles.length,32);
   for(const file of masterRankingFiles){
     const pdf=await readFile(new URL(file,masterRankingDir));
+    assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
+
+  const septemberRankingDir=new URL("../public/documents/admissions/rankings/2026-09-23-master/",import.meta.url);
+  const septemberRankingFiles=(await readdir(septemberRankingDir)).filter((file)=>file.endsWith(".pdf"));
+  assert.equal(septemberRankingFiles.length,15);
+  for(const file of septemberRankingFiles){
+    const pdf=await readFile(new URL(file,septemberRankingDir));
     assert.equal(pdf.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
   }
 });

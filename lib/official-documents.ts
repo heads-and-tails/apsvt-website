@@ -484,6 +484,16 @@ export const officialDocuments: OfficialDocument[] = [
     indexFile: "20231031-205611-05514622c.txt",
   },
   {
+    id: "anticorruption-archive-materials",
+    category: "anticorruption",
+    title: "Архів матеріалів із запобігання та протидії корупції",
+    description: "Скринька довіри, контакти уповноваженої особи, плани заходів, рекомендації з розбудови доброчесності та архівні звіти.",
+    href: "/materials/protydiia-koruptsii-37831a092",
+    format: "WEB",
+    updated: "архів",
+    status: "reference",
+  },
+  {
     id: "educational-license",
     category: "accreditation",
     title: "Ліцензія на провадження освітньої діяльності",
