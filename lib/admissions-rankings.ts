@@ -14,6 +14,7 @@ export type ApplicantRankingGroup = {
 const root = "/documents/admissions/rankings/2026-08-03";
 const masterRoot = "/documents/admissions/rankings/2026-08-24-master";
 const september16Root = "/documents/admissions/rankings/2026-09-16";
+const septemberMasterRoot = "/documents/admissions/rankings/2026-09-23-master";
 
 export const applicantRankingsNewsSlug = "reitynhovi-spysky-vstupnykiv-bakalavrat-2026";
 
@@ -267,7 +268,70 @@ export const masterApplicantRankings: ApplicantRankingGroup[] = [
   },
 ];
 
+export const septemberMasterApplicantRankings: ApplicantRankingGroup[] = [
+  {
+    programme: "Професійна освіта",
+    code: "A5",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/professional-education-full-time.pdf` },
+      { title: "Заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/professional-education-part-time.pdf` },
+    ],
+  },
+  {
+    programme: "Психологія",
+    code: "C4",
+    documents: [
+      { title: "Клінічна психологія · денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/clinical-psychology-full-time.pdf` },
+      { title: "Клінічна психологія · заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/clinical-psychology-part-time.pdf` },
+      { title: "Психологія бізнесу та управління · денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/psychology-business-management-full-time.pdf` },
+      { title: "Психологія бізнесу та управління · заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/psychology-business-management-part-time.pdf` },
+    ],
+  },
+  {
+    programme: "Фінанси, банківська справа, страхування та фондовий ринок",
+    code: "D2",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/finance-full-time.pdf` },
+      { title: "Заочна форма · список 1", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/finance-part-time-list-1.pdf` },
+      { title: "Заочна форма · список 2", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/finance-part-time-list-2.pdf` },
+    ],
+  },
+  {
+    programme: "Менеджмент",
+    code: "D3",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/management-full-time.pdf` },
+    ],
+  },
+  {
+    programme: "Публічне управління та адміністрування",
+    code: "D4",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/public-administration-full-time.pdf` },
+      { title: "Заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/public-administration-part-time.pdf` },
+    ],
+  },
+  {
+    programme: "Право",
+    code: "D8",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/law-full-time.pdf` },
+      { title: "Заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/law-part-time.pdf` },
+    ],
+  },
+  {
+    programme: "Соціальна робота та консультування",
+    code: "I10",
+    documents: [
+      { title: "Заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/social-work-part-time.pdf` },
+    ],
+  },
+];
+
 export const masterRankingDocumentCount = masterApplicantRankings.reduce(
+  (total, group) => total + group.documents.length,
+  0,
+) + septemberMasterApplicantRankings.reduce(
   (total, group) => total + group.documents.length,
   0,
 );
