@@ -3,7 +3,6 @@ const enrollmentOrderGroups = [
     title: "Бакалаврат",
     description: "Накази про зарахування вступників на програми першого рівня вищої освіти.",
     orders: [
-      { title: "Наказ про зарахування № 222/с", date: "24 вересня 2026", details: "Офіційний наказ і додатки про зарахування вступників на навчання.", pages: 16, href: "/documents/admissions/enrollment-orders/2026-09/order-222s-2026-09-24.pdf" },
       { title: "Наказ про зарахування № 218/с", date: "18 вересня 2026", details: "Офіційний наказ і додатки про зарахування вступників на навчання.", pages: 18, href: "/documents/admissions/enrollment-orders/2026-09/order-218s-2026-09-18.pdf" },
       { title: "Наказ про зарахування № 219/с", date: "18 вересня 2026", details: "Офіційний наказ і додатки про зарахування вступників на навчання.", pages: 4, href: "/documents/admissions/enrollment-orders/2026-09/order-219s-2026-09-18.pdf" },
       { title: "Наказ про зарахування", date: "17 серпня 2026", details: "Офіційний документ Приймальної комісії з додатками до наказу.", pages: 11, href: "/documents/admissions/enrollment-orders/2026-08/order-2026-08-17.pdf" },
@@ -15,6 +14,7 @@ const enrollmentOrderGroups = [
     title: "Магістратура",
     description: "Накази про зарахування вступників на програми другого рівня вищої освіти.",
     orders: [
+      { title: "Наказ про зарахування № 222/с", date: "24 вересня 2026", details: "Офіційний наказ і додатки про зарахування вступників до магістратури.", pages: 16, href: "/documents/admissions/enrollment-orders/2026-09/order-222s-2026-09-24.pdf" },
       { title: "Наказ про зарахування № 197/с", date: "01 вересня 2026", details: "Офіційний наказ і додатки про зарахування вступників до магістратури.", pages: 3, href: "/documents/admissions/enrollment-orders/2026-09/order-197s-2026-09-01.pdf" },
       { title: "Накази про зарахування на магістратуру", date: "31 серпня 2026", details: "Зведений файл наказів і додатків за магістерськими освітніми програмами.", pages: 33, href: "/documents/admissions/enrollment-orders/2026-08/master-enrollment-orders-2026-08-31.pdf" },
     ],

@@ -144,6 +144,23 @@ test("documents catalogue includes the shared faculty and department section",as
   assert.match(html,/Матеріали, які кафедри та факультети публікують через редакційну панель/);
 });
 
+test("keeps corrected admissions and archive documents in their requested sections",async()=>{
+  const [admissionsHtml,documentsHtml]=await Promise.all([
+    (await render("/admissions#enrollment-orders")).text(),
+    (await render("/documents")).text(),
+  ]);
+  const ordersStart=admissionsHtml.indexOf('id="enrollment-orders"');
+  const bachelorStart=admissionsHtml.indexOf("Бакалаврат",ordersStart);
+  const masterStart=admissionsHtml.indexOf("Магістратура",bachelorStart+1);
+  const phdStart=admissionsHtml.indexOf("Аспірантура",masterStart+1);
+  assert.ok(bachelorStart>=0 && masterStart>bachelorStart && phdStart>masterStart);
+  assert.doesNotMatch(admissionsHtml.slice(bachelorStart,masterStart),/№ 222\/с/);
+  assert.match(admissionsHtml.slice(masterStart,phdStart),/№ 222\/с/);
+  assert.match(documentsHtml,/Етичний кодекс АПСВТ/);
+  assert.match(documentsHtml,/План запобігання, виявлення та протидії корупції/);
+  assert.match(documentsHtml,/Архів матеріалів із запобігання та протидії корупції/);
+});
+
 test("links the recovered May 2026 news archive from the public news section",async()=>{
   const [newsHtml,archiveHtml]=await Promise.all([
     (await render("/news")).text(),
