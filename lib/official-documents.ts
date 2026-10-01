@@ -405,7 +405,7 @@ export const officialDocuments: OfficialDocument[] = [
   {
     id: "ethics-code",
     category: "integrity",
-    title: "Кодекс етики АПСВТ",
+    title: "Етичний кодекс АПСВТ",
     description: "Принципи академічної культури, взаємної поваги та відповідальної поведінки.",
     href: "/documents/archive/old-site/ethics-code.pdf",
     format: "PDF",
