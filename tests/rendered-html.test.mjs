@@ -27,8 +27,9 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/Освітні траєкторії/);
   assert.match(html,/mental-health-conference-science-2026\.jpg/);
   assert.match(html,/study-ua-expo-kyiv-2026\.png/);
+  assert.match(html,/Гостьова лекція Єнс-Райнхольда Губерта/);
+  assert.match(html,/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
   assert.match(html,/Оприлюднено рейтингові списки вступників на бакалаврат/);
-  assert.match(html,/Оприлюднено результати вступних випробувань від 31 липня 2026 року/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
@@ -232,7 +233,9 @@ test("publishes the Mental Health conference and Academy strategy",async()=>{
   assert.match(articleHtml,/us02web\.zoom\.us\/j\/82033847880\?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp\.1/);
   assert.doesNotMatch(articleHtml,/92275487678|922 7548 7678/);
   assert.match(articleHtml,/mental-health-conference-science-2026\.jpg/);
-  assert.match(articleHtml,/mental-health-conference-2026-information-letter\.docx/);
+  assert.match(articleHtml,/Програма конференції/);
+  assert.match(articleHtml,/mental-health-conference-2026-program\.pdf/);
+  assert.doesNotMatch(articleHtml,/mental-health-conference-2026-information-letter\.docx/);
 
   const documentsHtml=await (await render("/documents#governance")).text();
   assert.match(documentsHtml,/Стратегія розвитку Академії до 2026 року/);
@@ -240,9 +243,31 @@ test("publishes the Mental Health conference and Academy strategy",async()=>{
   assert.match(documentsHtml,/statute-2017\.pdf/);
 
   const strategy=await readFile(new URL("../public/documents/academy/strategy-development-to-2026.pdf",import.meta.url));
-  const conferenceLetter=await readFile(new URL("../public/documents/news/mental-health-conference-2026-information-letter.docx",import.meta.url));
+  const conferenceProgram=await readFile(new URL("../public/documents/news/mental-health-conference-2026-program.pdf",import.meta.url));
   assert.equal(strategy.subarray(0,4).toString(),"%PDF");
-  assert.equal(conferenceLetter.subarray(0,2).toString(),"PK");
+  assert.equal(conferenceProgram.subarray(0,4).toString(),"%PDF");
+});
+
+test("publishes the PILC and SEITE 2026 international programme",async()=>{
+  const articleHtml=await (await render("/news/natalia-goncharenko-pilc-seite-2026")).text();
+  assert.match(articleHtml,/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
+  assert.match(articleHtml,/Людиноцентричне лідерство/);
+  assert.match(articleHtml,/Horizon Europe, Erasmus\+/);
+  assert.match(articleHtml,/youtu\.be\/DANh8PwOcN4/);
+  assert.doesNotMatch(articleHtml,/0506073117|050 607 31 17/);
+});
+
+test("publishes the guest lecture in Academy and faculty news",async()=>{
+  const [homeHtml,newsHtml,facultyHtml,articleHtml]=await Promise.all([
+    (await render("/")).text(),
+    (await render("/news")).text(),
+    (await render("/departments/psychology-social-development-faculty")).text(),
+    (await render("/news/guest-lecture-jens-reinhold-hubert-2026")).text(),
+  ]);
+  for(const html of [homeHtml,newsHtml,facultyHtml]) assert.match(html,/Гостьова лекція Єнс-Райнхольда Губерта/);
+  assert.match(articleHtml,/8 жовтня · 13:20/);
+  assert.match(articleHtml,/820 3384 7880 · код 977364/);
+  assert.match(articleHtml,/news-guest-lecture-2026-10-08\.png/);
 });
 
 test("publishes international partnerships and the foreign applicant guide",async()=>{
