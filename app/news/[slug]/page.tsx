@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { getPostBySlug, getPosts, mentalHealthConferenceNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
+import { getPostBySlug, getPosts, guestLectureHubertNewsSlug, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
@@ -55,6 +55,8 @@ export default async function Page({ params }: Props) {
   const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
   const isStudyUaExpoNews = post.slug === studyUaExpoNewsSlug;
   const isMentalHealthConferenceNews = post.slug === mentalHealthConferenceNewsSlug;
+  const isPilcSeiteNews = post.slug === pilcSeiteNewsSlug;
+  const isGuestLectureHubertNews = post.slug === guestLectureHubertNewsSlug;
   const articleBody = isMentalHealthConferenceNews ? addConferenceOrganizers(post.body) : post.body;
 
   return <main id="top">
@@ -85,10 +87,20 @@ export default async function Page({ params }: Props) {
             <a href="https://us02web.zoom.us/j/82033847880?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp.1" target="_blank" rel="noreferrer">Приєднатися до конференції ↗</a>
           </div>
           <div className="news-result-files">
-            <span>Інформаційний лист конференції</span>
-            <a href="/documents/news/mental-health-conference-2026-information-letter.docx" download><b>01</b><strong>Повна інформація для учасників</strong><small>DOCX · завантажити ↗</small></a>
+            <span>Програма конференції</span>
+            <a href="/documents/news/mental-health-conference-2026-program.pdf" target="_blank" rel="noreferrer"><b>01</b><strong>Програма конференції</strong><small>PDF · відкрити ↗</small></a>
           </div>
         </>}
+        {isPilcSeiteNews && <div className="stakeholder-zoom-card study-expo-card">
+          <div><span>Відео</span><strong>PILC &amp; SEITE 2026</strong></div>
+          <div><span>Формат</span><strong>Міжнародне стажування</strong></div>
+          <a href="https://youtu.be/DANh8PwOcN4?si=t9c7VYbwe71RYXcO" target="_blank" rel="noreferrer">Переглянути відео ↗</a>
+        </div>}
+        {isGuestLectureHubertNews && <div className="stakeholder-zoom-card">
+          <div><span>Дата й час</span><time dateTime="2026-10-08T13:20:00+03:00">8 жовтня · 13:20</time></div>
+          <div><span>Zoom</span><strong>820 3384 7880 · код 977364</strong></div>
+          <a href="https://us02web.zoom.us/j/82033847880?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp.1" target="_blank" rel="noreferrer">Приєднатися до лекції ↗</a>
+        </div>}
         {entranceResultDocuments && <div className="news-result-files">
           <span>Результати за предметами</span>
           {entranceResultDocuments.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>
