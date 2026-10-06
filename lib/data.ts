@@ -29,6 +29,9 @@ import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 const IMG = "https://images.unsplash.com";
 export const stakeholderDiscussionNewsSlug = "obhovorennia-osvitnikh-prohram-d8-d4-2026";
 export const studyUaExpoNewsSlug = "study-ua-osvitnia-vystavka-kyiv-2026";
+export const mentalHealthConferenceNewsSlug = "mental-health-conference-2026";
+export const pilcSeiteNewsSlug = "natalia-goncharenko-pilc-seite-2026";
+export const guestLectureHubertNewsSlug = "guest-lecture-jens-reinhold-hubert-2026";
 export const judgeBudzanGuestLectureNewsSlug = "hostova-lektsiia-suddi-budzan-2026";
 export const wartimeFirstAidTrainingNewsSlug = "treninh-domedychnoi-dopomohy-2023";
 
@@ -63,6 +66,54 @@ export const seedPosts: Post[] = [
     publishedAt: "2023-06-23T19:13:00.000Z",
     createdAt: "2023-06-23T19:13:00.000Z",
     updatedAt: "2023-06-23T19:13:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-guest-lecture-jens-reinhold-hubert-2026",
+    slug: guestLectureHubertNewsSlug,
+    title: "Гостьова лекція Єнс-Райнхольда Губерта",
+    excerpt: "8 жовтня о 13:20 факультет психології та соціального розвитку запрошує на онлайн-лекцію дипломованого фахівця із соціально-економічних наук Єнс-Райнхольда Губерта.",
+    body: "8 жовтня 2026 року о 13:20 відбудеться гостьова онлайн-лекція Єнс-Райнхольда Губерта — дипломованого фахівця із соціально-економічних наук (Diplom-Sozialwirt, Німеччина).\n\nЗустріч організована Академією праці, соціальних відносин і туризму, факультетом психології та соціального розвитку, Європейською психологічною асоціацією, Одеським національним університетом імені І. І. Мечникова, факультетом психології та соціальної роботи, Українською психологічною асоціацією та Східноукраїнським національним університетом імені Володимира Даля.\n\n## Час і формат\n\n- 8 жовтня 2026 року\n- Початок — о 13:20\n- Онлайн у Zoom\n- Meeting ID: 820 3384 7880\n- Код доступу: 977364",
+    category: "Факультет психології та соціального розвитку",
+    imageUrl: "/news-guest-lecture-2026-10-08.png",
+    imageAlt: "Афіша гостьової лекції Єнс-Райнхольда Губерта 8 жовтня 2026 року",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-02T10:00:00.000Z",
+    createdAt: "2026-10-02T10:00:00.000Z",
+    updatedAt: "2026-10-02T10:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-natalia-goncharenko-pilc-seite-2026",
+    slug: pilcSeiteNewsSlug,
+    title: "АПСВТ Наталія Гончаренко взяла участь у програмі PILC & SEITE 2026",
+    excerpt: "Проректорка з міжнародного співробітництва АПСВТ долучилася до міжнародного стажування, наукових сесій і стратегічних зустрічей у хорватському Університеті прикладних наук PAR.",
+    body: "Проректорка з міжнародного співробітництва АПСВТ, кандидат психологічних наук, доцент Наталія Гончаренко взяла участь у престижній міжнародній програмі PILC & SEITE 2026. Захід відбувся в межах професійного міжнародного стажування, організованого хорватським Університетом прикладних наук PAR.\n\nПрограма SEITE (Socio-Economic Impacts, Technology and Education — Соціально-економічний вплив, технології та освіта) разом із конференцією PILC об'єднала наукові сесії, професійне стажування, панельні дискусії, тренінги та міжнародний нетворкінг. Усі делегати брали участь у двосторонньому форматі — як слухачі навчальних модулів і як експерти панельних сесій.\n\n## Головні теми та консолідація української науки\n\n- Людиноцентричне лідерство (Human-centric Leadership): етика управління командами, психологічна стійкість керівника та розвиток емпатії в епоху криз.\n- Правовий вимір цифрової епохи: аналіз викликів цифрового суспільства — від інтеграції нового Закону ЄС про штучний інтелект (EU AI Act) до захисту базових прав людини й персональних даних у кіберпросторі.\n\nНа міжнародній арені було потужно представлено вітчизняну вищу освіту. Разом із проректоркою АПСВТ Наталією Гончаренко до формування спільного бачення цифрового майбутнього долучилися керівники провідних українських інституцій: Київського авіаційного інституту (НАУ), Національного юридичного університету імені Ярослава Мудрого та Національного університету «Києво-Могилянська академія».\n\n## Перспективи для АПСВТ\n\nУ межах стажування Наталія Гончаренко провела низку стратегічних зустрічей щодо розширення міжнародних зв'язків Академії та розвитку екосистеми трансферу знань між університетами та реальним бізнесом.\n\nЗ хорватськими колегами та представниками європейських консорціумів обговорено:\n\n- Спільне проектування та подачу заявок на грантові програми від міжнародних донорів (Horizon Europe, Erasmus+ та проєкти під егідою Світового банку);\n- Розширення програм академічної мобільності для студентів та викладачів АПСВТ;\n- Впровадження інноваційних курсів із цифрової безпеки, етики ШІ та стратегічних комунікацій у навчальні плани нашої Академії.\n\nРезультати програми SEITE 2026 стануть основою для подальшого вдосконалення освітнього процесу в АПСВТ та наближення його до передових європейських стандартів.",
+    category: "Міжнародне співробітництво",
+    imageUrl: "/news-international-workshop.jpg",
+    imageAlt: "Міжнародна академічна співпраця та професійне стажування",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-02T09:00:00.000Z",
+    createdAt: "2026-10-02T09:00:00.000Z",
+    updatedAt: "2026-10-02T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-mental-health-conference-2026",
+    slug: mentalHealthConferenceNewsSlug,
+    title: "ІІ Міжнародна науково-практична конференція «Mental health: особистісний та організаційний виміри»",
+    excerpt: "8 жовтня о 10:00 Академія запрошує партнерів, науковців, молодих учених і здобувачів освіти до участі у конференції в офлайн- та онлайн-форматі.",
+    body: "8 жовтня 2026 року в Академії праці, соціальних відносин і туризму відбудеться ІІ Міжнародна науково-практична конференція «Mental health: особистісний та організаційний виміри».\n\n## Організатори\n\n- Академія праці, соціальних відносин і туризму\n- Факультет психології та соціального розвитку\n- Європейська психологічна асоціація\n- Східноукраїнський національний університет імені Володимира Даля\n\n## Час і формат\n\nПочаток — о 10:00 в аудиторії 307. Пленарне та панельні засідання проходитимуть в офлайн- та онлайн-форматі за допомогою Zoom.\n\nМісце проведення: Академія праці, соціальних відносин і туризму, м. Київ, вул. Кільцева дорога, 3-А.\n\nДо участі запрошуються партнери, науково-педагогічні працівники, молоді вчені та здобувачі вищої освіти України й зарубіжжя. Робочі мови конференції — українська та англійська.\n\n## Координатори\n\n- Житинська Марія Олександрівна: +38 (098) 036 02 77\n- Борець Олеся Анатоліївна: +38 (096) 350 88 48",
+    category: "Наука",
+    imageUrl: "/mental-health-conference-science-2026.jpg",
+    imageAlt: "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-09-21T09:00:00.000Z",
+    createdAt: "2026-09-21T09:00:00.000Z",
+    updatedAt: "2026-09-21T09:00:00.000Z",
     authorEmail: "editorial@apsvt.local",
   },
   {
@@ -326,6 +377,9 @@ export async function ensurePosts(): Promise<void> {
     database.prepare("UPDATE posts SET image_url = ?, image_alt = ? WHERE id = ? AND image_url LIKE 'https://images.unsplash.com/%'").bind(post.imageUrl, post.imageAlt, post.id),
   );
   if (regionalPhotoUpdates.length) await database.batch(regionalPhotoUpdates);
+  await database.prepare("UPDATE posts SET image_url = ?, image_alt = ? WHERE id = ? AND image_url = ?")
+    .bind("/mental-health-conference-science-2026.jpg", "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці", "seed-mental-health-conference-2026", "/apsvt-event-real.jpg")
+    .run();
   initialized = true;
 }
 
@@ -358,10 +412,15 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
+  const imageUpdate = await admin.from("editorial_posts").update({
+    image_url: "/mental-health-conference-science-2026.jpg",
+    image_alt: "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці",
+  }).eq("id", "seed-mental-health-conference-2026").eq("image_url", "/apsvt-event-real.jpg");
+  if (imageUpdate.error) throw imageUpdate.error;
   supabaseSeeded = true;
 }
 

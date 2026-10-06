@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { PageDocuments } from "../../components/PageDocuments";
-import { getProgram, programs } from "@/lib/programs";
+import { getProgram, programs, type Program } from "@/lib/programs";
 import { ProgramEntranceExams } from "./ProgramEntranceExams";
 import { ProgramDoctoralResources } from "./ProgramDoctoralResources";
 import { ProgrammeEcosystem } from "./ProgrammeEcosystem";
@@ -27,6 +27,10 @@ import { digitalDepartmentPath } from "@/lib/professional-education";
 
 export const dynamic = "force-dynamic";
 export function generateStaticParams(){return programs.filter((program)=>program.slug !== "professional-education").map((program)=>({slug:program.slug}));}
+
+function pageTitle(program: Program) {
+  return program.slug === "public-administration" ? program.faculty : program.title;
+}
 
 const programmeSections: readonly SectionHubItem[] = [
   { id: "overview", index: "01", title: "Про програму", description: "Зміст, результати навчання, рівні освіти та вартість.", icon: "OP", aliases: ["education-levels"] },
@@ -61,7 +65,7 @@ const financeSections: readonly SectionHubItem[] = [
 
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
   const program=getProgram((await params).slug);
-  return program?{title:program.title,description:`${program.title}: навчальний план, вартість, викладачі та кар'єра в АПСВТ.`}:{};
+  return program?{title:pageTitle(program),description:`${program.title}: навчальний план, вартість, викладачі та кар'єра в АПСВТ.`}:{};
 }
 
 export default async function Page({params}:{params:Promise<{slug:string}>}){
@@ -96,6 +100,13 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       <Link href="/research/journals#marketing-publications"><span>03</span><small>Навчальне видання</small><h3>Соціально відповідальний маркетинг</h3><p>Навчальний посібник кафедри.</p><b>→</b></Link>
       <Link href="/materials/3331-0b35c55db.html"><span>04</span><small>Науковий гурток</small><h3>MARKETHINK</h3><p>Матеріали гуртка та участі студентів у конференціях.</p><b>→</b></Link>
     </div>
+    <details className="marketing-project-folder marketing-student-achievements" id="marketing-student-achievements">
+      <summary><span><small>Матеріали здобувачів</small><strong>Наукові здобутки здобувачів</strong></span><b aria-hidden="true">+</b></summary>
+      <div className="marketing-achievement-list">
+        <a href="/documents/marketing/student-achievements/2026.pdf" target="_blank" rel="noreferrer"><span>2026</span><div><small>Календарний рік</small><h4>Наукові здобутки здобувачів</h4></div><b>PDF · 20 сторінок ↗</b></a>
+        <a href="/documents/marketing/student-achievements/2025.pdf" target="_blank" rel="noreferrer"><span>2025</span><div><small>Календарний рік</small><h4>Наукові здобутки здобувачів</h4></div><b>PDF · 17 сторінок ↗</b></a>
+      </div>
+    </details>
     <article className="marketing-international-expertise" id="marketing-international-expertise">
       <header><div className="idx">05 / Міжнародний вимір</div><h3>Міжнародна та експертна діяльність НПП кафедри</h3></header>
       <div className="marketing-international-copy">
@@ -142,7 +153,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   ] : null;
   const specialSectionContent = marketingSectionContent || financeSectionContent;
   return <main id="top" data-page-materials-server="true"><SiteHeader />
-    <section className="program-hero" data-program={program.slug}><div className="program-hero-bg"><img src={program.image} alt="" /></div><div className="wrap program-hero-in"><Link href="/programs" className="back-link">← Усі програми</Link><span className="program-code">{program.code}</span><h1>{program.title}</h1><p>{program.short}</p></div></section><div className="hero-rule" />
+    <section className="program-hero" data-program={program.slug}><div className="program-hero-bg"><img src={program.image} alt="" /></div><div className="wrap program-hero-in"><Link href="/programs" className="back-link">← Усі програми</Link><span className="program-code">{program.code}</span><h1>{pageTitle(program)}</h1><p>{program.short}</p></div></section><div className="hero-rule" />
     <SectionHub sections={activeSections} eyebrow={slug === "marketing" ? "Навігатор кафедри маркетингу" : slug === "finance" ? "Навігатор кафедри фінансів" : `Навігатор програми ${program.code}`} description={navigatorDescription}>
     {specialSectionContent || <>
     <section id="overview"><div className="wrap program-intro"><div><div className="idx">01 / Спеціальність і програма</div><h2>Навчання з практичним результатом</h2><p className="program-lede">{program.overview}</p><div className="focus-list">{program.focus.map((item,i)=><div key={item}><span>0{i+1}</span><b>{item}</b></div>)}</div></div><aside className="program-facts" id="education-levels"><div><span>Рівень</span><b>{program.levels}</b></div><div><span>Тривалість бакалаврату</span><b>{program.duration}</b></div><div><span>Бакалаврат, денна</span><b>{program.price}</b></div><div><span>Бакалаврат, заочна</span><b>{program.partTimePrice}</b></div>{program.masterPrice&&<div><span>Магістратура, денна</span><b>{program.masterPrice}</b></div>}{program.masterPartTimePrice&&<div><span>Магістратура, заочна</span><b>{program.masterPartTimePrice}</b></div>}<small>Вартість для вступників 2026 року, за один навчальний рік.</small><Link className="cta" href="/tuition#calculator"><span>Усі тарифи й оплата</span></Link></aside></div></section>

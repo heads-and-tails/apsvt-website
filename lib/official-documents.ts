@@ -405,7 +405,7 @@ export const officialDocuments: OfficialDocument[] = [
   {
     id: "ethics-code",
     category: "integrity",
-    title: "Кодекс етики АПСВТ",
+    title: "Етичний кодекс АПСВТ",
     description: "Принципи академічної культури, взаємної поваги та відповідальної поведінки.",
     href: "/documents/archive/old-site/ethics-code.pdf",
     format: "PDF",
@@ -484,6 +484,16 @@ export const officialDocuments: OfficialDocument[] = [
     indexFile: "20231031-205611-05514622c.txt",
   },
   {
+    id: "anticorruption-archive-materials",
+    category: "anticorruption",
+    title: "Архів матеріалів із запобігання та протидії корупції",
+    description: "Скринька довіри, контакти уповноваженої особи, плани заходів, рекомендації з розбудови доброчесності та архівні звіти.",
+    href: "/materials/protydiia-koruptsii-37831a092",
+    format: "WEB",
+    updated: "архів",
+    status: "reference",
+  },
+  {
     id: "educational-license",
     category: "accreditation",
     title: "Ліцензія на провадження освітньої діяльності",
@@ -534,6 +544,17 @@ export const officialDocuments: OfficialDocument[] = [
     href: "/documents/tuition/contract-education.docx",
     format: "DOCX",
     updated: "2025",
+    status: "current",
+  },
+  {
+    id: "academy-development-strategy-2026",
+    category: "governance",
+    title: "Стратегія розвитку Академії до 2026 року",
+    description: "Стратегічні напрями освітньої, наукової, міжнародної, управлінської та соціальної діяльності Академії.",
+    href: "/documents/academy/strategy-development-to-2026.pdf",
+    format: "PDF",
+    pages: 10,
+    updated: "до 2026",
     status: "current",
   },
   {

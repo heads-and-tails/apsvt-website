@@ -71,12 +71,20 @@ export function StudentAppDemo({ lessons }: { lessons: DemoLesson[] }) {
   useEffect(() => {
     const stored = window.localStorage.getItem("apsvt-app-demo");
     if (!stored) return;
+    let cancelled = false;
     try {
       const value = JSON.parse(stored) as { faculty?: string; group?: string; reminder?: number; notifications?: boolean };
-      if (value.faculty && faculties.includes(value.faculty)) setFaculty(value.faculty);
-      if (value.group) setGroup(value.group);
-      if (value.reminder) setReminder(value.reminder);
-      if (typeof value.notifications === "boolean") setNotifications(value.notifications);
+      const timer = window.setTimeout(() => {
+        if (cancelled) return;
+        if (value.faculty && faculties.includes(value.faculty)) setFaculty(value.faculty);
+        if (value.group) setGroup(value.group);
+        if (value.reminder) setReminder(value.reminder);
+        if (typeof value.notifications === "boolean") setNotifications(value.notifications);
+      }, 0);
+      return () => {
+        cancelled = true;
+        window.clearTimeout(timer);
+      };
     } catch {
       // Ignore malformed local demo preferences.
     }
@@ -87,7 +95,9 @@ export function StudentAppDemo({ lessons }: { lessons: DemoLesson[] }) {
   }, [faculty, group, reminder, notifications]);
 
   useEffect(() => {
-    if (!availableGroups.includes(group)) setGroup(availableGroups[0] || "");
+    if (availableGroups.includes(group)) return;
+    const timer = window.setTimeout(() => setGroup(availableGroups[0] || ""), 0);
+    return () => window.clearTimeout(timer);
   }, [availableGroups, group]);
 
   const filtered = useMemo(() => lessons

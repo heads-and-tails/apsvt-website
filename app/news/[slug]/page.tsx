@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { getPostBySlug, getPosts, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
+import { getPostBySlug, getPosts, guestLectureHubertNewsSlug, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
@@ -14,6 +14,18 @@ import { academicCompetitionDocument, academicCompetitionNewsSlug } from "@/lib/
 export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
+
+const conferenceOrganizers = [
+  "ОДЕСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ І.І. МЕЧНИКОВА",
+  "УКРАЇНСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ",
+];
+
+function addConferenceOrganizers(body: string) {
+  if (conferenceOrganizers.every((organizer) => body.includes(organizer))) return body;
+  const organizerList = conferenceOrganizers.map((organizer) => `- ${organizer}`).join("\n");
+  if (body.includes("## Організатори")) return body.replace("## Організатори", `## Організатори\n\n${organizerList}`);
+  return `${body}\n\n## Організатори\n\n${organizerList}`;
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -42,7 +54,10 @@ export default async function Page({ params }: Props) {
   const isAcademicCompetitionNews = post.slug === academicCompetitionNewsSlug;
   const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
   const isStudyUaExpoNews = post.slug === studyUaExpoNewsSlug;
-  const isMentalHealthConferenceNews = post.slug === "mental-health-conference-2026";
+  const isMentalHealthConferenceNews = post.slug === mentalHealthConferenceNewsSlug;
+  const isPilcSeiteNews = post.slug === pilcSeiteNewsSlug;
+  const isGuestLectureHubertNews = post.slug === guestLectureHubertNewsSlug;
+  const articleBody = isMentalHealthConferenceNews ? addConferenceOrganizers(post.body) : post.body;
 
   return <main id="top">
     <SiteHeader />
@@ -54,22 +69,7 @@ export default async function Page({ params }: Props) {
     <section className="article-section"><div className="wrap detail-layout">
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
-        {isMentalHealthConferenceNews ? <div className="mental-health-conference-copy">
-          <p>8 жовтня 2026 року в Академії праці, соціальних відносин і туризму відбудеться ІІ Міжнародна науково-практична конференція «Mental health: особистісний та організаційний виміри».</p>
-          <h2>Організатори</h2>
-          <ol>
-            <li>АКАДЕМІЯ ПРАЦІ, СОЦІАЛЬНИХ ВІДНОСИН І ТУРИЗМУ</li>
-            <li>ФАКУЛЬТЕТ ПСИХОЛОГІЇ ТА СОЦІАЛЬНОГО РОЗВИТКУ</li>
-            <li>ЄВРОПЕЙСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ</li>
-            <li>ОДЕСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ І. І. МЕЧНИКОВА</li>
-            <li>ФАКУЛЬТЕТ ПСИХОЛОГІЇ ТА СОЦІАЛЬНОЇ РОБОТИ, УКРАЇНСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ</li>
-            <li>СХІДНОУКРАЇНСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ ВОЛОДИМИРА ДАЛЯ</li>
-          </ol>
-          <h2>Час і формат</h2>
-          <p>Початок — о 10:00 в аудиторії 307. Пленарне та панельні засідання проходитимуть в офлайн- та онлайн-форматі за допомогою Zoom.</p>
-          <p>Місце проведення: Академія праці, соціальних відносин і туризму, м. Київ, вул. Кільцева дорога, 3-А.</p>
-          <a className="mental-health-programme-link" href="/documents/research/psychology-faculty/conferences/mental-health-2026-programme.pdf" target="_blank" rel="noreferrer">Програма конференції · PDF ↗</a>
-        </div> : <EditorialRichText text={post.body} />}
+        <EditorialRichText text={articleBody} />
         {isStakeholderDiscussionNews && <div className="stakeholder-zoom-card">
           <div><span>Онлайн-зустріч</span><time dateTime="2026-08-26T12:00:00+03:00">26 серпня · 12:00</time></div>
           <div><span>Meeting ID</span><strong>303 650 3681</strong></div>
@@ -79,6 +79,27 @@ export default async function Page({ params }: Props) {
           <div><span>Дата</span><time dateTime="2026-09-26">26–27 вересня 2026</time></div>
           <div><span>Місце</span><strong>Київ · КВЦ «Парковий»</strong></div>
           <a href="https://expokyiv.study.ua/" target="_blank" rel="noreferrer">Безкоштовна реєстрація ↗</a>
+        </div>}
+        {isMentalHealthConferenceNews && <>
+          <div className="stakeholder-zoom-card">
+            <div><span>Дата й час</span><time dateTime="2026-10-08T10:00:00+03:00">8 жовтня · 10:00</time></div>
+            <div><span>Zoom</span><strong>820 3384 7880</strong></div>
+            <a href="https://us02web.zoom.us/j/82033847880?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp.1" target="_blank" rel="noreferrer">Приєднатися до конференції ↗</a>
+          </div>
+          <div className="news-result-files">
+            <span>Програма конференції</span>
+            <a href="/documents/news/mental-health-conference-2026-program.pdf" target="_blank" rel="noreferrer"><b>01</b><strong>Програма конференції</strong><small>PDF · відкрити ↗</small></a>
+          </div>
+        </>}
+        {isPilcSeiteNews && <div className="stakeholder-zoom-card study-expo-card">
+          <div><span>Відео</span><strong>PILC &amp; SEITE 2026</strong></div>
+          <div><span>Формат</span><strong>Міжнародне стажування</strong></div>
+          <a href="https://youtu.be/DANh8PwOcN4?si=t9c7VYbwe71RYXcO" target="_blank" rel="noreferrer">Переглянути відео ↗</a>
+        </div>}
+        {isGuestLectureHubertNews && <div className="stakeholder-zoom-card">
+          <div><span>Дата й час</span><time dateTime="2026-10-08T13:20:00+03:00">8 жовтня · 13:20</time></div>
+          <div><span>Zoom</span><strong>820 3384 7880 · код 977364</strong></div>
+          <a href="https://us02web.zoom.us/j/82033847880?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp.1" target="_blank" rel="noreferrer">Приєднатися до лекції ↗</a>
         </div>}
         {entranceResultDocuments && <div className="news-result-files">
           <span>Результати за предметами</span>

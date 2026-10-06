@@ -23,6 +23,7 @@ test("September 9 includes five first-year and four NRK6/NRK7 original PDFs", ()
 test("September result date and basis folders stay collapsed by default", () => {
   const block = component.slice(component.indexOf("function SeptemberResults"), component.indexOf("function ResultBatch"));
   assert.match(block, /Результати вступних випробувань від 9 вересня 2026 року/);
+  assert.doesNotMatch(block, /Перший курс/);
   assert.match(block, /Основа вступу — НРК6 або НРК7/);
   assert.equal((block.match(/<details\b/g) || []).length, 2);
   assert.doesNotMatch(block, /<details[^>]*\bopen\b/);

@@ -47,7 +47,7 @@ export function EducationQualitySection({
     <div className="wrap">
       <header className="education-quality-head">
         <div><div className="idx">{index} / Якість освіти</div><h2>{title}</h2></div>
-        <div><p>{description}</p><Link href="/documents#quality">Загальна система якості Академії →</Link></div>
+        <div><p>{description}</p><Link href="/documents#quality">Загальна система якості Академії →</Link>{discussionEmail && <a href={`mailto:${discussionEmail}?subject=${encodeURIComponent("Пропозиція до освітньої програми")}`}>Надіслати пропозицію кафедрі →</a>}</div>
       </header>
 
       <div className="education-quality-rubrics">

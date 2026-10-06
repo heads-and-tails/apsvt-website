@@ -23,7 +23,7 @@ const departments = [
   ["01", "Кафедра конституційного, адміністративного та фінансового права", "Конституційне, адміністративне, фінансове й муніципальне право.", "/departments/constitutional-law"],
   ["02", "Кафедра цивільного, трудового та господарського права", "Цивільне, господарське, трудове право та судовий захист.", "/departments/private-law"],
   ["03", "Кафедра кримінального права, процесу та криміналістики", "Кримінальне право, процес, захист прав людини та криміналістика.", "/departments/criminal-law"],
-  ["04", "Кафедра публічного управління та адміністрування", "Публічна політика, служба, розвиток громад і соціальний діалог.", "/programs/public-administration#department"],
+  ["04", "Кафедра Публічного Управління та Публічної Служби", "Публічна політика, служба, розвиток громад і соціальний діалог.", "/programs/public-administration#department"],
 ] as const;
 
 const facultySections: readonly SectionHubItem[] = [
@@ -45,7 +45,36 @@ const facultySections: readonly SectionHubItem[] = [
   { id: "department-news", index: "16", title: "Новини факультету", description: "Події, публікації та матеріали кафедр.", icon: "NEWS" },
 ];
 
-const practiceCategories = lawFacultyStructure.find((section) => section.id === "faculty-practice-bases")!.children;
+const practiceProgrammes = [
+  {
+    code: "D8",
+    title: "Право",
+    levels: [
+      { title: "Перший (бакалаврський) рівень", items: [
+        ["d8-bachelor-study", "Навчальна практика"],
+        ["d8-bachelor-production", "Виробнича практика"],
+      ] },
+      { title: "Другий (магістерський) рівень", items: [
+        ["d8-master-production", "Виробнича практика"],
+        ["d8-master-pedagogical", "Педагогічна практика"],
+      ] },
+    ],
+  },
+  {
+    code: "D4",
+    title: "Публічне управління та адміністрування",
+    levels: [
+      { title: "Перший (бакалаврський) рівень", items: [
+        ["d4-bachelor-study", "Навчальна практика"],
+        ["d4-bachelor-production", "Виробнича практика"],
+        ["d4-bachelor-pre-diploma", "Переддипломна практика"],
+      ] },
+      { title: "Другий (магістерський) рівень", items: [
+        ["d4-master-pre-diploma", "Переддипломна практика"],
+      ] },
+    ],
+  },
+] as const;
 
 export default async function Page() {
   const departmentEntries = await getDepartmentEntries("/departments/law-faculty");
@@ -70,7 +99,7 @@ export default async function Page() {
 
       <section className="law-practice-showcase" id="faculty-forensic-lab"><div className="wrap"><div className="law-practice-head"><div><div className="idx">05 / Навчальна лабораторія криміналістики</div><h2>Практика процесуальних дій</h2></div><p>Матеріально-технічне забезпечення, фіксація слідів, аналіз документів, моделювання слідчих дій та наукова робота.</p></div><div className="law-practice-grid"><Link href="/programs/law/forensic-laboratory"><span>01</span><small>Окрема сторінка</small><h3>Навчальна лабораторія криміналістики</h3><p>Обладнання, напрями підготовки, заняття, новини, документи та контакти.</p><b>Відкрити сторінку лабораторії →</b></Link></div></div></section>
 
-      <section className="faculty-structure-section faculty-practice-bases" id="faculty-practice-bases"><div className="wrap"><div className="sec-head"><div><div className="idx">06 / Бази практики</div><h2>Професійне середовище факультету</h2></div><p>Конкретну базу та строк практики факультет підтверджує для відповідного навчального року, договору й індивідуальної траєкторії студента.</p></div><div className="faculty-category-grid">{practiceCategories.map(([id, category], index) => <Link href={`${lawFacultyPath}/faculty-practice-bases/${id}`} key={id}><span>{String(index + 1).padStart(2, "0")}</span><b>{category}</b><i>↗</i></Link>)}</div><div className="faculty-action-note"><p><b>Студентам</b> Інформація про направлення, керівника та звітність з практики надається кафедрою.</p><Link href="/contacts">Уточнити контакти →</Link></div></div></section>
+      <section className="faculty-structure-section faculty-practice-bases" id="faculty-practice-bases"><div className="wrap"><div className="sec-head"><div><div className="idx">06 / Бази практики</div><h2>Практика за програмою та рівнем освіти</h2></div><p>Оберіть спеціальність, рівень освіти та вид практики. На окремій сторінці публікуються перелік баз і робоча програма практики.</p></div><div className="faculty-practice-programmes">{practiceProgrammes.map((programme, programmeIndex) => <details key={programme.code}><summary><span>{String(programmeIndex + 1).padStart(2, "0")}</span><div><small>Спеціальність {programme.code}</small><h3>{programme.code} «{programme.title}»</h3></div><b>+</b></summary><div className="faculty-practice-levels">{programme.levels.map((level, levelIndex) => <section key={level.title}><header><span>{programme.code}.{levelIndex + 1}</span><h4>{level.title}</h4></header><div>{level.items.map(([id, title]) => <Link href={`${lawFacultyPath}/faculty-practice-bases/${id}`} key={id}><div><small>Вид практики</small><strong>{title}</strong><p>Бази практики · робоча програма</p></div><b>↗</b></Link>)}</div></section>)}</div></details>)}</div><div className="faculty-action-note"><p><b>Редагування</b> Кожний вид практики має окрему сторінку: редактор може додавати й видаляти установи, змінювати назви та оновлювати робочі програми без зміни структури.</p><Link href="/panel">Відкрити редакційну панель →</Link></div></div></section>
 
       <section className="faculty-structure-section faculty-science-directory" id="faculty-science-clubs"><div className="wrap"><div className="sec-head"><div><div className="idx">07 / Наукові гуртки</div><h2>Наукові гуртки</h2></div><p>Учасники, плани, зустрічі, теми й результати студентських проєктів.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-blue" href="/departments/constitutional-law#science-clubs"><span>01 / Гурток</span><h3>Історико-правовий гурток «Фенікс»</h3><p>Зустрічі, дослідницькі напрями, плани роботи та студентські наукові проєкти.</p><b>Відкрити сторінку кафедри →</b></Link><Link className="faculty-link-card" href="/research/conferences"><span>02 / Події</span><h3>Конференції та наукові заходи</h3><p>Календар дискусій, круглих столів і презентацій результатів.</p><b>Перейти до конференцій →</b></Link></div></div></section>
 

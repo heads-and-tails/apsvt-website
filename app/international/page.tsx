@@ -89,6 +89,20 @@ const internationalOpportunities = [
     href: "https://msmt.gov.cz/en/scholarships/government-scholarships-developing-countries",
     action: "Умови та електронна заявка",
   },
+  {
+    number: "04",
+    provider: "GFPS e.V. · Німеччина",
+    title: "Стипендіальна програма GFPS для українських студентів",
+    deadline: "11 жовтня 2026",
+    audience: "Для громадян України віком до 26 років, які навчаються на денній формі, залишатимуться студентами протягом літнього семестру 2027 року та володіють німецькою мовою на рівні B2.",
+    support: [
+      "992 євро щомісяця",
+      "Семестр у державному університеті Німеччини",
+      "Підтримка GFPS і два академічно-культурні семінари",
+    ],
+    href: "https://www.gfps.org/stipendien/deutschland-studium/ukraine/",
+    action: "Деталі та подання заявки",
+  },
 ];
 
 const applicantSteps = [
@@ -292,7 +306,7 @@ export default function Page() {
     <section className="international-opportunities" id="international-opportunities"><div className="wrap">
       <div className="international-opportunities-head">
         <div><div className="idx">05 / Стипендії та мобільність</div><h2>Міжнародні<br />можливості</h2></div>
-        <div><p>Актуальні програми для навчання за кордоном, розвитку лідерства й міжнародного професійного досвіду.</p><span>Перевірено 29 серпня 2026 року</span></div>
+        <div><p>Актуальні програми для навчання за кордоном, розвитку лідерства й міжнародного професійного досвіду.</p><span>Перевірено 29 вересня 2026 року</span></div>
       </div>
       <div className="international-opportunities-grid">{internationalOpportunities.map((opportunity) => <article key={opportunity.number}>
         <div className="international-opportunity-top"><span>{opportunity.number}</span><small>{opportunity.provider}</small></div>
