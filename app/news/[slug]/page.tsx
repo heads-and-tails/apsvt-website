@@ -16,14 +16,19 @@ export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ slug: string }> };
 
 const conferenceOrganizers = [
-  "ОДЕСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ І.І. МЕЧНИКОВА",
-  "УКРАЇНСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ",
+  "АКАДЕМІЯ ПРАЦІ, СОЦІАЛЬНИХ ВІДНОСИН І ТУРИЗМУ",
+  "ФАКУЛЬТЕТ ПСИХОЛОГІЇ ТА СОЦІАЛЬНОГО РОЗВИТКУ",
+  "ЄВРОПЕЙСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ",
+  "ОДЕСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ І. І. МЕЧНИКОВА",
+  "ФАКУЛЬТЕТ ПСИХОЛОГІЇ ТА СОЦІАЛЬНОЇ РОБОТИ, УКРАЇНСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ",
+  "СХІДНОУКРАЇНСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ ВОЛОДИМИРА ДАЛЯ",
 ];
 
-function addConferenceOrganizers(body: string) {
-  if (conferenceOrganizers.every((organizer) => body.includes(organizer))) return body;
+function replaceConferenceOrganizers(body: string) {
   const organizerList = conferenceOrganizers.map((organizer) => `- ${organizer}`).join("\n");
-  if (body.includes("## Організатори")) return body.replace("## Організатори", `## Організатори\n\n${organizerList}`);
+  if (body.includes("## Організатори")) {
+    return body.replace(/## Організатори[\s\S]*?(?=\n##\s|$)/, `## Організатори\n\n${organizerList}\n`);
+  }
   return `${body}\n\n## Організатори\n\n${organizerList}`;
 }
 
@@ -57,7 +62,7 @@ export default async function Page({ params }: Props) {
   const isMentalHealthConferenceNews = post.slug === mentalHealthConferenceNewsSlug;
   const isPilcSeiteNews = post.slug === pilcSeiteNewsSlug;
   const isGuestLectureHubertNews = post.slug === guestLectureHubertNewsSlug;
-  const articleBody = isMentalHealthConferenceNews ? addConferenceOrganizers(post.body) : post.body;
+  const articleBody = isMentalHealthConferenceNews ? replaceConferenceOrganizers(post.body) : post.body;
 
   return <main id="top">
     <SiteHeader />
