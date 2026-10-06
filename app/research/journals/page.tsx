@@ -22,6 +22,13 @@ const specialties = [
   "D3 Менеджмент",
 ];
 
+const psychologyFacultyMonographs = [
+  { year: "2026", title: "Ментальне здоров’я та життєстійкість особистості", href: "/documents/research/psychology-faculty/monographs/mental-health-life-resilience-2026.pdf" },
+  { year: "2025", title: "Психічне здоров’я та резильєнтність особистості", href: "/documents/research/psychology-faculty/monographs/mental-health-resilience-2025.pdf" },
+  { year: "2024", title: "Ментальне здоров’я особистості та організації", href: "/documents/research/psychology-faculty/monographs/mental-health-organisation-2024.pdf" },
+  { year: "2026", title: "Методи діагностики та психологічного супроводу життєдіяльності особистості в умовах стресу", href: monographUrl },
+] as const;
+
 export default function Page() {
   return (
     <main id="top">
@@ -139,6 +146,13 @@ export default function Page() {
       </section>
 
       <MarketingPublications />
+
+      <section className="psychology-publications" id="psychology-faculty-publications">
+        <div className="wrap">
+          <div className="sec-head"><div><div className="idx">Факультет психології та соціальної роботи</div><h2>Монографії факультету</h2></div><p>Повні тексти видань 2024–2026 років, підготовлених науковцями факультету.</p></div>
+          <div className="psychology-publication-grid">{psychologyFacultyMonographs.map((publication, index) => <a href={publication.href} target="_blank" rel="noreferrer" key={publication.href}><span>{String(index + 1).padStart(2, "0")}</span><small>{publication.year} · монографія · PDF</small><h3>{publication.title}</h3><b>Відкрити повний текст ↗</b></a>)}</div>
+        </div>
+      </section>
 
       <section className="soft">
         <div className="wrap">

@@ -29,8 +29,42 @@ import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 const IMG = "https://images.unsplash.com";
 export const stakeholderDiscussionNewsSlug = "obhovorennia-osvitnikh-prohram-d8-d4-2026";
 export const studyUaExpoNewsSlug = "study-ua-osvitnia-vystavka-kyiv-2026";
+export const judgeBudzanGuestLectureNewsSlug = "hostova-lektsiia-suddi-budzan-2026";
+export const wartimeFirstAidTrainingNewsSlug = "treninh-domedychnoi-dopomohy-2023";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-judge-budzan-guest-lecture-2026",
+    slug: judgeBudzanGuestLectureNewsSlug,
+    title: "23 квітня відбулася гостьова лекція судді Подільського районного суду міста Києва Будзан Лесі Дмитрівни",
+    excerpt: "Студенти магістратури обговорили практичне застосування Кодексу суддівської етики та відповідальність за порушення етичного законодавства.",
+    body: "Сьогодні, 23 квітня відбулася гостьова лекція судді Подільського районного суду міста Києва Будзан Лесі Дмитрівни. На зустрічі з суддею студенти магістратури денної форми навчання змогли отримати відповіді на практичні питання застосування Кодексу суддівської етики. В межах навчальної дисципліни «Професійна етика юриста» було розглянуто кейси притягнення до відповідальності суддів за порушення етичного законодавства. Керівництво академії висловлює вдячність пані Лесі за змістовну та цікаву практичну зустріч! Гостьова лекція відбулася завдяки ініціативі студентської ради юридичного факультету.",
+    category: "Право",
+    imageUrl: "/apsvt-event-real.jpg",
+    imageAlt: "Гостьова лекція для студентів юридичного факультету",
+    status: "published",
+    featured: false,
+    publishedAt: "2026-04-23T10:26:00.000Z",
+    createdAt: "2026-04-23T10:26:00.000Z",
+    updatedAt: "2026-04-23T10:26:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-wartime-first-aid-training-2023",
+    slug: wartimeFirstAidTrainingNewsSlug,
+    title: "Проведено тренінг з надання домедичної допомоги в умовах воєнного стану",
+    excerpt: "В Академії відбувся практичний тренінг із надання домедичної допомоги в умовах воєнного стану.",
+    body: "23 червня в Академії відбувся тренінг з надання домедичної допомоги в умовах воєнного стану",
+    category: "Події",
+    imageUrl: "/apsvt-event-real.jpg",
+    imageAlt: "Тренінг з домедичної допомоги в Академії",
+    status: "published",
+    featured: false,
+    publishedAt: "2023-06-23T19:13:00.000Z",
+    createdAt: "2023-06-23T19:13:00.000Z",
+    updatedAt: "2023-06-23T19:13:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-study-ua-expo-kyiv-2026",
     slug: studyUaExpoNewsSlug,
@@ -324,7 +358,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }

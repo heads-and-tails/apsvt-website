@@ -21,6 +21,7 @@ export const psychologyDepartments: PsychologyDepartment[] = [
     summary: "Кафедра об’єднує підготовку з психічного здоров’я, психодіагностики, психологічного консультування, реабілітації та психотерапевтичних підходів.",
     focus: ["клінічна психологія", "психодіагностика", "психотерапія", "психологічна реабілітація"],
     teamIds: ["volodymyr-bilous", "olena-karahodina", "rostyslav-abdriakhimov", "svitlana-bondar-consulting", "olena-morozova", "olha-yakovenko"],
+    headId: "volodymyr-bilous",
     newsSlug: "psychology",
   },
   {

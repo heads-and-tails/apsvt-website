@@ -36,6 +36,13 @@ const partners = [
     place: "Пряшів",
     text: "Академічні ознайомчі візити, обмін досвідом у навчальних програмах і розвиток спільної наукової роботи.",
   },
+  {
+    number: "04",
+    country: "Угорщина",
+    title: "Oktatási és Szakmai Fejlesztési Intézet",
+    place: "Інститут освітнього та професійного розвитку",
+    text: "Співпраця у сфері спільних науково-дослідних програм, конференцій, обміну студентами й викладачами, стажувань та спільних публікацій.",
+  },
 ];
 
 const cooperationAreas = [
@@ -257,6 +264,22 @@ export default function Page() {
           <figure><img src="/international-headway-03.jpg" alt="Підготовка до підписання угоди з Headway" loading="lazy" /></figure>
           <figure><img src="/international-headway-04.jpg" alt="Офіційне підписання партнерської угоди" loading="lazy" /></figure>
           <figure><img src="/international-headway-05.jpg" alt="Представники АПСВТ і Headway з підписаною угодою" loading="lazy" /></figure>
+        </div>
+      </article>
+
+      <article className="international-story internship-certificate-story">
+        <header className="international-news-header">
+          <div><span className="international-story-kicker">Хорватія × Україна</span><small>Міжнародне стажування · 2026</small></div>
+          <h3>Human-Centric Leadership: Talent, Technology and Brand Power</h3>
+        </header>
+        <div className="international-news-body">
+          <p><strong>Наталія Гончаренко</strong> завершила міжнародне стажування, організоване PAR University of Applied Sciences (Хорватія) спільно з Національним юридичним університетом імені Ярослава Мудрого.</p>
+          <p>Програма тривала з липня до жовтня 2026 року та охопила 180 годин навчання: 60 контактних і 120 годин самостійної роботи.</p>
+          <div className="international-story-points"><span>180 годин</span><span>Міжнародне стажування</span><span>Лідерство й технології</span></div>
+          <a className="sec-link" href="/international-honcharenko-internship-certificate-2026.jpg" target="_blank" rel="noreferrer">Переглянути сертифікат ↗</a>
+        </div>
+        <div className="international-story-gallery" aria-label="Сертифікат міжнародного стажування Наталії Гончаренко">
+          <figure><img src="/international-honcharenko-internship-certificate-2026.jpg" alt="Сертифікат міжнародного стажування Наталії Гончаренко" loading="lazy" /></figure>
         </div>
       </article>
     </div></section>

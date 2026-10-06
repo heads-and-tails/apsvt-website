@@ -42,6 +42,7 @@ export default async function Page({ params }: Props) {
   const isAcademicCompetitionNews = post.slug === academicCompetitionNewsSlug;
   const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
   const isStudyUaExpoNews = post.slug === studyUaExpoNewsSlug;
+  const isMentalHealthConferenceNews = post.slug === "mental-health-conference-2026";
 
   return <main id="top">
     <SiteHeader />
@@ -53,7 +54,22 @@ export default async function Page({ params }: Props) {
     <section className="article-section"><div className="wrap detail-layout">
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
-        <EditorialRichText text={post.body} />
+        {isMentalHealthConferenceNews ? <div className="mental-health-conference-copy">
+          <p>8 жовтня 2026 року в Академії праці, соціальних відносин і туризму відбудеться ІІ Міжнародна науково-практична конференція «Mental health: особистісний та організаційний виміри».</p>
+          <h2>Організатори</h2>
+          <ol>
+            <li>АКАДЕМІЯ ПРАЦІ, СОЦІАЛЬНИХ ВІДНОСИН І ТУРИЗМУ</li>
+            <li>ФАКУЛЬТЕТ ПСИХОЛОГІЇ ТА СОЦІАЛЬНОГО РОЗВИТКУ</li>
+            <li>ЄВРОПЕЙСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ</li>
+            <li>ОДЕСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ І. І. МЕЧНИКОВА</li>
+            <li>ФАКУЛЬТЕТ ПСИХОЛОГІЇ ТА СОЦІАЛЬНОЇ РОБОТИ, УКРАЇНСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ</li>
+            <li>СХІДНОУКРАЇНСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ ВОЛОДИМИРА ДАЛЯ</li>
+          </ol>
+          <h2>Час і формат</h2>
+          <p>Початок — о 10:00 в аудиторії 307. Пленарне та панельні засідання проходитимуть в офлайн- та онлайн-форматі за допомогою Zoom.</p>
+          <p>Місце проведення: Академія праці, соціальних відносин і туризму, м. Київ, вул. Кільцева дорога, 3-А.</p>
+          <a className="mental-health-programme-link" href="/documents/research/psychology-faculty/conferences/mental-health-2026-programme.pdf" target="_blank" rel="noreferrer">Програма конференції · PDF ↗</a>
+        </div> : <EditorialRichText text={post.body} />}
         {isStakeholderDiscussionNews && <div className="stakeholder-zoom-card">
           <div><span>Онлайн-зустріч</span><time dateTime="2026-08-26T12:00:00+03:00">26 серпня · 12:00</time></div>
           <div><span>Meeting ID</span><strong>303 650 3681</strong></div>
