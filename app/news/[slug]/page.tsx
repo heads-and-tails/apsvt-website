@@ -93,7 +93,7 @@ export default async function Page({ params }: Props) {
           </div>
           <div className="news-result-files">
             <span>Програма конференції</span>
-            <a href="/documents/news/mental-health-conference-2026-program.pdf" target="_blank" rel="noreferrer"><b>01</b><strong>Програма конференції</strong><small>PDF · відкрити ↗</small></a>
+            <a href="/documents/news/mental-health-conference-2026-program-v2.pdf" target="_blank" rel="noreferrer"><b>01</b><strong>Програма конференції</strong><small>PDF · редакція 2026 року ↗</small></a>
           </div>
         </>}
         {isPilcSeiteNews && <div className="stakeholder-zoom-card study-expo-card">
