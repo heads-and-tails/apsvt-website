@@ -29,7 +29,7 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/study-ua-expo-kyiv-2026\.png/);
   assert.match(html,/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(html,/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
-  assert.match(html,/Оприлюднено рейтингові списки вступників на бакалаврат/);
+  assert.match(html,/Навчання «Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО»/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
@@ -213,12 +213,11 @@ test("renders editorially managed public information",async()=>{
 
 test("publishes academic competition 2 and 3 in news",async()=>{
   const slug="konkurs-2-3-naukovo-pedahohichni-pratsivnyky-2026";
-  const [homeHtml,newsHtml,articleHtml]=await Promise.all([
-    (await render("/")).text(),
+  const [newsHtml,articleHtml]=await Promise.all([
     (await render("/news")).text(),
     (await render(`/news/${slug}`)).text(),
   ]);
-  for(const html of [homeHtml,newsHtml]) assert.match(html,/Оголошено конкурс №2 і №3/);
+  assert.match(newsHtml,/Оголошено конкурс №2 і №3/);
   assert.match(articleHtml,/18 посад/);
   assert.match(articleHtml,/до 16 вересня 2026 року включно/i);
   assert.match(articleHtml,/href="\/vacancies#competition-2-3"/);
@@ -234,7 +233,7 @@ test("publishes the Mental Health conference and Academy strategy",async()=>{
   assert.doesNotMatch(articleHtml,/92275487678|922 7548 7678/);
   assert.match(articleHtml,/mental-health-conference-science-2026\.jpg/);
   assert.match(articleHtml,/Програма конференції/);
-  assert.match(articleHtml,/mental-health-conference-2026-program\.pdf/);
+  assert.match(articleHtml,/mental-health-conference-2026-program-v2\.pdf/);
   assert.doesNotMatch(articleHtml,/mental-health-conference-2026-information-letter\.docx/);
 
   const documentsHtml=await (await render("/documents#governance")).text();
@@ -243,9 +242,26 @@ test("publishes the Mental Health conference and Academy strategy",async()=>{
   assert.match(documentsHtml,/statute-2017\.pdf/);
 
   const strategy=await readFile(new URL("../public/documents/academy/strategy-development-to-2026.pdf",import.meta.url));
-  const conferenceProgram=await readFile(new URL("../public/documents/news/mental-health-conference-2026-program.pdf",import.meta.url));
+  const conferenceProgram=await readFile(new URL("../public/documents/news/mental-health-conference-2026-program-v2.pdf",import.meta.url));
   assert.equal(strategy.subarray(0,4).toString(),"%PDF");
   assert.equal(conferenceProgram.subarray(0,4).toString(),"%PDF");
+});
+
+test("publishes the international cooperation AI training with online registration",async()=>{
+  const slug="treninh-shi-mizhnarodne-spivrobitnytstvo-2026";
+  const [homeHtml,newsHtml,articleHtml,eventsHtml]=await Promise.all([
+    (await render("/")).text(),
+    (await render("/news")).text(),
+    (await render(`/news/${slug}`)).text(),
+    (await render(`/events?event=${encodeURIComponent("Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО")}`)).text(),
+  ]);
+  for(const html of [homeHtml,newsHtml,articleHtml]) assert.match(html,/Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО/);
+  assert.match(articleHtml,/13 жовтня · 11:30/);
+  assert.match(articleHtml,/Науково-педагогічні працівники/);
+  assert.match(articleHtml,/href="\/events\?event=.*#registration"/);
+  assert.match(eventsHtml,/Оптимізація підготовки грантових заявок/);
+  assert.match(eventsHtml,/13 жовтня 2026 р\./);
+  assert.match(eventsHtml,/selected=""[^>]*>Використання штучного інтелекту/);
 });
 
 test("publishes the PILC and SEITE 2026 international programme",async()=>{
