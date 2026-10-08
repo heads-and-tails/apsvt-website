@@ -34,8 +34,26 @@ export const pilcSeiteNewsSlug = "natalia-goncharenko-pilc-seite-2026";
 export const guestLectureHubertNewsSlug = "guest-lecture-jens-reinhold-hubert-2026";
 export const judgeBudzanGuestLectureNewsSlug = "hostova-lektsiia-suddi-budzan-2026";
 export const wartimeFirstAidTrainingNewsSlug = "treninh-domedychnoi-dopomohy-2023";
+export const internationalAiTrainingNewsSlug = "treninh-shi-mizhnarodne-spivrobitnytstvo-2026";
+export const internationalAiTrainingTitle = "Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-international-ai-training-2026",
+    slug: internationalAiTrainingNewsSlug,
+    title: `Навчання «${internationalAiTrainingTitle}»`,
+    excerpt: "13 жовтня 2026 року об 11:30 відбудеться навчання для науково-педагогічних працівників Академії з практичного використання штучного інтелекту в міжнародній співпраці.",
+    body: "13 жовтня 2026 року об 11:30 відбудеться навчання для науково-педагогічних працівників Академії.\n\n## Тема навчання\n\n«Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО»: оптимізація підготовки грантових заявок, комунікація з іноземними партнерами та мовний переклад за допомогою ШІ.\n\nДля участі заповніть онлайн-форму реєстрації на сайті Академії. Організаційні деталі будуть надіслані зареєстрованим учасникам.",
+    category: "Міжнародне співробітництво",
+    imageUrl: "/news-international-workshop.jpg",
+    imageAlt: "Навчання з використання штучного інтелекту для міжнародного співробітництва у закладах вищої освіти",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-07T17:00:00.000Z",
+    createdAt: "2026-10-07T17:00:00.000Z",
+    updatedAt: "2026-10-07T17:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-judge-budzan-guest-lecture-2026",
     slug: judgeBudzanGuestLectureNewsSlug,
@@ -412,7 +430,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }

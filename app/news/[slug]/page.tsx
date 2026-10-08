@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { getPostBySlug, getPosts, guestLectureHubertNewsSlug, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
+import { getPostBySlug, getPosts, guestLectureHubertNewsSlug, internationalAiTrainingNewsSlug, internationalAiTrainingTitle, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
@@ -62,6 +62,7 @@ export default async function Page({ params }: Props) {
   const isMentalHealthConferenceNews = post.slug === mentalHealthConferenceNewsSlug;
   const isPilcSeiteNews = post.slug === pilcSeiteNewsSlug;
   const isGuestLectureHubertNews = post.slug === guestLectureHubertNewsSlug;
+  const isInternationalAiTrainingNews = post.slug === internationalAiTrainingNewsSlug;
   const articleBody = isMentalHealthConferenceNews ? replaceConferenceOrganizers(post.body) : post.body;
 
   return <main id="top">
@@ -105,6 +106,11 @@ export default async function Page({ params }: Props) {
           <div><span>Дата й час</span><time dateTime="2026-10-08T13:20:00+03:00">8 жовтня · 13:20</time></div>
           <div><span>Zoom</span><strong>820 3384 7880 · код 977364</strong></div>
           <a href="https://us02web.zoom.us/j/82033847880?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp.1" target="_blank" rel="noreferrer">Приєднатися до лекції ↗</a>
+        </div>}
+        {isInternationalAiTrainingNews && <div className="stakeholder-zoom-card study-expo-card">
+          <div><span>Дата й час</span><time dateTime="2026-10-13T11:30:00+03:00">13 жовтня · 11:30</time></div>
+          <div><span>Учасники</span><strong>Науково-педагогічні працівники</strong></div>
+          <Link href={`/events?event=${encodeURIComponent(internationalAiTrainingTitle)}#registration`}>Зареєструватися онлайн →</Link>
         </div>}
         {entranceResultDocuments && <div className="news-result-files">
           <span>Результати за предметами</span>
