@@ -51,7 +51,7 @@ export const seedPosts: Post[] = [
     featured: true,
     publishedAt: "2026-10-07T17:00:00.000Z",
     createdAt: "2026-10-07T17:00:00.000Z",
-    updatedAt: "2026-10-07T17:00:00.000Z",
+    updatedAt: "2026-10-08T18:20:00.000Z",
     authorEmail: "editorial@apsvt.local",
   },
   {
@@ -439,6 +439,18 @@ async function ensureSupabasePosts(): Promise<void> {
     image_alt: "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці",
   }).eq("id", "seed-mental-health-conference-2026").eq("image_url", "/apsvt-event-real.jpg");
   if (imageUpdate.error) throw imageUpdate.error;
+  const aiTrainingPost = seedPosts.find((post) => post.id === "seed-international-ai-training-2026");
+  if (aiTrainingPost) {
+    const aiTrainingUpdate = await admin.from("editorial_posts").update({
+      excerpt: aiTrainingPost.excerpt,
+      body: aiTrainingPost.body,
+      updated_at: aiTrainingPost.updatedAt,
+    }).eq("id", aiTrainingPost.id).eq(
+      "excerpt",
+      "13 жовтня 2026 року об 11:30 відбудеться навчання для науково-педагогічних працівників Академії з практичного використання штучного інтелекту в міжнародній співпраці.",
+    );
+    if (aiTrainingUpdate.error) throw aiTrainingUpdate.error;
+  }
   supabaseSeeded = true;
 }
 
