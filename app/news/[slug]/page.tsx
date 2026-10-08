@@ -109,7 +109,7 @@ export default async function Page({ params }: Props) {
         </div>}
         {isInternationalAiTrainingNews && <div className="stakeholder-zoom-card study-expo-card">
           <div><span>Дата й час</span><time dateTime="2026-10-13T11:30:00+03:00">13 жовтня · 11:30</time></div>
-          <div><span>Учасники</span><strong>Науково-педагогічні працівники</strong></div>
+          <div><span>Учасники</span><strong>Науково-педагогічні працівники та здобувачі освіти</strong></div>
           <Link href={`/events?event=${encodeURIComponent(internationalAiTrainingTitle)}#registration`}>Зареєструватися онлайн →</Link>
         </div>}
         {entranceResultDocuments && <div className="news-result-files">

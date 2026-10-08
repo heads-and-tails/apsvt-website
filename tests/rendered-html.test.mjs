@@ -257,9 +257,10 @@ test("publishes the international cooperation AI training with online registrati
   ]);
   for(const html of [homeHtml,newsHtml,articleHtml]) assert.match(html,/Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО/);
   assert.match(articleHtml,/13 жовтня · 11:30/);
-  assert.match(articleHtml,/Науково-педагогічні працівники/);
+  assert.match(articleHtml,/Науково-педагогічні працівники та здобувачі освіти/);
   assert.match(articleHtml,/href="\/events\?event=.*#registration"/);
-  assert.match(eventsHtml,/Оптимізація підготовки грантових заявок/);
+  assert.match(eventsHtml,/оптимізація підготовки грантових заявок/i);
+  assert.match(eventsHtml,/Для науково-педагогічних працівників і здобувачів освіти Академії/);
   assert.match(eventsHtml,/13 жовтня 2026 р\./);
   assert.match(eventsHtml,/selected=""[^>]*>Використання штучного інтелекту/);
 });
