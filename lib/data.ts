@@ -9,6 +9,7 @@ export type Post = {
   imageAlt: string;
   status: "draft" | "published";
   featured: boolean;
+  hideDate?: boolean;
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
@@ -36,8 +37,68 @@ export const judgeBudzanGuestLectureNewsSlug = "hostova-lektsiia-suddi-budzan-20
 export const wartimeFirstAidTrainingNewsSlug = "treninh-domedychnoi-dopomohy-2023";
 export const internationalAiTrainingNewsSlug = "treninh-shi-mizhnarodne-spivrobitnytstvo-2026";
 export const internationalAiTrainingTitle = "Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО";
+export const mentalHealthConferenceResultsNewsSlug = "mental-health-conference-2026-results";
+
+const hiddenDateMarker = "<!-- APSVT_HIDE_DATE -->";
+
+function decodePostBody(value: unknown): { body: string; hideDate: boolean } {
+  const body = String(value ?? "");
+  const hideDate = body.endsWith(hiddenDateMarker);
+  return { body: hideDate ? body.slice(0, -hiddenDateMarker.length).trimEnd() : body, hideDate };
+}
+
+function encodePostBody(post: Pick<Post, "body" | "hideDate">): string {
+  return post.hideDate ? `${post.body.trimEnd()}\n\n${hiddenDateMarker}` : post.body;
+}
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-mental-health-conference-2026-results",
+    slug: mentalHealthConferenceResultsNewsSlug,
+    title: "Відбулася ІІ Міжнародна науково-практична конференція «MENTAL HEALTH: ОСОБИСТІСНИЙ ТА ОРГАНІЗАЦІЙНИЙ ВИМІРИ»",
+    excerpt: "8 жовтня 2026 року науковці, практики, професійні організації та студентська молодь обговорили актуальні питання ментального здоров’я особистості й професійного середовища.",
+    body: `8 жовтня 2026 року відбулася ІІ Міжнародна науково-практична конференція «MENTAL HEALTH: ОСОБИСТІСНИЙ ТА ОРГАНІЗАЦІЙНИЙ ВИМІРИ» — науковий захід, присвячений актуальним питанням ментального здоров'я особистості, професійного середовища та сучасних суспільних трансформацій.
+
+Конференція об’єднала представників психологічної та соціальної науки, практиків і професійних організацій. Серед співорганізаторів — Академія праці, соціальних відносин і туризму, Одеський національний університет імені І. І. Мечникова, Східноукраїнський національний університет імені Володимира Даля, Європейська психологічна асоціація та Українська психологічна асоціація, взяли участь у конференції і студенти Уманського національного університету.
+
+## 🔹 Пленарне засідання
+
+У межах пленарної частини були представлені доповіді:
+
+🔸 Лариса Ровчак, кандидатка історичних наук — «Підтримка психічного здоров'я працівників у трудових колективах»;
+
+🔸 Гліб Пріб, доктор медичних наук, професор — «Психічне здоров'я українців і зростання ролі професії психолога»;
+
+🔸 Наталія Балашова, кандидатка економічних наук, доцентка — «Соціальний вимір ментального здоров'я: роль і потенціал соціальної роботи в громаді».
+
+Також із вітальним словом виступив Ярема Жугаєвич, голова Професійної спілки працівників авіабудування та машинобудування України, Вадим Красник, керівник Секретаріату Національної асоціації адвокатів України, та Надія Корінна, керівник Всеукраїнської професійної спілки адвокатів України.
+
+Особливу увагу під час конференції було приділено сучасним викликам психологічної науки та практики.
+
+У панельному засіданні 1 докторка психологічних наук, професорка Наталія Родіна представила тему «Ментальне здоров'я в умовах змін: структурована рефлексія як ресурс психологічної стійкості».
+
+Продовженням професійного діалогу стала доповідь Єнса-Райнхольда Губерта (Jens-Reinhold Hubert, Німеччина) — «Переосмислення лідерства – організаційна психологія в епоху штучного інтелекту, змін і нових форматів роботи».
+
+## 🔹 «Наукова психологічна школа» та «Наукова школа соціальної роботи»
+
+Здобувачі факультету психології Академії праці, соціальних відносин і туризму, факультету психології та соціального розвитку, взяли активну участь у науковій роботі та виступили з доповідями. Для молодих дослідників це стало можливістю представити результати власних напрацювань, долучитися до професійного обговорення та поспілкуватися з науковцями й практиками.
+
+📚 Участь студентської молоді в таких наукових заходах є важливою складовою професійного становлення майбутніх психологів, адже дає можливість поєднати навчання, науковий пошук і реальну професійну комунікацію.
+
+Дякуємо організаторам, доповідачам та учасникам за змістовну наукову дискусію, обмін досвідом та спільний розвиток психологічної науки.
+
+#MENTALHEALTH #МентальнеЗдоровя #Психологія #НауковаКонференція #ПсихологічнаНаука #ОрганізаційнаПсихологія #СтудентиПсихологи #АПСВТ`,
+    category: "Наука",
+    imageUrl: "/mental-health-conference-science-2026.jpg",
+    imageAlt: "Наукова конференція про ментальне здоров’я та організаційну психологію",
+    status: "published",
+    featured: true,
+    hideDate: false,
+    publishedAt: "2026-10-09T13:00:00.000Z",
+    createdAt: "2026-10-09T13:00:00.000Z",
+    updatedAt: "2026-10-09T13:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
   {
     id: "seed-international-ai-training-2026",
     slug: internationalAiTrainingNewsSlug,
@@ -390,7 +451,7 @@ export async function ensurePosts(): Promise<void> {
   await database.batch(seedPosts.map((post) => database.prepare(
       `INSERT OR IGNORE INTO posts (id,slug,title,excerpt,body,category,image_url,image_alt,status,featured,published_at,created_at,updated_at,author_email)
        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-    ).bind(post.id, post.slug, post.title, post.excerpt, post.body, post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail)));
+    ).bind(post.id, post.slug, post.title, post.excerpt, encodePostBody(post), post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail)));
   const regionalPhotoUpdates = seedPosts.filter((post) => post.imageUrl.startsWith("/")).map((post) =>
     database.prepare("UPDATE posts SET image_url = ?, image_alt = ? WHERE id = ? AND image_url LIKE 'https://images.unsplash.com/%'").bind(post.imageUrl, post.imageAlt, post.id),
   );
@@ -402,18 +463,19 @@ export async function ensurePosts(): Promise<void> {
 }
 
 function fromRow(row: Record<string, unknown>): Post {
+  const decodedBody = decodePostBody(row.body);
   return {
     id: String(row.id), slug: String(row.slug), title: String(row.title), excerpt: String(row.excerpt),
-    body: String(row.body), category: String(row.category), imageUrl: String(row.image_url),
+    body: decodedBody.body, category: String(row.category), imageUrl: String(row.image_url),
     imageAlt: String(row.image_alt), status: row.status === "published" ? "published" : "draft",
-    featured: Boolean(row.featured), publishedAt: row.published_at ? String(row.published_at) : null,
+    featured: Boolean(row.featured), hideDate: decodedBody.hideDate, publishedAt: row.published_at ? String(row.published_at) : null,
     createdAt: String(row.created_at), updatedAt: String(row.updated_at), authorEmail: String(row.author_email),
   };
 }
 
 function toSupabaseRow(post: Post) {
   return {
-    id: post.id, slug: post.slug, title: post.title, excerpt: post.excerpt, body: post.body,
+    id: post.id, slug: post.slug, title: post.title, excerpt: post.excerpt, body: encodePostBody(post),
     category: post.category, image_url: post.imageUrl, image_alt: post.imageAlt, status: post.status,
     featured: post.featured, published_at: post.publishedAt, created_at: post.createdAt,
     updated_at: post.updatedAt, author_email: post.authorEmail,
@@ -430,7 +492,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
@@ -534,7 +596,7 @@ export async function createPost(input: PostInput, authorEmail: string): Promise
   const now = new Date().toISOString();
   const post: Post = { ...input, id: crypto.randomUUID(), slug: slugify(input.slug || input.title), createdAt: now, updatedAt: now, authorEmail };
   if (post.status === "published" && !post.publishedAt) post.publishedAt = now;
-  await database.prepare(`INSERT INTO posts (id,slug,title,excerpt,body,category,image_url,image_alt,status,featured,published_at,created_at,updated_at,author_email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(post.id, post.slug, post.title, post.excerpt, post.body, post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail).run();
+  await database.prepare(`INSERT INTO posts (id,slug,title,excerpt,body,category,image_url,image_alt,status,featured,published_at,created_at,updated_at,author_email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(post.id, post.slug, post.title, post.excerpt, encodePostBody(post), post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail).run();
   return post;
 }
 
@@ -543,7 +605,7 @@ export async function updatePost(id: string, input: PostInput, authorEmail: stri
     const now = new Date().toISOString();
     const publishedAt = input.status === "published" ? (input.publishedAt || now) : null;
     const { data, error } = await createSupabaseAdmin().from("editorial_posts").update({
-      slug: slugify(input.slug || input.title), title: input.title, excerpt: input.excerpt, body: input.body,
+      slug: slugify(input.slug || input.title), title: input.title, excerpt: input.excerpt, body: encodePostBody(input),
       category: input.category, image_url: input.imageUrl, image_alt: input.imageAlt, status: input.status,
       featured: input.featured, published_at: publishedAt, updated_at: now, author_email: authorEmail,
     }).eq("id", id).select("*").maybeSingle();
@@ -555,7 +617,7 @@ export async function updatePost(id: string, input: PostInput, authorEmail: stri
   if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
   const now = new Date().toISOString();
   const publishedAt = input.status === "published" ? (input.publishedAt || now) : null;
-  await database.prepare(`UPDATE posts SET slug=?,title=?,excerpt=?,body=?,category=?,image_url=?,image_alt=?,status=?,featured=?,published_at=?,updated_at=?,author_email=? WHERE id=?`).bind(slugify(input.slug || input.title), input.title, input.excerpt, input.body, input.category, input.imageUrl, input.imageAlt, input.status, input.featured ? 1 : 0, publishedAt, now, authorEmail, id).run();
+  await database.prepare(`UPDATE posts SET slug=?,title=?,excerpt=?,body=?,category=?,image_url=?,image_alt=?,status=?,featured=?,published_at=?,updated_at=?,author_email=? WHERE id=?`).bind(slugify(input.slug || input.title), input.title, input.excerpt, encodePostBody(input), input.category, input.imageUrl, input.imageAlt, input.status, input.featured ? 1 : 0, publishedAt, now, authorEmail, id).run();
   const row = await database.prepare("SELECT * FROM posts WHERE id = ?").bind(id).first<Record<string, unknown>>();
   return row ? fromRow(row) : null;
 }

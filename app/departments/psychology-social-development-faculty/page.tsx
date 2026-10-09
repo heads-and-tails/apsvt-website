@@ -95,7 +95,7 @@ export default async function Page() {
 
     <EducationQualitySection entries={departmentEntries} pagePath="/departments/psychology-social-development-faculty" index="15" id="faculty-quality" discussionEmail="k.psychology22@gmail.com" />
 
-    <div id="department-news"><AcademicNews slugs={["psychology", "social-work"]} title="Новини факультету й кафедр" /><DepartmentEditorialContent entries={departmentEntries} /></div>
+    <div id="department-news"><AcademicNews slugs={["psychology", "social-work"]} title="Новини факультету й кафедр" limit={4} /><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
     <SiteFooter />
   </main>;

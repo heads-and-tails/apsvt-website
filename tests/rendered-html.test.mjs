@@ -287,6 +287,65 @@ test("publishes the guest lecture in Academy and faculty news",async()=>{
   assert.match(articleHtml,/news-guest-lecture-2026-10-08\.png/);
 });
 
+test("publishes the conference results, current regulations and mobility guide",async()=>{
+  const [resultsHtml,conferencesHtml,regulationsHtml,documentsHtml,internationalHtml,studentsHtml]=await Promise.all([
+    (await render("/news/mental-health-conference-2026-results")).text(),
+    (await render("/research/conferences")).text(),
+    (await render("/documents/regulations")).text(),
+    (await render("/documents#governance")).text(),
+    (await render("/international#mobility-guide")).text(),
+    (await render("/students")).text(),
+  ]);
+  assert.match(resultsHtml,/Відбулася ІІ Міжнародна науково-практична конференція/);
+  assert.match(resultsHtml,/Наталія Родіна/);
+  assert.match(resultsHtml,/Єнса-Райнхольда Губерта/);
+  assert.match(conferencesHtml,/Підсумки конференції/);
+  assert.match(regulationsHtml,/Положення про організацію освітнього процесу в АПСВТ/);
+  assert.match(regulationsHtml,/educational-process-2026\.pdf/);
+  assert.match(regulationsHtml,/Положення про академічну доброчесність в АПСВТ/);
+  assert.match(regulationsHtml,/academic-integrity-2026\.pdf/);
+  assert.match(documentsHtml,/statute-apsvt-2026\.docx/);
+  assert.match(internationalHtml,/Путівник з міжнародної мобільності/);
+  assert.match(internationalHtml,/international-mobility-guide-2026\.pptx/);
+  assert.match(studentsHtml,/Путівник з міжнародної мобільності/);
+
+  const pdfs=["academic-integrity-2026.pdf","educational-process-2026.pdf"];
+  for(const file of pdfs){
+    const bytes=await readFile(new URL(`../public/documents/regulations/${file}`,import.meta.url));
+    assert.equal(bytes.subarray(0,4).toString(),"%PDF",`${file} should remain a PDF`);
+  }
+  for(const file of [
+    "governance/statute-apsvt-2026.docx",
+    "international/international-mobility-guide-2026.pptx",
+  ]){
+    const bytes=await readFile(new URL(`../public/documents/${file}`,import.meta.url));
+    assert.equal(bytes.subarray(0,2).toString(),"PK",`${file} should remain a valid Office archive`);
+  }
+});
+
+test("gives every law programme level a stable page and keeps dates optional",async()=>{
+  const facultyHtml=await (await render("/departments/law-faculty#faculty-programmes")).text();
+  const programmePaths=[
+    "/departments/law-faculty/faculty-programmes/d8-law-bachelor",
+    "/departments/law-faculty/faculty-programmes/d8-law-master",
+    "/departments/law-faculty/faculty-programmes/d8-law-phd",
+    "/departments/law-faculty/faculty-programmes/d4-public-administration-bachelor",
+    "/departments/law-faculty/faculty-programmes/d4-public-administration-master",
+    "/departments/law-faculty/faculty-programmes/d4-public-administration-phd",
+  ];
+  for(const path of programmePaths){
+    assert.match(facultyHtml,new RegExp(`href="${path}"`));
+    const response=await render(path);
+    assert.equal(response.status,200,`${path} should render`);
+    assert.match(await response.text(),/Опис програми, освітні компоненти, навчальні плани/);
+  }
+
+  const panel=await readFile(new URL("../app/panel/PanelEditor.tsx",import.meta.url),"utf8");
+  const data=await readFile(new URL("../lib/data.ts",import.meta.url),"utf8");
+  assert.match(panel,/Не відображати дату публікації/);
+  assert.match(data,/APSVT_HIDE_DATE/);
+});
+
 test("publishes international partnerships and the foreign applicant guide",async()=>{
   const html=await (await render("/international")).text();
   assert.match(html,/Studieninstitut POLS/);

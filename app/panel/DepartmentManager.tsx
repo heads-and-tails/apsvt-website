@@ -286,6 +286,7 @@ function CategorizedContentList({
   onRestore,
   onEditManaged,
   onRemoveManaged,
+  onMoveManaged,
   query,
   onQueryChange,
 }: {
@@ -301,6 +302,7 @@ function CategorizedContentList({
   onRestore: (entry: DepartmentEntry) => void;
   onEditManaged: (entry: DepartmentEntry) => void;
   onRemoveManaged: (entry: DepartmentEntry) => void;
+  onMoveManaged: (entry: DepartmentEntry, direction: -1 | 1) => void;
   query: string;
   onQueryChange: (value: string) => void;
 }) {
@@ -317,7 +319,7 @@ function CategorizedContentList({
     {!loading && !error && total === 0 && <p className="department-empty">На сторінці ще немає матеріалів цього типу. Додайте перший запис у формі поруч.</p>}
     {!loading && !error && total > 0 && visibleTotal === 0 && <p className="department-empty">За цим пошуком нічого не знайдено. Спробуйте коротший запит або очистіть поле.</p>}
     {visibleNativeGroups.length > 0 && <section className="categorized-existing-section"><header><div><small>Вже опубліковано на сайті</small><h4>{typeLabels[type].label}</h4></div><b>{visibleNativeGroups.length}</b></header><p>Ці картки взяті безпосередньо з поточної сторінки. Розкрийте картку, щоб змінити фото, заголовок або текст.</p><ExistingGroupCards groups={visibleNativeGroups} overrides={overrides} busy={busy} onEdit={onEditNative} onRestore={onRestore} /></section>}
-    {visibleManagedEntries.length > 0 && <section className="categorized-managed-section"><header><div><small>Додано через редакційну панель</small><h4>Нові записи</h4></div><b>{visibleManagedEntries.length}</b></header>{visibleManagedEntries.map((entry) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => onEditManaged(entry)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => onRemoveManaged(entry)}>Видалити</button></div></article>)}</section>}
+    {visibleManagedEntries.length > 0 && <section className="categorized-managed-section"><header><div><small>Додано через редакційну панель</small><h4>Нові записи</h4></div><b>{visibleManagedEntries.length}</b></header>{visibleManagedEntries.map((entry, index) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => onEditManaged(entry)}>Редагувати</button><button type="button" disabled={busy || index === 0} onClick={() => onMoveManaged(entry, -1)}>↑ Вище</button><button type="button" disabled={busy || index === visibleManagedEntries.length - 1} onClick={() => onMoveManaged(entry, 1)}>↓ Нижче</button><button className="danger" disabled={busy} type="button" onClick={() => onRemoveManaged(entry)}>Видалити</button></div></article>)}</section>}
   </div>;
 }
 
@@ -670,6 +672,35 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     setBusy(false);
   }
 
+  async function move(entry: DepartmentEntry, direction: -1 | 1) {
+    const siblings = visible;
+    const index = siblings.findIndex((item) => item.id === entry.id);
+    const neighbour = siblings[index + direction];
+    if (!neighbour) return;
+    const inputFor = (item: DepartmentEntry, sortOrder: number): DepartmentEntryInput => ({
+      pagePath: item.pagePath, sectionId: item.sectionId, entryType: item.entryType,
+      title: item.title, summary: item.summary, body: item.body, imageUrl: item.imageUrl,
+      imageAlt: item.imageAlt, fileUrl: item.fileUrl, fileName: item.fileName, date: item.date,
+      role: item.role, email: item.email, profileUrl: item.profileUrl, status: item.status, sortOrder,
+    });
+    setBusy(true);
+    setMessage("Змінюємо порядок…");
+    try {
+      const [entryResponse, neighbourResponse] = await Promise.all([
+        fetch(`/api/department-content/${entry.id}`, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify(inputFor(entry, neighbour.sortOrder)) }),
+        fetch(`/api/department-content/${neighbour.id}`, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify(inputFor(neighbour, entry.sortOrder)) }),
+      ]);
+      if (!entryResponse.ok || !neighbourResponse.ok) throw new Error("Не вдалося змінити порядок");
+      const [updatedEntry, updatedNeighbour] = await Promise.all([entryResponse.json() as Promise<DepartmentEntry>, neighbourResponse.json() as Promise<DepartmentEntry>]);
+      setEntries((current) => current.map((item) => item.id === updatedEntry.id ? updatedEntry : item.id === updatedNeighbour.id ? updatedNeighbour : item));
+      setMessage("Новий порядок опубліковано");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Не вдалося змінити порядок");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   if (!allowedPages.length) return null;
   const editorType = form.entryType;
   const isOverride = editorType === "override";
@@ -714,7 +745,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
         </div>}
         <div className="operations-save"><p>{message || (isOverride ? "Оберіть елемент сторінки у списку праворуч." : "Заповніть картку та збережіть зміни.")}</p><button disabled={busy || (isOverride && !form.body) || (editorType === "photo" && !form.imageUrl) || (isMaterial && !form.fileUrl)} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити" : isOverride ? "Опублікувати заміну" : "Додати на сторінку"}</button></div>
       </form>
-      {entryType === "override" ? <ExistingContentList pageName={pageLabel(pagePath)} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} totalElements={inventory.length} totalGroups={inventoryGroups.length} groups={filteredInventoryGroups} query={inventoryQuery} filter={inventoryFilter} overrides={overrideBySelector} busy={busy} onQueryChange={setInventoryQuery} onFilterChange={setInventoryFilter} onEdit={startInventoryEdit} onRestore={(entry) => void remove(entry)} /> : <CategorizedContentList pageName={pageLabel(pagePath)} type={entryType} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} nativeGroups={categorizedInventoryGroups.get(entryType) || []} managedEntries={visible} overrides={overrideBySelector} busy={busy} query={inventoryQuery} onQueryChange={setInventoryQuery} onEditNative={(item) => startInventoryEdit(item, true)} onRestore={(entry) => void remove(entry)} onEditManaged={startEdit} onRemoveManaged={(entry) => void remove(entry)} />}
+      {entryType === "override" ? <ExistingContentList pageName={pageLabel(pagePath)} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} totalElements={inventory.length} totalGroups={inventoryGroups.length} groups={filteredInventoryGroups} query={inventoryQuery} filter={inventoryFilter} overrides={overrideBySelector} busy={busy} onQueryChange={setInventoryQuery} onFilterChange={setInventoryFilter} onEdit={startInventoryEdit} onRestore={(entry) => void remove(entry)} /> : <CategorizedContentList pageName={pageLabel(pagePath)} type={entryType} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} nativeGroups={categorizedInventoryGroups.get(entryType) || []} managedEntries={visible} overrides={overrideBySelector} busy={busy} query={inventoryQuery} onQueryChange={setInventoryQuery} onEditNative={(item) => startInventoryEdit(item, true)} onRestore={(entry) => void remove(entry)} onEditManaged={startEdit} onRemoveManaged={(entry) => void remove(entry)} onMoveManaged={(entry, direction) => void move(entry, direction)} />}
     </div>
   </section>;
 }
