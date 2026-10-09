@@ -69,7 +69,7 @@ export default async function Page({ params }: Props) {
     <SiteHeader />
     <section className="detail-hero image">
       <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} /></div>
-      <div className="wrap"><div className="detail-kicker mono">{post.category} · {date}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div>
+      <div className="wrap"><div className="detail-kicker mono">{post.category}{post.hideDate ? "" : ` · ${date}`}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div>
     </section>
     <div className="phero-rule" />
     <section className="article-section"><div className="wrap detail-layout">
@@ -142,7 +142,7 @@ export default async function Page({ params }: Props) {
         <blockquote>Освіта стає цінною тоді, коли знання переходить у відповідальну дію.</blockquote>
         <Link className="back-link" href="/news">← До всіх новин</Link>
       </article>
-      <aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Категорія</b>{post.category}</li><li><b>Опубліковано</b>{date}</li><li><b>Автор</b>Редакція АПСВТ</li></ul></aside>
+      <aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Категорія</b>{post.category}</li>{!post.hideDate&&<li><b>Опубліковано</b>{date}</li>}<li><b>Автор</b>Редакція АПСВТ</li></ul></aside>
     </div></section>
     {related.length > 0 && <section className="soft"><div className="wrap"><div className="sec-head"><div><div className="idx">Читайте далі</div><h2>Ще з Академії</h2></div></div><div className="news-grid">{related.map((item) => <NewsCard post={item} key={item.id} />)}</div></div></section>}
     <SiteFooter />
