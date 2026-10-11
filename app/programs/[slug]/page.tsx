@@ -22,6 +22,7 @@ import { AcademicNews } from "@/app/components/AcademicNews";
 import { MarketingTeam } from "./MarketingTeam";
 import { MarketingCareers, MarketingDepartmentAbout } from "./MarketingDepartmentContent";
 import { MarketingStudentLife } from "./MarketingStudentLife";
+import { MarketingEducationPrograms } from "./MarketingEducationPrograms";
 import { FinanceInternational, financeProjectSections } from "./FinanceInternational";
 import { digitalDepartmentPath } from "@/lib/professional-education";
 
@@ -93,7 +94,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   const marketingSectionContent = slug === "marketing" ? [
     <MarketingDepartmentAbout key="marketing-about" />,
     <MarketingTeam entries={departmentEntries.filter((entry) => entry.entryType === "teacher")} key="marketing-team" />,
-    <ProgrammeCurriculumPlan slug={slug} code={program.code} title={program.title} key="marketing-programmes" />,
+    <MarketingEducationPrograms key="marketing-programmes" />,
     <section className="marketing-science-clean" id="science" key="marketing-science"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Наукова діяльність</div><h2>Наукова діяльність кафедри</h2></div><p>У розділі залишено лише матеріали, підтверджені кафедрою.</p></div><div className="marketing-science-clean-grid">
       <Link href="/research/conferences#marketing-proceedings"><span>01</span><small>Конференції</small><h3>Збірники матеріалів конференцій</h3><p>Повні PDF за 2024, 2025 та 2026 роки.</p><b>→</b></Link>
       <Link href="/research/journals#marketing-publications"><span>02</span><small>Наукові видання</small><h3>Монографії кафедри</h3><p>Дві колективні монографії, підготовлені викладачами кафедри.</p><b>→</b></Link>
