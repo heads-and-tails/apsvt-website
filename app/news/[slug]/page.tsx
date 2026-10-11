@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { getPostBySlug, getPosts, guestLectureHubertNewsSlug, internationalAiTrainingNewsSlug, internationalAiTrainingTitle, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
+import { erasmusDaysNewsSlug, getPostBySlug, getPosts, guestLectureHubertNewsSlug, internationalAiTrainingNewsSlug, internationalAiTrainingTitle, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
@@ -58,6 +58,7 @@ export default async function Page({ params }: Props) {
   const isApplicantRankingsNews = post.slug === applicantRankingsNewsSlug;
   const isAcademicCompetitionNews = post.slug === academicCompetitionNewsSlug;
   const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
+  const isErasmusDaysNews = post.slug === erasmusDaysNewsSlug;
   const isStudyUaExpoNews = post.slug === studyUaExpoNewsSlug;
   const isMentalHealthConferenceNews = post.slug === mentalHealthConferenceNewsSlug;
   const isPilcSeiteNews = post.slug === pilcSeiteNewsSlug;
@@ -80,6 +81,11 @@ export default async function Page({ params }: Props) {
           <div><span>Онлайн-зустріч</span><time dateTime="2026-08-26T12:00:00+03:00">26 серпня · 12:00</time></div>
           <div><span>Meeting ID</span><strong>303 650 3681</strong></div>
           <a href="https://zoom.us/j/3036503681?pwd=QUNhTE14SjVWa3htTy9OZjRjQ2IzQT09" target="_blank" rel="noreferrer">Приєднатися до Zoom ↗</a>
+        </div>}
+        {isErasmusDaysNews && <div className="news-result-files">
+          <span>Erasmus+ Days 2026 · 12–17 жовтня</span>
+          <a href="https://erasmusplus.org.ua/2026/" target="_blank" rel="noreferrer"><b>EU</b><strong>Національний Erasmus+ офіс в Україні</strong><small>Офіційна сторінка події ↗</small></a>
+          <Link href="/international#mobility-guide"><b>АП</b><strong>Путівник з міжнародної мобільності</strong><small>Можливості для студентів →</small></Link>
         </div>}
         {isStudyUaExpoNews && <div className="stakeholder-zoom-card study-expo-card">
           <div><span>Дата</span><time dateTime="2026-09-26">26–27 вересня 2026</time></div>
