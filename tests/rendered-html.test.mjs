@@ -26,7 +26,7 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/href="\/en"[^>]*>EN<\/a>/i);
   assert.match(html,/Освітні траєкторії/);
   assert.match(html,/mental-health-conference-science-2026\.jpg/);
-  assert.match(html,/study-ua-expo-kyiv-2026\.png/);
+  assert.match(html,/Запрошуємо стати частиною Erasmus\+ Days 2026!/);
   assert.match(html,/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(html,/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
   assert.match(html,/Навчання «Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО»/);

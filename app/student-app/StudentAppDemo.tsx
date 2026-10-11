@@ -68,7 +68,6 @@ export function StudentAppDemo({ lessons }: { lessons: DemoLesson[] }) {
   const [reminder, setReminder] = useState(15);
   const [toast, setToast] = useState("");
 
-  /* eslint-disable react-hooks/set-state-in-effect -- hydrate demo preferences from localStorage after mount. */
   useEffect(() => {
     const stored = window.localStorage.getItem("apsvt-app-demo");
     if (!stored) return;
@@ -100,7 +99,6 @@ export function StudentAppDemo({ lessons }: { lessons: DemoLesson[] }) {
     const timer = window.setTimeout(() => setGroup(availableGroups[0] || ""), 0);
     return () => window.clearTimeout(timer);
   }, [availableGroups, group]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   const filtered = useMemo(() => lessons
     .filter((lesson) => lesson.faculty === faculty && lesson.group === group)
