@@ -17,11 +17,11 @@ import type { DepartmentEntry } from "@/lib/department-content";
 import { DepartmentManager } from "./DepartmentManager";
 import { requestJson } from "@/lib/client-request";
 
-type FormState = { title: string; excerpt: string; body: string; category: string; imageUrl: string; imageAlt: string; status: "draft" | "published"; featured: boolean; publishedAt: string | null; slug?: string };
+type FormState = { title: string; excerpt: string; body: string; category: string; imageUrl: string; imageAlt: string; status: "draft" | "published"; featured: boolean; hideDate: boolean; publishedAt: string | null; slug?: string };
 type PanelView = "overview" | "assistant" | "news-editor" | "materials" | "departments" | "operations" | "schedule" | "documents" | "finance" | "access";
 type NavItem = { id: PanelView; label: string; icon: string; hint: string };
 
-const empty: FormState = { title: "", excerpt: "", body: "", category: "Новини", imageUrl: "", imageAlt: "", status: "draft", featured: false, publishedAt: null };
+const empty: FormState = { title: "", excerpt: "", body: "", category: "Новини", imageUrl: "", imageAlt: "", status: "draft", featured: false, hideDate: false, publishedAt: null };
 
 const viewTitles: Record<PanelView, { eyebrow: string; title: string; description: string }> = {
   overview: { eyebrow: "Робочий центр", title: "Редакційна панель", description: "Усі інструменти сайту в одному місці — без довгої сторінки та зайвої прокрутки." },
@@ -96,7 +96,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
   function open(view: PanelView) { setActiveView(view); window.scrollTo({ top: 0, behavior: "smooth" }); }
 
   function change<K extends keyof FormState>(key: K, value: FormState[K]) { setForm((current) => ({ ...current, [key]: value })); }
-  function edit(post: Post) { setEditing(post.id); setForm({ title: post.title, excerpt: post.excerpt, body: post.body, category: post.category, imageUrl: post.imageUrl, imageAlt: post.imageAlt, status: post.status, featured: post.featured, publishedAt: post.publishedAt, slug: post.slug }); open("news-editor"); }
+  function edit(post: Post) { setEditing(post.id); setForm({ title: post.title, excerpt: post.excerpt, body: post.body, category: post.category, imageUrl: post.imageUrl, imageAlt: post.imageAlt, status: post.status, featured: post.featured, hideDate: Boolean(post.hideDate), publishedAt: post.publishedAt, slug: post.slug }); open("news-editor"); }
   function reset() { setEditing(null); setForm(empty); setMessage(""); }
   async function upload(file: File) {
     setBusy(true);
@@ -177,6 +177,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
           <label>Короткий опис *<textarea name="excerpt" required rows={3} value={form.excerpt} onChange={(event) => change("excerpt", event.target.value)} placeholder="1–2 речення для картки матеріалу" /></label>
           <label>Текст статті *<textarea name="body" required className="body-editor" rows={16} value={form.body} onChange={(event) => change("body", event.target.value)} placeholder={"Перший абзац — головна думка.\n\nНовий абзац починайте після порожнього рядка."} /></label>
           <label className="toggle"><input type="checkbox" checked={form.featured} onChange={(event) => change("featured", event.target.checked)} /><span>Показувати як головний матеріал</span></label>
+          <label className="toggle"><input type="checkbox" checked={form.hideDate} onChange={(event) => change("hideDate", event.target.checked)} /><span>Не відображати дату публікації <small>Дата збережеться в редакційній панелі.</small></span></label>
         </section>
         <aside className="editor-media">
           <div className="upload-box">{form.imageUrl ? <img src={form.imageUrl} alt="Попередній перегляд" /> : <div><b>Фото матеріалу</b><p>JPG, PNG або WebP · до 8 МБ</p></div>}<label className="upload-button">{busy ? "Зачекайте…" : "Обрати фото"}<input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); }} /></label></div>

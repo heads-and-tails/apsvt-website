@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { erasmusDaysNewsSlug, getPostBySlug, getPosts, stakeholderDiscussionNewsSlug } from "@/lib/data";
+import { erasmusDaysNewsSlug, getPostBySlug, getPosts, guestLectureHubertNewsSlug, internationalAiTrainingNewsSlug, internationalAiTrainingTitle, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
@@ -14,6 +14,23 @@ import { academicCompetitionDocument, academicCompetitionNewsSlug } from "@/lib/
 export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
+
+const conferenceOrganizers = [
+  "АКАДЕМІЯ ПРАЦІ, СОЦІАЛЬНИХ ВІДНОСИН І ТУРИЗМУ",
+  "ФАКУЛЬТЕТ ПСИХОЛОГІЇ ТА СОЦІАЛЬНОГО РОЗВИТКУ",
+  "ЄВРОПЕЙСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ",
+  "ОДЕСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ І. І. МЕЧНИКОВА",
+  "ФАКУЛЬТЕТ ПСИХОЛОГІЇ ТА СОЦІАЛЬНОЇ РОБОТИ, УКРАЇНСЬКА ПСИХОЛОГІЧНА АСОЦІАЦІЯ",
+  "СХІДНОУКРАЇНСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ ІМЕНІ ВОЛОДИМИРА ДАЛЯ",
+];
+
+function replaceConferenceOrganizers(body: string) {
+  const organizerList = conferenceOrganizers.map((organizer) => `- ${organizer}`).join("\n");
+  if (body.includes("## Організатори")) {
+    return body.replace(/## Організатори[\s\S]*?(?=\n##\s|$)/, `## Організатори\n\n${organizerList}\n`);
+  }
+  return `${body}\n\n## Організатори\n\n${organizerList}`;
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -42,18 +59,24 @@ export default async function Page({ params }: Props) {
   const isAcademicCompetitionNews = post.slug === academicCompetitionNewsSlug;
   const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
   const isErasmusDaysNews = post.slug === erasmusDaysNewsSlug;
+  const isStudyUaExpoNews = post.slug === studyUaExpoNewsSlug;
+  const isMentalHealthConferenceNews = post.slug === mentalHealthConferenceNewsSlug;
+  const isPilcSeiteNews = post.slug === pilcSeiteNewsSlug;
+  const isGuestLectureHubertNews = post.slug === guestLectureHubertNewsSlug;
+  const isInternationalAiTrainingNews = post.slug === internationalAiTrainingNewsSlug;
+  const articleBody = isMentalHealthConferenceNews ? replaceConferenceOrganizers(post.body) : post.body;
 
   return <main id="top">
     <SiteHeader />
     <section className="detail-hero image">
       <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} /></div>
-      <div className="wrap"><div className="detail-kicker mono">{post.category} · {date}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div>
+      <div className="wrap"><div className="detail-kicker mono">{post.category}{post.hideDate ? "" : ` · ${date}`}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div>
     </section>
     <div className="phero-rule" />
     <section className="article-section"><div className="wrap detail-layout">
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
-        <EditorialRichText text={post.body} />
+        <EditorialRichText text={articleBody} />
         {isStakeholderDiscussionNews && <div className="stakeholder-zoom-card">
           <div><span>Онлайн-зустріч</span><time dateTime="2026-08-26T12:00:00+03:00">26 серпня · 12:00</time></div>
           <div><span>Meeting ID</span><strong>303 650 3681</strong></div>
@@ -63,6 +86,37 @@ export default async function Page({ params }: Props) {
           <span>Erasmus+ Days 2026 · 12–17 жовтня</span>
           <a href="https://erasmusplus.org.ua/2026/" target="_blank" rel="noreferrer"><b>EU</b><strong>Національний Erasmus+ офіс в Україні</strong><small>Офіційна сторінка події ↗</small></a>
           <Link href="/international#mobility-guide"><b>АП</b><strong>Путівник з міжнародної мобільності</strong><small>Можливості для студентів →</small></Link>
+        </div>}
+        {isStudyUaExpoNews && <div className="stakeholder-zoom-card study-expo-card">
+          <div><span>Дата</span><time dateTime="2026-09-26">26–27 вересня 2026</time></div>
+          <div><span>Місце</span><strong>Київ · КВЦ «Парковий»</strong></div>
+          <a href="https://expokyiv.study.ua/" target="_blank" rel="noreferrer">Безкоштовна реєстрація ↗</a>
+        </div>}
+        {isMentalHealthConferenceNews && <>
+          <div className="stakeholder-zoom-card">
+            <div><span>Дата й час</span><time dateTime="2026-10-08T10:00:00+03:00">8 жовтня · 10:00</time></div>
+            <div><span>Zoom</span><strong>820 3384 7880</strong></div>
+            <a href="https://us02web.zoom.us/j/82033847880?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp.1" target="_blank" rel="noreferrer">Приєднатися до конференції ↗</a>
+          </div>
+          <div className="news-result-files">
+            <span>Програма конференції</span>
+            <a href="/documents/news/mental-health-conference-2026-program-v2.pdf" target="_blank" rel="noreferrer"><b>01</b><strong>Програма конференції</strong><small>PDF · редакція 2026 року ↗</small></a>
+          </div>
+        </>}
+        {isPilcSeiteNews && <div className="stakeholder-zoom-card study-expo-card">
+          <div><span>Відео</span><strong>PILC &amp; SEITE 2026</strong></div>
+          <div><span>Формат</span><strong>Міжнародне стажування</strong></div>
+          <a href="https://youtu.be/DANh8PwOcN4?si=t9c7VYbwe71RYXcO" target="_blank" rel="noreferrer">Переглянути відео ↗</a>
+        </div>}
+        {isGuestLectureHubertNews && <div className="stakeholder-zoom-card">
+          <div><span>Дата й час</span><time dateTime="2026-10-08T13:20:00+03:00">8 жовтня · 13:20</time></div>
+          <div><span>Zoom</span><strong>820 3384 7880 · код 977364</strong></div>
+          <a href="https://us02web.zoom.us/j/82033847880?pwd=mes82pPUnHbGTplhIE0rXPrnCbsRHp.1" target="_blank" rel="noreferrer">Приєднатися до лекції ↗</a>
+        </div>}
+        {isInternationalAiTrainingNews && <div className="stakeholder-zoom-card study-expo-card">
+          <div><span>Дата й час</span><time dateTime="2026-10-13T11:30:00+03:00">13 жовтня · 11:30</time></div>
+          <div><span>Учасники</span><strong>Науково-педагогічні працівники та здобувачі освіти</strong></div>
+          <Link href={`/events?event=${encodeURIComponent(internationalAiTrainingTitle)}#registration`}>Зареєструватися онлайн →</Link>
         </div>}
         {entranceResultDocuments && <div className="news-result-files">
           <span>Результати за предметами</span>
@@ -94,7 +148,7 @@ export default async function Page({ params }: Props) {
         <blockquote>Освіта стає цінною тоді, коли знання переходить у відповідальну дію.</blockquote>
         <Link className="back-link" href="/news">← До всіх новин</Link>
       </article>
-      <aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Категорія</b>{post.category}</li><li><b>Опубліковано</b>{date}</li><li><b>Автор</b>Редакція АПСВТ</li></ul></aside>
+      <aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Категорія</b>{post.category}</li>{!post.hideDate&&<li><b>Опубліковано</b>{date}</li>}<li><b>Автор</b>Редакція АПСВТ</li></ul></aside>
     </div></section>
     {related.length > 0 && <section className="soft"><div className="wrap"><div className="sec-head"><div><div className="idx">Читайте далі</div><h2>Ще з Академії</h2></div></div><div className="news-grid">{related.map((item) => <NewsCard post={item} key={item.id} />)}</div></div></section>}
     <SiteFooter />

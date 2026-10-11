@@ -1,0 +1,16 @@
+.professional-programme-hero .academic-editorial-cover {
+  display: block;
+  width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+  margin: 28px 0;
+}
+.academic-editorial-intro { padding-block: 32px; }
+.academic-editorial-intro p { max-width: 85ch; line-height: 1.7; }
+.editorial-department-tree { margin: 0 0 28px; padding: 24px; border: 1px solid #c7cedb; background: white; }
+.editorial-department-tree button { font: inherit; font-size: 16px; line-height: 1.5; text-align: left; padding: 12px 16px; border: 1px solid #c7cedb; color: var(--ink); background: #f4f6fa; width: 100%; cursor: pointer; overflow-wrap: anywhere; }
+.editorial-department-tree > button { font-weight: 700; }
+.editorial-department-tree ul { list-style: none; padding: 0 0 0 20px; margin: 16px 0 0 8px; border-left: 3px solid var(--gold); display: grid; gap: 8px; }
+.editorial-department-tree button[aria-current="page"] { background: var(--navy); color: white; border-color: var(--navy); }
+.editorial-department-tree button:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 3px; }
+@media (max-width: 600px) { .editorial-department-tree { padding: 14px; } .editorial-department-tree ul { padding-left: 12px; margin-left: 0; } }

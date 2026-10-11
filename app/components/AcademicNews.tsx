@@ -7,13 +7,15 @@ export async function AcademicNews({
   slugs,
   title = "Новини напряму",
   eyebrow = "Наука, події та спільнота",
+  limit = 3,
 }: {
   slugs: string[];
   title?: string;
   eyebrow?: string;
+  limit?: number;
 }) {
   const posts = await getPosts({ limit: 60 });
-  const selected = selectAcademicNews(posts, slugs, 3);
+  const selected = selectAcademicNews(posts, slugs, limit);
   if (!selected.length) return null;
   return <section className="academic-news-section"><div className="wrap">
     <div className="sec-head"><div><div className="idx">{eyebrow}</div><h2>{title}</h2></div><Link className="sec-link" href="/news">Усі новини →</Link></div>

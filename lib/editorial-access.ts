@@ -1,7 +1,12 @@
+import { lawFacultySubpages } from "./law-faculty-structure";
+import { digitalDepartmentPath, digitalDepartmentTitle, professionalEducationProgrammes } from "./professional-education";
+
 export type EditorialAccessOption = {
   value: string;
   label: string;
   group: "all" | "page" | "department";
+  parentPath?: string;
+  legacy?: boolean;
 };
 
 export const editorialAccessOptions: EditorialAccessOption[] = [
@@ -42,6 +47,7 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/stories", label: "Історії Академії", group: "page" },
   { value: "/departments/economics-social-tourism-faculty", label: "Факультет економіки, соціальних технологій і туризму", group: "department" },
   { value: "/departments/law-faculty", label: "Юридичний факультет", group: "department" },
+  ...lawFacultySubpages.map((page): EditorialAccessOption => ({ value: page.path, label: `Юридичний факультет · ${page.parentTitle} · ${page.title}`, group: "department" })),
   { value: "/departments/psychology-social-development-faculty", label: "Факультет психології та соціального розвитку", group: "department" },
   { value: "/departments/psychology-social-development-faculty/clinical-psychology", label: "Кафедра клінічної психології та психотерапії", group: "department" },
   { value: "/departments/psychology-social-development-faculty/business-psychology", label: "Кафедра психології бізнесу та управління", group: "department" },
@@ -49,7 +55,7 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/programs/psychology", label: "Психологічний напрям", group: "department" },
   { value: "/programs/finance", label: "Кафедра фінансів", group: "department" },
   { value: "/programs/management", label: "Кафедра економіки та менеджменту", group: "department" },
-  { value: "/programs/public-administration", label: "Кафедра публічного управління", group: "department" },
+  { value: "/programs/public-administration", label: "Кафедра Публічного Управління та Публічної Служби", group: "department" },
   { value: "/programs/marketing", label: "Кафедра маркетингу", group: "department" },
   { value: "/programs/trade", label: "Кафедра економіки та менеджменту · Торгівля", group: "department" },
   { value: "/programs/law", label: "Освітня траєкторія D8 «Право»", group: "department" },
@@ -59,7 +65,9 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/departments/private-law", label: "Кафедра цивільного, трудового та господарського права", group: "department" },
   { value: "/departments/criminal-law", label: "Кафедра кримінального права, процесу та криміналістики", group: "department" },
   { value: "/programs/social-work", label: "Кафедра соціальної роботи", group: "department" },
-  { value: "/programs/professional-education", label: "Професійна освіта · Цифрові технології", group: "department" },
+  { value: "/programs/professional-education", label: "Професійна освіта · попередня сторінка", group: "department", legacy: true },
+  { value: digitalDepartmentPath, label: digitalDepartmentTitle, group: "department" },
+  ...professionalEducationProgrammes.map((page): EditorialAccessOption => ({ value: page.path, label: `${page.title} · ${page.degree}`, group: "department", parentPath: digitalDepartmentPath })),
   { value: "/departments/languages-humanities", label: "Кафедра іноземних мов та гуманітарних дисциплін", group: "department" },
 ];
 
@@ -96,6 +104,11 @@ export function serializeEditorialAccessScopes(value: string[]): string {
 
 export function canEditPage(profile: { role: string; accessScopes: string[] }, pagePath: string): boolean {
   if (profile.role === "admin" || profile.accessScopes.includes("*")) return true;
+  if (profile.accessScopes.includes(digitalDepartmentPath) && professionalEducationProgrammes.some((page) => page.path === pagePath)) return true;
+  if (profile.accessScopes.includes("/departments/law-faculty")) {
+    const facultyPages = ["/departments/constitutional-law", "/departments/private-law", "/departments/criminal-law", "/programs/public-administration", "/programs/law"];
+    if (facultyPages.some((path) => pagePath === path || pagePath.startsWith(`${path}/`))) return true;
+  }
   return profile.accessScopes.some((scope) => scope === pagePath || (scope !== "/" && pagePath.startsWith(`${scope}/`)));
 }
 

@@ -36,6 +36,13 @@ const partners = [
     place: "Пряшів",
     text: "Академічні ознайомчі візити, обмін досвідом у навчальних програмах і розвиток спільної наукової роботи.",
   },
+  {
+    number: "04",
+    country: "Угорщина",
+    title: "Oktatási és Szakmai Fejlesztési Intézet",
+    place: "Інститут освітнього та професійного розвитку",
+    text: "Співпраця у сфері спільних науково-дослідних програм, конференцій, обміну студентами й викладачами, стажувань та спільних публікацій.",
+  },
 ];
 
 const cooperationAreas = [
@@ -81,6 +88,20 @@ const internationalOpportunities = [
     ],
     href: "https://msmt.gov.cz/en/scholarships/government-scholarships-developing-countries",
     action: "Умови та електронна заявка",
+  },
+  {
+    number: "04",
+    provider: "GFPS e.V. · Німеччина",
+    title: "Стипендіальна програма GFPS для українських студентів",
+    deadline: "11 жовтня 2026",
+    audience: "Для громадян України віком до 26 років, які навчаються на денній формі, залишатимуться студентами протягом літнього семестру 2027 року та володіють німецькою мовою на рівні B2.",
+    support: [
+      "992 євро щомісяця",
+      "Семестр у державному університеті Німеччини",
+      "Підтримка GFPS і два академічно-культурні семінари",
+    ],
+    href: "https://www.gfps.org/stipendien/deutschland-studium/ukraine/",
+    action: "Деталі та подання заявки",
   },
 ];
 
@@ -170,6 +191,7 @@ const internationalSections: readonly SectionHubItem[] = [
   { id: "grants", index: "02.1", title: "Гранти та звіти", description: "Архів Erasmus+, результати проєктів, дослідження та звітні матеріали.", icon: "EU" },
   { id: "partnerships-in-action", index: "03", title: "Партнерство в дії", description: "Новини, зустрічі, підписані угоди та фотоматеріали.", icon: "NEWS" },
   { id: "cooperation", index: "04", title: "Напрями співпраці", description: "Мобільність, дослідження, публікації, конференції та обмін досвідом.", icon: "↔" },
+  { id: "mobility-guide", index: "04.1", title: "Путівник з міжнародної мобільності", description: "Обмін, стажування, Erasmus+, документи, вимоги та покроковий алгоритм.", icon: "🌍" },
   { id: "international-opportunities", index: "05", title: "Міжнародні можливості", description: "Стипендії, навчання за кордоном і програми професійного розвитку.", icon: "GO" },
   { id: "ukrainians-abroad", index: "05.1", title: "Українцям за кордоном", description: "Дистанційний вступ, документи й підтвердження даних у 2026 році.", icon: "UA" },
   { id: "foreign-applicants", index: "06", title: "Іноземним вступникам", description: "Повний маршрут вступу, електронне запрошення та пакет документів.", icon: "INT" },
@@ -259,6 +281,22 @@ export default function Page() {
           <figure><img src="/international-headway-05.jpg" alt="Представники АПСВТ і Headway з підписаною угодою" loading="lazy" /></figure>
         </div>
       </article>
+
+      <article className="international-story internship-certificate-story">
+        <header className="international-news-header">
+          <div><span className="international-story-kicker">Хорватія × Україна</span><small>Міжнародне стажування · 2026</small></div>
+          <h3>Human-Centric Leadership: Talent, Technology and Brand Power</h3>
+        </header>
+        <div className="international-news-body">
+          <p><strong>Наталія Гончаренко</strong> завершила міжнародне стажування, організоване PAR University of Applied Sciences (Хорватія) спільно з Національним юридичним університетом імені Ярослава Мудрого.</p>
+          <p>Програма тривала з липня до жовтня 2026 року та охопила 180 годин навчання: 60 контактних і 120 годин самостійної роботи.</p>
+          <div className="international-story-points"><span>180 годин</span><span>Міжнародне стажування</span><span>Лідерство й технології</span></div>
+          <a className="sec-link" href="/international-honcharenko-internship-certificate-2026.jpg" target="_blank" rel="noreferrer">Переглянути сертифікат ↗</a>
+        </div>
+        <div className="international-story-gallery" aria-label="Сертифікат міжнародного стажування Наталії Гончаренко">
+          <figure><img src="/international-honcharenko-internship-certificate-2026.jpg" alt="Сертифікат міжнародного стажування Наталії Гончаренко" loading="lazy" /></figure>
+        </div>
+      </article>
     </div></section>
 
     <section className="intl-band" id="cooperation"><div className="wrap">
@@ -266,10 +304,22 @@ export default function Page() {
       <div className="intl-directions">{cooperationAreas.map((area, index) => <p key={area}><b>{String(index + 1).padStart(2, "0")}</b>{area}<span>↗</span></p>)}</div>
     </div></section>
 
+    <section className="soft" id="mobility-guide"><div className="wrap">
+      <div className="sec-head"><div><div className="idx">04.1 / Для студентів</div><h2>Путівник з міжнародної мобільності</h2></div><p>Короткий маршрут участі в академічному обміні, міжнародному стажуванні або програмі Erasmus+.</p></div>
+      <div className="faculty-link-grid">
+        <article className="faculty-link-card faculty-link-card-blue"><span>01 / Можливості</span><h3>Обмін і стажування</h3><p>Навчання в іноземному ЗВО-партнері протягом семестру або року та практичний досвід у закордонних організаціях.</p></article>
+        <article className="faculty-link-card"><span>02 / Фінансування</span><h3>Erasmus+ і партнери</h3><p>Гранти можуть повністю або частково покривати навчання, проживання, квитки та медичне страхування.</p></article>
+        <article className="faculty-link-card faculty-link-card-gold"><span>03 / Документи</span><h3>Що підготувати</h3><p>CV, мотиваційний лист і сертифікат про володіння іноземною мовою на рівні не нижче B2.</p></article>
+        <a className="faculty-link-card faculty-link-card-dark" href="/documents/international/international-mobility-guide-2026.pptx" download><span>04 / Оригінальний файл</span><h3>Завантажити путівник</h3><p>Презентація міжнародного відділу з алгоритмом, строками, вимогами та контактами.</p><b>Завантажити PPTX ↓</b></a>
+      </div>
+      <div className="conference-path"><div><b>01</b><span>Оберіть програму й університет-партнер</span></div><div><b>02</b><span>Підготуйте пакет документів</span></div><div><b>03</b><span>Подайте заявку та пройдіть відбір</span></div><div><b>04</b><span>Підпишіть Learning Agreement і оформіть поїздку</span></div></div>
+      <p className="international-opportunities-note">Терміни залежать від конкретної програми: зазвичай до квітня–травня на осінній семестр і до жовтня–листопада на весняний. Уточнюйте актуальний дедлайн у міжнародному відділі: <a href="mailto:inz@socosvita.kiev.ua">inz@socosvita.kiev.ua</a>.</p>
+    </div></section>
+
     <section className="international-opportunities" id="international-opportunities"><div className="wrap">
       <div className="international-opportunities-head">
         <div><div className="idx">05 / Стипендії та мобільність</div><h2>Міжнародні<br />можливості</h2></div>
-        <div><p>Актуальні програми для навчання за кордоном, розвитку лідерства й міжнародного професійного досвіду.</p><span>Перевірено 29 серпня 2026 року</span></div>
+        <div><p>Актуальні програми для навчання за кордоном, розвитку лідерства й міжнародного професійного досвіду.</p><span>Перевірено 29 вересня 2026 року</span></div>
       </div>
       <div className="international-opportunities-grid">{internationalOpportunities.map((opportunity) => <article key={opportunity.number}>
         <div className="international-opportunity-top"><span>{opportunity.number}</span><small>{opportunity.provider}</small></div>

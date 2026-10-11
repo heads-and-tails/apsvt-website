@@ -9,8 +9,12 @@ import {
   type DepartmentEntryType,
 } from "@/lib/department-content";
 import { canEditPage, editorialAccessOptions } from "@/lib/editorial-access";
+import { digitalDepartmentPath, digitalDepartmentTitle } from "@/lib/professional-education";
 import { educationQualityRubrics, normalizeEducationQualityRubricId } from "@/lib/education-quality";
 import { uploadEditorialFile } from "@/lib/editorial-upload-client";
+import { editorialSectionsForPage } from "@/lib/editorial-sections";
+import { lawFacultyPath, lawFacultyLegacySections, lawFacultySubpages } from "@/lib/law-faculty-structure";
+import { TeacherResumeEditor } from "./TeacherResumeEditor";
 
 const typeLabels: Record<DepartmentEntryType, { label: string; singular: string; hint: string }> = {
   override: { label: "Увесь вміст", singular: "зміну існуючого елемента", hint: "Усі тексти, фото й посилання, які вже розміщені на сторінці" },
@@ -122,7 +126,14 @@ function inventoryGroupType(group: Element): CategorizedEntryType {
   return "section";
 }
 
-function inventorySection(element: Element, root: Element, groupType: CategorizedEntryType): { id: string; label: string } {
+function inventorySection(element: Element, root: Element, groupType: CategorizedEntryType, declared: { id: string; label: string }[] = []): { id: string; label: string } {
+  if (declared.length) {
+    for (let ancestor: Element | null = element; ancestor && root.contains(ancestor); ancestor = ancestor.parentElement) {
+      const section = declared.find(({ id }) => id === ancestor!.id || (ancestor!.classList.contains("admissions-active-panel") && ancestor!.id.endsWith(`-${id}`)));
+      if (section) return section;
+    }
+    if (groupType === "hero") return { id: "hero", label: typeLabels.hero.label };
+  }
   const container = element.closest("section[id]") || element.closest("[id]");
   if (container && root.contains(container)) {
     const id = container.getAttribute("id")?.trim() || "";
@@ -275,6 +286,7 @@ function CategorizedContentList({
   onRestore,
   onEditManaged,
   onRemoveManaged,
+  onMoveManaged,
   query,
   onQueryChange,
 }: {
@@ -290,6 +302,7 @@ function CategorizedContentList({
   onRestore: (entry: DepartmentEntry) => void;
   onEditManaged: (entry: DepartmentEntry) => void;
   onRemoveManaged: (entry: DepartmentEntry) => void;
+  onMoveManaged: (entry: DepartmentEntry, direction: -1 | 1) => void;
   query: string;
   onQueryChange: (value: string) => void;
 }) {
@@ -306,7 +319,7 @@ function CategorizedContentList({
     {!loading && !error && total === 0 && <p className="department-empty">На сторінці ще немає матеріалів цього типу. Додайте перший запис у формі поруч.</p>}
     {!loading && !error && total > 0 && visibleTotal === 0 && <p className="department-empty">За цим пошуком нічого не знайдено. Спробуйте коротший запит або очистіть поле.</p>}
     {visibleNativeGroups.length > 0 && <section className="categorized-existing-section"><header><div><small>Вже опубліковано на сайті</small><h4>{typeLabels[type].label}</h4></div><b>{visibleNativeGroups.length}</b></header><p>Ці картки взяті безпосередньо з поточної сторінки. Розкрийте картку, щоб змінити фото, заголовок або текст.</p><ExistingGroupCards groups={visibleNativeGroups} overrides={overrides} busy={busy} onEdit={onEditNative} onRestore={onRestore} /></section>}
-    {visibleManagedEntries.length > 0 && <section className="categorized-managed-section"><header><div><small>Додано через редакційну панель</small><h4>Нові записи</h4></div><b>{visibleManagedEntries.length}</b></header>{visibleManagedEntries.map((entry) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => onEditManaged(entry)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => onRemoveManaged(entry)}>Видалити</button></div></article>)}</section>}
+    {visibleManagedEntries.length > 0 && <section className="categorized-managed-section"><header><div><small>Додано через редакційну панель</small><h4>Нові записи</h4></div><b>{visibleManagedEntries.length}</b></header>{visibleManagedEntries.map((entry, index) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => onEditManaged(entry)}>Редагувати</button><button type="button" disabled={busy || index === 0} onClick={() => onMoveManaged(entry, -1)}>↑ Вище</button><button type="button" disabled={busy || index === visibleManagedEntries.length - 1} onClick={() => onMoveManaged(entry, 1)}>↓ Нижче</button><button className="danger" disabled={busy} type="button" onClick={() => onRemoveManaged(entry)}>Видалити</button></div></article>)}</section>}
   </div>;
 }
 
@@ -315,6 +328,7 @@ function extractExistingElements(payload: InventoryPayload): ExistingPageElement
   const root = documentSnapshot.querySelector("main");
   if (!root) return [];
   const elements: ExistingPageElement[] = [];
+  const declaredSections = editorialSectionsForPage(payload.pagePath);
   let order = 0;
   root.querySelectorAll(`${inventoryTextSelector},img,a[href]`).forEach((element) => {
     if (element.closest(inventoryExcludedSelector)) return;
@@ -326,7 +340,7 @@ function extractExistingElements(payload: InventoryPayload): ExistingPageElement
     const rawText = normalizedText(element);
     const groupLabel = inventoryGroupLabel(group, rawText);
     const groupType = inventoryGroupType(group);
-    const section = inventorySection(element, root, groupType);
+    const section = inventorySection(element, root, groupType, declaredSections);
 
     if (tag === "img") {
       const image = element as HTMLImageElement;
@@ -391,9 +405,10 @@ function pagePickerGroup(path: string, group: "page" | "department"): (typeof pa
 }
 
 export function DepartmentManager({ initialEntries, publisher }: { initialEntries: DepartmentEntry[]; publisher: Publisher }) {
-  const allowedPages = editorialAccessOptions.filter((option) => option.group !== "all" && canEditPage(publisher, option.value));
+  const allowedPages = editorialAccessOptions.filter((option) => option.group !== "all" && !option.legacy && canEditPage(publisher, option.value));
   const pagePickerGroups = pagePickerGroupLabels
-    .map((label) => ({ label, options: allowedPages.filter((option) => pagePickerGroup(option.value, option.group as "page" | "department") === label) }))
+    .map((label): { label: string; options: typeof allowedPages } => ({ label, options: allowedPages.filter((option) => option.value !== digitalDepartmentPath && option.parentPath !== digitalDepartmentPath && pagePickerGroup(option.value, option.group as "page" | "department") === label) }))
+    .concat([{ label: digitalDepartmentTitle, options: allowedPages.filter((option) => option.value === digitalDepartmentPath || option.parentPath === digitalDepartmentPath) }])
     .filter((group) => group.options.length > 0);
   const firstPage = allowedPages[0]?.value || "/";
   const [entries, setEntries] = useState(initialEntries);
@@ -432,15 +447,17 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
   const inventoryGroups = useMemo(() => groupExistingElements(inventory), [inventory]);
   const pageSections = useMemo(() => {
     const sections = new Map<string, { id: string; label: string; nativeCount: number; managedCount: number }>();
+    editorialSectionsForPage(pagePath).forEach((section) => sections.set(section.id, { ...section, nativeCount: 0, managedCount: 0 }));
     inventoryGroups.forEach((group) => {
       const existing = sections.get(group.sectionId);
       if (existing) existing.nativeCount += 1;
       else sections.set(group.sectionId, { id: group.sectionId, label: group.sectionLabel, nativeCount: 1, managedCount: 0 });
     });
     entries.filter((entry) => entry.pagePath === pagePath && entry.sectionId).forEach((entry) => {
-      const existing = sections.get(entry.sectionId);
+      const sectionId = pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId;
+      const existing = sections.get(sectionId);
       if (existing) existing.managedCount += 1;
-      else sections.set(entry.sectionId, { id: entry.sectionId, label: entry.sectionId.replace(/[-_]+/g, " "), nativeCount: 0, managedCount: 1 });
+      else sections.set(sectionId, { id: sectionId, label: sectionId.replace(/[-_]+/g, " "), nativeCount: 0, managedCount: 1 });
     });
     return Array.from(sections.values());
   }, [entries, inventoryGroups, pagePath]);
@@ -449,7 +466,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     [activeSection, inventoryGroups],
   );
   const visible = useMemo(() => entries
-    .filter((entry) => entry.pagePath === pagePath && entry.entryType === entryType && (activeSection === "all" || entry.sectionId === activeSection))
+    .filter((entry) => entry.pagePath === pagePath && entry.entryType === entryType && (activeSection === "all" || (pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId) === activeSection))
     .sort((a, b) => a.sortOrder - b.sortOrder), [activeSection, entries, pagePath, entryType]);
   const inventoryLoading = inventoryResult.path !== pagePath;
   const categorizedInventoryGroups = useMemo(() => new Map<CategorizedEntryType, ExistingPageGroupView[]>(
@@ -503,13 +520,14 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
   }
 
   function startEdit(entry: DepartmentEntry) {
+    const sectionId = entry.pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId;
     setPagePath(entry.pagePath);
-    setActiveSection(entry.sectionId || "all");
+    setActiveSection(sectionId || "all");
     setEntryType(entry.entryType);
     setEditing(entry.id);
     setForm({
       pagePath: entry.pagePath,
-      sectionId: entry.sectionId,
+      sectionId,
       entryType: entry.entryType,
       title: entry.title,
       summary: entry.summary,
@@ -654,6 +672,35 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     setBusy(false);
   }
 
+  async function move(entry: DepartmentEntry, direction: -1 | 1) {
+    const siblings = visible;
+    const index = siblings.findIndex((item) => item.id === entry.id);
+    const neighbour = siblings[index + direction];
+    if (!neighbour) return;
+    const inputFor = (item: DepartmentEntry, sortOrder: number): DepartmentEntryInput => ({
+      pagePath: item.pagePath, sectionId: item.sectionId, entryType: item.entryType,
+      title: item.title, summary: item.summary, body: item.body, imageUrl: item.imageUrl,
+      imageAlt: item.imageAlt, fileUrl: item.fileUrl, fileName: item.fileName, date: item.date,
+      role: item.role, email: item.email, profileUrl: item.profileUrl, status: item.status, sortOrder,
+    });
+    setBusy(true);
+    setMessage("Змінюємо порядок…");
+    try {
+      const [entryResponse, neighbourResponse] = await Promise.all([
+        fetch(`/api/department-content/${entry.id}`, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify(inputFor(entry, neighbour.sortOrder)) }),
+        fetch(`/api/department-content/${neighbour.id}`, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify(inputFor(neighbour, entry.sortOrder)) }),
+      ]);
+      if (!entryResponse.ok || !neighbourResponse.ok) throw new Error("Не вдалося змінити порядок");
+      const [updatedEntry, updatedNeighbour] = await Promise.all([entryResponse.json() as Promise<DepartmentEntry>, neighbourResponse.json() as Promise<DepartmentEntry>]);
+      setEntries((current) => current.map((item) => item.id === updatedEntry.id ? updatedEntry : item.id === updatedNeighbour.id ? updatedNeighbour : item));
+      setMessage("Новий порядок опубліковано");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Не вдалося змінити порядок");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   if (!allowedPages.length) return null;
   const editorType = form.entryType;
   const isOverride = editorType === "override";
@@ -667,10 +714,14 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
 
   return <section className="department-manager" id="departments-editor">
     <div className="materials-head department-manager-head"><div><span>Увесь контент сайту</span><h2>Сторінки та матеріали</h2><p>Керуйте вже розміщеними текстами, фото й посиланнями, а також додавайте обкладинки, людей, партнерів, новини та файли.</p></div><a href={pagePath} target="_blank">Перевірити сторінку ↗</a></div>
-    <div className="department-page-picker"><label>Сторінка<select value={pagePath} onChange={(event) => choosePage(event.target.value)}>{pagePickerGroups.map((group) => <optgroup label={group.label} key={group.label}>{group.options.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</optgroup>)}</select></label><div><b>{pageLabel(pagePath)}</b><span>{inventoryLoading ? "Зчитуємо вміст сторінки…" : `${inventoryGroups.length} блоків вже на сайті · ${entries.filter((entry) => entry.pagePath === pagePath).length} додано через панель`}</span></div></div>
+    <div className="department-page-picker"><label>Сторінка<select value={pagePath} onChange={(event) => choosePage(event.target.value)}>{pagePickerGroups.map((group) => <optgroup label={group.label} key={group.label}>{group.options.map((option) => <option value={option.value} key={option.value}>{option.parentPath ? `↳ ${option.label}` : option.value === digitalDepartmentPath ? "Кафедра · головна сторінка" : option.label}</option>)}</optgroup>)}</select></label><div><b>{pageLabel(pagePath)}</b><span>{inventoryLoading ? "Зчитуємо вміст сторінки…" : `${inventoryGroups.length} блоків вже на сайті · ${entries.filter((entry) => entry.pagePath === pagePath).length} додано через панель`}</span></div></div>
+    {(pagePath === digitalDepartmentPath || allowedPages.some((option) => option.value === pagePath && option.parentPath === digitalDepartmentPath)) && <nav className="editorial-department-tree" aria-label="Кафедра та її освітні програми">
+      {allowedPages.some((option) => option.value === digitalDepartmentPath) && <button type="button" aria-current={pagePath === digitalDepartmentPath ? "page" : undefined} onClick={() => choosePage(digitalDepartmentPath)}>{digitalDepartmentTitle}</button>}
+      <ul>{allowedPages.filter((option) => option.parentPath === digitalDepartmentPath).map((option) => <li key={option.value}><button type="button" aria-current={pagePath === option.value ? "page" : undefined} onClick={() => choosePage(option.value)}>{option.label}</button></li>)}</ul>
+    </nav>}
     {pageSections.length > 0 && <section className="department-section-picker" aria-label="Розділи обраної сторінки"><header><div><small>Крок 1</small><h3>Оберіть розділ сторінки</h3></div><p>Панель покаже тільки вміст вибраного розділу — без довгого загального списку.</p></header><div role="tablist" aria-label="Розділи сторінки"><button type="button" role="tab" aria-selected={activeSection === "all"} className={activeSection === "all" ? "active" : ""} onClick={() => chooseSection("all")}><span>Усі</span><b>Усі розділи</b><small>{inventoryGroups.length + entries.filter((entry) => entry.pagePath === pagePath && entry.entryType !== "override").length}</small></button>{pageSections.map((section, index) => <button type="button" role="tab" aria-selected={activeSection === section.id} className={activeSection === section.id ? "active" : ""} onClick={() => chooseSection(section.id)} key={section.id}><span>{String(index + 1).padStart(2, "0")}</span><b>{section.label}</b><small>{section.nativeCount + section.managedCount}</small></button>)}</div></section>}
     <div className="department-tab-intro"><b>{pageSections.length > 0 ? "Крок 2 · Що потрібно змінити?" : "Що потрібно змінити?"}</b><span>Оберіть тип матеріалу. Усі варіанти видно одразу — без горизонтальної прокрутки.</span></div>
-    <div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} title={typeLabels[type].hint} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? sectionInventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type && (activeSection === "all" || entry.sectionId === activeSection)).length + (categorizedInventoryGroups.get(type)?.length || 0)}</span></button>)}</div>
+    {pagePath === lawFacultyPath && activeSection !== "all" && <nav className="faculty-subpage-links" aria-label="Редагування підрозділів">{lawFacultySubpages.filter((page) => page.sectionId === activeSection).map((page) => <button type="button" key={page.path} onClick={() => choosePage(page.path)}>{page.title} →</button>)}</nav>}<div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} title={typeLabels[type].hint} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? sectionInventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type && (activeSection === "all" || (pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId) === activeSection)).length + (categorizedInventoryGroups.get(type)?.length || 0)}</span></button>)}</div>
     <div className="operations-layout">
       <form className="operations-form" id="department-entry-editor" onSubmit={save}>
         <div className="operations-form-head"><div><small>{typeLabels[editorType].hint}</small><h3>{isOverride && !form.body ? "Оберіть елемент праворуч" : editing ? `Редагувати ${typeLabels[editorType].singular}` : `Додати ${typeLabels[editorType].singular}`}</h3></div>{(editing || (isOverride && form.body)) && <button type="button" onClick={reset}>Скасувати</button>}</div>
@@ -685,6 +736,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
           {(!isOverride || form.role !== "image") && <label className="wide">{isOverride ? form.role === "link" ? "Текст посилання" : "Новий текст" : isTeacher ? "Короткий професійний профіль" : isPartner ? "Як співпрацює з Академією" : isHero ? "Вступний текст під заголовком" : editorType === "photo" ? "Підпис до фото" : "Короткий опис"}<textarea rows={isOverride ? 7 : 4} value={form.summary} onChange={(event) => change("summary", event.target.value)} /></label>}
           {isOverride && form.role === "link" && <label className="wide">Адреса посилання<input type="url" value={form.profileUrl} onChange={(event) => change("profileUrl", event.target.value)} placeholder="https://…" /></label>}
           {(needsBody || isQuality) && <label className="wide">Повний текст<textarea rows={9} value={form.body} onChange={(event) => change("body", event.target.value)} placeholder="Абзаци розділяйте порожнім рядком" /></label>}
+          {isTeacher && <TeacherResumeEditor value={form.body} onChange={(value) => change("body", value)} />}
           {needsImage && <div className="wide department-upload-field"><b>{isOverride ? "Замінити зображення" : isTeacher ? "Фото викладача" : isPartner ? "Логотип партнера" : isHero ? "Титульне фото" : "Зображення"}</b><label className={`document-drop ${form.imageUrl ? "ready" : ""}`}>{form.imageUrl ? <><img src={form.imageUrl} alt="" /><span>Фото готове · натисніть, щоб замінити</span></> : <><b>Обрати фото</b><span>JPG, PNG або WebP · до 8 МБ</span></>}<input type="file" disabled={busy} accept="image/jpeg,image/png,image/webp" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file, "image"); }} /></label><label>Альтернативний опис<input value={form.imageAlt} onChange={(event) => change("imageAlt", event.target.value)} placeholder="Що зображено" /></label></div>}
           {isMaterial && <div className="wide department-upload-field"><b>Файл або посилання</b><label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName || "Файл готовий"}</b><span>Натисніть, щоб замінити</span></> : <><b>Обрати файл</b><span>PDF, Word, Excel або PowerPoint · до 20 МБ</span></>}<input type="file" disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file, "document"); }} /></label><label>Пряме посилання<input type="url" value={form.fileUrl} onChange={(event) => change("fileUrl", event.target.value)} placeholder="https://…" /></label><small>Після публікації документ автоматично з’явиться також у загальному каталозі «Документи».</small></div>}
           {isQuality && <div className="wide department-upload-field"><b>Документ до рубрики (необов’язково)</b><label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName || "Файл готовий"}</b><span>Натисніть, щоб замінити</span></> : <><b>Обрати файл</b><span>PDF, Word або таблиця · до 20 МБ</span></>}<input type="file" disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file, "document"); }} /></label><label>Або пряме посилання<input type="url" value={form.fileUrl} onChange={(event) => change("fileUrl", event.target.value)} placeholder="https://…" /></label></div>}
@@ -693,7 +745,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
         </div>}
         <div className="operations-save"><p>{message || (isOverride ? "Оберіть елемент сторінки у списку праворуч." : "Заповніть картку та збережіть зміни.")}</p><button disabled={busy || (isOverride && !form.body) || (editorType === "photo" && !form.imageUrl) || (isMaterial && !form.fileUrl)} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити" : isOverride ? "Опублікувати заміну" : "Додати на сторінку"}</button></div>
       </form>
-      {entryType === "override" ? <ExistingContentList pageName={pageLabel(pagePath)} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} totalElements={inventory.length} totalGroups={inventoryGroups.length} groups={filteredInventoryGroups} query={inventoryQuery} filter={inventoryFilter} overrides={overrideBySelector} busy={busy} onQueryChange={setInventoryQuery} onFilterChange={setInventoryFilter} onEdit={startInventoryEdit} onRestore={(entry) => void remove(entry)} /> : <CategorizedContentList pageName={pageLabel(pagePath)} type={entryType} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} nativeGroups={categorizedInventoryGroups.get(entryType) || []} managedEntries={visible} overrides={overrideBySelector} busy={busy} query={inventoryQuery} onQueryChange={setInventoryQuery} onEditNative={(item) => startInventoryEdit(item, true)} onRestore={(entry) => void remove(entry)} onEditManaged={startEdit} onRemoveManaged={(entry) => void remove(entry)} />}
+      {entryType === "override" ? <ExistingContentList pageName={pageLabel(pagePath)} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} totalElements={inventory.length} totalGroups={inventoryGroups.length} groups={filteredInventoryGroups} query={inventoryQuery} filter={inventoryFilter} overrides={overrideBySelector} busy={busy} onQueryChange={setInventoryQuery} onFilterChange={setInventoryFilter} onEdit={startInventoryEdit} onRestore={(entry) => void remove(entry)} /> : <CategorizedContentList pageName={pageLabel(pagePath)} type={entryType} loading={inventoryLoading} error={inventoryResult.path === pagePath ? inventoryResult.error : ""} nativeGroups={categorizedInventoryGroups.get(entryType) || []} managedEntries={visible} overrides={overrideBySelector} busy={busy} query={inventoryQuery} onQueryChange={setInventoryQuery} onEditNative={(item) => startInventoryEdit(item, true)} onRestore={(entry) => void remove(entry)} onEditManaged={startEdit} onRemoveManaged={(entry) => void remove(entry)} onMoveManaged={(entry, direction) => void move(entry, direction)} />}
     </div>
   </section>;
 }

@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 
-export function EventRegistrationForm({events}:{events:string[]}){
+export function EventRegistrationForm({events,defaultEvent}:{events:string[];defaultEvent?:string}){
   const [state,setState]=useState<"idle"|"sending"|"success"|"error">("idle");
   async function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();setState("sending");
@@ -12,7 +12,7 @@ export function EventRegistrationForm({events}:{events:string[]}){
   }
   return <section id="registration" className="event-registration"><div className="wrap event-registration-grid"><div><div className="idx">02 / Реєстрація</div><h2>Забронюйте місце</h2><p>Оберіть подію та залиште контакти. Після реєстрації команда Академії надішле програму, формат участі й нагадування.</p><div className="registration-note"><span>Що далі</span><ol><li>Підтвердимо вашу участь</li><li>Надішлемо організаційні деталі</li><li>Нагадаємо напередодні події</li></ol></div></div>
     <form className="registration-form" onSubmit={submit}>
-      <label>Подія<select name="event" required defaultValue=""><option value="" disabled>Оберіть подію</option>{events.map(e=><option key={e}>{e}</option>)}</select></label>
+      <label>Подія<select name="event" required defaultValue={defaultEvent || ""}><option value="" disabled>Оберіть подію</option>{events.map(e=><option key={e}>{e}</option>)}</select></label>
       <label>Ім’я та прізвище<input name="name" required autoComplete="name" placeholder="Як до вас звертатися" /></label>
       <div className="form-row"><label>Email<input name="email" type="email" required autoComplete="email" placeholder="name@example.com" /></label><label>Телефон<input name="phone" type="tel" required autoComplete="tel" placeholder="+380" /></label></div>
       <div className="form-row"><label>Ваш статус<select name="role" required defaultValue="Вступник / вступниця"><option>Вступник / вступниця</option><option>Студент / студентка</option><option>Викладач / викладачка</option><option>Гість / гостя</option></select></label><label>Формат участі<select name="format" required><option>Особисто в кампусі</option><option>Онлайн, якщо доступно</option></select></label></div>

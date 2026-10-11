@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { doctoralProgrammes } from "@/lib/academy-resources";
+import { professionalEducationProgrammes } from "@/lib/professional-education";
 
 export const metadata: Metadata = {
   title: "Кафедри Академії",
@@ -19,7 +20,7 @@ const facultyGroups = [
       { id: "finance", title: "Кафедра фінансів", text: "Фінансовий аналіз, банківська справа, страхування та сталі фінанси.", href: "/departments#finance", programmes: [{ code: "D2", title: "Фінанси", href: "/programs/finance" }] },
       { id: "economics-management", title: "Кафедра економіки підприємства та менеджменту", text: "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", href: "/departments#economics-management", programmes: [{ code: "D3", title: "Менеджмент", href: "/programs/management" }, { code: "D7", title: "Торгівля", href: "/programs/trade" }] },
       { id: "marketing", title: "Кафедра маркетингу", text: "Ринкова аналітика, бренди, комунікації, digital і поведінка споживачів.", href: "/departments#marketing", programmes: [{ code: "D5", title: "Маркетинг", href: "/programs/marketing" }] },
-      { id: "digital-technologies", title: "Кафедра інтелектуальних систем та цифрових технологій", text: "Інформаційні системи, цифрові освітні технології та управління інформаційною безпекою.", href: "/departments#digital-technologies", programmes: [{ code: "A5", title: "Професійна освіта · PhD", href: "/programs#doctoral-programmes" }] },
+      { id: "digital-technologies", title: "Кафедра інтелектуальних систем та цифрових технологій", text: "Інформаційні системи, цифрові освітні технології та управління інформаційною безпекою.", href: "/departments/digital-technologies", programmes: professionalEducationProgrammes.map((page) => ({ code: "A5", title: `${page.title} · ${page.degree}`, href: page.path })) },
     ],
   },
   {
@@ -29,7 +30,7 @@ const facultyGroups = [
     profileHref: "/departments/law-faculty",
     departments: [
       { id: "public-law", title: "Кафедра конституційного, адміністративного та фінансового права", text: "Конституційне, адміністративне, фінансове й муніципальне право.", href: "/departments/constitutional-law", programmes: [{ code: "D8", title: "Право", href: "/programs/law" }] },
-      { id: "public-administration", title: "Кафедра публічного управління та адміністрування", text: "Публічна політика, державна служба, громади та управління змінами.", href: "/departments#public-administration", programmes: [{ code: "D4", title: "Публічне управління", href: "/programs/public-administration" }] },
+      { id: "public-administration", title: "Кафедра Публічного Управління та Публічної Служби", text: "Публічна політика, державна служба, громади та управління змінами.", href: "/departments#public-administration", programmes: [{ code: "D4", title: "Публічне управління", href: "/programs/public-administration" }] },
       { id: "private-law", title: "Кафедра цивільного, трудового та господарського права", text: "Приватно-правові відносини, цивільний процес, трудові права й соціальний діалог.", href: "/departments/private-law", programmes: [{ code: "D8", title: "Право", href: "/programs/law" }] },
       { id: "criminal-law", title: "Кафедра кримінального права, процесу та криміналістики", text: "Кримінальна юстиція, захист прав людини, судові симуляції та криміналістична лабораторія.", href: "/departments/criminal-law", programmes: [{ code: "D8", title: "Право", href: "/programs/law" }] },
     ],

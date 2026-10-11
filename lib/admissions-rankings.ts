@@ -13,6 +13,8 @@ export type ApplicantRankingGroup = {
 
 const root = "/documents/admissions/rankings/2026-08-03";
 const masterRoot = "/documents/admissions/rankings/2026-08-24-master";
+const september16Root = "/documents/admissions/rankings/2026-09-16";
+const septemberMasterRoot = "/documents/admissions/rankings/2026-09-23-master";
 
 export const applicantRankingsNewsSlug = "reitynhovi-spysky-vstupnykiv-bakalavrat-2026";
 
@@ -103,6 +105,86 @@ export const bachelorRankingDocumentCount = bachelorApplicantRankings.reduce(
   0,
 );
 
+export const september16ApplicantRankings: ApplicantRankingGroup[] = [
+  {
+    programme: "Професійна освіта",
+    code: "A5",
+    documents: [
+      { title: "Денна форма · І курс", meta: "2 тур · кошти фізичних та/або юридичних осіб", href: `${september16Root}/professional-education-full-time-first-year.pdf`, pages: 1 },
+    ],
+  },
+  {
+    programme: "Економіка та міжнародні економічні відносини",
+    code: "C1",
+    documents: [
+      { title: "Денна форма · І курс", meta: "2 тур · кошти фізичних та/або юридичних осіб", href: `${september16Root}/economics-full-time-first-year.pdf`, pages: 1 },
+      { title: "Заочна форма · І курс", meta: "2 тур · кошти фізичних та/або юридичних осіб", href: `${september16Root}/economics-part-time-first-year.pdf`, pages: 1 },
+      { title: "Заочна форма · ІІ курс", meta: "2 роки 10 місяців · кошти фізичних та/або юридичних осіб", href: `${september16Root}/economics-part-time-second-year.pdf`, pages: 1 },
+    ],
+  },
+  {
+    programme: "Психологія",
+    code: "C4",
+    documents: [
+      { title: "Денна форма · І курс", meta: "3 роки 10 місяців · 2 тур", href: `${september16Root}/psychology-full-time-first-year.pdf`, pages: 1 },
+      { title: "Заочна форма · І курс", meta: "3 роки 10 місяців · 2 тур", href: `${september16Root}/psychology-part-time-first-year.pdf`, pages: 1 },
+    ],
+  },
+  {
+    programme: "Фінанси, банківська справа, страхування та фондовий ринок",
+    code: "D2",
+    documents: [
+      { title: "Денна форма · І курс", meta: "2 тур · кошти фізичних та/або юридичних осіб", href: `${september16Root}/finance-full-time-first-year.pdf`, pages: 1 },
+      { title: "Заочна форма · І курс", meta: "3 роки 10 місяців · 2 тур", href: `${september16Root}/finance-part-time-first-year.pdf`, pages: 1 },
+    ],
+  },
+  {
+    programme: "Менеджмент",
+    code: "D3",
+    documents: [
+      { title: "Денна форма · І курс · список 1", meta: "3 роки 10 місяців · 2 тур", href: `${september16Root}/management-full-time-first-year-list-1.pdf`, pages: 1 },
+      { title: "Денна форма · І курс · список 2", meta: "3 роки 10 місяців · 2 тур", href: `${september16Root}/management-full-time-first-year-list-2.pdf`, pages: 1 },
+      { title: "Заочна форма · І курс", meta: "3 роки 10 місяців · 2 тур", href: `${september16Root}/management-part-time-first-year.pdf`, pages: 1 },
+    ],
+  },
+  {
+    programme: "Публічне управління та адміністрування",
+    code: "D4",
+    documents: [
+      { title: "Заочна форма · І курс", meta: "2 тур · кошти фізичних та/або юридичних осіб", href: `${september16Root}/public-administration-part-time-first-year.pdf`, pages: 1 },
+    ],
+  },
+  {
+    programme: "Маркетинг",
+    code: "D5",
+    documents: [
+      { title: "Денна форма · І курс", meta: "2 тур · кошти фізичних та/або юридичних осіб", href: `${september16Root}/marketing-full-time-first-year.pdf`, pages: 1 },
+    ],
+  },
+  {
+    programme: "Право",
+    code: "D8",
+    documents: [
+      { title: "Денна форма · І курс", meta: "3 роки 10 місяців · 2 тур", href: `${september16Root}/law-full-time-first-year.pdf`, pages: 1 },
+      { title: "Денна форма · ІІ курс", meta: "2 роки 10 місяців · 2 тур", href: `${september16Root}/law-full-time-second-year.pdf`, pages: 1 },
+      { title: "Заочна форма · І курс", meta: "2 тур · кошти фізичних та/або юридичних осіб", href: `${september16Root}/law-part-time-first-year.pdf`, pages: 1 },
+      { title: "Заочна форма · ІІ курс", meta: "2 роки 10 місяців · 2 тур", href: `${september16Root}/law-part-time-second-year.pdf`, pages: 1 },
+    ],
+  },
+  {
+    programme: "Соціальна робота та консультування",
+    code: "I10",
+    documents: [
+      { title: "Заочна форма · І курс", meta: "2 тур · кошти фізичних та/або юридичних осіб", href: `${september16Root}/social-work-part-time-first-year.pdf`, pages: 1 },
+    ],
+  },
+];
+
+export const september16RankingDocumentCount = september16ApplicantRankings.reduce(
+  (total, group) => total + group.documents.length,
+  0,
+);
+
 export const masterApplicantRankings: ApplicantRankingGroup[] = [
   {
     programme: "Професійна освіта",
@@ -186,8 +268,71 @@ export const masterApplicantRankings: ApplicantRankingGroup[] = [
   },
 ];
 
+export const septemberMasterApplicantRankings: ApplicantRankingGroup[] = [
+  {
+    programme: "Професійна освіта",
+    code: "A5",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/professional-education-full-time.pdf` },
+      { title: "Заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/professional-education-part-time.pdf` },
+    ],
+  },
+  {
+    programme: "Психологія",
+    code: "C4",
+    documents: [
+      { title: "Клінічна психологія · денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/clinical-psychology-full-time.pdf` },
+      { title: "Клінічна психологія · заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/clinical-psychology-part-time.pdf` },
+      { title: "Психологія бізнесу та управління · денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/psychology-business-management-full-time.pdf` },
+      { title: "Психологія бізнесу та управління · заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/psychology-business-management-part-time.pdf` },
+    ],
+  },
+  {
+    programme: "Фінанси, банківська справа, страхування та фондовий ринок",
+    code: "D2",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/finance-full-time.pdf` },
+      { title: "Заочна форма · список 1", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/finance-part-time-list-1.pdf` },
+      { title: "Заочна форма · список 2", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/finance-part-time-list-2.pdf` },
+    ],
+  },
+  {
+    programme: "Менеджмент",
+    code: "D3",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/management-full-time.pdf` },
+    ],
+  },
+  {
+    programme: "Публічне управління та адміністрування",
+    code: "D4",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/public-administration-full-time.pdf` },
+      { title: "Заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/public-administration-part-time.pdf` },
+    ],
+  },
+  {
+    programme: "Право",
+    code: "D8",
+    documents: [
+      { title: "Денна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/law-full-time.pdf` },
+      { title: "Заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/law-part-time.pdf` },
+    ],
+  },
+  {
+    programme: "Соціальна робота та консультування",
+    code: "I10",
+    documents: [
+      { title: "Заочна форма", meta: "Рейтинговий список від 23.09.2026", href: `${septemberMasterRoot}/social-work-part-time.pdf` },
+    ],
+  },
+];
+
 export const masterRankingDocumentCount = masterApplicantRankings.reduce(
   (total, group) => total + group.documents.length,
   0,
+) + septemberMasterApplicantRankings.reduce(
+  (total, group) => total + group.documents.length,
+  0,
 );
-export const applicantRankingDocumentCount = bachelorRankingDocumentCount + masterRankingDocumentCount;
+export const applicantRankingDocumentCount = bachelorRankingDocumentCount + september16RankingDocumentCount + masterRankingDocumentCount;

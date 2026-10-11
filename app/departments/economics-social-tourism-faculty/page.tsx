@@ -20,7 +20,7 @@ const departments = [
   ["01", "Фінанси", "Фінансовий аналіз, банківська справа, страхування та сталі фінанси.", "/programs/finance", "D2"],
   ["02", "Економіка і менеджмент", "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", "/programs/management", "D3 · D7"],
   ["03", "Маркетинг", "Ринкова аналітика, бренди, digital-комунікації та поведінка споживачів.", "/programs/marketing", "D5"],
-  ["04", "Цифрові технології", "Інтелектуальні системи, цифрова освіта та управління інформаційною безпекою.", "/programs#doctoral-programmes", "A5"],
+  ["04", "Цифрові технології", "Інтелектуальні системи, цифрова освіта та управління інформаційною безпекою.", "/departments/digital-technologies", "A5"],
 ];
 
 const programmes = [
@@ -28,7 +28,7 @@ const programmes = [
   ["D3", "Менеджмент", "/programs/management"],
   ["D5", "Маркетинг", "/programs/marketing"],
   ["D7", "Торгівля", "/programs/trade"],
-  ["A5", "Професійна освіта", "/programs#doctoral-programmes"],
+  ["A5", "Професійна освіта", "/programs/professional-education#programme-levels"],
 ];
 
 const facultySections: readonly SectionHubItem[] = [

@@ -9,6 +9,7 @@ export type Post = {
   imageAlt: string;
   status: "draft" | "published";
   featured: boolean;
+  hideDate?: boolean;
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
@@ -29,6 +30,27 @@ import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 const IMG = "https://images.unsplash.com";
 export const stakeholderDiscussionNewsSlug = "obhovorennia-osvitnikh-prohram-d8-d4-2026";
 export const erasmusDaysNewsSlug = "erasmus-days-2026-apsvt";
+export const studyUaExpoNewsSlug = "study-ua-osvitnia-vystavka-kyiv-2026";
+export const mentalHealthConferenceNewsSlug = "mental-health-conference-2026";
+export const pilcSeiteNewsSlug = "natalia-goncharenko-pilc-seite-2026";
+export const guestLectureHubertNewsSlug = "guest-lecture-jens-reinhold-hubert-2026";
+export const judgeBudzanGuestLectureNewsSlug = "hostova-lektsiia-suddi-budzan-2026";
+export const wartimeFirstAidTrainingNewsSlug = "treninh-domedychnoi-dopomohy-2023";
+export const internationalAiTrainingNewsSlug = "treninh-shi-mizhnarodne-spivrobitnytstvo-2026";
+export const internationalAiTrainingTitle = "Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО";
+export const mentalHealthConferenceResultsNewsSlug = "mental-health-conference-2026-results";
+
+const hiddenDateMarker = "<!-- APSVT_HIDE_DATE -->";
+
+function decodePostBody(value: unknown): { body: string; hideDate: boolean } {
+  const body = String(value ?? "");
+  const hideDate = body.endsWith(hiddenDateMarker);
+  return { body: hideDate ? body.slice(0, -hiddenDateMarker.length).trimEnd() : body, hideDate };
+}
+
+function encodePostBody(post: Pick<Post, "body" | "hideDate">): string {
+  return post.hideDate ? `${post.body.trimEnd()}\n\n${hiddenDateMarker}` : post.body;
+}
 
 export const seedPosts: Post[] = [
   {
@@ -46,6 +68,165 @@ export const seedPosts: Post[] = [
     createdAt: "2026-10-10T17:38:38.000Z",
     updatedAt: "2026-10-10T17:38:38.000Z",
     authorEmail: "inz@socosvita.kiev.ua",
+  },
+  {
+    id: "seed-mental-health-conference-2026-results",
+    slug: mentalHealthConferenceResultsNewsSlug,
+    title: "Відбулася ІІ Міжнародна науково-практична конференція «MENTAL HEALTH: ОСОБИСТІСНИЙ ТА ОРГАНІЗАЦІЙНИЙ ВИМІРИ»",
+    excerpt: "8 жовтня 2026 року науковці, практики, професійні організації та студентська молодь обговорили актуальні питання ментального здоров’я особистості й професійного середовища.",
+    body: `8 жовтня 2026 року відбулася ІІ Міжнародна науково-практична конференція «MENTAL HEALTH: ОСОБИСТІСНИЙ ТА ОРГАНІЗАЦІЙНИЙ ВИМІРИ» — науковий захід, присвячений актуальним питанням ментального здоров'я особистості, професійного середовища та сучасних суспільних трансформацій.
+
+Конференція об’єднала представників психологічної та соціальної науки, практиків і професійних організацій. Серед співорганізаторів — Академія праці, соціальних відносин і туризму, Одеський національний університет імені І. І. Мечникова, Східноукраїнський національний університет імені Володимира Даля, Європейська психологічна асоціація та Українська психологічна асоціація, взяли участь у конференції і студенти Уманського національного університету.
+
+## 🔹 Пленарне засідання
+
+У межах пленарної частини були представлені доповіді:
+
+🔸 Лариса Ровчак, кандидатка історичних наук — «Підтримка психічного здоров'я працівників у трудових колективах»;
+
+🔸 Гліб Пріб, доктор медичних наук, професор — «Психічне здоров'я українців і зростання ролі професії психолога»;
+
+🔸 Наталія Балашова, кандидатка економічних наук, доцентка — «Соціальний вимір ментального здоров'я: роль і потенціал соціальної роботи в громаді».
+
+Також із вітальним словом виступив Ярема Жугаєвич, голова Професійної спілки працівників авіабудування та машинобудування України, Вадим Красник, керівник Секретаріату Національної асоціації адвокатів України, та Надія Корінна, керівник Всеукраїнської професійної спілки адвокатів України.
+
+Особливу увагу під час конференції було приділено сучасним викликам психологічної науки та практики.
+
+У панельному засіданні 1 докторка психологічних наук, професорка Наталія Родіна представила тему «Ментальне здоров'я в умовах змін: структурована рефлексія як ресурс психологічної стійкості».
+
+Продовженням професійного діалогу стала доповідь Єнса-Райнхольда Губерта (Jens-Reinhold Hubert, Німеччина) — «Переосмислення лідерства – організаційна психологія в епоху штучного інтелекту, змін і нових форматів роботи».
+
+## 🔹 «Наукова психологічна школа» та «Наукова школа соціальної роботи»
+
+Здобувачі факультету психології Академії праці, соціальних відносин і туризму, факультету психології та соціального розвитку, взяли активну участь у науковій роботі та виступили з доповідями. Для молодих дослідників це стало можливістю представити результати власних напрацювань, долучитися до професійного обговорення та поспілкуватися з науковцями й практиками.
+
+📚 Участь студентської молоді в таких наукових заходах є важливою складовою професійного становлення майбутніх психологів, адже дає можливість поєднати навчання, науковий пошук і реальну професійну комунікацію.
+
+Дякуємо організаторам, доповідачам та учасникам за змістовну наукову дискусію, обмін досвідом та спільний розвиток психологічної науки.
+
+#MENTALHEALTH #МентальнеЗдоровя #Психологія #НауковаКонференція #ПсихологічнаНаука #ОрганізаційнаПсихологія #СтудентиПсихологи #АПСВТ`,
+    category: "Наука",
+    imageUrl: "/mental-health-conference-science-2026.jpg",
+    imageAlt: "Наукова конференція про ментальне здоров’я та організаційну психологію",
+    status: "published",
+    featured: true,
+    hideDate: false,
+    publishedAt: "2026-10-09T13:00:00.000Z",
+    createdAt: "2026-10-09T13:00:00.000Z",
+    updatedAt: "2026-10-09T13:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-international-ai-training-2026",
+    slug: internationalAiTrainingNewsSlug,
+    title: `Навчання «${internationalAiTrainingTitle}»`,
+    excerpt: "13 жовтня 2026 року об 11:30 відбудеться навчання для науково-педагогічних працівників і здобувачів освіти Академії з практичного використання штучного інтелекту в міжнародній співпраці.",
+    body: "13 жовтня 2026 року об 11:30 відбудеться навчання для науково-педагогічних працівників і здобувачів освіти Академії.\n\n## Тема навчання\n\n«Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО»: оптимізація підготовки грантових заявок, комунікація з іноземними партнерами та мовний переклад за допомогою ШІ.\n\nДля участі заповніть онлайн-форму реєстрації на сайті Академії. Організаційні деталі будуть надіслані зареєстрованим учасникам.",
+    category: "Міжнародне співробітництво",
+    imageUrl: "/news-international-workshop.jpg",
+    imageAlt: "Навчання з використання штучного інтелекту для міжнародного співробітництва у закладах вищої освіти",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-07T17:00:00.000Z",
+    createdAt: "2026-10-07T17:00:00.000Z",
+    updatedAt: "2026-10-08T18:20:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-judge-budzan-guest-lecture-2026",
+    slug: judgeBudzanGuestLectureNewsSlug,
+    title: "23 квітня відбулася гостьова лекція судді Подільського районного суду міста Києва Будзан Лесі Дмитрівни",
+    excerpt: "Студенти магістратури обговорили практичне застосування Кодексу суддівської етики та відповідальність за порушення етичного законодавства.",
+    body: "Сьогодні, 23 квітня відбулася гостьова лекція судді Подільського районного суду міста Києва Будзан Лесі Дмитрівни. На зустрічі з суддею студенти магістратури денної форми навчання змогли отримати відповіді на практичні питання застосування Кодексу суддівської етики. В межах навчальної дисципліни «Професійна етика юриста» було розглянуто кейси притягнення до відповідальності суддів за порушення етичного законодавства. Керівництво академії висловлює вдячність пані Лесі за змістовну та цікаву практичну зустріч! Гостьова лекція відбулася завдяки ініціативі студентської ради юридичного факультету.",
+    category: "Право",
+    imageUrl: "/apsvt-event-real.jpg",
+    imageAlt: "Гостьова лекція для студентів юридичного факультету",
+    status: "published",
+    featured: false,
+    publishedAt: "2026-04-23T10:26:00.000Z",
+    createdAt: "2026-04-23T10:26:00.000Z",
+    updatedAt: "2026-04-23T10:26:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-wartime-first-aid-training-2023",
+    slug: wartimeFirstAidTrainingNewsSlug,
+    title: "Проведено тренінг з надання домедичної допомоги в умовах воєнного стану",
+    excerpt: "В Академії відбувся практичний тренінг із надання домедичної допомоги в умовах воєнного стану.",
+    body: "23 червня в Академії відбувся тренінг з надання домедичної допомоги в умовах воєнного стану",
+    category: "Події",
+    imageUrl: "/apsvt-event-real.jpg",
+    imageAlt: "Тренінг з домедичної допомоги в Академії",
+    status: "published",
+    featured: false,
+    publishedAt: "2023-06-23T19:13:00.000Z",
+    createdAt: "2023-06-23T19:13:00.000Z",
+    updatedAt: "2023-06-23T19:13:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-guest-lecture-jens-reinhold-hubert-2026",
+    slug: guestLectureHubertNewsSlug,
+    title: "Гостьова лекція Єнс-Райнхольда Губерта",
+    excerpt: "8 жовтня о 13:20 факультет психології та соціального розвитку запрошує на онлайн-лекцію дипломованого фахівця із соціально-економічних наук Єнс-Райнхольда Губерта.",
+    body: "8 жовтня 2026 року о 13:20 відбудеться гостьова онлайн-лекція Єнс-Райнхольда Губерта — дипломованого фахівця із соціально-економічних наук (Diplom-Sozialwirt, Німеччина).\n\nЗустріч організована Академією праці, соціальних відносин і туризму, факультетом психології та соціального розвитку, Європейською психологічною асоціацією, Одеським національним університетом імені І. І. Мечникова, факультетом психології та соціальної роботи, Українською психологічною асоціацією та Східноукраїнським національним університетом імені Володимира Даля.\n\n## Час і формат\n\n- 8 жовтня 2026 року\n- Початок — о 13:20\n- Онлайн у Zoom\n- Meeting ID: 820 3384 7880\n- Код доступу: 977364",
+    category: "Факультет психології та соціального розвитку",
+    imageUrl: "/news-guest-lecture-2026-10-08.png",
+    imageAlt: "Афіша гостьової лекції Єнс-Райнхольда Губерта 8 жовтня 2026 року",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-02T10:00:00.000Z",
+    createdAt: "2026-10-02T10:00:00.000Z",
+    updatedAt: "2026-10-02T10:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-natalia-goncharenko-pilc-seite-2026",
+    slug: pilcSeiteNewsSlug,
+    title: "АПСВТ Наталія Гончаренко взяла участь у програмі PILC & SEITE 2026",
+    excerpt: "Проректорка з міжнародного співробітництва АПСВТ долучилася до міжнародного стажування, наукових сесій і стратегічних зустрічей у хорватському Університеті прикладних наук PAR.",
+    body: "Проректорка з міжнародного співробітництва АПСВТ, кандидат психологічних наук, доцент Наталія Гончаренко взяла участь у престижній міжнародній програмі PILC & SEITE 2026. Захід відбувся в межах професійного міжнародного стажування, організованого хорватським Університетом прикладних наук PAR.\n\nПрограма SEITE (Socio-Economic Impacts, Technology and Education — Соціально-економічний вплив, технології та освіта) разом із конференцією PILC об'єднала наукові сесії, професійне стажування, панельні дискусії, тренінги та міжнародний нетворкінг. Усі делегати брали участь у двосторонньому форматі — як слухачі навчальних модулів і як експерти панельних сесій.\n\n## Головні теми та консолідація української науки\n\n- Людиноцентричне лідерство (Human-centric Leadership): етика управління командами, психологічна стійкість керівника та розвиток емпатії в епоху криз.\n- Правовий вимір цифрової епохи: аналіз викликів цифрового суспільства — від інтеграції нового Закону ЄС про штучний інтелект (EU AI Act) до захисту базових прав людини й персональних даних у кіберпросторі.\n\nНа міжнародній арені було потужно представлено вітчизняну вищу освіту. Разом із проректоркою АПСВТ Наталією Гончаренко до формування спільного бачення цифрового майбутнього долучилися керівники провідних українських інституцій: Київського авіаційного інституту (НАУ), Національного юридичного університету імені Ярослава Мудрого та Національного університету «Києво-Могилянська академія».\n\n## Перспективи для АПСВТ\n\nУ межах стажування Наталія Гончаренко провела низку стратегічних зустрічей щодо розширення міжнародних зв'язків Академії та розвитку екосистеми трансферу знань між університетами та реальним бізнесом.\n\nЗ хорватськими колегами та представниками європейських консорціумів обговорено:\n\n- Спільне проектування та подачу заявок на грантові програми від міжнародних донорів (Horizon Europe, Erasmus+ та проєкти під егідою Світового банку);\n- Розширення програм академічної мобільності для студентів та викладачів АПСВТ;\n- Впровадження інноваційних курсів із цифрової безпеки, етики ШІ та стратегічних комунікацій у навчальні плани нашої Академії.\n\nРезультати програми SEITE 2026 стануть основою для подальшого вдосконалення освітнього процесу в АПСВТ та наближення його до передових європейських стандартів.",
+    category: "Міжнародне співробітництво",
+    imageUrl: "/news-international-workshop.jpg",
+    imageAlt: "Міжнародна академічна співпраця та професійне стажування",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-02T09:00:00.000Z",
+    createdAt: "2026-10-02T09:00:00.000Z",
+    updatedAt: "2026-10-02T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-mental-health-conference-2026",
+    slug: mentalHealthConferenceNewsSlug,
+    title: "ІІ Міжнародна науково-практична конференція «Mental health: особистісний та організаційний виміри»",
+    excerpt: "8 жовтня о 10:00 Академія запрошує партнерів, науковців, молодих учених і здобувачів освіти до участі у конференції в офлайн- та онлайн-форматі.",
+    body: "8 жовтня 2026 року в Академії праці, соціальних відносин і туризму відбудеться ІІ Міжнародна науково-практична конференція «Mental health: особистісний та організаційний виміри».\n\n## Організатори\n\n- Академія праці, соціальних відносин і туризму\n- Факультет психології та соціального розвитку\n- Європейська психологічна асоціація\n- Східноукраїнський національний університет імені Володимира Даля\n\n## Час і формат\n\nПочаток — о 10:00 в аудиторії 307. Пленарне та панельні засідання проходитимуть в офлайн- та онлайн-форматі за допомогою Zoom.\n\nМісце проведення: Академія праці, соціальних відносин і туризму, м. Київ, вул. Кільцева дорога, 3-А.\n\nДо участі запрошуються партнери, науково-педагогічні працівники, молоді вчені та здобувачі вищої освіти України й зарубіжжя. Робочі мови конференції — українська та англійська.\n\n## Координатори\n\n- Житинська Марія Олександрівна: +38 (098) 036 02 77\n- Борець Олеся Анатоліївна: +38 (096) 350 88 48",
+    category: "Наука",
+    imageUrl: "/mental-health-conference-science-2026.jpg",
+    imageAlt: "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-09-21T09:00:00.000Z",
+    createdAt: "2026-09-21T09:00:00.000Z",
+    updatedAt: "2026-09-21T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
+  },
+  {
+    id: "seed-study-ua-expo-kyiv-2026",
+    slug: studyUaExpoNewsSlug,
+    title: "Study.ua запрошує на ювілейну освітню виставку в Києві",
+    excerpt: "26–27 вересня у КВЦ «Парковий» родини зможуть особисто познайомитися з англомовними школами й університетами з різних країн.",
+    body: "26–27 вересня 2026 року в Києві відбудеться ювілейна освітня виставка від Study.ua. Подія орієнтована на батьків і учнів 6–11 класів, які розглядають навчання за кордоном та хочуть напряму поспілкуватися з представниками закордонних закладів освіти.\n\n## Що буде на виставці\n\nОрганізатори анонсують 580 освітніх пропозицій із 27 країн. Відвідувачі зможуть дізнатися про англомовні школи й університети, умови вступу, підготовку документів, навчальні програми та можливості для міжнародної освіти.\n\n## Коли і де\n\n- 26–27 вересня 2026 року\n- Київ, КВЦ «Парковий»\n- Презентації відбуватимуться о 10:00, 11:30, 13:00, 14:30 і 16:00\n\nУчасть безкоштовна за попередньою реєстрацією на офіційній сторінці організатора.",
+    category: "Міжнародні можливості",
+    imageUrl: "/study-ua-expo-kyiv-2026.png",
+    imageAlt: "Міжнародна освіта та навчання за кордоном",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-09-07T09:00:00.000Z",
+    createdAt: "2026-09-07T09:00:00.000Z",
+    updatedAt: "2026-09-07T09:00:00.000Z",
+    authorEmail: "editorial@apsvt.local",
   },
   {
     id: "seed-stakeholder-discussion-d8-d4-2026",
@@ -287,27 +468,31 @@ export async function ensurePosts(): Promise<void> {
   await database.batch(seedPosts.map((post) => database.prepare(
       `INSERT OR IGNORE INTO posts (id,slug,title,excerpt,body,category,image_url,image_alt,status,featured,published_at,created_at,updated_at,author_email)
        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-    ).bind(post.id, post.slug, post.title, post.excerpt, post.body, post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail)));
+    ).bind(post.id, post.slug, post.title, post.excerpt, encodePostBody(post), post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail)));
   const regionalPhotoUpdates = seedPosts.filter((post) => post.imageUrl.startsWith("/")).map((post) =>
     database.prepare("UPDATE posts SET image_url = ?, image_alt = ? WHERE id = ? AND image_url LIKE 'https://images.unsplash.com/%'").bind(post.imageUrl, post.imageAlt, post.id),
   );
   if (regionalPhotoUpdates.length) await database.batch(regionalPhotoUpdates);
+  await database.prepare("UPDATE posts SET image_url = ?, image_alt = ? WHERE id = ? AND image_url = ?")
+    .bind("/mental-health-conference-science-2026.jpg", "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці", "seed-mental-health-conference-2026", "/apsvt-event-real.jpg")
+    .run();
   initialized = true;
 }
 
 function fromRow(row: Record<string, unknown>): Post {
+  const decodedBody = decodePostBody(row.body);
   return {
     id: String(row.id), slug: String(row.slug), title: String(row.title), excerpt: String(row.excerpt),
-    body: String(row.body), category: String(row.category), imageUrl: String(row.image_url),
+    body: decodedBody.body, category: String(row.category), imageUrl: String(row.image_url),
     imageAlt: String(row.image_alt), status: row.status === "published" ? "published" : "draft",
-    featured: Boolean(row.featured), publishedAt: row.published_at ? String(row.published_at) : null,
+    featured: Boolean(row.featured), hideDate: decodedBody.hideDate, publishedAt: row.published_at ? String(row.published_at) : null,
     createdAt: String(row.created_at), updatedAt: String(row.updated_at), authorEmail: String(row.author_email),
   };
 }
 
 function toSupabaseRow(post: Post) {
   return {
-    id: post.id, slug: post.slug, title: post.title, excerpt: post.excerpt, body: post.body,
+    id: post.id, slug: post.slug, title: post.title, excerpt: post.excerpt, body: encodePostBody(post),
     category: post.category, image_url: post.imageUrl, image_alt: post.imageAlt, status: post.status,
     featured: post.featured, published_at: post.publishedAt, created_at: post.createdAt,
     updated_at: post.updatedAt, author_email: post.authorEmail,
@@ -324,9 +509,26 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === erasmusDaysNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
+  }
+  const imageUpdate = await admin.from("editorial_posts").update({
+    image_url: "/mental-health-conference-science-2026.jpg",
+    image_alt: "Наукова візуалізація досліджень ментального здоров’я та міжнародної співпраці",
+  }).eq("id", "seed-mental-health-conference-2026").eq("image_url", "/apsvt-event-real.jpg");
+  if (imageUpdate.error) throw imageUpdate.error;
+  const aiTrainingPost = seedPosts.find((post) => post.id === "seed-international-ai-training-2026");
+  if (aiTrainingPost) {
+    const aiTrainingUpdate = await admin.from("editorial_posts").update({
+      excerpt: aiTrainingPost.excerpt,
+      body: aiTrainingPost.body,
+      updated_at: aiTrainingPost.updatedAt,
+    }).eq("id", aiTrainingPost.id).eq(
+      "excerpt",
+      "13 жовтня 2026 року об 11:30 відбудеться навчання для науково-педагогічних працівників Академії з практичного використання штучного інтелекту в міжнародній співпраці.",
+    );
+    if (aiTrainingUpdate.error) throw aiTrainingUpdate.error;
   }
   supabaseSeeded = true;
 }
@@ -411,7 +613,7 @@ export async function createPost(input: PostInput, authorEmail: string): Promise
   const now = new Date().toISOString();
   const post: Post = { ...input, id: crypto.randomUUID(), slug: slugify(input.slug || input.title), createdAt: now, updatedAt: now, authorEmail };
   if (post.status === "published" && !post.publishedAt) post.publishedAt = now;
-  await database.prepare(`INSERT INTO posts (id,slug,title,excerpt,body,category,image_url,image_alt,status,featured,published_at,created_at,updated_at,author_email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(post.id, post.slug, post.title, post.excerpt, post.body, post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail).run();
+  await database.prepare(`INSERT INTO posts (id,slug,title,excerpt,body,category,image_url,image_alt,status,featured,published_at,created_at,updated_at,author_email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(post.id, post.slug, post.title, post.excerpt, encodePostBody(post), post.category, post.imageUrl, post.imageAlt, post.status, post.featured ? 1 : 0, post.publishedAt, post.createdAt, post.updatedAt, post.authorEmail).run();
   return post;
 }
 
@@ -420,7 +622,7 @@ export async function updatePost(id: string, input: PostInput, authorEmail: stri
     const now = new Date().toISOString();
     const publishedAt = input.status === "published" ? (input.publishedAt || now) : null;
     const { data, error } = await createSupabaseAdmin().from("editorial_posts").update({
-      slug: slugify(input.slug || input.title), title: input.title, excerpt: input.excerpt, body: input.body,
+      slug: slugify(input.slug || input.title), title: input.title, excerpt: input.excerpt, body: encodePostBody(input),
       category: input.category, image_url: input.imageUrl, image_alt: input.imageAlt, status: input.status,
       featured: input.featured, published_at: publishedAt, updated_at: now, author_email: authorEmail,
     }).eq("id", id).select("*").maybeSingle();
@@ -432,7 +634,7 @@ export async function updatePost(id: string, input: PostInput, authorEmail: stri
   if (!database) throw new Error("PERSISTENCE_UNAVAILABLE");
   const now = new Date().toISOString();
   const publishedAt = input.status === "published" ? (input.publishedAt || now) : null;
-  await database.prepare(`UPDATE posts SET slug=?,title=?,excerpt=?,body=?,category=?,image_url=?,image_alt=?,status=?,featured=?,published_at=?,updated_at=?,author_email=? WHERE id=?`).bind(slugify(input.slug || input.title), input.title, input.excerpt, input.body, input.category, input.imageUrl, input.imageAlt, input.status, input.featured ? 1 : 0, publishedAt, now, authorEmail, id).run();
+  await database.prepare(`UPDATE posts SET slug=?,title=?,excerpt=?,body=?,category=?,image_url=?,image_alt=?,status=?,featured=?,published_at=?,updated_at=?,author_email=? WHERE id=?`).bind(slugify(input.slug || input.title), input.title, input.excerpt, encodePostBody(input), input.category, input.imageUrl, input.imageAlt, input.status, input.featured ? 1 : 0, publishedAt, now, authorEmail, id).run();
   const row = await database.prepare("SELECT * FROM posts WHERE id = ?").bind(id).first<Record<string, unknown>>();
   return row ? fromRow(row) : null;
 }
