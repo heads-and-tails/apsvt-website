@@ -641,6 +641,38 @@ test("publishes the marketing students' 2025 and 2026 research achievements",asy
   }
 });
 
+test("separates marketing bachelor and master materials and publishes stakeholder documents",async()=>{
+  const marketing=await (await render("/programs/marketing#curriculum")).text();
+  assert.match(marketing,/Оберіть рівень освіти/);
+  assert.match(marketing,/Перший рівень вищої освіти/);
+  assert.match(marketing,/Другий рівень вищої освіти/);
+  assert.match(marketing,/Шановні стейкхолдери!/);
+  assert.match(marketing,/academi\.marketing2023@gmail\.com/);
+  assert.match(marketing,/propozytsii-stakeholderiv-mahistr-2026\.pdf/);
+  assert.match(marketing,/anketa-stakeholderiv-mahistr-2026\.pdf/);
+  assert.doesNotMatch(marketing,/Google-форма[^<]*<\/a>/);
+
+  for(const file of ["propozytsii-stakeholderiv-mahistr-2026.pdf","anketa-stakeholderiv-mahistr-2026.pdf"]){
+    const bytes=await readFile(new URL(`../public/documents/marketing/stakeholders/${file}`,import.meta.url));
+    assert.equal(bytes.subarray(0,5).toString(),"%PDF-");
+    assert.ok(bytes.length>100_000);
+  }
+});
+
+test("publishes the two requested marketing programme discussion announcements",async()=>{
+  const [march,may]=await Promise.all([
+    (await render("/news/obhovorennia-opp-marketynh-12-bereznia-2026")).text(),
+    (await render("/news/obhovorennia-opp-marketynh-17-travnia-2026")).text(),
+  ]);
+  assert.match(march,/12 березня 2026 року о 14:00/);
+  assert.match(may,/17 травня 2026 року о 14:00/);
+  for(const html of [march,may]){
+    assert.match(html,/Meeting ID: 993 238 3465/);
+    assert.match(html,/Passcode: 1111/);
+    assert.match(html,/1dcgVBio_3E2kyrMCDS-neHA2SDEBT3pr/);
+  }
+});
+
 test("answers document questions from the curated RAG index with sources",async()=>{
   const app=await worker();
   const response=await app.fetch(new Request("http://localhost/api/documents/ask",{

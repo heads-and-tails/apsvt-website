@@ -12,11 +12,11 @@ function ProgrammeCourseTable({ courses }: { courses: ProgrammeCurriculumCourse[
   </div>;
 }
 
-export function ProgrammeCurriculumPlan({ slug, code, title }: { slug: string; code: string; title: string }) {
+export function ProgrammeCurriculumPlan({ slug, code, title, sectionId = "curriculum" }: { slug: string; code: string; title: string; sectionId?: string }) {
   const curriculum = programmeCurricula[slug];
   if (!curriculum) return null;
 
-  return <section className="law-curriculum programme-curriculum soft" id="curriculum">
+  return <section className="law-curriculum programme-curriculum soft" id={sectionId}>
     <div className="wrap">
       <header className="law-curriculum-head">
         <div>

@@ -39,6 +39,8 @@ export const wartimeFirstAidTrainingNewsSlug = "treninh-domedychnoi-dopomohy-202
 export const internationalAiTrainingNewsSlug = "treninh-shi-mizhnarodne-spivrobitnytstvo-2026";
 export const internationalAiTrainingTitle = "Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО";
 export const mentalHealthConferenceResultsNewsSlug = "mental-health-conference-2026-results";
+export const marketingDiscussionMarchNewsSlug = "obhovorennia-opp-marketynh-12-bereznia-2026";
+export const marketingDiscussionMayNewsSlug = "obhovorennia-opp-marketynh-17-travnia-2026";
 
 const hiddenDateMarker = "<!-- APSVT_HIDE_DATE -->";
 
@@ -53,6 +55,38 @@ function encodePostBody(post: Pick<Post, "body" | "hideDate">): string {
 }
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-marketing-discussion-march-2026",
+    slug: marketingDiscussionMarchNewsSlug,
+    title: "Обговорення освітньо-професійної програми «Маркетинг» відбудеться 12 березня",
+    excerpt: "12 березня 2026 року о 14:00 відбудеться обговорення ОПП «Маркетинг» першого (бакалаврського) та другого (магістерського) рівнів вищої освіти.",
+    body: "Шановні здобувачі вищої освіти, стейкхолдери, науково-педагогічні працівники Академії та всі зацікавлені особи!\n\n12 березня 2026 року о 14:00 в аудиторії 402 відбудеться обговорення освітньо-професійної програми «Маркетинг» спеціальності D5 Маркетинг першого (бакалаврського) та другого (магістерського) рівня вищої освіти.\n\nМетою заходу є отримання пропозицій та зауважень щодо змісту зазначених програми, її актуальності, відповідності сучасним вимогам ринку праці та забезпечення якості освіти.\n\nДо участі в обговоренні запрошуються здобувачі освіти, стейкхолдери, представники академічної спільноти та всі охочі.\n\n## Захід відбудеться у змішаному форматі\n\n- Очна участь: аудиторія 402\n- Дистанційна участь (Zoom): https://zoom.us/j/9932383465\n- Meeting ID: 993 238 3465\n- Passcode: 1111\n\nЗаздалегідь вдячні за вашу активну участь!\n\nЗ ОПП «Маркетинг» можна ознайомитися за посиланням: https://drive.google.com/drive/folders/1dcgVBio_3E2kyrMCDS-neHA2SDEBT3pr?usp=drive_link",
+    category: "Оголошення",
+    imageUrl: "/news-marketing-conference.jpg",
+    imageAlt: "Обговорення освітньо-професійної програми «Маркетинг»",
+    status: "published",
+    featured: false,
+    publishedAt: "2026-02-22T10:00:00.000Z",
+    createdAt: "2026-02-22T10:00:00.000Z",
+    updatedAt: "2026-10-11T16:30:00.000Z",
+    authorEmail: "nadezda_pisarenko@ukr.net",
+  },
+  {
+    id: "seed-marketing-discussion-may-2026",
+    slug: marketingDiscussionMayNewsSlug,
+    title: "Обговорення освітньо-професійної програми «Маркетинг» відбудеться 17 травня",
+    excerpt: "17 травня 2026 року о 14:00 відбудеться обговорення ОПП «Маркетинг» першого (бакалаврського) та другого (магістерського) рівнів вищої освіти.",
+    body: "Шановні здобувачі вищої освіти, стейкхолдери, науково-педагогічні працівники Академії та всі зацікавлені особи!\n\n17 травня 2026 року о 14:00 в аудиторії 402 відбудеться обговорення освітньо-професійної програми «Маркетинг» спеціальності D5 Маркетинг першого (бакалаврського) та другого (магістерського) рівня вищої освіти.\n\nМетою заходу є отримання пропозицій та зауважень щодо змісту зазначених програми, її актуальності, відповідності сучасним вимогам ринку праці та забезпечення якості освіти.\n\nДо участі в обговоренні запрошуються здобувачі освіти, стейкхолдери, представники академічної спільноти та всі охочі.\n\n## Захід відбудеться у змішаному форматі\n\n- Очна участь: аудиторія 402\n- Дистанційна участь (Zoom): https://zoom.us/j/9932383465\n- Meeting ID: 993 238 3465\n- Passcode: 1111\n\nЗаздалегідь вдячні за вашу активну участь!\n\nЗ ОПП «Маркетинг» можна ознайомитися за посиланням: https://drive.google.com/drive/folders/1dcgVBio_3E2kyrMCDS-neHA2SDEBT3pr?usp=drive_link",
+    category: "Оголошення",
+    imageUrl: "/news-marketing-conference.jpg",
+    imageAlt: "Обговорення освітньо-професійної програми «Маркетинг»",
+    status: "published",
+    featured: false,
+    publishedAt: "2026-05-02T10:00:00.000Z",
+    createdAt: "2026-05-02T10:00:00.000Z",
+    updatedAt: "2026-10-11T16:30:00.000Z",
+    authorEmail: "nadezda_pisarenko@ukr.net",
+  },
   {
     id: "seed-erasmus-days-2026-apsvt",
     slug: erasmusDaysNewsSlug,
@@ -509,7 +543,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug || post.slug === marketingDiscussionMarchNewsSlug || post.slug === marketingDiscussionMayNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
@@ -562,7 +596,10 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
     const result = await database.prepare(`SELECT * FROM posts ${where} ORDER BY featured DESC, COALESCE(published_at, created_at) DESC LIMIT ?`).bind(limit).all<Record<string, unknown>>();
     return result.results.map(fromRow).filter((post) => !post.category.startsWith("__"));
   } catch {
-    return seedPosts.filter((post) => options.includeDrafts || post.status === "published").slice(0, options.limit ?? 50);
+    return seedPosts
+      .filter((post) => options.includeDrafts || post.status === "published")
+      .sort((a, b) => Number(b.featured) - Number(a.featured) || String(b.publishedAt || b.createdAt).localeCompare(String(a.publishedAt || a.createdAt)))
+      .slice(0, options.limit ?? 50);
   }
 }
 
