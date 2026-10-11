@@ -28,8 +28,25 @@ import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 
 const IMG = "https://images.unsplash.com";
 export const stakeholderDiscussionNewsSlug = "obhovorennia-osvitnikh-prohram-d8-d4-2026";
+export const erasmusDaysNewsSlug = "erasmus-days-2026-apsvt";
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-erasmus-days-2026-apsvt",
+    slug: erasmusDaysNewsSlug,
+    title: "Запрошуємо стати частиною Erasmus+ Days 2026!",
+    excerpt: "З 12 до 17 жовтня Академія долучається до Erasmus+ Days 2026 із серією інформаційних та інтерактивних заходів.",
+    body: "З 12 по 17 жовтня 2026 року в Академії праці, соціальних відносин і туризму (АПСВТ) відбудуться заходи в межах всесвітньої та всеукраїнської ініціативи Erasmus+ Days 2026.\n\nЦьогорічна 10-та річниця події проходить під загальноєвропейським гаслом «Навчаємося та зростаємо: компетентності для майбутнього».\n\nЗапрошуємо студентів, аспірантів, викладачів та співробітників Академії долучитися до серії інформаційних та інтерактивних заходів, присвячених можливостям академічної мобільності, розвитку професійних навичок та міжнародній співпраці в умовах сучасних глобальних трансформацій.\n\n## Програма заходів в АПСВТ\n\n- 12 жовтня, 11:00 — інформаційна сесія «Твій старт в Erasmus+: від подачі заявки до навчання в Європі». Розберемо критерії відбору, вимоги до знання мов та алгоритм дій для студентів Академії.\n- 13 жовтня, 14:30 — воркшоп «Компетентності для майбутнього: зелений та цифровий транзит в освіті». Панельна дискусія щодо оновлення навичок у сферах соціальної роботи, права та туризму.\n- 14 жовтня, 13:00 — презентація «Досвід успіху: історії мобільності студентів та викладачів АПСВТ». Відкрита розмова про подолання мовних бар’єрів, адаптацію в європейських університетах та отримання стипендій.\n- 15 жовтня, 12:00 — онлайн-вікторина «Erasmus+ Quiz» на офіційній сторінці Академії в Instagram. Перевірте свої знання про ЄС та вигравайте фірмовий мерч!\n- 16 жовтня, 15:00 — круглий стіл з міжнародними партнерами та координаторами Академії «Перспективи розширення проєктів Jean Monnet та KA2 в АПСВТ».\n\n## Як долучитися та чому це важливо?\n\nВсі заходи адаптовані до поточних умов і проходитимуть у змішаному форматі — онлайн та офлайн. Участь у Erasmus+ Days — це унікальний шанс дізнатися, як отримати грант на навчання чи стажування за кордоном, підвищити власну конкурентоспроможність та стати частиною великої європейської спільноти.\n\nСтежте за оновленнями та прямими трансляціями на офіційному сайті Національного Erasmus+ офісу в Україні та в соціальних мережах за хештегами: #ErasmusPlus #ErasmusUA #ErasmusDays2026 #АПСВТ.",
+    category: "Міжнародне",
+    imageUrl: "/news-international-workshop.jpg",
+    imageAlt: "Учасники міжнародного академічного заходу АПСВТ",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-10T17:38:38.000Z",
+    createdAt: "2026-10-10T17:38:38.000Z",
+    updatedAt: "2026-10-10T17:38:38.000Z",
+    authorEmail: "inz@socosvita.kiev.ua",
+  },
   {
     id: "seed-stakeholder-discussion-d8-d4-2026",
     slug: stakeholderDiscussionNewsSlug,
@@ -307,7 +324,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === erasmusDaysNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
