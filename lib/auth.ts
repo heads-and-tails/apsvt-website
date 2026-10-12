@@ -57,6 +57,7 @@ const preapprovedDepartmentEditors = new Map<string, { displayName: string; acce
       "/departments/constitutional-law",
       "/departments/private-law",
       "/departments/criminal-law",
+      "/departments/public-administration",
       "/programs/public-administration",
       "/programs/law",
       "/programs/law/legal-clinic",

@@ -1282,15 +1282,31 @@ test("publishes the criminal law, procedure and forensics department",async()=>{
     (await render("/departments/law-faculty")).text(),
     (await render("/departments")).text(),
   ]);
-  assert.match(departmentHtml,/Кримінальне право,[\s\S]*процес і криміналістика/);
+  assert.match(departmentHtml,/Кафедра кримінального права, процесу та криміналістики/);
   for(const person of ["Ірина Завидняк","Володимир Ліпкан","Микола Маломуж","Андрій Бегма","Роман Лев","Олександр Ярмоленко"]){
     assert.match(departmentHtml,new RegExp(person));
   }
   assert.match(departmentHtml,/iryna-zavydniak\.jpg/);
   assert.match(departmentHtml,/oleksandr-yarmolenko\.jpg/);
-  assert.match(departmentHtml,/Лабораторія криміналістики/);
+  assert.match(departmentHtml,/Загальна інформація про кафедру/);
+  assert.match(departmentHtml,/Науково-педагогічний склад/);
   assert.match(facultyHtml,/href="\/departments\/criminal-law"/);
   assert.match(directoryHtml,/href="\/departments\/criminal-law"/);
+});
+
+test("keeps four law departments to five closed sections and separates programme document categories",async()=>{
+  const paths=["constitutional-law","criminal-law","private-law","public-administration"];
+  for(const slug of paths){
+    const html=await (await render(`/departments/${slug}`)).text();
+    assert.equal((html.match(/class="admissions-icon-card/g)||[]).length,5,`${slug} must show exactly five sections`);
+    for(const title of ["Загальна інформація про кафедру","Завідувач кафедри","Склад кафедри","Новини","Контакти"]) assert.match(html,new RegExp(title));
+    assert.doesNotMatch(html,/id="science-clubs"|id="academic-council"|id="programme-discussion"/);
+  }
+  const faculty=await (await render("/departments/law-faculty")).text();
+  assert.doesNotMatch(faculty,/id="faculty-discussion"|Рішення та протоколи/);
+  const bachelor=await (await render("/departments/law-faculty/faculty-programmes/d8-law-bachelor")).text();
+  assert.match(bachelor,/Робочі програми/);
+  assert.match(bachelor,/Анотації/);
 });
 
 test("publishes the private, labour and commercial law department",async()=>{

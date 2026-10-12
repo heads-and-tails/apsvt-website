@@ -20,7 +20,7 @@ export const lawFacultyStructure: readonly FacultySection[] = [
   ] },
   { id: "faculty-science-clubs", title: "Наукові гуртки", children: [["phoenix", "Історико-правовий гурток «Фенікс»"]] },
   { id: "municipal-law-school", title: "Наукова школа муніципального права", children: [["general", "Загальна інформація"], ["history", "Історія наукової школи"], ["head", "Засновник / науковий керівник"], ["members", "Склад наукової школи"], ["directions", "Наукові напрями"], ["research", "Наукові дослідження"], ["publications", "Публікації"], ["dissertations", "Дисертаційні дослідження"], ["events", "Наукові заходи"], ["cooperation", "Наукова співпраця"], ["achievements", "Досягнення наукової школи"], ["news", "Новини"], ["documents", "Документи"], ["contacts", "Контакти"]] },
-  { id: "faculty-council", title: "Вчена рада", children: [["about", "Про Вчену раду"], ["members", "Склад"], ["regulations", "Положення"], ["plan", "План роботи"], ["meetings", "Засідання"], ["decisions", "Рішення та протоколи"]] },
+  { id: "faculty-council", title: "Вчена рада", children: [["about", "Про Вчену раду"], ["members", "Склад"], ["regulations", "Положення"], ["plan", "План роботи"]] },
   { id: "faculty-student-government", title: "Студентське самоврядування", children: [["about", "Про студентське самоврядування"], ["council", "Студентська рада"], ["members", "Склад"], ["projects", "Проєкти та ініціативи"], ["news", "Новини та заходи"], ["contacts", "Контакти"]] },
   { id: "law-teachers", title: "Викладачі факультету", children: [] },
   { id: "faculty-programmes", title: "Освітні програми", children: [
@@ -31,7 +31,6 @@ export const lawFacultyStructure: readonly FacultySection[] = [
     ["d4-public-administration-master", "D4 Публічне управління · магістр"],
     ["d4-public-administration-phd", "D4 Публічне управління · доктор філософії"],
   ] },
-  { id: "faculty-discussion", title: "Громадське обговорення освітніх програм", children: [["law", "D8 «Право»"], ["public-administration", "D4 «Публічне управління та адміністрування»"]] },
   { id: "faculty-repository", title: "Репозитарій", children: [["law", "D8 «Право»"], ["public-administration", "D4 «Публічне управління та адміністрування»"]] },
   { id: "faculty-documents", title: "Нормативні документи", children: [] },
   { id: "department-news", title: "Новини факультету", children: [] },

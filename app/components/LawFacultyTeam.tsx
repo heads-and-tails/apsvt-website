@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { AcademicProfileCard } from "./AcademicProfileCard";
+import { getDepartmentEntries } from "@/lib/department-content";
+import { teachersForSection } from "./LawDepartmentFiveSections";
 
 type Teacher = {
   name: string;
@@ -11,7 +13,7 @@ type Teacher = {
   scholar?: string;
 };
 
-const teachers: Teacher[] = [
+export const lawFacultyTeachers: Teacher[] = [
   {
     name: "Тетяна Лебідь",
     role: "в. о. завідувача кафедри, доцентка",
@@ -88,27 +90,25 @@ const teachers: Teacher[] = [
   },
 ];
 
-export function LawFacultyTeam({ compact = false }: { compact?: boolean }) {
-  const displayed = compact ? teachers.slice(0, 6) : teachers;
+export async function LawFacultyTeam({ compact = false }: { compact?: boolean }) {
+  const entries = await getDepartmentEntries("/departments/law-faculty");
+  const managed = teachersForSection(lawFacultyTeachers.map((teacher) => ({
+    name: teacher.name, role: teacher.role, summary: teacher.summary,
+    image: teacher.image, tags: teacher.courses,
+    links: [
+      ...(teacher.orcid ? [{ label: "ORCID", href: teacher.orcid }] : []),
+      ...(teacher.scholar ? [{ label: "Google Scholar", href: teacher.scholar }] : []),
+    ],
+  })), entries.filter((entry) => entry.entryType === "teacher" && (!entry.sectionId || entry.sectionId === "law-teachers")));
+  const displayed = compact ? managed.slice(0, 6) : managed;
   return <section className="law-faculty-team" id="law-teachers">
     <div className="wrap">
       <div className="sec-head"><div><div className="idx">{compact ? "05" : "04"} / Люди кафедри</div><h2>Викладачі<br />та практики</h2></div><p>Професійні профілі, дисципліни та наукові напрями викладачів кафедри конституційного, адміністративного та фінансового права.</p></div>
-      <div className="academic-profile-grid">{displayed.map((teacher, index) => <AcademicProfileCard
+      <div className="academic-profile-grid">{displayed.map((teacher) => <AcademicProfileCard
         key={teacher.name}
-        index={index}
         badge={teacher.role.toLowerCase().includes("завідувач") ? "Керівник кафедри" : undefined}
         detailsLabel="Дисципліни та профілі"
-        person={{
-          name: teacher.name,
-          role: teacher.role,
-          summary: teacher.summary,
-          image: teacher.image,
-          tags: teacher.courses,
-          links: [
-            ...(teacher.orcid ? [{ label: "ORCID", href: teacher.orcid }] : []),
-            ...(teacher.scholar ? [{ label: "Google Scholar", href: teacher.scholar }] : []),
-          ],
-        }}
+        person={teacher}
       />)}</div>
       {compact && <Link className="law-team-more" href="/departments/law-faculty#law-teachers">Повний склад кафедри →</Link>}
     </div>

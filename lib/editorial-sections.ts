@@ -9,6 +9,13 @@ export const financeProjectSections = [
 ] as const;
 
 export function editorialSectionsForPage(path: string): { id: string; label: string }[] {
+  if (["/departments/constitutional-law", "/departments/criminal-law", "/departments/private-law", "/departments/public-administration"].includes(path)) return [
+    { id: "department-about", label: "Загальна інформація про кафедру" },
+    { id: "department-head", label: "Завідувач кафедри" },
+    { id: "department-team", label: "Склад кафедри" },
+    { id: "department-news", label: "Новини" },
+    { id: "department-contacts", label: "Контакти" },
+  ];
   if (path === digitalDepartmentPath) return [...digitalDepartmentSections];
   if (professionalEducationProgrammes.some((page) => page.path === path)) return [...professionalEducationSections];
   if (path === lawFacultyPath) return lawFacultyStructure.map(({ id, title }) => ({ id, label: title }));
