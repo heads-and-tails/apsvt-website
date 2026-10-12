@@ -139,6 +139,25 @@ test("finance programmes offer direct bachelor and master navigation without pho
   assert.doesNotMatch(html,/academic-profile-photo[^>]*>[\s\S]{0,500}<em>Керівник кафедри<\/em>/);
 });
 
+test("finance materials follow the department's course structure and link to supplied PDFs",async()=>{
+  const html=await (await render("/programs/finance#overview")).text();
+  for(const label of ["Документи бакалаврату","1 курс","2 курс","3 курс","4 курс","Документи магістратури","Фахова фінансова підготовка","27","Грантове фінансування","Видання кафедри фінансів"]){
+    assert.match(html,new RegExp(label));
+  }
+  for(const file of ["bachelor-fulltime-2026.pdf","bachelor-fulltime-2025.pdf","bachelor-parttime-2025.pdf","bachelor-fulltime-2024.pdf","bachelor-parttime-2024.pdf","bachelor-parttime-2023.pdf","master-programme-2025.pdf","master-parttime-2025.pdf"]){
+    assert.match(html,new RegExp(file));
+    const bytes=await readFile(new URL(`../public/documents/programmes/finance/${file}`,import.meta.url));
+    assert.ok(bytes.length>100000,`${file} should be an attached PDF`);
+  }
+  assert.doesNotMatch(html,/master-fulltime-2026\.pdf/);
+  for(const file of ["greenfinedu-guide","greenfinedu-proceedings","greenfinedu-conference-programme"]){
+    assert.match(html,new RegExp(`${file}\\.pdf`));
+    const pdf=await readFile(new URL(`../public/documents/research/finance/${file}.pdf`,import.meta.url));
+    const cover=await readFile(new URL(`../public/images/finance/${file}.jpg`,import.meta.url));
+    assert.ok(pdf.length>100000 && cover.length>100000,`${file} should include the supplied PDF and cover`);
+  }
+});
+
 test("documents catalogue includes the shared faculty and department section",async()=>{
   const html=await (await render("/documents")).text();
   assert.match(html,/Документи кафедр і факультетів/);
