@@ -24,6 +24,8 @@ import { MarketingCareers, MarketingDepartmentAbout } from "./MarketingDepartmen
 import { MarketingStudentLife } from "./MarketingStudentLife";
 import { MarketingEducationPrograms } from "./MarketingEducationPrograms";
 import { FinanceInternational, financeProjectSections } from "./FinanceInternational";
+import { FinanceMasterProgramme } from "./FinanceMasterProgramme";
+import { FinancePublications } from "./FinancePublications";
 import { digitalDepartmentPath } from "@/lib/professional-education";
 
 export const dynamic = "force-dynamic";
@@ -55,12 +57,12 @@ const marketingSections: readonly SectionHubItem[] = [
 ];
 
 const financeSections: readonly SectionHubItem[] = [
-  { id: "overview", index: "01", title: "Про програми", description: "Бакалаврська й магістерська траєкторії, навчальні плани та дисципліни.", icon: "OP", aliases: ["education-levels", "curriculum", "electives", "course-annotations"] },
+  { id: "overview", index: "01", title: "Про програми", description: "Бакалаврська й магістерська траєкторії, навчальні плани та дисципліни.", icon: "OP", aliases: ["education-levels", "curriculum", "electives", "course-annotations", "finance-bachelor", "finance-master"] },
   { id: "department", index: "02", title: "Кафедра і освітнє середовище", description: "Про кафедру, документи, викладачі, практика та партнери.", icon: "D2", aliases: ["programme-documents", "team", "science", "practice"] },
   { id: "international", index: "03", title: "Міжнародні проєкти", description: "Erasmus + проєкти кафедри", icon: "INT", aliases: financeProjectSections.map((section) => section.id) },
   { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг, опитування, оцінювання НПП та обговорення змін до ОП.", icon: "✓" },
   { id: "applicants", index: "05", title: "Вступникам", description: "Кар’єрні можливості, умови вступу, вартість і консультація.", icon: "2026", aliases: ["careers"] },
-  { id: "department-news", index: "06", title: "Новини", description: "Події, публікації та оголошення кафедри фінансів.", icon: "NEWS", aliases: ["doctoral-programme"] },
+  { id: "department-news", index: "06", title: "Новини та публікації", description: "Події, наука та видання кафедри фінансів.", icon: "NEWS", aliases: ["doctoral-programme", "finance-publications"] },
   { id: "contacts", index: "07", title: "Контакти", description: "Зв’язок із кафедрою фінансів та редакційною командою сторінки.", icon: "MAIL" },
 ];
 
@@ -143,13 +145,13 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       </div></section>
       <section id="finance-bachelor"><div className="wrap program-intro"><div><div className="idx">Бакалавр / структура програми</div><h2>Бакалаврська траєкторія</h2><p className="program-lede">{program.overview}</p><div className="focus-list">{program.focus.map((item, index) => <div key={item}><span>{String(index + 1).padStart(2, "0")}</span><b>{item}</b></div>)}</div></div><aside className="program-facts" id="education-levels"><div><span>Рівні</span><b>{program.levels}</b></div><div><span>Тривалість бакалаврату</span><b>{program.duration}</b></div><div><span>Бакалаврат, денна</span><b>{program.price}</b></div><div><span>Бакалаврат, заочна</span><b>{program.partTimePrice}</b></div>{program.masterPrice && <div><span>Магістратура, денна</span><b>{program.masterPrice}</b></div>}{program.masterPartTimePrice && <div><span>Магістратура, заочна</span><b>{program.masterPartTimePrice}</b></div>}<small>Вартість для вступників 2026 року, за один навчальний рік.</small><Link className="cta" href="/tuition#calculator"><span>Усі тарифи й оплата</span></Link></aside></div></section>
       <ProgrammeCurriculumPlan slug={slug} code={program.code} title={program.title} />
-      <section className="finance-master-programme" id="finance-master"><div className="wrap"><div className="sec-head"><div><div className="idx">Магістр / структура програми</div><h2>Магістерська траєкторія</h2></div><p>Розділ підготовлено в такій самій логіці, як бакалаврський. Детальний перелік дисциплін кафедра додасть після погодження актуального навчального плану.</p></div><div className="finance-master-grid"><article><span>01</span><h3>Що вивчатимете</h3><p>Поглиблена фінансова аналітика, управління фінансами й професійна підготовка.</p></article><article><span>02</span><h3>Програмні дисципліни</h3><p>Обов’язкові компоненти буде оприлюднено за затвердженим планом.</p></article><article><span>03</span><h3>Вибіркові дисципліни</h3><p>Індивідуальна траєкторія формується з актуального каталогу вибору.</p></article><article><span>04</span><h3>Практична підготовка</h3><p>Практика, дослідницька робота та підсумкова атестація.</p></article></div><a className="finance-master-document" href={program.materials[0]?.href} target="_blank" rel="noreferrer">Офіційна ОПП магістра · PDF ↗</a></div></section>
+      <FinanceMasterProgramme />
     </div>,
     <div key="finance-department"><ProgrammeEcosystem slug={slug} entries={departmentEntries} /></div>,
     <FinanceInternational entries={departmentEntries} key="finance-international" />,
     <EducationQualitySection entries={departmentEntries} pagePath={`/programs/${slug}`} index="04" discussionEmail={programmeProfile?.discussionEmail} title="Якість освіти кафедри фінансів" description="Моніторинг освітнього процесу, результати опитувань студентів, обговорення змін до освітніх програм та щорічне оцінювання викладачів." key="finance-quality" />,
     <section className="finance-applicants" id="applicants" key="finance-applicants"><div className="wrap"><div className="sec-head"><div><div className="idx">05 / Вступникам</div><h2>Вступ і професійна перспектива</h2></div><p>Умови вступу, вартість навчання, консультація та напрями роботи після завершення програми — в одному розділі.</p></div><div className="finance-applicants-grid"><div className="career-list">{program.careers.map((career, index) => <div key={career}><span>{String(index + 1).padStart(2, "0")}</span><b>{career}</b></div>)}</div><div className="finance-applicant-links"><Link href="/admissions"><small>Вступна кампанія 2026</small><b>Умови, строки й документи</b><span>→</span></Link><Link href="/tuition"><small>Вартість і оплата</small><b>Тарифи та безпечна оплата</b><span>→</span></Link><Link href="/contacts"><small>Консультація</small><b>Поставити запитання Академії</b><span>→</span></Link></div></div></div></section>,
-    <div id="department-news" key="finance-news"><AcademicNews slugs={[slug]} title="Новини кафедри фінансів" /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && entry.sectionId !== "international" && !financeProjectSections.some((section) => section.id === entry.sectionId))} /></div>,
+    <div id="department-news" key="finance-news"><AcademicNews slugs={[slug]} eyebrow="01 / Події та спільнота" title="Події та спільнота кафедри фінансів" /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && entry.sectionId !== "international" && !financeProjectSections.some((section) => section.id === entry.sectionId))} /><FinancePublications /></div>,
     <section className="finance-contact" id="contacts" key="finance-contacts"><div className="wrap finance-contact-grid"><div><div className="idx">07 / Контакти</div><h2>Зв’язок із кафедрою фінансів</h2><p>Питання щодо освітніх програм, навчальних дисциплін, партнерств і матеріалів кафедри можна надіслати завідувачці кафедри.</p></div><div className="finance-contact-card"><small>Завідувачка кафедри</small><h3>Яніна Ткаченко</h3><a href="mailto:tkachenko.ys@socosvita.kiev.ua">tkachenko.ys@socosvita.kiev.ua</a><Link href="/contacts">Усі контакти Академії →</Link></div></div></section>,
   ] : null;
   const specialSectionContent = marketingSectionContent || financeSectionContent;

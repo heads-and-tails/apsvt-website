@@ -61,7 +61,7 @@ export const programs: Program[] = [
     ],
     careers:["Фінансовий аналітик","Банківський фахівець","Фахівець зі страхування","Інвестиційний консультант","Фінансовий менеджер"],
     international:["Jean Monnet GreenFinEDU","CIMA-орієнтовані магістерські модулі","Erasmus+ проєкти кафедри"],
-    materials:[{label:"ОПП D2 «Фінанси, банківська справа, страхування та фондовий ринок» · магістр",href:`${officialProgrammeFileBase}/d2-finance-master.pdf`},{label:"Кафедра фінансів",href:"/materials/finance-department-e14228d97.html"},{label:"Корпоративні фінанси",href:"/materials/korporatyvni-finansy-4dc5136f1.html"}],
+    materials:[{label:"ОПП D2 «Фінанси, банківська справа, страхування та фондовий ринок» · магістр",href:"/documents/programmes/finance/master-programme-2025.pdf"},{label:"Кафедра фінансів",href:"/materials/finance-department-e14228d97.html"},{label:"Корпоративні фінанси",href:"/materials/korporatyvni-finansy-4dc5136f1.html"}],
     tags:["аналітика","цифри","бізнес","інвестиції"],
   },
   {

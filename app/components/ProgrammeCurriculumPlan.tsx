@@ -1,4 +1,5 @@
 import { programmeCurricula, type ProgrammeCurriculumCourse } from "@/lib/programme-curricula";
+import { FinanceBachelorDocuments } from "@/app/programs/[slug]/FinanceDocuments";
 
 function ProgrammeCourseTable({ courses }: { courses: ProgrammeCurriculumCourse[] }) {
   return <div className="law-curriculum-table programme-curriculum-table">
@@ -35,6 +36,8 @@ export function ProgrammeCurriculumPlan({ slug, code, title, sectionId = "curric
         <div><b>60</b><span>кредитів на вибір</span></div>
         <div><b>{curriculum.practice.length}</b><span>етапи практики й атестації</span></div>
       </div>
+
+      {slug === "finance" && <FinanceBachelorDocuments />}
 
       <div className="curriculum-block-heading">
         <div><span>Обов’язкова частина</span><h3>Програмні дисципліни</h3></div>
