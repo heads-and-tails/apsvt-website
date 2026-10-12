@@ -1,3 +1,5 @@
+import { TeacherResumeText } from "./TeacherResume";
+
 export type AcademicProfileLink = {
   label: string;
   href: string;
@@ -20,7 +22,6 @@ function initials(name: string) {
 
 export function AcademicProfileCard({
   person,
-  index = 0,
   badge,
   detailsLabel = "Докладніше",
 }: {
@@ -37,7 +38,6 @@ export function AcademicProfileCard({
       {person.image
         ? <img src={person.image} alt={person.name} />
         : <span aria-label={`Фото ${person.name} готується до публікації`}>{initials(person.name)}</span>}
-      <b>{String(index + 1).padStart(2, "0")}</b>
     </div>
     <div className="academic-profile-copy">
       {badge && <em className="academic-profile-badge">{badge}</em>}
@@ -49,7 +49,7 @@ export function AcademicProfileCard({
       </div>}
       {hasDetails && <details>
         <summary>{detailsLabel}<i>+</i></summary>
-        {person.details && <p>{person.details}</p>}
+        {person.details && <TeacherResumeText text={person.details} />}
         {links.length > 0 && <div className="academic-profile-links">
           {links.map((link) => <a href={link.href} target="_blank" rel="noreferrer" key={link.href}>{link.label} ↗</a>)}
         </div>}

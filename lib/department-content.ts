@@ -29,6 +29,10 @@ export type DepartmentEntry = {
   role: string;
   email: string;
   profileUrl: string;
+  hidden?: boolean;
+  teacherSourceName?: string;
+  teacherDegree?: string;
+  teacherAcademicTitle?: string;
   status: DepartmentEntryStatus;
   sortOrder: number;
   createdAt: string;
@@ -61,6 +65,10 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
     && typeof entry.role === "string"
     && typeof entry.email === "string"
     && typeof entry.profileUrl === "string"
+    && (entry.hidden === undefined || typeof entry.hidden === "boolean")
+    && (entry.teacherSourceName === undefined || typeof entry.teacherSourceName === "string")
+    && (entry.teacherDegree === undefined || typeof entry.teacherDegree === "string")
+    && (entry.teacherAcademicTitle === undefined || typeof entry.teacherAcademicTitle === "string")
     && (entry.status === "draft" || entry.status === "published")
     && typeof entry.sortOrder === "number" && Number.isFinite(entry.sortOrder);
   if (!validBase) return false;
@@ -100,6 +108,10 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
     role: payload.role || "",
     email: payload.email || "",
     profileUrl: payload.profileUrl || "",
+    hidden: payload.hidden === "true",
+    teacherSourceName: payload.teacherSourceName || undefined,
+    teacherDegree: payload.teacherDegree || undefined,
+    teacherAcademicTitle: payload.teacherAcademicTitle || undefined,
     status: payload.status === "draft" ? "draft" : "published",
     sortOrder: item.sortOrder,
     createdAt: item.createdAt,
@@ -125,6 +137,10 @@ function toContentPayload(input: DepartmentEntryInput): Record<string, string> {
     role: input.role.trim(),
     email: input.email.trim(),
     profileUrl: input.profileUrl.trim(),
+    hidden: input.hidden ? "true" : "false",
+    teacherSourceName: input.teacherSourceName?.trim() || "",
+    teacherDegree: input.teacherDegree?.trim() || "",
+    teacherAcademicTitle: input.teacherAcademicTitle?.trim() || "",
     status: input.status,
   };
 }

@@ -5,6 +5,7 @@ import type { DocumentStatus, PageDocument, PageDocumentInput } from "@/lib/docu
 import type { Publisher } from "@/lib/auth";
 import { canEditPage, editorialAccessOptions } from "@/lib/editorial-access";
 import { professionalEducationProgrammes } from "@/lib/professional-education";
+import { lawFacultySubpages } from "@/lib/law-faculty-structure";
 import {
   buildScheduleDocumentCategory,
   defaultScheduleDocumentSelection,
@@ -52,6 +53,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
   const [message, setMessage] = useState("");
   const published = useMemo(() => documents.filter((document) => document.status === "published").length, [documents]);
   const isProfessionalProgramme = professionalEducationProgrammes.some((programme) => programme.path === form.pagePath);
+  const isLawProgramme = lawFacultySubpages.some((page) => page.path === form.pagePath && page.sectionId === "faculty-programmes");
 
   function change<K extends keyof PageDocumentInput>(key: K, value: PageDocumentInput[K]) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -64,7 +66,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
   }
 
   function changePagePath(pagePath: string) {
-    const isProgramme = professionalEducationProgrammes.some((programme) => programme.path === pagePath);
+    const isProgramme = professionalEducationProgrammes.some((programme) => programme.path === pagePath) || lawFacultySubpages.some((page) => page.path === pagePath && page.sectionId === "faculty-programmes");
     setForm((current) => ({ ...current, pagePath, category: isProgramme ? "Освітня програма" : current.category }));
     if (isProgramme) { setProgrammeDocumentKind("Освітня програма"); setProgrammeDocumentYear(""); }
   }
@@ -131,7 +133,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
     });
     setScheduleSelection(parseScheduleDocumentCategory(item.category) || defaultScheduleDocumentSelection);
     const [kind, year = ""] = item.category.split("·").map((part) => part.trim());
-    if (professionalEducationProgrammes.some((programme) => programme.path === item.pagePath)) {
+    if (professionalEducationProgrammes.some((programme) => programme.path === item.pagePath) || lawFacultySubpages.some((page) => page.path === item.pagePath && page.sectionId === "faculty-programmes")) {
       setProgrammeDocumentKind(kind || "Освітня програма");
       setProgrammeDocumentYear(year);
     }
@@ -170,11 +172,11 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
         <label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName}</b><span>Файл готовий до публікації</span></> : <><b>Оберіть файл</b><span>PDF, DOC, DOCX, XLS, XLSX, PPT або PPTX</span></>}<input type="file" required={!form.fileUrl} disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); }} /></label>
         <div className="document-fields">
           <label>Назва документа<input required value={form.title} onChange={(event) => change("title", event.target.value)} /></label>
-          {form.pagePath !== "/schedule" && !isProfessionalProgramme && <label>Категорія<input required value={form.category} onChange={(event) => change("category", event.target.value)} placeholder="Наказ, положення, програма…" /></label>}
-          {isProfessionalProgramme && <fieldset className="schedule-document-fields wide programme-document-fields">
+          {form.pagePath !== "/schedule" && !isProfessionalProgramme && !isLawProgramme && <label>Категорія<input required value={form.category} onChange={(event) => change("category", event.target.value)} placeholder="Наказ, положення, програма…" /></label>}
+          {(isProfessionalProgramme || isLawProgramme) && <fieldset className="schedule-document-fields wide programme-document-fields">
             <legend>Де показати документ у програмі</legend>
             <p>Додавайте необмежену кількість освітніх програм і навчальних планів: один файл на кожний потрібний рік.</p>
-            <label>Тип документа<select value={programmeDocumentKind} onChange={(event) => setProgrammeCategory(event.target.value, programmeDocumentYear)}><option>Освітня програма</option><option>Навчальний план</option><option>Інший документ</option></select></label>
+            <label>Тип документа<select value={programmeDocumentKind} onChange={(event) => setProgrammeCategory(event.target.value, programmeDocumentYear)}><option>Освітня програма</option><option>Навчальний план</option>{isLawProgramme && <><option>Робоча програма</option><option>Анотація</option></>}<option>Інший документ</option></select></label>
             <label>Рік / навчальний рік<input required value={programmeDocumentYear} onChange={(event) => setProgrammeCategory(programmeDocumentKind, event.target.value)} placeholder="Наприклад: 2026 або 2026/27" /></label>
           </fieldset>}
           <label className="wide">Короткий опис<textarea rows={3} value={form.description} onChange={(event) => change("description", event.target.value)} /></label>

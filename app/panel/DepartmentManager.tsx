@@ -380,6 +380,10 @@ const emptyEntry = (pagePath: string, entryType: DepartmentEntryType, sectionId 
   role: entryType === "quality" ? "monitoring" : "",
   email: "",
   profileUrl: "",
+  hidden: false,
+  teacherSourceName: "",
+  teacherDegree: "",
+  teacherAcademicTitle: "",
   status: "published",
   sortOrder: 10,
 });
@@ -540,10 +544,28 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       role: entry.entryType === "quality" ? normalizeEducationQualityRubricId(entry.role, `${entry.title} ${entry.summary}`) : entry.role,
       email: entry.email,
       profileUrl: entry.profileUrl,
+      hidden: Boolean(entry.hidden),
+      teacherSourceName: entry.teacherSourceName || "",
+      teacherDegree: entry.teacherDegree || "",
+      teacherAcademicTitle: entry.teacherAcademicTitle || "",
       status: entry.status,
       sortOrder: entry.sortOrder,
     });
     setMessage("");
+    document.querySelector("#department-entry-editor")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function startSeedTeacher(group: ExistingPageGroup) {
+    const name = group.items.find((item) => item.tag === "h3")?.value || group.label;
+    const existing = entries.find((entry) => entry.pagePath === pagePath && entry.entryType === "teacher" && (entry.teacherSourceName || entry.title) === name);
+    if (existing) { startEdit(existing); return; }
+    const role = group.items.find((item) => item.tag === "small")?.value || "Викладач кафедри";
+    const summary = group.items.find((item) => item.tag === "p")?.value || "";
+    setActiveSection(group.sectionId);
+    setEntryType("teacher");
+    setEditing(null);
+    setForm({ ...emptyEntry(pagePath, "teacher", group.sectionId), teacherSourceName: name, title: name, role, summary, imageUrl: group.imageUrl, imageAlt: name, sortOrder: (group.order + 1) * 10 });
+    setMessage("Редагуйте наявний профіль. Збереження замінить картку, а не створить дубль.");
     document.querySelector("#department-entry-editor")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -722,6 +744,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     {pageSections.length > 0 && <section className="department-section-picker" aria-label="Розділи обраної сторінки"><header><div><small>Крок 1</small><h3>Оберіть розділ сторінки</h3></div><p>Панель покаже тільки вміст вибраного розділу — без довгого загального списку.</p></header><div role="tablist" aria-label="Розділи сторінки"><button type="button" role="tab" aria-selected={activeSection === "all"} className={activeSection === "all" ? "active" : ""} onClick={() => chooseSection("all")}><span>Усі</span><b>Усі розділи</b><small>{inventoryGroups.length + entries.filter((entry) => entry.pagePath === pagePath && entry.entryType !== "override").length}</small></button>{pageSections.map((section, index) => <button type="button" role="tab" aria-selected={activeSection === section.id} className={activeSection === section.id ? "active" : ""} onClick={() => chooseSection(section.id)} key={section.id}><span>{String(index + 1).padStart(2, "0")}</span><b>{section.label}</b><small>{section.nativeCount + section.managedCount}</small></button>)}</div></section>}
     <div className="department-tab-intro"><b>{pageSections.length > 0 ? "Крок 2 · Що потрібно змінити?" : "Що потрібно змінити?"}</b><span>Оберіть тип матеріалу. Усі варіанти видно одразу — без горизонтальної прокрутки.</span></div>
     {pagePath === lawFacultyPath && activeSection !== "all" && <nav className="faculty-subpage-links" aria-label="Редагування підрозділів">{lawFacultySubpages.filter((page) => page.sectionId === activeSection).map((page) => <button type="button" key={page.path} onClick={() => choosePage(page.path)}>{page.title} →</button>)}</nav>}<div className="operations-tabs department-tabs" role="tablist" aria-label="Типи матеріалів сторінки">{departmentEntryTypes.map((type) => <button type="button" role="tab" aria-selected={entryType === type} className={entryType === type ? "active" : ""} title={typeLabels[type].hint} onClick={() => chooseType(type)} key={type}><b>{typeLabels[type].label}</b><span>{type === "override" ? sectionInventoryGroups.length : entries.filter((entry) => entry.pagePath === pagePath && entry.entryType === type && (activeSection === "all" || (pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId) === activeSection)).length + (categorizedInventoryGroups.get(type)?.length || 0)}</span></button>)}</div>
+    {entryType === "teacher" && (pagePath === lawFacultyPath || pagePath.startsWith("/departments/")) && (categorizedInventoryGroups.get("teacher") || []).length > 0 && <div className="law-seed-teachers"><h3>Викладачі, вже розміщені на сторінці</h3><p>Оберіть профіль, щоб змінити дані, порядок або приховати його без дублювання.</p><div>{(categorizedInventoryGroups.get("teacher") || []).map((group) => <button type="button" key={group.selector} onClick={() => startSeedTeacher(group)}>{group.imageUrl && <img src={group.imageUrl} alt="" />}<span>{group.label}</span><b>Редагувати →</b></button>)}</div></div>}
     <div className="operations-layout">
       <form className="operations-form" id="department-entry-editor" onSubmit={save}>
         <div className="operations-form-head"><div><small>{typeLabels[editorType].hint}</small><h3>{isOverride && !form.body ? "Оберіть елемент праворуч" : editing ? `Редагувати ${typeLabels[editorType].singular}` : `Додати ${typeLabels[editorType].singular}`}</h3></div>{(editing || (isOverride && form.body)) && <button type="button" onClick={reset}>Скасувати</button>}</div>
@@ -729,7 +752,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
           {!isOverride && pageSections.length > 0 && <label className="wide">Розділ сторінки<select required value={form.sectionId} onChange={(event) => change("sectionId", event.target.value)}><option value="">Оберіть розділ</option>{pageSections.map((section) => <option value={section.id} key={section.id}>{section.label}</option>)}</select></label>}
           <label className="wide">{isOverride ? "Елемент сторінки" : isTeacher ? "Ім’я та прізвище" : isPartner ? "Назва партнера / компанії" : isHero ? "Головний заголовок сторінки" : "Заголовок"}<input required readOnly={isOverride} value={form.title} onChange={(event) => change("title", event.target.value)} placeholder={isTeacher ? "ПІБ викладача" : isPartner ? "Назва організації" : "Зрозумілий заголовок"} /></label>
           {(editorType === "news" || editorType === "article" || isQuality) && <label>Дата<input type="date" value={form.date} onChange={(event) => change("date", event.target.value)} /></label>}
-          {isTeacher && <><label>Посада / науковий ступінь<input required value={form.role} onChange={(event) => change("role", event.target.value)} /></label><label>Email<input type="email" value={form.email} onChange={(event) => change("email", event.target.value)} /></label><label>Науковий профіль<input type="url" value={form.profileUrl} onChange={(event) => change("profileUrl", event.target.value)} placeholder="ORCID, Google Scholar…" /></label></>}
+          {isTeacher && <><label>Посада<input required value={form.role} onChange={(event) => change("role", event.target.value)} /></label><label>Науковий ступінь<input value={form.teacherDegree || ""} onChange={(event) => change("teacherDegree", event.target.value)} /></label><label>Вчене звання<input value={form.teacherAcademicTitle || ""} onChange={(event) => change("teacherAcademicTitle", event.target.value)} /></label><label>Email<input type="email" value={form.email} onChange={(event) => change("email", event.target.value)} /></label><label>Науковий профіль<input type="url" value={form.profileUrl} onChange={(event) => change("profileUrl", event.target.value)} placeholder="ORCID, Google Scholar…" /></label><label>Ім’я наявного профілю (для заміни без дублювання)<input value={form.teacherSourceName || ""} onChange={(event) => change("teacherSourceName", event.target.value)} placeholder="Точне ПІБ на сайті" /></label></>}
           {isPartner && <><label>Тип партнерства<input value={form.role} onChange={(event) => change("role", event.target.value)} placeholder="Роботодавець, міжнародний партнер…" /></label><label>Сайт партнера<input type="url" value={form.profileUrl} onChange={(event) => change("profileUrl", event.target.value)} placeholder="https://…" /></label></>}
           {isQuality && <label className="wide">Рубрика<select required value={form.role} onChange={(event) => change("role", event.target.value)}>{educationQualityRubrics.map((rubric) => <option value={rubric.id} key={rubric.id}>{rubric.title}</option>)}</select></label>}
           {isOverride && <label>Тип елемента<input readOnly value={form.role === "text" ? "Текст" : form.role === "image" ? "Зображення" : "Посилання"} /></label>}
@@ -737,7 +760,9 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
           {isOverride && form.role === "link" && <label className="wide">Адреса посилання<input type="url" value={form.profileUrl} onChange={(event) => change("profileUrl", event.target.value)} placeholder="https://…" /></label>}
           {(needsBody || isQuality) && <label className="wide">Повний текст<textarea rows={9} value={form.body} onChange={(event) => change("body", event.target.value)} placeholder="Абзаци розділяйте порожнім рядком" /></label>}
           {isTeacher && <TeacherResumeEditor value={form.body} onChange={(value) => change("body", value)} />}
+          {isTeacher && <label className="wide"><input type="checkbox" checked={Boolean(form.hidden)} onChange={(event) => change("hidden", event.target.checked)} /> Приховати профіль зі сторінки</label>}
           {needsImage && <div className="wide department-upload-field"><b>{isOverride ? "Замінити зображення" : isTeacher ? "Фото викладача" : isPartner ? "Логотип партнера" : isHero ? "Титульне фото" : "Зображення"}</b><label className={`document-drop ${form.imageUrl ? "ready" : ""}`}>{form.imageUrl ? <><img src={form.imageUrl} alt="" /><span>Фото готове · натисніть, щоб замінити</span></> : <><b>Обрати фото</b><span>JPG, PNG або WebP · до 8 МБ</span></>}<input type="file" disabled={busy} accept="image/jpeg,image/png,image/webp" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file, "image"); }} /></label><label>Альтернативний опис<input value={form.imageAlt} onChange={(event) => change("imageAlt", event.target.value)} placeholder="Що зображено" /></label></div>}
+          {isTeacher && <div className="wide department-upload-field"><b>Резюме або документ PDF</b><label className={`document-drop ${form.fileUrl ? "ready" : ""}`}><span>{form.fileName || (form.fileUrl ? "Файл готовий" : "Обрати PDF")}</span><input type="file" disabled={busy} accept=".pdf,application/pdf" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file, "document"); }} /></label><label>Посилання на документ<input type="url" value={form.fileUrl} onChange={(event) => change("fileUrl", event.target.value)} placeholder="https://…" /></label></div>}
           {isMaterial && <div className="wide department-upload-field"><b>Файл або посилання</b><label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName || "Файл готовий"}</b><span>Натисніть, щоб замінити</span></> : <><b>Обрати файл</b><span>PDF, Word, Excel або PowerPoint · до 20 МБ</span></>}<input type="file" disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file, "document"); }} /></label><label>Пряме посилання<input type="url" value={form.fileUrl} onChange={(event) => change("fileUrl", event.target.value)} placeholder="https://…" /></label><small>Після публікації документ автоматично з’явиться також у загальному каталозі «Документи».</small></div>}
           {isQuality && <div className="wide department-upload-field"><b>Документ до рубрики (необов’язково)</b><label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName || "Файл готовий"}</b><span>Натисніть, щоб замінити</span></> : <><b>Обрати файл</b><span>PDF, Word або таблиця · до 20 МБ</span></>}<input type="file" disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file, "document"); }} /></label><label>Або пряме посилання<input type="url" value={form.fileUrl} onChange={(event) => change("fileUrl", event.target.value)} placeholder="https://…" /></label></div>}
           <label>Статус<select value={form.status} onChange={(event) => change("status", event.target.value as "draft" | "published")}><option value="published">Опублікувати</option><option value="draft">Чернетка</option></select></label>

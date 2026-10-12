@@ -64,6 +64,7 @@ export const editorialAccessOptions: EditorialAccessOption[] = [
   { value: "/programs/law/forensic-laboratory", label: "Лабораторія криміналістики", group: "department" },
   { value: "/departments/private-law", label: "Кафедра цивільного, трудового та господарського права", group: "department" },
   { value: "/departments/criminal-law", label: "Кафедра кримінального права, процесу та криміналістики", group: "department" },
+  { value: "/departments/public-administration", label: "Кафедра публічного управління та публічної служби", group: "department" },
   { value: "/programs/social-work", label: "Кафедра соціальної роботи", group: "department" },
   { value: "/programs/professional-education", label: "Професійна освіта · попередня сторінка", group: "department", legacy: true },
   { value: digitalDepartmentPath, label: digitalDepartmentTitle, group: "department" },
@@ -106,7 +107,7 @@ export function canEditPage(profile: { role: string; accessScopes: string[] }, p
   if (profile.role === "admin" || profile.accessScopes.includes("*")) return true;
   if (profile.accessScopes.includes(digitalDepartmentPath) && professionalEducationProgrammes.some((page) => page.path === pagePath)) return true;
   if (profile.accessScopes.includes("/departments/law-faculty")) {
-    const facultyPages = ["/departments/constitutional-law", "/departments/private-law", "/departments/criminal-law", "/programs/public-administration", "/programs/law"];
+    const facultyPages = ["/departments/constitutional-law", "/departments/private-law", "/departments/criminal-law", "/departments/public-administration", "/programs/public-administration", "/programs/law"];
     if (facultyPages.some((path) => pagePath === path || pagePath.startsWith(`${path}/`))) return true;
   }
   return profile.accessScopes.some((scope) => scope === pagePath || (scope !== "/" && pagePath.startsWith(`${scope}/`)));
