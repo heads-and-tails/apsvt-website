@@ -116,7 +116,7 @@ credentials do not change.
 - npx tsc --noEmit: passed.
 - npm test: passed, 59 rendered/server tests, 0 skipped.
 - npm run build:vercel: passed, optimized Next.js production build.
-- node tests/news-date-flow.mjs http://localhost:5197: passed real D1
+- node tests/news-date-flow.test.mjs http://localhost:5197: passed real D1
   create/read/update/delete tests for Academy and department news, both card
   and article date states, stored-date retention, English copies, and rejection
   of a string masquerading as a boolean. The script refuses non-loopback hosts
