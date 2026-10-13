@@ -189,6 +189,7 @@ const internationalSections: readonly SectionHubItem[] = [
   { id: "partners", index: "01", title: "Міжнародні партнери", description: "Європейські заклади-партнери та академічні угоди Академії.", icon: "EU" },
   { id: "greenfinedu", index: "02", title: "GreenFinEDU", description: "Міжнародний освітній проєкт, матеріали та результати співпраці.", icon: "GF" },
   { id: "grants", index: "02.1", title: "Гранти та звіти", description: "Архів Erasmus+, результати проєктів, дослідження та звітні матеріали.", icon: "EU" },
+  { id: "project-lab", index: "02.2", title: "Project Lab", description: "Дві презентації про підготовку заявок Erasmus+ із використанням ШІ.", icon: "AI" },
   { id: "partnerships-in-action", index: "03", title: "Партнерство в дії", description: "Новини, зустрічі, підписані угоди та фотоматеріали.", icon: "NEWS" },
   { id: "cooperation", index: "04", title: "Напрями співпраці", description: "Мобільність, дослідження, публікації, конференції та обмін досвідом.", icon: "↔" },
   { id: "mobility-guide", index: "04.1", title: "Путівник з міжнародної мобільності", description: "Обмін, стажування, Erasmus+, документи, вимоги та покроковий алгоритм.", icon: "🌍" },
@@ -235,6 +236,14 @@ export default function Page() {
     <GreenFinEduResources />
 
     <GrantProjectsArchive />
+
+    <section className="soft" id="project-lab"><div className="wrap">
+      <div className="sec-head"><div><div className="idx">02.2 / Матеріали відділу міжнародного співробітництва</div><h2>Project Lab: ШІ в заявках Erasmus+</h2></div><p>Дві версії презентації про застосування ШІ під час підготовки проєктних заявок. Формулювання щодо EU AI Act і правил конкретних конкурсів уточнено.</p></div>
+      <div className="faculty-link-grid">
+        <a className="faculty-link-card" href="/documents/international/project-lab/project-lab-ai-erasmus-basic-2026.pptx" download><span>01 / Базова версія</span><h3>Презентація Project Lab</h3><p>Матеріали тренінгу у стандартному форматі.</p><b>Завантажити PPTX ↓</b></a>
+        <a className="faculty-link-card" href="/documents/international/project-lab/project-lab-ai-erasmus-academy-2026.pptx" download><span>02 / Версія Академії</span><h3>Презентація у стилі АПСВТ</h3><p>Ті самі матеріали з оформленням Академії.</p><b>Завантажити PPTX ↓</b></a>
+      </div>
+    </div></section>
 
     <section className="international-stories" id="partnerships-in-action"><div className="wrap">
       <div className="international-stories-head">
