@@ -1,11 +1,8 @@
 import Link from "next/link";
+import { EditorialRichText } from "./EditorialRichText";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { educationQualityRubrics, normalizeEducationQualityRubricId } from "@/lib/education-quality";
 import { getArchivedEducationQualityEntries } from "@/lib/archived-education-quality";
-
-function paragraphs(value: string) {
-  return value.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
-}
 
 export function EducationQualitySection({
   entries,
@@ -62,7 +59,7 @@ export function EducationQualitySection({
             <div className="education-quality-rubric-body">
               {items.length > 0 ? <div className="education-quality-items">{items.map((entry) => <article key={entry.id}>
                 <div><small>{entry.date || "Матеріал кафедри"}</small><h4>{entry.title}</h4>{entry.summary && <p>{entry.summary}</p>}</div>
-                {entry.body && <div className="education-quality-copy">{paragraphs(entry.body).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>}
+                {entry.body && <div className="education-quality-copy"><EditorialRichText text={entry.body} /></div>}
                 {entry.fileUrl && <a href={entry.fileUrl} target="_blank" rel="noreferrer">{entry.fileName || "Відкрити документ"} ↗</a>}
               </article>)}</div> : <div className="education-quality-empty"><p>Матеріали цієї рубрики готуються до публікації кафедрою.</p>{rubric.id === "programme-discussion" && (discussionEmail ? <a href={`mailto:${discussionEmail}?subject=${encodeURIComponent("Пропозиція до освітньої програми")}`}>Надіслати пропозицію кафедрі →</a> : <Link href="/contacts">Надіслати пропозицію →</Link>)}{rubric.id === "qualification-works" && <Link href="/research/theses">Перейти до репозитарію кваліфікаційних робіт →</Link>}</div>}
             </div>

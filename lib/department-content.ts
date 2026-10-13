@@ -26,6 +26,7 @@ export type DepartmentEntry = {
   body: string;
   imageUrl: string;
   imageAlt: string;
+  imageFit?: "cover" | "contain";
   fileUrl: string;
   fileName: string;
   date: string;
@@ -68,6 +69,7 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
     && typeof entry.body === "string" && editorialTextIsValid(entry.body)
     && typeof entry.imageUrl === "string"
     && typeof entry.imageAlt === "string"
+    && (entry.imageFit === undefined || entry.imageFit === "cover" || entry.imageFit === "contain")
     && typeof entry.fileUrl === "string"
     && typeof entry.fileName === "string"
     && typeof entry.date === "string"
@@ -116,6 +118,7 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
     body: payload.body || "",
     imageUrl: payload.imageUrl || "",
     imageAlt: payload.imageAlt || "",
+    imageFit: payload.imageFit === "contain" || payload.imageFit === "cover" ? payload.imageFit : undefined,
     fileUrl: payload.fileUrl || "",
     fileName: payload.fileName || "",
     date: payload.date || "",
@@ -151,6 +154,7 @@ function toContentPayload(input: DepartmentEntryInput): Record<string, string> {
     body: input.body.trim(),
     imageUrl: input.imageUrl.trim(),
     imageAlt: input.imageAlt.trim(),
+    imageFit: input.images?.[0]?.fit || input.imageFit || "",
     fileUrl: input.fileUrl.trim(),
     fileName: input.fileName.trim(),
     date: input.date,

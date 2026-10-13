@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
+import { departmentImages } from "@/lib/department-media";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { isEditorialPagePath } from "@/lib/editorial-access";
 import { DepartmentEditorialContent } from "./DepartmentEditorialContent";
@@ -61,13 +62,18 @@ export function UniversalPageMaterials() {
     const originalSrc = image?.getAttribute("src") ?? null;
     const originalSrcset = image?.getAttribute("srcset") ?? null;
     const originalAlt = image?.getAttribute("alt") ?? null;
+    const originalFit = image?.style.objectFit || "";
+    const originalPosition = image?.style.objectPosition || "";
 
     if (heading && hero.title) heading.textContent = hero.title;
     if (summary && hero.summary) summary.textContent = hero.summary;
-    if (image && hero.imageUrl) {
-      image.src = hero.imageUrl;
+    const media = departmentImages(hero)[0];
+    if (image && media) {
+      image.src = media.url;
       image.removeAttribute("srcset");
-      image.alt = hero.imageAlt || hero.title;
+      image.alt = media.alt || hero.title;
+      image.style.objectFit = media.fit || "contain";
+      image.style.objectPosition = `${media.positionX ?? 50}% ${media.positionY ?? 50}%`;
     }
 
     return () => {
@@ -77,6 +83,8 @@ export function UniversalPageMaterials() {
         restoreAttribute(image, "src", originalSrc);
         restoreAttribute(image, "srcset", originalSrcset);
         restoreAttribute(image, "alt", originalAlt);
+        image.style.objectFit = originalFit;
+        image.style.objectPosition = originalPosition;
       }
     };
   }, [entries, pathname]);
@@ -97,13 +105,16 @@ export function UniversalPageMaterials() {
           const originalSrc = element.getAttribute("src");
           const originalSrcset = element.getAttribute("srcset");
           const originalAlt = element.getAttribute("alt");
+          const originalObjectFit = element.style.objectFit;
           if (entry.imageUrl) element.src = entry.imageUrl;
           element.removeAttribute("srcset");
           if (entry.imageAlt) element.alt = entry.imageAlt;
+          if (entry.imageFit) element.style.objectFit = entry.imageFit;
           restore.push(() => {
             restoreAttribute(element, "src", originalSrc);
             restoreAttribute(element, "srcset", originalSrcset);
             restoreAttribute(element, "alt", originalAlt);
+            element.style.objectFit = originalObjectFit;
           });
         } else if (entry.role === "link" && element instanceof HTMLAnchorElement) {
           const originalHref = element.getAttribute("href");

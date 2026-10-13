@@ -44,6 +44,7 @@ test("validates image fit and focus, preserves attachments and supports legacy i
   assert.equal(media.isDepartmentImage({ url: "javascript:alert(1)", alt: "" }), false);
   assert.equal(media.isDepartmentAttachment({ url: "/media/file.pdf", label: "" }), false);
   assert.deepEqual(media.departmentImages({ imageUrl: "/photo.jpg", title: "Викладач" }), [{ url: "/photo.jpg", alt: "Викладач", fit: "contain" }]);
+  assert.equal(media.departmentImages({ imageUrl: "/photo.jpg", imageFit: "cover", title: "Фото" })[0].fit, "cover");
   assert.deepEqual(media.departmentAttachments({ fileUrl: "/file.pdf", fileName: "Положення", attachments: [{ url: "/file.pdf", label: "Положення" }] }), [{ url: "/file.pdf", label: "Положення" }]);
   assert.deepEqual(media.parseDepartmentMedia("bad JSON", media.isDepartmentImage), []);
 });

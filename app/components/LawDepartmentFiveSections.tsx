@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { departmentImages } from "@/lib/department-media";
 import { getDepartmentEntries, type DepartmentEntry } from "@/lib/department-content";
 import { AcademicNews } from "./AcademicNews";
 import { AcademicProfileCard, departmentTeacherProfile, type AcademicProfileCardData } from "./AcademicProfileCard";
@@ -23,7 +24,9 @@ export function teachersForSection(source: LawDepartmentTeacher[], entries: Depa
   const managed = entries.filter((entry) => entry.entryType === "teacher");
   const records = source.map((person, index) => {
     const override = managed.find((entry) => (entry.teacherSourceName || entry.title).trim().toLocaleLowerCase("uk-UA") === person.name.toLocaleLowerCase("uk-UA"));
-    return { person: override ? departmentTeacherProfile(override, person) : { ...person, sourceName: person.name }, hidden: Boolean(override?.hidden), order: override?.sortOrder ?? (index + 1) * 10 };
+    const legacyPhoto = entries.find((entry) => entry.entryType === "override" && entry.role === "image" && entry.imageUrl && entry.title.trim().toLocaleLowerCase("uk-UA") === person.name.toLocaleLowerCase("uk-UA"));
+    const image = legacyPhoto ? departmentImages(legacyPhoto)[0] : undefined;
+    return { person: override ? departmentTeacherProfile(override, person) : { ...person, sourceName: person.name, ...(image ? { image: image.url, imageSettings: image } : {}) }, hidden: Boolean(override?.hidden), order: override?.sortOrder ?? (index + 1) * 10 };
   });
   for (const entry of managed) {
     if (source.some((person) => person.name.toLocaleLowerCase("uk-UA") === (entry.teacherSourceName || entry.title).trim().toLocaleLowerCase("uk-UA"))) continue;
@@ -44,7 +47,7 @@ export async function LawDepartmentFiveSections({ pagePath, title, summary, head
   const entries = await getDepartmentEntries(pagePath);
   const content = (sectionId: string) => <DepartmentEditorialContent inline entries={entries.filter((entry) => entry.sectionId === sectionId && !["teacher", "hero", "quality"].includes(entry.entryType) && !entry.hidden)} />;
   const leaders = teachersForSection(head ? [head] : [], entries.filter((entry) => entry.sectionId === "department-head"));
-  const team = teachersForSection(teachers, entries.filter((entry) => entry.entryType === "teacher" && entry.sectionId !== "department-head"));
+  const team = teachersForSection(teachers, entries.filter((entry) => entry.sectionId !== "department-head"));
 
   return <main id="top" className="criminal-department" data-page-materials-server="true"><SiteHeader />
     <section className="criminal-department-hero"><div className="wrap criminal-department-hero-grid law-department-simple-hero"><div className="criminal-department-hero-copy">

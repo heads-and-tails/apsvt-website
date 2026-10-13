@@ -18,8 +18,8 @@ export function isDepartmentAttachment(value: unknown): value is DepartmentAttac
   const file = value as Record<string, unknown>;
   return webFile(file.url) && typeof file.label === "string" && Boolean(file.label.trim());
 }
-export function departmentImages(entry: { images?: DepartmentImage[]; imageUrl?: string; imageAlt?: string; title?: string }): DepartmentImage[] {
-  return entry.images?.length ? entry.images : entry.imageUrl ? [{ url: entry.imageUrl, alt: entry.imageAlt || entry.title || "", fit: "contain" }] : [];
+export function departmentImages(entry: { images?: DepartmentImage[]; imageUrl?: string; imageAlt?: string; imageFit?: "cover" | "contain"; title?: string }): DepartmentImage[] {
+  return entry.images?.length ? entry.images.map((image) => ({ ...image, fit: image.fit || entry.imageFit || "contain" })) : entry.imageUrl ? [{ url: entry.imageUrl, alt: entry.imageAlt || entry.title || "", fit: entry.imageFit || "contain" }] : [];
 }
 export function departmentAttachments(entry: { attachments?: DepartmentAttachment[]; fileUrl?: string; fileName?: string }): DepartmentAttachment[] {
   const files = [...(entry.attachments || [])];

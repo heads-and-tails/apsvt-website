@@ -14,6 +14,7 @@ export type AcademicProfileCardData = {
   summary: string;
   image?: string;
   imageSettings?: DepartmentImage;
+  imageFit?: "cover" | "contain";
   sourceName?: string;
   managedId?: string;
   sortOrder?: number;
@@ -64,7 +65,7 @@ export function AcademicProfileCard({
   return <article className="academic-profile-card" data-academic-profile={JSON.stringify(person)} data-editorial-rendered={person.managedId ? "true" : undefined}>
     <div className={`academic-profile-photo faculty-portrait-surface${person.imageCrop === "caption" ? " academic-profile-photo--caption" : ""}`}>
       {person.image
-        ? <img src={person.image} alt={person.imageSettings?.alt || person.name} style={{ ...departmentImageStyle(person.imageSettings || { url: person.image, alt: person.name, fit: "contain" }), ...((person.imageSettings?.fit || "contain") === "contain" ? { transform: "none" } : {}) }} />
+        ? <img src={person.image} alt={person.imageSettings?.alt || person.name} style={{ ...departmentImageStyle(person.imageSettings || { url: person.image, alt: person.name, fit: person.imageFit || "contain" }), ...((person.imageSettings?.fit || person.imageFit || "contain") === "contain" ? { transform: "none" } : {}) }} />
         : <span aria-label={`Фото ${person.name} готується до публікації`}>{initials(person.name)}</span>}
     </div>
     <div className="academic-profile-copy">

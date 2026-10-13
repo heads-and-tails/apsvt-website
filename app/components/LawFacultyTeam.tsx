@@ -99,7 +99,7 @@ export async function LawFacultyTeam({ compact = false }: { compact?: boolean })
       ...(teacher.orcid ? [{ label: "ORCID", href: teacher.orcid }] : []),
       ...(teacher.scholar ? [{ label: "Google Scholar", href: teacher.scholar }] : []),
     ],
-  })), entries.filter((entry) => entry.entryType === "teacher" && (!entry.sectionId || entry.sectionId === "law-teachers")));
+  })), entries.filter((entry) => !entry.sectionId || entry.sectionId === "law-teachers"));
   const displayed = compact ? managed.slice(0, 6) : managed;
   return <section className="law-faculty-team" id="law-teachers">
     <div className="wrap">

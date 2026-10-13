@@ -21,6 +21,7 @@ export async function GET(request: Request) {
     body: entry.body,
     imageUrl: entry.imageUrl,
     imageAlt: entry.imageAlt,
+    imageFit: entry.imageFit,
     fileUrl: entry.fileUrl,
     fileName: entry.fileName,
     date: entry.date,

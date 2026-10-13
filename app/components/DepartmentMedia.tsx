@@ -5,7 +5,7 @@ export function departmentImageStyle(image: DepartmentImage): CSSProperties {
   return { objectFit: image.fit || "contain", objectPosition: `${image.positionX ?? 50}% ${image.positionY ?? 50}%` };
 }
 
-export function DepartmentImages({ entry, skipFirst = false }: { entry: { images?: DepartmentImage[]; imageUrl?: string; imageAlt?: string; title?: string }; skipFirst?: boolean }) {
+export function DepartmentImages({ entry, skipFirst = false }: { entry: { images?: DepartmentImage[]; imageUrl?: string; imageAlt?: string; imageFit?: "cover" | "contain"; title?: string }; skipFirst?: boolean }) {
   const images = departmentImages(entry).slice(skipFirst ? 1 : 0);
   if (!images.length) return null;
   return <div className={`department-authored-images${images.length > 1 ? " department-authored-images--gallery" : ""}`}>

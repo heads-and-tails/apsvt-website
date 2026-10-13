@@ -34,8 +34,19 @@ export function FinanceMasterDocuments() {
     </div>
     <div className="finance-plan-course-files finance-master-document-links">
       <a href={`${documentBase}/master-programme-2025.pdf`} target="_blank" rel="noreferrer">Освітньо-професійна програма магістра · 2025 <span>PDF ↗</span></a>
-      <a href={`${documentBase}/master-parttime-2025.pdf`} target="_blank" rel="noreferrer">Навчальний план · заочна форма · 2025 <span>PDF ↗</span></a>
     </div>
-    <p className="finance-plan-pending">План денної форми буде додано після уточнення документа кафедрою.</p>
+    <div className="finance-plan-course-list">
+      <details><summary><span>01</span><strong>1 курс</strong><small>2 документи</small><b aria-hidden="true">+</b></summary>
+        <div className="finance-plan-course-files">
+          <a href={`${documentBase}/master-fulltime-2025.pdf`} target="_blank" rel="noreferrer">Денна форма · 2025 <span>PDF ↗</span></a>
+          <a href={`${documentBase}/master-parttime-2025.pdf`} target="_blank" rel="noreferrer">Заочна форма · 2025 <span>PDF ↗</span></a>
+        </div>
+      </details>
+      <details><summary><span>02</span><strong>2 курс</strong><small>1 документ</small><b aria-hidden="true">+</b></summary>
+        <div className="finance-plan-course-files">
+          <a href={`${documentBase}/master-parttime-2025.pdf`} target="_blank" rel="noreferrer">Заочна форма · 2025 <span>PDF ↗</span></a>
+        </div>
+      </details>
+    </div>
   </section>;
 }

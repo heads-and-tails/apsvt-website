@@ -314,3 +314,27 @@ Times below use Kyiv time. All ten messages remain unread in Gmail.
 | 12 Oct 21:05: thank-you | Acknowledgement | No additional work requested |
 | 12 Oct 22:24: formatting and proportional images | Incomplete | Word formatting, readable semantics, whole-image/crop/focus controls and original uploads verified |
 | 12 Oct 22:29: teacher/photo management | Incomplete | Complete profiles, photo-only preservation, new cards, rename/order/hide/delete/restore verified |
+
+Main integration: PR #34's finance document/course changes and PR #35's editor
+follow-up landed during validation. The release integrates both. Preserve the
+legacy imageFit field and existing selections, including native image overrides,
+while defaulting new uploads to whole-image display. The visual editor retains
+the follow-up's bold/link/ordered-list/line-break support and adds Word paste,
+semantic rendering and complete media/profile management. Recheck legacy fit
+round-trips, all required checks, staff preservation and shared finance views
+against the integrated branch before merge.
+
+Legacy-content review found named teacher image overrides stored against the
+old department layout. Preserve those explicitly named uploads when resolving
+native profiles; current whole-profile edits take precedence, so removal does
+not resurrect an old picture. Validate with copies of the actual public records
+in the isolated database, confirm every named photo appears exactly once, and
+confirm photo-only editing retains that picture and the rest of the profile.
+
+The integrated branch passed all API/UI scenarios again, plus 93 responsive
+public scenarios with empty error/failure arrays. Seven actual, explicitly named
+legacy photo uploads appeared once each; removing a photo from its full profile
+kept it removed. Fresh integrated screenshots are in integrated-final. Shared
+programme quality sections now use the same rich renderer: real API and desktop/
+mobile browser checks retained bold and ordered lists without exposing technical
+rich-text data. Final required checks are run after this compatibility update.

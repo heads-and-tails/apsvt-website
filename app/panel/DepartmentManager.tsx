@@ -387,6 +387,7 @@ const emptyEntry = (pagePath: string, entryType: DepartmentEntryType, sectionId 
   body: "",
   imageUrl: "",
   imageAlt: "",
+  imageFit: "contain",
   fileUrl: "",
   fileName: "",
   date: "",
@@ -560,6 +561,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       body: entry.body,
       imageUrl: entry.imageUrl,
       imageAlt: entry.imageAlt,
+      imageFit: entry.imageFit || "contain",
       fileUrl: entry.fileUrl,
       fileName: entry.fileName,
       date: entry.date,
@@ -594,7 +596,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     setActiveSection(group.sectionId);
     setEntryType("teacher");
     setEditorSession((current) => current + 1); setEditing(null);
-    setForm({ ...emptyEntry(pagePath, "teacher", group.sectionId), teacherSourceName: sourceName, title: name, role, summary, body: source?.details || "", teacherTags: source?.tags || [], profileLinks: source?.links || [], imageUrl, imageAlt: name, images: imageUrl ? [source?.imageSettings || { url: imageUrl, alt: name, fit: "contain" }] : [], sortOrder: source?.sortOrder ?? (inventoryGroups.filter((item) => item.suggestedType === "teacher" && item.sectionId === group.sectionId).findIndex((item) => item.selector === group.selector) + 1) * 10 });
+    setForm({ ...emptyEntry(pagePath, "teacher", group.sectionId), teacherSourceName: sourceName, imageFit: source?.imageSettings?.fit || source?.imageFit || "contain", title: name, role, summary, body: source?.details || "", teacherTags: source?.tags || [], profileLinks: source?.links || [], imageUrl, imageAlt: name, images: imageUrl ? [source?.imageSettings || { url: imageUrl, alt: name, fit: source?.imageFit || "contain" }] : [], sortOrder: source?.sortOrder ?? (inventoryGroups.filter((item) => item.suggestedType === "teacher" && item.sectionId === group.sectionId).findIndex((item) => item.selector === group.selector) + 1) * 10 });
     setMessage("Редагуйте наявний профіль. Збереження замінить картку, а не створить дубль.");
     document.querySelector("#department-entry-editor")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -613,6 +615,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
           body: existing.body,
           imageUrl: existing.imageUrl,
           imageAlt: existing.imageAlt,
+          imageFit: existing.imageFit || "contain",
           fileUrl: existing.fileUrl,
           fileName: existing.fileName,
           date: existing.date,
@@ -638,6 +641,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       body: item.selector,
       imageUrl: item.imageUrl,
       imageAlt: item.imageAlt,
+      imageFit: "contain",
       role: item.kind,
       profileUrl: item.href,
       sortOrder: item.order * 10,
@@ -798,7 +802,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
           {(needsBody || isQuality) && <RichTextEditor key={`${pagePath}:${form.entryType}:${form.sectionId}:${editing || form.teacherSourceName || "new"}:${editorSession}`} value={form.body} onChange={(value) => change("body", value)} /> }
           {isTeacher && <TeacherResumeEditor key={`${pagePath}:${form.sectionId}:${editing || form.teacherSourceName || "new"}:${editorSession}`} value={form.body} onChange={(value) => change("body", value)} />}
           {isTeacher && <label className="wide department-checkbox"><input type="checkbox" checked={Boolean(form.hidden)} onChange={(event) => change("hidden", event.target.checked)} /> Приховати профіль зі сторінки</label>}
-          {needsImage && !isOverride && <DepartmentImageEditor value={departmentImages(form)} defaultAlt={form.imageAlt || form.title} pagePath={pagePath} portrait={isTeacher} disabled={busy} onBusy={setBusy} existingImages={[...new Map(entries.filter((entry) => entry.pagePath === pagePath).flatMap(departmentImages).map((image) => [image.url, image])).values()]} onChange={(images: DepartmentImage[]) => setForm((current) => ({ ...current, images, imageUrl: images[0]?.url || "", imageAlt: images[0]?.alt || "" }))} />}
+          {needsImage && !isOverride && <DepartmentImageEditor value={departmentImages(form)} defaultAlt={form.imageAlt || form.title} pagePath={pagePath} portrait={isTeacher} disabled={busy} onBusy={setBusy} existingImages={[...new Map(entries.filter((entry) => entry.pagePath === pagePath).flatMap(departmentImages).map((image) => [image.url, image])).values()]} onChange={(images: DepartmentImage[]) => setForm((current) => ({ ...current, images, imageFit: images[0]?.fit || "contain", imageUrl: images[0]?.url || "", imageAlt: images[0]?.alt || "" }))} />}
           {needsImage && isOverride && <div className="wide department-upload-field"><b>Замінити зображення</b><label className="document-drop"><input type="file" disabled={busy} accept="image/jpeg,image/png,image/webp" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file, "image"); }} />Обрати фото</label><label>Опис зображення<input value={form.imageAlt} onChange={(event) => change("imageAlt", event.target.value)} /></label></div>}
           {(needsBody || isTeacher) && <DepartmentAttachmentEditor value={departmentAttachments(form)} pagePath={pagePath} disabled={busy} onBusy={setBusy} onChange={(attachments) => setForm((current) => ({ ...current, attachments, fileUrl: "", fileName: "" }))} />}
           {isMaterial && <div className="wide department-upload-field"><b>Файл або посилання</b><label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName || "Файл готовий"}</b><span>Натисніть, щоб замінити</span></> : <><b>Обрати файл</b><span>PDF, Word, Excel або PowerPoint · до 20 МБ</span></>}<input type="file" disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file, "document"); }} /></label><label>Пряме посилання<input type="url" value={form.fileUrl} onChange={(event) => change("fileUrl", event.target.value)} placeholder="https://…" /></label><small>Після публікації документ автоматично з’явиться також у загальному каталозі «Документи».</small></div>}

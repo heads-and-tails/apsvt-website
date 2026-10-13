@@ -48,6 +48,10 @@ test("department content and programme documents survive real uploads, publishin
     const teacher = await request("/api/department-content", "POST", { ...shown, pagePath: "/departments/constitutional-law", sectionId: "department-team", entryType: "teacher", title: "Локальна перевірка опису фото", role: "Перевірка редактора", teacherSourceName: "", images: [{ url: image.url, alt: "Авторський опис портрета", fit: "contain" }] });
     created.push(["department-content", teacher.id]);
     assert.ok((await request(teacher.pagePath)).includes('alt="Авторський опис портрета"'), "Teacher images must retain the editor's description");
+    const quality = await request("/api/department-content", "POST", { ...shown, pagePath: "/programs/law", sectionId: "quality", entryType: "quality", title: "Локальна перевірка форматування", role: "monitoring", body: '<!-- APSVT_RICH_TEXT_V1 -->\n' + JSON.stringify({ type: "doc", content: [{ type: "paragraph", content: [{ type: "text", text: "Збережено форматування", marks: [{ type: "bold" }] }] }] }) });
+    created.push(["department-content", quality.id]);
+    const qualityHtml = await request(quality.pagePath);
+    assert.ok(qualityHtml.includes("<strong>Збережено форматування</strong>"), "Shared quality sections must render the visual editor's saved formatting");
     for (const path of pages) {
       let docs = [];
       for (const category of ["Робоча програма", "Анотація"]) {
