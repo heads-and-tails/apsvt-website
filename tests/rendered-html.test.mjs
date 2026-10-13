@@ -39,6 +39,7 @@ test("publishes Yaroslav Zhuravel's AI training report with three supplied event
   const html=await article.text();
   assert.match(html,/13 жовтня 2026 року в Академії праці/);
   assert.match(html,/Наталія Гончаренко/);
+  assert.doesNotMatch(html,/Освіта стає цінною тоді|<b>Автор<\/b>/);
   for(const file of ["ai-training-2026-01.jpeg","ai-training-2026-02.jpeg","ai-training-2026-03.jpeg"]){
     assert.match(html,new RegExp(file));
   }

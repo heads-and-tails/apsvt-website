@@ -151,10 +151,9 @@ export default async function Page({ params }: Props) {
           <a href={academicCompetitionDocument} download><b>02</b><strong>Офіційне оголошення</strong><small>DOCX · завантажити ↗</small></a>
           <Link href="/vacancies#competition-2-3">Перейти до розділу «Вакансії та конкурси» →</Link>
         </div>}
-        <blockquote>Освіта стає цінною тоді, коли знання переходить у відповідальну дію.</blockquote>
         <Link className="back-link" href="/news">← До всіх новин</Link>
       </article>
-      <aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Категорія</b>{post.category}</li>{!post.hideDate&&<li><b>Опубліковано</b>{date}</li>}<li><b>Автор</b>Редакція АПСВТ</li></ul></aside>
+      <aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Категорія</b>{post.category}</li>{!post.hideDate&&<li><b>Опубліковано</b>{date}</li>}</ul></aside>
     </div></section>
     {related.length > 0 && <section className="soft"><div className="wrap"><div className="sec-head"><div><div className="idx">Читайте далі</div><h2>Ще з Академії</h2></div></div><div className="news-grid">{related.map((item) => <NewsCard post={item} key={item.id} />)}</div></div></section>}
     <SiteFooter />

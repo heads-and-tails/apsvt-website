@@ -377,6 +377,7 @@ const emptyEntry = (pagePath: string, entryType: DepartmentEntryType, sectionId 
   fileUrl: "",
   fileName: "",
   date: "",
+  hideDate: false,
   role: entryType === "quality" ? "monitoring" : "",
   email: "",
   profileUrl: "",
@@ -541,6 +542,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       fileUrl: entry.fileUrl,
       fileName: entry.fileName,
       date: entry.date,
+      hideDate: Boolean(entry.hideDate),
       role: entry.entryType === "quality" ? normalizeEducationQualityRubricId(entry.role, `${entry.title} ${entry.summary}`) : entry.role,
       email: entry.email,
       profileUrl: entry.profileUrl,
@@ -704,6 +706,8 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       title: item.title, summary: item.summary, body: item.body, imageUrl: item.imageUrl,
       imageAlt: item.imageAlt, fileUrl: item.fileUrl, fileName: item.fileName, date: item.date,
       role: item.role, email: item.email, profileUrl: item.profileUrl, status: item.status, sortOrder,
+      hideDate: item.hideDate, hidden: item.hidden, teacherSourceName: item.teacherSourceName,
+      teacherDegree: item.teacherDegree, teacherAcademicTitle: item.teacherAcademicTitle,
     });
     setBusy(true);
     setMessage("Змінюємо порядок…");
@@ -752,6 +756,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
           {!isOverride && pageSections.length > 0 && <label className="wide">Розділ сторінки<select required value={form.sectionId} onChange={(event) => change("sectionId", event.target.value)}><option value="">Оберіть розділ</option>{pageSections.map((section) => <option value={section.id} key={section.id}>{section.label}</option>)}</select></label>}
           <label className="wide">{isOverride ? "Елемент сторінки" : isTeacher ? "Ім’я та прізвище" : isPartner ? "Назва партнера / компанії" : isHero ? "Головний заголовок сторінки" : "Заголовок"}<input required readOnly={isOverride} value={form.title} onChange={(event) => change("title", event.target.value)} placeholder={isTeacher ? "ПІБ викладача" : isPartner ? "Назва організації" : "Зрозумілий заголовок"} /></label>
           {(editorType === "news" || editorType === "article" || isQuality) && <label>Дата<input type="date" value={form.date} onChange={(event) => change("date", event.target.value)} /></label>}
+          {editorType === "news" && <label className="wide department-checkbox"><input type="checkbox" checked={Boolean(form.hideDate)} onChange={(event) => change("hideDate", event.target.checked)} /> Не відображати дату публікації</label>}
           {isTeacher && <><label>Посада<input required value={form.role} onChange={(event) => change("role", event.target.value)} /></label><label>Науковий ступінь<input value={form.teacherDegree || ""} onChange={(event) => change("teacherDegree", event.target.value)} /></label><label>Вчене звання<input value={form.teacherAcademicTitle || ""} onChange={(event) => change("teacherAcademicTitle", event.target.value)} /></label><label>Email<input type="email" value={form.email} onChange={(event) => change("email", event.target.value)} /></label><label>Науковий профіль<input type="url" value={form.profileUrl} onChange={(event) => change("profileUrl", event.target.value)} placeholder="ORCID, Google Scholar…" /></label><label>Ім’я наявного профілю (для заміни без дублювання)<input value={form.teacherSourceName || ""} onChange={(event) => change("teacherSourceName", event.target.value)} placeholder="Точне ПІБ на сайті" /></label></>}
           {isPartner && <><label>Тип партнерства<input value={form.role} onChange={(event) => change("role", event.target.value)} placeholder="Роботодавець, міжнародний партнер…" /></label><label>Сайт партнера<input type="url" value={form.profileUrl} onChange={(event) => change("profileUrl", event.target.value)} placeholder="https://…" /></label></>}
           {isQuality && <label className="wide">Рубрика<select required value={form.role} onChange={(event) => change("role", event.target.value)}>{educationQualityRubrics.map((rubric) => <option value={rubric.id} key={rubric.id}>{rubric.title}</option>)}</select></label>}
