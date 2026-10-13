@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
+import { departmentImages } from "@/lib/department-media";
 import type { DepartmentEntry } from "@/lib/department-content";
+import { isEditorialPagePath } from "@/lib/editorial-access";
 import { DepartmentEditorialContent } from "./DepartmentEditorialContent";
 
 const ignoredPrefixes = ["/panel", "/student", "/api", "/auth", "/en"];
@@ -27,7 +29,7 @@ export function UniversalPageMaterials() {
   );
 
   useEffect(() => {
-    if (isIgnoredPath(pathname)) return;
+    if (isIgnoredPath(pathname) || !isEditorialPagePath(pathname)) return;
     const controller = new AbortController();
     fetch(`/api/page-materials?path=${encodeURIComponent(pathname)}`, { signal: controller.signal })
       .then((response) => response.ok ? response.json() : [])
@@ -60,13 +62,18 @@ export function UniversalPageMaterials() {
     const originalSrc = image?.getAttribute("src") ?? null;
     const originalSrcset = image?.getAttribute("srcset") ?? null;
     const originalAlt = image?.getAttribute("alt") ?? null;
+    const originalFit = image?.style.objectFit || "";
+    const originalPosition = image?.style.objectPosition || "";
 
     if (heading && hero.title) heading.textContent = hero.title;
     if (summary && hero.summary) summary.textContent = hero.summary;
-    if (image && hero.imageUrl) {
-      image.src = hero.imageUrl;
+    const media = departmentImages(hero)[0];
+    if (image && media) {
+      image.src = media.url;
       image.removeAttribute("srcset");
-      image.alt = hero.imageAlt || hero.title;
+      image.alt = media.alt || hero.title;
+      image.style.objectFit = media.fit || "contain";
+      image.style.objectPosition = `${media.positionX ?? 50}% ${media.positionY ?? 50}%`;
     }
 
     return () => {
@@ -76,6 +83,8 @@ export function UniversalPageMaterials() {
         restoreAttribute(image, "src", originalSrc);
         restoreAttribute(image, "srcset", originalSrcset);
         restoreAttribute(image, "alt", originalAlt);
+        image.style.objectFit = originalFit;
+        image.style.objectPosition = originalPosition;
       }
     };
   }, [entries, pathname]);
@@ -87,7 +96,7 @@ export function UniversalPageMaterials() {
       if (!entry.body.startsWith("main > ")) return;
       try {
         const element = document.querySelector<HTMLElement>(entry.body);
-        if (!element) return;
+        if (!element || element.closest("[data-editorial-rendered=\'true\']")) return;
         if (entry.role === "text") {
           const original = element.innerHTML;
           element.textContent = entry.summary;

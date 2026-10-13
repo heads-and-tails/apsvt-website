@@ -1132,7 +1132,7 @@ test("ships a protected Supabase editorial panel",async()=>{
   assert.match(access,/Створити й надіслати доступ/);
   assert.match(editorialEmail,/resetPasswordForEmail/);
   assert.match(editorialEmail,/using Supabase fallback/);
-  assert.match(documents,/purpose", "document"/);
+  assert.match(documents,/uploadEditorialFile\(file, "document", form\.pagePath\)/);
   assert.match(documents,/\/api\/documents/);
   assert.match(documentMigration,/editorial_documents/);
   assert.match(documentMigration,/editorial-documents/);
@@ -1331,7 +1331,7 @@ test("ships code login and complete department-page editing",async()=>{
   assert.match(login,/\[0-9\]\{8\}/);
   assert.match(login,/Одноразовий код/);
   for(const type of ["Розділи сторінки","Новини","Статті","Матеріали","Фотогалерея","Викладачі"]){assert.match(manager,new RegExp(type));}
-  assert.match(publicRenderer,/department-teacher-grid/);
+  assert.match(publicRenderer,/AcademicProfileCard/);
   assert.match(publicRenderer,/department-photo-grid/);
   assert.match(panel,/Інструкція ↗/);
   assert.ok(guide.length>50000);
@@ -1382,9 +1382,17 @@ test("keeps four law departments to five closed sections and separates programme
   }
   const faculty=await (await render("/departments/law-faculty")).text();
   assert.doesNotMatch(faculty,/id="faculty-discussion"|Рішення та протоколи/);
-  const bachelor=await (await render("/departments/law-faculty/faculty-programmes/d8-law-bachelor")).text();
-  assert.match(bachelor,/Робочі програми/);
-  assert.match(bachelor,/Анотації/);
+  for(const slug of ["d8-law-bachelor","d8-law-master","d8-law-phd","d4-public-administration-bachelor","d4-public-administration-master","d4-public-administration-phd"]){
+    const html=await (await render(`/departments/law-faculty/faculty-programmes/${slug}`)).text();
+    assert.match(html,/<h2>Робочі програми<\/h2>/);
+    assert.match(html,/<h2>Анотації<\/h2>/);
+  }
+  for(const path of ["faculty-council/meetings","faculty-council/decisions","faculty-council/protocols","faculty-discussion/about"]){
+    assert.equal((await render(`/departments/law-faculty/${path}`)).status,404,path);
+  }
+  for(const page of ["about","members","regulations","plan"]){
+    assert.equal((await render(`/departments/law-faculty/faculty-council/${page}`)).status,200,page);
+  }
 });
 
 test("publishes the private, labour and commercial law department",async()=>{

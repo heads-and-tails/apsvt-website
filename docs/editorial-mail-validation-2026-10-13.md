@@ -154,3 +154,187 @@ marks both /en/news and /en/news/[slug] as dynamic. Fresh final English and
 Ukrainian screenshots were opened and inspected, including the saved/reopened
 checkbox and hidden-versus-visible cards. Browser error and failed-request
 arrays remained empty. Production verification is pending the PR merge.
+
+## Production completion of PR #33
+
+Merged PR: https://github.com/heads-and-tails/apsvt-website/pull/33
+Main commit: d2eb1dc377c267c8deb1079e675c17226ea9b28e
+Deployment: apsvt-academy-website-1mwg2xy89-signal-media.vercel.app
+Deployment ID: dpl_3eVqN94zAPbfD2kfMxR6wDUuaEMr
+Vercel reported READY, production, and the matching main SHA. Inspecting
+www.socosvita.kiev.ua resolved to that same deployment ID. Live Ukrainian,
+English, and department pages returned 200, with no overflow, page exceptions,
+or failed requests. Fresh desktop/mobile production screenshots in
+/tmp/apsvt-mail-validation/production were opened and directly inspected.
+No generic appended quote or template-invented author appeared. No real account
+credentials were changed and no test news was published to the production DB.
+
+## Department content implementation — strategy before editing
+
+Scope: the 12 October 14:02 content-management request and the 22:24 formatting
+and image requirements, with the staff-specific controls reviewed subsequently.
+Keep existing authored information, navigation, colours, and typography. Fix
+nested wrappers and forced-height image cropping; do not generate descriptions,
+biographies, empty paragraph cards, or additional generic text boxes.
+
+- Capture and inspect fresh baseline about/staff views of each law department
+  at 1440×1000, 768×1024, and 390×844. Use the actual stored 3295-character,
+  21-line-break description as a local fixture, rather than inventing copy.
+- Rich-text tests: Word-style pasted paragraphs/headings/lists/bold/links,
+  keyboard editing, undo, save/reopen, empty content, legacy plain text and
+  Markdown, and malicious markup/unsafe URLs. Inspect semantic public output.
+- Media tests: original upload bytes retained; original image dimensions;
+  portrait/logo/poster/banner displayed proportionally; whole-image default,
+  optional controlled crop/focus; replace/remove; useful size/format guidance.
+- Section/article/news/staff content can carry PDFs and sensible named links;
+  verify attachments and multiple news photos after save and reload.
+- Test all five sections and existing-profile preservation on all four pages.
+  Inspect loading/empty/error states and failed network requests. Use a real
+  isolated D1/R2 development database for fixtures; no fake production content.
+- Check the public content API returns all rendering flags and timestamps.
+  Check client-rendered pages as well as server-rendered law pages. Include
+  an unchecked date option with no manually entered date, using the actual
+  creation timestamp as the publication-date fallback.
+- Inspect desktop/tablet/mobile final screenshots and relevant interaction
+  states, plus Ukrainian/English news and representative shared profile pages.
+- Run lint, TypeScript, all repository tests, functional upload/content checks,
+  and the optimized Vercel build on the final code. Review the full diff,
+  satisfy PR checks, merge, and verify the matching production deployment and
+  live screenshots. No required check may be skipped.
+
+Staff preservation is part of this implementation, because the existing native
+card edit action does not load the complete biography, role, tags, or links.
+Validate a photo-only edit against a full card snapshot, with and without a
+photo; preserve all other fields. A seeded card must stay removed when deleting
+its override (use an explicit visibility tombstone rather than accidentally
+restoring the old card). Verify new/renamed/reordered/hidden profiles separately.
+
+Additional discovered boundaries: the shared public API omitted rendering flags
+and timestamps; uploads had a Supabase-only client path despite a working D1/R2
+server fallback. Validate both actual configurations and preserve original file
+bytes. Default publication timestamps must be set on first publication, including
+draft-to-published transitions, rather than substituting an earlier draft date.
+
+Programme validation exposed another local-storage gap: document uploads worked
+with R2 but publishing required Supabase exclusively. Add the same isolated D1
+fallback used by other content, keeping the existing production Supabase path.
+Keep document records out of public research-resource lists. Validate create,
+read, update, draft visibility, delete and category separation at all six levels
+using real local uploads; inspect empty category headings and preserve existing
+programme links. No production test documents or authentication changes.
+
+### Department content, staff and programme results
+
+- Word paste retained paragraphs, hard breaks, heading levels, bold, bullet
+  lists, ordered lists starting at 3 and links. Scripts in pasted markup did
+  not execute. Save/reopen and semantic public rendering passed at 1440×1000,
+  768×1024 and 390×844. Empty content stays empty. Undo history is reset for
+  each editing session, including after a save, to avoid restoring another
+  record's biography or previously saved text into a blank form.
+- Real D1/R2 uploads passed original SHA-256 comparisons for a 4 MB JPEG and
+  a 1 MB repository PDF. The new fallback sends original bytes, avoiding
+  vinext's progressive multipart action limit; production continues to use
+  signed Supabase uploads. The Documents form now uses that shared client too.
+- Browser staff checks passed on all four departments and the faculty page:
+  source binding, complete role/summary/biography/tag/link preservation during
+  photo-only edits, adding missing photos, replacing/removing photos, controlled
+  crop/focus save/reopen, deleting/hiding and restoring a seeded person, adding,
+  renaming and permanently deleting a new person. Dean photo-only editing also
+  preserved the entire profile, and seeded rename/reorder preserved metadata.
+  Existing profiles are replaced once rather than duplicated in section extras.
+- Real API tests passed for both document categories at all six programme
+  levels, including drafts, updates, deletion, empty headings and research-list
+  isolation. A real PDF was uploaded and assigned through the Documents UI.
+- Client-rendered /about checks passed for hidden and visible dates, default
+  publication timestamp and hidden-entry filtering. Public flags and media
+  round-trip through /api/page-materials without exposing authorEmail. First
+  publication uses the publish transition, preserving stored dates thereafter.
+- Existing news-date integration test passed again for Academy, department and
+  English cards/articles, reversal, retained timestamps and invalid booleans.
+- Configured faculty editor scopes permit all four departments, the faculty
+  and all its subpages, while unrelated news, schedules and departments are
+  denied. No role or account credentials changed. An authenticated production
+  write as the sender was not performed: Vercel does not export the protected
+  service credential, and no password reset or email was requested.
+- The existing automated render check confirms council meetings/decisions/
+  protocols and faculty discussion URLs return 404; remaining council pages
+  return 200. All six programme pages retain distinct labelled categories.
+- Browser evidence/logs: /tmp/apsvt-law-content/{word-results,staff-results,
+  extra-results}.json, content-flow.log and news-regression.log. All fixtures
+  stay in the isolated worktree database; none were published to production.
+- React review: stable keys isolate editor history; headings and controls are
+  labelled; whole-image rendering preserves proportions; safe links use
+  noopener/noreferrer; scoped page checks remain in every write route.
+
+Final required checks, full responsive screenshot inspection and production
+verification are pending the release review below.
+
+### Final release validation
+
+All required checks passed on the final implementation: npm run lint (0 errors,
+84 existing image warnings), npx tsc --noEmit, npm test (64 passed, 0 skipped),
+and npm run build:vercel. Both real API flow scripts passed again. Responsive
+browser verification passed 93 scenarios at 1440×1000, 768×1024 and 390×844:
+all five section controls on all four departments, all six programme pages,
+faculty leadership and staff, shared finance profiles, and Ukrainian/English
+news. Console/page-error and HTTP/network-failure arrays are empty; no horizontal
+overflow. Dynamic articles no longer request unsupported page-material URLs.
+Screenshots are in /tmp/apsvt-law-content/final, including full pages and text,
+photo and editor close-ups; affected layouts and representative regressions were
+opened and directly inspected. Instant scrolling during capture lets the site's
+existing reveal animations paint every row; it does not modify website behavior.
+Baseline views and authored text/image comparisons are in the baseline directory.
+
+Mobile editor inspection additionally checked internal media-panel scroll width,
+since page-level overflow can hide a clipped grid track. Explicit minimum-zero
+tracks and bounded file controls now fit within the form; refreshed tablet/mobile
+photo-editor screenshots and the internal-boundary assertions passed. Teacher
+photo descriptions are retained in the public image alt attribute; the real API
+flow includes this assertion. Required checks are rerun after these final fixes.
+
+The required checks also passed on the final mobile-boundary/alt-description
+revision: lint 0 errors (84 existing warnings), TypeScript, 64 tests with zero
+skips, and optimized Vercel build. The real content/upload/category test and
+refreshed tablet/mobile editor checks passed after the fix. Release SHA,
+deployment identity and live verification are recorded on the release PR.
+
+### Email disposition
+
+Times below use Kyiv time. All ten messages remain unread in Gmail.
+
+| Email | Before this audit | Verified disposition |
+| --- | --- | --- |
+| 9 Oct 21:16: hide publication dates | Academy option existed; department/English flows incomplete | Fixed across cards/articles, with reversible storage and default publication dates |
+| 12 Oct 09:56: earlier work not completed | Follow-up on the date request | Original request rechecked and fixed |
+| 12 Oct 14:02: five department sections and self-service content | Structure in PR #26; complete editing/media flows incomplete | Four consistent department templates; rich text, media, PDFs, staff and contact editing verified |
+| 12 Oct 14:03: council meetings and decisions/protocols | Implemented in PR #26 | Navigation absent; retired routes 404; remaining council pages retained |
+| 12 Oct 14:05: working programmes and annotations | Categories present; empty headings and document uploads needed fixes | Both categories on all six levels, upload/save/draft/edit/delete verified |
+| 12 Oct 14:06: faculty public discussion removal | Implemented in PR #26 | Faculty navigation and routes removed; programme quality materials retained |
+| 12 Oct 18:36: thank-you | Acknowledgement | No additional work requested |
+| 12 Oct 21:05: thank-you | Acknowledgement | No additional work requested |
+| 12 Oct 22:24: formatting and proportional images | Incomplete | Word formatting, readable semantics, whole-image/crop/focus controls and original uploads verified |
+| 12 Oct 22:29: teacher/photo management | Incomplete | Complete profiles, photo-only preservation, new cards, rename/order/hide/delete/restore verified |
+
+Main integration: PR #34's finance document/course changes and PR #35's editor
+follow-up landed during validation. The release integrates both. Preserve the
+legacy imageFit field and existing selections, including native image overrides,
+while defaulting new uploads to whole-image display. The visual editor retains
+the follow-up's bold/link/ordered-list/line-break support and adds Word paste,
+semantic rendering and complete media/profile management. Recheck legacy fit
+round-trips, all required checks, staff preservation and shared finance views
+against the integrated branch before merge.
+
+Legacy-content review found named teacher image overrides stored against the
+old department layout. Preserve those explicitly named uploads when resolving
+native profiles; current whole-profile edits take precedence, so removal does
+not resurrect an old picture. Validate with copies of the actual public records
+in the isolated database, confirm every named photo appears exactly once, and
+confirm photo-only editing retains that picture and the rest of the profile.
+
+The integrated branch passed all API/UI scenarios again, plus 93 responsive
+public scenarios with empty error/failure arrays. Seven actual, explicitly named
+legacy photo uploads appeared once each; removing a photo from its full profile
+kept it removed. Fresh integrated screenshots are in integrated-final. Shared
+programme quality sections now use the same rich renderer: real API and desktop/
+mobile browser checks retained bold and ordered lists without exposing technical
+rich-text data. Final required checks are run after this compatibility update.

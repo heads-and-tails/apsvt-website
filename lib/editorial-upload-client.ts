@@ -21,6 +21,16 @@ export async function uploadEditorialFile(
   purpose: "image" | "document",
   pagePath?: string,
 ): Promise<EditorialUploadResult> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+    // Send the original bytes. vinext treats multipart POSTs as progressive
+    // server actions and applies their 1 MB limit before reaching this route.
+    const params = new URLSearchParams({ fileName: file.name, purpose });
+    if (pagePath) params.set("pagePath", pagePath);
+    return requestJson<EditorialUploadResult>(`/api/uploads?${params}`, {
+      method: "POST", headers: { "content-type": file.type }, body: file,
+    });
+  }
+
   const ticket = await requestJson<UploadTicket>("/api/uploads/sign", {
     method: "POST",
     headers: { "content-type": "application/json" },

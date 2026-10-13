@@ -36,8 +36,8 @@ export async function DELETE(_: Request, context: Context) {
     const { id } = await context.params;
     const existing = await getDepartmentEntryById(id);
     if (!existing) return NextResponse.json({ error: "Запис не знайдено" }, { status: 404 });
-    await requirePagePublisher(existing.pagePath);
-    await deleteDepartmentEntry(id);
+    const publisher = await requirePagePublisher(existing.pagePath);
+    await deleteDepartmentEntry(id, publisher.email);
     revalidatePath(existing.pagePath);
     return NextResponse.json({ ok: true });
   } catch (error) {
