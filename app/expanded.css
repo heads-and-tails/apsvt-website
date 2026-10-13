@@ -107,10 +107,12 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .detail-deck{font-size:clamp(16px,1.55vw,21px);max-width:60ch}
 .article-section{padding-top:85px}
 .news-result-files{margin:40px 0;border-top:5px solid var(--cobalt);background:#fff;padding:24px}.news-result-files>span{display:block;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}.news-result-files>a:not(:last-child){display:grid;grid-template-columns:35px minmax(0,1fr) auto;gap:14px;align-items:center;padding:17px 2px;border-bottom:1px solid var(--line)}.news-result-files>a>b{font:10px var(--mono);color:var(--cobalt)}.news-result-files>a>strong{font:600 15px/1.3 var(--disp);text-transform:uppercase}.news-result-files>a>small{font:8px var(--mono);text-transform:uppercase;color:#657084}.news-result-files>a:last-child{display:inline-block;margin-top:22px;border-bottom:2px solid var(--gold);padding-bottom:5px;font:700 9px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.ai-training-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:36px 0 44px}.ai-training-gallery figure{min-width:0;margin:0}.ai-training-gallery figure:first-child{grid-column:1/-1}.ai-training-gallery img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:center}.ai-training-gallery figcaption{padding:10px 0;font:10px var(--mono);color:var(--cobalt)}
 .journal-feature h2{font-size:clamp(28px,3.8vw,52px)}
 .journal-cover{transition:transform .4s ease,box-shadow .4s ease}.journal-cover:hover{transform:translateY(-7px);box-shadow:26px 26px var(--gold)}.journal-cover:focus-visible{outline:4px solid var(--gold);outline-offset:7px}
 @media(max-width:700px){.phero h1{font-size:clamp(32px,9.5vw,50px)}.program-hero h1{font-size:clamp(32px,9vw,48px)}.detail-hero.image{min-height:72svh;padding:126px 0 44px}.detail-hero h1{font-size:clamp(30px,9vw,46px)}.detail-hero-bg img{object-position:center}.article-section{padding-top:58px}}
 @media(max-width:700px){.news-result-files{padding:20px 16px}.news-result-files>a:not(:last-child){grid-template-columns:28px minmax(0,1fr)}.news-result-files>a>small{grid-column:2}}
+@media(max-width:700px){.ai-training-gallery{grid-template-columns:1fr;gap:20px}.ai-training-gallery figure:first-child{grid-column:auto}.ai-training-gallery img{aspect-ratio:auto}}
 
 /* Cinematic motion and resilient faculty layouts */
 .loader{background:

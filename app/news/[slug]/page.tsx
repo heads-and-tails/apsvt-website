@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { erasmusDaysNewsSlug, getPostBySlug, getPosts, guestLectureHubertNewsSlug, internationalAiTrainingNewsSlug, internationalAiTrainingTitle, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
+import { aiTrainingNewsSlug, erasmusDaysNewsSlug, getPostBySlug, getPosts, guestLectureHubertNewsSlug, internationalAiTrainingNewsSlug, internationalAiTrainingTitle, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
@@ -65,6 +65,7 @@ export default async function Page({ params }: Props) {
   const isGuestLectureHubertNews = post.slug === guestLectureHubertNewsSlug;
   const isInternationalAiTrainingNews = post.slug === internationalAiTrainingNewsSlug;
   const articleBody = isMentalHealthConferenceNews ? replaceConferenceOrganizers(post.body) : post.body;
+  const isAiTrainingNews = post.slug === aiTrainingNewsSlug;
 
   return <main id="top">
     <SiteHeader />
@@ -77,6 +78,11 @@ export default async function Page({ params }: Props) {
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
         <EditorialRichText text={articleBody} />
+        {isAiTrainingNews && <div className="ai-training-gallery" aria-label="Фотографії з тренінгу">
+          <figure><img src="/ai-training-2026-01.jpeg" alt="Наталія Гончаренко під час тренінгу за робочим столом" loading="lazy" /><figcaption>Тренінг із використання ШІ в Академії</figcaption></figure>
+          <figure><img src="/ai-training-2026-02.jpeg" alt="Робота з навчальними матеріалами під час тренінгу" loading="lazy" /><figcaption>Робота з навчальними матеріалами</figcaption></figure>
+          <figure><img src="/ai-training-2026-03.jpeg" alt="Наталія Гончаренко демонструє матеріали тренінгу" loading="lazy" /><figcaption>Практична частина зустрічі</figcaption></figure>
+        </div>}
         {isStakeholderDiscussionNews && <div className="stakeholder-zoom-card">
           <div><span>Онлайн-зустріч</span><time dateTime="2026-08-26T12:00:00+03:00">26 серпня · 12:00</time></div>
           <div><span>Meeting ID</span><strong>303 650 3681</strong></div>
