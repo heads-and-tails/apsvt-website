@@ -23,6 +23,7 @@ import { MarketingTeam } from "./MarketingTeam";
 import { MarketingCareers, MarketingDepartmentAbout } from "./MarketingDepartmentContent";
 import { MarketingStudentLife } from "./MarketingStudentLife";
 import { MarketingEducationPrograms } from "./MarketingEducationPrograms";
+import { MarketingMethodicalFolders } from "./MarketingMethodicalFolders";
 import { FinanceInternational, financeProjectSections } from "./FinanceInternational";
 import { FinanceMasterProgramme } from "./FinanceMasterProgramme";
 import { FinancePublications } from "./FinancePublications";
@@ -128,8 +129,8 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     </div></section>,
     <section className="programme-documents" id="programme-documents" key="marketing-methodical"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">05 / Навчально-методичне забезпечення</div><h2>Офіційні програми й матеріали</h2></div><Link href="/documents#education">Усі освітні документи →</Link></div><div className="programme-document-list">
       {program.materials.map((material, index) => <a href={material.href} target={material.href.endsWith(".pdf") ? "_blank" : undefined} rel={material.href.endsWith(".pdf") ? "noreferrer" : undefined} key={material.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{material.href.endsWith(".pdf") ? "PDF · офіційний документ" : "Матеріали кафедри"}</small><h3>{material.label}</h3></div><b>{material.href.endsWith(".pdf") ? "↗" : "→"}</b></a>)}
-      <Link href="/research/journals#marketing-publications"><span>04</span><div><small>Повні тексти</small><h3>Монографії та навчальний посібник кафедри</h3></div><b>→</b></Link>
-    </div></div></section>,
+      <Link href="/research/journals#marketing-publications"><span>{String(program.materials.length + 1).padStart(2, "0")}</span><div><small>Повні тексти</small><h3>Монографії та навчальний посібник кафедри</h3></div><b>→</b></Link>
+    </div><MarketingMethodicalFolders /></div></section>,
     <MarketingStudentLife key="marketing-student-life" />,
     <MarketingCareers key="marketing-careers" />,
     <div id="department-news" key="marketing-news"><AcademicNews slugs={[slug]} title="Новини кафедри маркетингу" /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType))} /></div>,
