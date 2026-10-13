@@ -677,11 +677,22 @@ test("separates marketing bachelor and master materials and publishes stakeholde
   assert.match(marketing,/Оберіть рівень освіти/);
   assert.match(marketing,/Перший рівень вищої освіти/);
   assert.match(marketing,/Другий рівень вищої освіти/);
+  assert.match(marketing,/id="quality"/);
+  assert.ok(marketing.indexOf('id="curriculum"') < marketing.indexOf('id="quality"'),"Quality follows programmes");
+  assert.match(marketing,/Результати моніторингу якості освіти/);
+  assert.match(marketing,/Обговорення змін до ОПП/);
   assert.match(marketing,/Шановні стейкхолдери!/);
   assert.match(marketing,/academi\.marketing2023@gmail\.com/);
   assert.match(marketing,/propozytsii-stakeholderiv-mahistr-2026\.pdf/);
   assert.match(marketing,/anketa-stakeholderiv-mahistr-2026\.pdf/);
   assert.doesNotMatch(marketing,/Google-форма[^<]*<\/a>/);
+  const programmeBody=marketing.slice(marketing.indexOf('class="marketing-programmes"'),marketing.indexOf('class="marketing-quality"'));
+  assert.doesNotMatch(programmeBody,/marketing-stakeholder-call|anketa-stakeholderiv-mahistr-2026|propozytsii-stakeholderiv-mahistr-2026/);
+  const qualityBody=marketing.slice(marketing.indexOf('class="marketing-quality"'),marketing.indexOf('class="marketing-science-clean"'));
+  assert.equal((qualityBody.match(/id="marketing-stakeholder-call"/g)||[]).length,1,"Stakeholder call is not duplicated");
+  for(const slug of ["obhovorennia-opp-marketynh-12-bereznia-2026","obhovorennia-opp-marketynh-17-travnia-2026"]){
+    assert.match(qualityBody,new RegExp(slug));
+  }
 
   for(const file of ["propozytsii-stakeholderiv-mahistr-2026.pdf","anketa-stakeholderiv-mahistr-2026.pdf"]){
     const bytes=await readFile(new URL(`../public/documents/marketing/stakeholders/${file}`,import.meta.url));
