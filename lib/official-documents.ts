@@ -179,7 +179,27 @@ export const officialDocuments: OfficialDocument[] = [
   {
     id: "programme-marketing-master-2025", category: "education", title: "ОПП D5 «Маркетинг» — магістр",
     description: "Офіційна освітньо-професійна програма другого рівня вищої освіти.",
-    href: `${officialProgrammeFileBase}/d5-marketing-master.pdf`, format: "PDF", pages: 15, updated: "2025", status: "current",
+    href: "/documents/marketing/programmes/opp-marketing-master-2025.pdf", format: "PDF", pages: 16, updated: "2025", status: "reference",
+  },
+  {
+    id: "programme-marketing-master-2026", category: "education", title: "ОПП D5 «Маркетинг» — магістр, 2026",
+    description: "Освітньо-професійна програма другого (магістерського) рівня вищої освіти, надіслана кафедрою маркетингу.",
+    href: "/documents/marketing/programmes/opp-marketing-master-2026.pdf", format: "PDF", pages: 16, updated: "2026", status: "current",
+  },
+  {
+    id: "marketing-master-qualification-schedule-2025", category: "departments", title: "Графік підготовки та захисту кваліфікаційних робіт ОПП «Маркетинг» — набір 2025 року",
+    description: "Кафедра маркетингу · навчально-методичне забезпечення · кваліфікаційні роботи · магістратура.",
+    href: "/documents/marketing/methodical/qualification-master-2025.pdf", format: "PDF", pages: 2, updated: "2025", status: "reference",
+  },
+  {
+    id: "marketing-master-qualification-schedule-2026", category: "departments", title: "Графік підготовки та захисту кваліфікаційних робіт ОПП «Маркетинг» — набір 2026 року",
+    description: "Кафедра маркетингу · навчально-методичне забезпечення · кваліфікаційні роботи · магістратура.",
+    href: "/documents/marketing/methodical/qualification-master-2026.pdf", format: "PDF", pages: 2, updated: "2026", status: "current",
+  },
+  {
+    id: "marketing-teacher-consultations-2026-2027", category: "departments", title: "Графік індивідуальних консультацій викладачів кафедри маркетингу — 2026/27",
+    description: "Кафедра маркетингу · навчально-методичне забезпечення · консультації викладачів.",
+    href: "/documents/marketing/methodical/teacher-consultations-2026-2027.pdf", format: "PDF", pages: 2, updated: "2026/27", status: "current",
   },
   {
     id: "programme-law-bachelor-2025", category: "education", title: "ОПП D8 «Право» — бакалавр",

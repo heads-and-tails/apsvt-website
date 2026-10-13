@@ -51,10 +51,11 @@ export function MarketingEducationPrograms() {
               <p>Офіційні матеріали освітньо-професійної програми спеціальності D5 «Маркетинг» другого (магістерського) рівня вищої освіти.</p>
             </div>
             <div className="marketing-programme-links">
-              <a href="/documents/official-programmes/d5-marketing-master.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>Офіційний документ · PDF</small><strong>ОПП D5 «Маркетинг» · магістр</strong></div><b>↗</b></a>
-              <a href="/documents/marketing/stakeholders/propozytsii-stakeholderiv-mahistr-2026.pdf" target="_blank" rel="noreferrer"><span>02</span><div><small>Обговорення ОПП · PDF</small><strong>Таблиця пропозицій стейкхолдерів та результатів їх розгляду</strong></div><b>↗</b></a>
-              <a href="/documents/marketing/stakeholders/anketa-stakeholderiv-mahistr-2026.pdf" target="_blank" rel="noreferrer"><span>03</span><div><small>Анкета · PDF</small><strong>Анкета для стейкхолдерів</strong></div><b>↗</b></a>
-              <a href={programmeFolder} target="_blank" rel="noreferrer"><span>04</span><div><small>Матеріали кафедри</small><strong>Освітньо-професійна програма та матеріали до обговорення</strong></div><b>↗</b></a>
+              <a href="/documents/marketing/programmes/opp-marketing-master-2026.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>Магістратура · 2026 · PDF</small><strong>Освітньо-професійна програма «Маркетинг» 2026 року</strong></div><b>↗</b></a>
+              <a href="/documents/marketing/programmes/opp-marketing-master-2025.pdf" target="_blank" rel="noreferrer"><span>02</span><div><small>Магістратура · 2025 · PDF</small><strong>Освітньо-професійна програма «Маркетинг» 2025 року</strong></div><b>↗</b></a>
+              <a href="/documents/marketing/stakeholders/propozytsii-stakeholderiv-mahistr-2026.pdf" target="_blank" rel="noreferrer"><span>03</span><div><small>Обговорення ОПП · PDF</small><strong>Таблиця пропозицій стейкхолдерів та результатів їх розгляду</strong></div><b>↗</b></a>
+              <a href="/documents/marketing/stakeholders/anketa-stakeholderiv-mahistr-2026.pdf" target="_blank" rel="noreferrer"><span>04</span><div><small>Анкета · PDF</small><strong>Анкета для стейкхолдерів</strong></div><b>↗</b></a>
+              <a href={programmeFolder} target="_blank" rel="noreferrer"><span>05</span><div><small>Матеріали кафедри</small><strong>Освітньо-професійна програма та матеріали до обговорення</strong></div><b>↗</b></a>
             </div>
 
             <article className="marketing-stakeholder-call">
