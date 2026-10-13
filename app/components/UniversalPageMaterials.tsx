@@ -96,13 +96,16 @@ export function UniversalPageMaterials() {
           const originalSrc = element.getAttribute("src");
           const originalSrcset = element.getAttribute("srcset");
           const originalAlt = element.getAttribute("alt");
+          const originalObjectFit = element.style.objectFit;
           if (entry.imageUrl) element.src = entry.imageUrl;
           element.removeAttribute("srcset");
           if (entry.imageAlt) element.alt = entry.imageAlt;
+          if (entry.imageFit) element.style.objectFit = entry.imageFit;
           restore.push(() => {
             restoreAttribute(element, "src", originalSrc);
             restoreAttribute(element, "srcset", originalSrcset);
             restoreAttribute(element, "alt", originalAlt);
+            element.style.objectFit = originalObjectFit;
           });
         } else if (entry.role === "link" && element instanceof HTMLAnchorElement) {
           const originalHref = element.getAttribute("href");

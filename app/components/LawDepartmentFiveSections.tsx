@@ -25,6 +25,7 @@ function managedTeacher(entry: DepartmentEntry): LawDepartmentTeacher {
     summary: entry.summary,
     details: entry.body || undefined,
     image: entry.imageUrl || undefined,
+    imageFit: entry.imageFit,
     links: [
       ...(entry.profileUrl ? [{ label: "Науковий профіль", href: entry.profileUrl }] : []),
       ...(entry.fileUrl ? [{ label: entry.fileName || "Резюме PDF", href: entry.fileUrl }] : []),

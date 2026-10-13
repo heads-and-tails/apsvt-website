@@ -1,3 +1,5 @@
+import { renderEditorialInline } from "./TeacherResume";
+
 type EditorialRichTextProps = {
   text: string;
   language?: "uk" | "en";
@@ -5,7 +7,7 @@ type EditorialRichTextProps = {
 
 type TextBlock =
   | { type: "heading"; text: string }
-  | { type: "list"; items: string[] }
+  | { type: "list"; items: string[]; ordered: boolean }
   | { type: "paragraph"; text: string };
 
 const bulletPattern = /^[-•–]\s+/;
@@ -22,12 +24,13 @@ function parseText(text: string): TextBlock[] {
         return {
           type: "list" as const,
           items: lines.map((line) => line.replace(bulletPattern, "").replace(numberedPattern, "")),
+          ordered: lines.every((line) => numberedPattern.test(line)),
         };
       }
       if (/^#{1,3}\s+/.test(block)) {
         return { type: "heading" as const, text: block.replace(/^#{1,3}\s+/, "") };
       }
-      return { type: "paragraph" as const, text: block.replace(/\n+/g, " ") };
+      return { type: "paragraph" as const, text: block };
     });
 }
 
@@ -37,11 +40,11 @@ export function EditorialRichText({ text, language = "uk" }: EditorialRichTextPr
 
   return <div className="editorial-richtext">
     {blocks.map((block, index) => {
-      if (block.type === "heading") return <h2 key={`${block.text}-${index}`}>{block.text}</h2>;
-      if (block.type === "list") return <div className="editorial-list" key={`list-${index}`}><span>{String(index + 1).padStart(2, "0")}</span><ul>{block.items.map((item) => <li key={item}>{item}</li>)}</ul></div>;
+      if (block.type === "heading") return <h2 key={`${block.text}-${index}`}>{renderEditorialInline(block.text)}</h2>;
+      if (block.type === "list") return <div className="editorial-list" key={`list-${index}`}><span>{String(index + 1).padStart(2, "0")}</span>{block.ordered ? <ol>{block.items.map((item, itemIndex) => <li key={itemIndex}>{renderEditorialInline(item)}</li>)}</ol> : <ul>{block.items.map((item, itemIndex) => <li key={itemIndex}>{renderEditorialInline(item)}</li>)}</ul>}</div>;
       return <div className="editorial-paragraph" key={`${block.text.slice(0, 24)}-${index}`}>
         <span><b>{String(index + 1).padStart(2, "0")}</b>{sectionLabel}</span>
-        <p>{block.text}</p>
+        <p style={{ whiteSpace: "pre-wrap" }}>{renderEditorialInline(block.text)}</p>
       </div>;
     })}
   </div>;

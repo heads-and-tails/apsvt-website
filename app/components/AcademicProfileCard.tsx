@@ -10,6 +10,7 @@ export type AcademicProfileCardData = {
   role: string;
   summary: string;
   image?: string;
+  imageFit?: "cover" | "contain";
   imageCrop?: "caption";
   tags?: string[];
   details?: string;
@@ -36,7 +37,7 @@ export function AcademicProfileCard({
   return <article className="academic-profile-card">
     <div className={`academic-profile-photo faculty-portrait-surface${person.imageCrop === "caption" ? " academic-profile-photo--caption" : ""}`}>
       {person.image
-        ? <img src={person.image} alt={person.name} />
+        ? <img src={person.image} alt={person.name} style={{ objectFit: person.imageFit || "cover" }} />
         : <span aria-label={`Фото ${person.name} готується до публікації`}>{initials(person.name)}</span>}
     </div>
     <div className="academic-profile-copy">
