@@ -22,14 +22,15 @@ export const lawDepartmentSections: readonly SectionHubItem[] = [
 
 export function teachersForSection(source: LawDepartmentTeacher[], entries: DepartmentEntry[]) {
   const managed = entries.filter((entry) => entry.entryType === "teacher");
+  const matches = (entry: DepartmentEntry, person: LawDepartmentTeacher) => [person.sourceName || person.name, person.name].some((name) => name.toLocaleLowerCase("uk-UA") === (entry.teacherSourceName || entry.title).trim().toLocaleLowerCase("uk-UA"));
   const records = source.map((person, index) => {
-    const override = managed.find((entry) => (entry.teacherSourceName || entry.title).trim().toLocaleLowerCase("uk-UA") === person.name.toLocaleLowerCase("uk-UA"));
-    const legacyPhoto = entries.find((entry) => entry.entryType === "override" && entry.role === "image" && entry.imageUrl && entry.title.trim().toLocaleLowerCase("uk-UA") === person.name.toLocaleLowerCase("uk-UA"));
+    const override = managed.find((entry) => matches(entry, person));
+    const legacyPhoto = entries.filter((entry) => entry.entryType === "override" && entry.role === "image" && entry.imageUrl && matches(entry, person)).sort((a, b) => (Date.parse(b.updatedAt || b.createdAt) || 0) - (Date.parse(a.updatedAt || a.createdAt) || 0))[0];
     const image = legacyPhoto ? departmentImages(legacyPhoto)[0] : undefined;
-    return { person: override ? departmentTeacherProfile(override, person) : { ...person, sourceName: person.name, ...(image ? { image: image.url, imageSettings: image } : {}) }, hidden: Boolean(override?.hidden), order: override?.sortOrder ?? (index + 1) * 10 };
+    return { person: override ? departmentTeacherProfile(override, person) : { ...person, sourceName: person.sourceName || person.name, ...(image ? { image: image.url, imageSettings: image } : {}) }, hidden: Boolean(override?.hidden), order: override?.sortOrder ?? (index + 1) * 10 };
   });
   for (const entry of managed) {
-    if (source.some((person) => person.name.toLocaleLowerCase("uk-UA") === (entry.teacherSourceName || entry.title).trim().toLocaleLowerCase("uk-UA"))) continue;
+    if (source.some((person) => matches(entry, person))) continue;
     records.push({ person: departmentTeacherProfile(entry), hidden: Boolean(entry.hidden), order: entry.sortOrder });
   }
   return records.filter((record) => !record.hidden).sort((a, b) => a.order - b.order).map((record) => ({ ...record.person, sortOrder: record.order }));

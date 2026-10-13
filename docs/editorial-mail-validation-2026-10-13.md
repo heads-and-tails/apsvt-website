@@ -1,7 +1,7 @@
 # Editorial email validation — 13 October 2026
 
 Source: ten unread messages from tsabenok26@ukr.net, dated 9 and 12 October.
-Read state is preserved. Each request is checked against current origin/main,
+This task does not modify Gmail read state. Each request is checked against current origin/main,
 actual persistence, rendered pages, and the scoped editing interface. A thank-you
 or an earlier completion claim is not evidence that an editing flow works.
 
@@ -300,7 +300,9 @@ deployment identity and live verification are recorded on the release PR.
 
 ### Email disposition
 
-Times below use Kyiv time. All ten messages remain unread in Gmail.
+Times below use Kyiv time. These were the ten unread messages at the initial audit.
+A closing read-only recheck found all ten already read and one newer thank-you
+(13 October 21:46 Kyiv time); this task did not change labels or send replies.
 
 | Email | Before this audit | Verified disposition |
 | --- | --- | --- |
@@ -338,3 +340,18 @@ kept it removed. Fresh integrated screenshots are in integrated-final. Shared
 programme quality sections now use the same rich renderer: real API and desktop/
 mobile browser checks retained bold and ordered lists without exposing technical
 rich-text data. Final required checks are run after this compatibility update.
+
+
+### Production review and profile binding follow-up
+
+PR #36 merged as 9369ed68ba0a28d5c55f3ea6d2394b439167d805. Deployment
+dpl_7MF55zXufUdVpBA1j3pFf6GT3BJV was READY and the www domain pointed to it.
+All 93 live section/layout scenarios produced screenshots at desktop/tablet/mobile.
+The final network assertion failed: unsupported English department/thesis links,
+missing old English search images, and the faculty remote-image optimizer request.
+This is not reported as a clean production pass. Screenshot inspection also found
+old faculty card selectors applying stored photos/text to the wrong person after
+staff sorting. The follow-up resolves those edits against original profile identity
+before sorting, retains them in editor snapshots, and fixes the faculty hero image.
+Its plan and results are in profile-binding-validation-2026-10-13.md. Existing
+English route/assets limitations are recorded separately from changed-page checks.
