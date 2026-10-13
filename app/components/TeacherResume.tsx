@@ -9,7 +9,7 @@ function webLink(value: string): string | null {
   } catch { return null; }
 }
 
-function inline(text: string): ReactNode[] {
+export function renderEditorialInline(text: string): ReactNode[] {
   const pattern = /\[([^\]\n]+)\]\(([^\s]+)\)|\*\*([^*\n]+)\*\*|https?:\/\/[^\s<>]+/g;
   const parts: ReactNode[] = [];
   let cursor = 0;
@@ -41,13 +41,13 @@ export function TeacherResumeText({ text }: { text: string }) {
   let items: string[] = [];
   let ordered = false;
   const flushParagraph = () => {
-    if (paragraph.length) blocks.push(<p key={blocks.length}>{inline(paragraph.join("\n"))}</p>);
+    if (paragraph.length) blocks.push(<p key={blocks.length}>{renderEditorialInline(paragraph.join("\n"))}</p>);
     paragraph = [];
   };
   const flushList = () => {
     if (items.length) {
       const List = ordered ? "ol" : "ul";
-      blocks.push(<List key={blocks.length}>{items.map((item, index) => <li key={index}>{inline(item)}</li>)}</List>);
+      blocks.push(<List key={blocks.length}>{items.map((item, index) => <li key={index}>{renderEditorialInline(item)}</li>)}</List>);
     }
     items = [];
   };
@@ -56,7 +56,7 @@ export function TeacherResumeText({ text }: { text: string }) {
     const bullet = line.match(/^\s*(?:([-•–])|\d+[.)])\s+(.+)$/);
     if (!line.trim() || heading) {
       flushParagraph(); flushList();
-      if (heading) blocks.push(<h4 key={blocks.length}>{inline(heading[1])}</h4>);
+      if (heading) blocks.push(<h4 key={blocks.length}>{renderEditorialInline(heading[1])}</h4>);
     } else if (bullet) {
       flushParagraph();
       const nextOrdered = !bullet[1];

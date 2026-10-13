@@ -2602,9 +2602,13 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .editorial-list{display:grid;grid-template-columns:108px minmax(0,1fr);gap:30px;padding:28px 6px;border-bottom:1px solid var(--line)}
 .editorial-list>span{color:var(--cobalt);font:700 22px var(--disp)}
 .editorial-list ul{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.editorial-list ol{display:grid;gap:0;margin:0;padding:0;list-style:none;counter-reset:editorial-list}
 .editorial-list li{padding:15px 0 15px 24px;border-bottom:1px solid var(--line);position:relative;font-size:16px;line-height:1.6}
 .editorial-list li:last-child{border-bottom:0}
 .editorial-list li:before{content:"";position:absolute;left:0;top:25px;width:8px;height:8px;background:var(--gold);box-shadow:5px -5px 0 var(--cobalt)}
+.editorial-list ol li{counter-increment:editorial-list;padding-left:34px}
+.editorial-list ol li:before{content:counter(editorial-list) ".";top:15px;width:auto;height:auto;background:none;box-shadow:none;color:var(--cobalt);font-weight:700}
+.editorial-richtext a{color:var(--cobalt);text-decoration:underline;text-underline-offset:3px}
 @media(max-width:700px){.editorial-richtext{margin-top:28px}.editorial-paragraph,.editorial-list{grid-template-columns:34px minmax(0,1fr);gap:12px;padding:22px 2px}.editorial-paragraph:hover{padding-inline:7px}.editorial-paragraph>span{font-size:0}.editorial-paragraph>span b,.editorial-list>span{font-size:15px}.detail-copy .editorial-paragraph>p{font-size:15px;line-height:1.72}.editorial-richtext>h2{font-size:clamp(27px,9vw,40px);overflow-wrap:anywhere}}
 
 /* Department and faculty editorial surface. */
@@ -3614,6 +3618,8 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
 .law-seed-teachers button img{width:46px;height:54px;object-fit:cover}
 .law-seed-teachers button span{flex:1;font-weight:700}
 .law-seed-teachers button b{font-size:12px}
+.department-upload-field .department-image-remove{justify-self:start;padding:9px 12px;border:1px solid #bdc4d0;background:#fff;color:#1b3052;font:700 11px var(--mono);cursor:pointer}
+.department-upload-field .department-image-remove:hover,.department-upload-field .department-image-remove:focus-visible{border-color:#2851ff;color:#2851ff}
 .admissions-active-panel [id]{scroll-margin-top:86px}
 
 .operations-fields .department-checkbox{display:flex;align-items:center;gap:10px;line-height:1.5}

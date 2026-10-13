@@ -43,7 +43,7 @@ export default async function Page({ params }: Props) {
   return <main id="top">
     <SiteHeader />
     <section className="detail-hero image">
-      <div className="detail-hero-bg"><img src={heroImage} alt={entry.imageAlt || entry.title} /></div>
+      <div className="detail-hero-bg"><img src={heroImage} alt={entry.imageAlt || entry.title} style={{ objectFit: entry.imageFit || "cover" }} /></div>
       <div className="wrap"><div className="detail-kicker mono">{pageTitle}{date ? ` · ${date}` : ""}</div><h1>{entry.title}</h1>{entry.summary && <p className="detail-deck">{entry.summary}</p>}</div>
     </section>
     <div className="phero-rule" />
