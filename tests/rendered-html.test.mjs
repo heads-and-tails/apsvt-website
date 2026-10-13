@@ -296,6 +296,19 @@ test("publishes the international cooperation AI training with online registrati
   assert.match(eventsHtml,/selected=""[^>]*>Використання штучного інтелекту/);
 });
 
+test("publishes both corrected Project Lab presentations in the international section",async()=>{
+  const html=await (await render("/international#project-lab")).text();
+  assert.match(html,/Project Lab: ШІ в заявках Erasmus\+/);
+  assert.match(html,/project-lab-ai-erasmus-basic-2026\.pptx/);
+  assert.match(html,/project-lab-ai-erasmus-academy-2026\.pptx/);
+  assert.match(html,/Путівник з міжнародної мобільності/);
+  for(const name of ["project-lab-ai-erasmus-basic-2026.pptx","project-lab-ai-erasmus-academy-2026.pptx"]){
+    const bytes=await readFile(new URL(`../public/documents/international/project-lab/${name}`,import.meta.url));
+    assert.equal(bytes.subarray(0,2).toString(),"PK");
+    assert.ok(bytes.length>50000);
+  }
+});
+
 test("publishes the PILC and SEITE 2026 international programme",async()=>{
   const articleHtml=await (await render("/news/natalia-goncharenko-pilc-seite-2026")).text();
   assert.match(articleHtml,/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
