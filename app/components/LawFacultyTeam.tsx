@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AcademicProfileCard } from "./AcademicProfileCard";
 import { getDepartmentEntries } from "@/lib/department-content";
 import { teachersForSection } from "./LawDepartmentFiveSections";
+import { legacyFacultyProfiles } from "@/lib/legacy-faculty-profiles";
 
 type Teacher = {
   name: string;
@@ -92,16 +93,16 @@ export const lawFacultyTeachers: Teacher[] = [
 
 export async function LawFacultyTeam({ compact = false }: { compact?: boolean }) {
   const entries = await getDepartmentEntries("/departments/law-faculty");
-  const managed = teachersForSection(lawFacultyTeachers.map((teacher) => ({
+  const managed = teachersForSection(legacyFacultyProfiles(lawFacultyTeachers.map((teacher) => ({
     name: teacher.name, role: teacher.role, summary: teacher.summary,
     image: teacher.image, tags: teacher.courses,
     links: [
       ...(teacher.orcid ? [{ label: "ORCID", href: teacher.orcid }] : []),
       ...(teacher.scholar ? [{ label: "Google Scholar", href: teacher.scholar }] : []),
     ],
-  })), entries.filter((entry) => !entry.sectionId || entry.sectionId === "law-teachers"));
+  })), entries, "law-teachers"), entries.filter((entry) => !entry.sectionId || entry.sectionId === "law-teachers"));
   const displayed = compact ? managed.slice(0, 6) : managed;
-  return <section className="law-faculty-team" id="law-teachers">
+  return <section className="law-faculty-team" id="law-teachers" data-profile-overrides-server="true">
     <div className="wrap">
       <div className="sec-head"><div><div className="idx">{compact ? "05" : "04"} / Люди кафедри</div><h2>Викладачі<br />та практики</h2></div><p>Професійні профілі, дисципліни та наукові напрями викладачів кафедри конституційного, адміністративного та фінансового права.</p></div>
       <div className="academic-profile-grid">{displayed.map((teacher) => <AcademicProfileCard

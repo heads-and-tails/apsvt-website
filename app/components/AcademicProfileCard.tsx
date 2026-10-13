@@ -27,7 +27,7 @@ export type AcademicProfileCardData = {
 export function departmentTeacherProfile(entry: DepartmentEntry, source?: AcademicProfileCardData): AcademicProfileCardData {
   return {
     name: entry.title,
-    sourceName: entry.teacherSourceName || source?.name,
+    sourceName: entry.teacherSourceName || source?.sourceName || source?.name,
     managedId: entry.id,
     sortOrder: entry.sortOrder,
     tags: entry.teacherTags ?? source?.tags,

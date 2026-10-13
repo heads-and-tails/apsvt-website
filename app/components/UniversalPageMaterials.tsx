@@ -96,7 +96,7 @@ export function UniversalPageMaterials() {
       if (!entry.body.startsWith("main > ")) return;
       try {
         const element = document.querySelector<HTMLElement>(entry.body);
-        if (!element || element.closest("[data-editorial-rendered=\'true\']")) return;
+        if (!element || element.closest("[data-editorial-rendered=\'true\']") || element.closest("[data-academic-profile]")?.closest("[data-profile-overrides-server='true']")) return;
         if (entry.role === "text") {
           const original = element.innerHTML;
           element.textContent = entry.summary;

@@ -76,3 +76,20 @@ test("the configured faculty editor can manage all requested pages and cannot ed
   for (const path of paths) assert.ok(access.canEditPage(profile, path), path);
   for (const path of ["/news", "/schedule", "/programs/marketing", "/departments/digital-technologies"]) assert.equal(access.canEditPage(profile, path), false, path);
 });
+
+const legacyProfiles = await import(await moduleUrl("../lib/legacy-faculty-profiles.ts", { "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }) }));
+test("binds legacy faculty biographies, names and newest portraits before staff insertion or reorder", () => {
+  const source = [{ name: "Перша Людина", role: "Викладач", summary: "Перший профіль", image: "/first.jpg" }, { name: "Друга Людина", role: "Доцент", summary: "Другий профіль", image: "/second.jpg" }];
+  const base = { entryType: "override", sectionId: "law-teachers", updatedAt: "2026-09-01", createdAt: "2026-09-01", title: "Текст", role: "text" };
+  const selector = field => `main > section:nth-of-type(2) > section:nth-of-type(11) > div:nth-of-type(2) > div > section:nth-of-type(1) > div > div:nth-of-type(2) > article:nth-of-type(2) > div:nth-of-type(2) > ${field}`;
+  const entries = [{ ...base, body: selector("p"), summary: "Авторська біографія" }, { ...base, body: selector("h3"), summary: "Оновлене Ім’я" }, { ...base, body: "old selector", role: "image", title: "Друга Людина", imageUrl: "/latest.jpg", updatedAt: "2026-10-01" }, { ...base, body: "old selector", role: "image", title: "Друга Людина", imageUrl: "/older.jpg" }];
+  const result = legacyProfiles.legacyFacultyProfiles(source, entries, "law-teachers");
+  assert.equal(result[1].sourceName, "Друга Людина");
+  assert.equal(result[1].name, "Оновлене Ім’я");
+  assert.equal(result[1].summary, "Авторська біографія");
+  assert.equal(result[1].image, "/latest.jpg");
+  assert.equal(result[0].image, "/first.jpg");
+  assert.equal(source[1].name, "Друга Людина");
+  assert.equal(source[1].summary, "Другий профіль");
+  assert.equal(legacyProfiles.legacyFacultyProfiles(source, entries, "faculty-leadership")[1].summary, "Другий профіль");
+});
