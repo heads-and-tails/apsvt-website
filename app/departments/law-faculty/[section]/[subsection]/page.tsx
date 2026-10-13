@@ -52,8 +52,8 @@ export default async function Page({ params }: Props) {
     </div><DepartmentEditorialContent entries={visibleEntries} />
       {section === "faculty-programmes" ? <>
         <PageDocuments pagePath={page.path} excludeCategoryPrefixes={["Робоча програма", "Анотація"]} />
-        <PageDocuments pagePath={page.path} includeCategoryPrefixes={["Робоча програма"]} title="Робочі програми" description="Робочі програми дисциплін цього рівня освіти." emptyMessage="Робочі програми ще не оприлюднено." />
-        <PageDocuments pagePath={page.path} includeCategoryPrefixes={["Анотація"]} title="Анотації" description="Анотації дисциплін цього рівня освіти." emptyMessage="Анотації ще не оприлюднено." />
+        <PageDocuments pagePath={page.path} showEmptyTitle includeCategoryPrefixes={["Робоча програма"]} title="Робочі програми" description="Робочі програми дисциплін цього рівня освіти." emptyMessage="Робочі програми ще не оприлюднено." />
+        <PageDocuments pagePath={page.path} showEmptyTitle includeCategoryPrefixes={["Анотація"]} title="Анотації" description="Анотації дисциплін цього рівня освіти." emptyMessage="Анотації ще не оприлюднено." />
       </> : <PageDocuments pagePath={page.path} />}
     </section>
     {section === "faculty-repository" && <ThesesCatalogue items={theses} />}

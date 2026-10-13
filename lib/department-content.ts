@@ -6,6 +6,9 @@ import {
   updateContentItem,
   type ContentItem,
 } from "@/lib/content";
+import { departmentPublishedAt } from "./department-news-date";
+import { isDepartmentImage, isDepartmentAttachment, parseDepartmentMedia, type DepartmentImage, type DepartmentAttachment } from "./department-media";
+import { editorialTextIsValid, editorialLink } from "./editorial-text";
 import { isEditorialPagePath } from "@/lib/editorial-access";
 import { educationQualityRubrics } from "@/lib/education-quality";
 
@@ -27,6 +30,9 @@ export type DepartmentEntry = {
   fileName: string;
   date: string;
   hideDate?: boolean;
+  publishedAt?: string;
+  images?: DepartmentImage[];
+  attachments?: DepartmentAttachment[];
   role: string;
   email: string;
   profileUrl: string;
@@ -34,6 +40,8 @@ export type DepartmentEntry = {
   teacherSourceName?: string;
   teacherDegree?: string;
   teacherAcademicTitle?: string;
+  teacherTags?: string[];
+  profileLinks?: { label: string; href: string }[];
   status: DepartmentEntryStatus;
   sortOrder: number;
   createdAt: string;
@@ -41,7 +49,7 @@ export type DepartmentEntry = {
   authorEmail: string;
 };
 
-export type DepartmentEntryInput = Omit<DepartmentEntry, "id" | "createdAt" | "updatedAt" | "authorEmail">;
+export type DepartmentEntryInput = Omit<DepartmentEntry, "id" | "createdAt" | "updatedAt" | "authorEmail" | "publishedAt">;
 
 const markers = new Set(["department", "page"]);
 
@@ -57,13 +65,15 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
     && isDepartmentEntryType(entry.entryType)
     && typeof entry.title === "string" && Boolean(entry.title.trim())
     && typeof entry.summary === "string"
-    && typeof entry.body === "string"
+    && typeof entry.body === "string" && editorialTextIsValid(entry.body)
     && typeof entry.imageUrl === "string"
     && typeof entry.imageAlt === "string"
     && typeof entry.fileUrl === "string"
     && typeof entry.fileName === "string"
     && typeof entry.date === "string"
     && (entry.hideDate === undefined || typeof entry.hideDate === "boolean")
+    && (entry.images === undefined || Array.isArray(entry.images) && entry.images.every(isDepartmentImage))
+    && (entry.attachments === undefined || Array.isArray(entry.attachments) && entry.attachments.every(isDepartmentAttachment))
     && typeof entry.role === "string"
     && typeof entry.email === "string"
     && typeof entry.profileUrl === "string"
@@ -71,6 +81,8 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
     && (entry.teacherSourceName === undefined || typeof entry.teacherSourceName === "string")
     && (entry.teacherDegree === undefined || typeof entry.teacherDegree === "string")
     && (entry.teacherAcademicTitle === undefined || typeof entry.teacherAcademicTitle === "string")
+    && (entry.teacherTags === undefined || Array.isArray(entry.teacherTags) && entry.teacherTags.every((tag) => typeof tag === "string"))
+    && (entry.profileLinks === undefined || Array.isArray(entry.profileLinks) && entry.profileLinks.every((link) => link && typeof link.label === "string" && Boolean(link.label.trim()) && typeof link.href === "string" && Boolean(editorialLink(link.href))))
     && (entry.status === "draft" || entry.status === "published")
     && typeof entry.sortOrder === "number" && Number.isFinite(entry.sortOrder);
   if (!validBase) return false;
@@ -108,6 +120,9 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
     fileName: payload.fileName || "",
     date: payload.date || "",
     hideDate: payload.hideDate === "true",
+    publishedAt: payload.publishedAt || undefined,
+    images: parseDepartmentMedia(payload.images, isDepartmentImage),
+    attachments: parseDepartmentMedia(payload.attachments, isDepartmentAttachment),
     role: payload.role || "",
     email: payload.email || "",
     profileUrl: payload.profileUrl || "",
@@ -115,6 +130,8 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
     teacherSourceName: payload.teacherSourceName || undefined,
     teacherDegree: payload.teacherDegree || undefined,
     teacherAcademicTitle: payload.teacherAcademicTitle || undefined,
+    teacherTags: payload.teacherTags ? parseDepartmentMedia(payload.teacherTags, (value): value is string => typeof value === "string") : undefined,
+    profileLinks: payload.profileLinks ? parseDepartmentMedia(payload.profileLinks, (value): value is {label: string; href: string} => Boolean(value && typeof value === "object" && "label" in value && "href" in value && typeof value.label === "string" && typeof value.href === "string" && editorialLink(value.href))) : undefined,
     status: payload.status === "draft" ? "draft" : "published",
     sortOrder: item.sortOrder,
     createdAt: item.createdAt,
@@ -138,6 +155,8 @@ function toContentPayload(input: DepartmentEntryInput): Record<string, string> {
     fileName: input.fileName.trim(),
     date: input.date,
     hideDate: input.hideDate ? "true" : "false",
+    images: JSON.stringify(input.images || []),
+    attachments: JSON.stringify(input.attachments || []),
     role: input.role.trim(),
     email: input.email.trim(),
     profileUrl: input.profileUrl.trim(),
@@ -145,6 +164,8 @@ function toContentPayload(input: DepartmentEntryInput): Record<string, string> {
     teacherSourceName: input.teacherSourceName?.trim() || "",
     teacherDegree: input.teacherDegree?.trim() || "",
     teacherAcademicTitle: input.teacherAcademicTitle?.trim() || "",
+    teacherTags: JSON.stringify((input.teacherTags || []).map((tag) => tag.trim()).filter(Boolean)),
+    profileLinks: JSON.stringify(input.profileLinks || []),
     status: input.status,
   };
 }
@@ -165,7 +186,7 @@ export async function getPublishedDepartmentEntries(): Promise<DepartmentEntry[]
   const entries = (await getContentItems("research_resource"))
     .filter(isDepartmentContentItem)
     .map(fromContentItem)
-    .filter((entry) => entry.status === "published");
+    .filter((entry) => entry.status === "published" && !entry.hidden);
   return entries.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
@@ -174,7 +195,7 @@ export async function getPublishedDepartmentEntryById(id: string): Promise<Depar
     .find((entry) => entry.id === id && isDepartmentContentItem(entry));
   if (!item) return null;
   const entry = fromContentItem(item);
-  return entry.status === "published" ? entry : null;
+  return entry.status === "published" && !entry.hidden ? entry : null;
 }
 
 export async function getDepartmentEntryById(id: string): Promise<DepartmentEntry | null> {
@@ -183,14 +204,21 @@ export async function getDepartmentEntryById(id: string): Promise<DepartmentEntr
 }
 
 export async function createDepartmentEntry(input: DepartmentEntryInput, authorEmail: string): Promise<DepartmentEntry> {
-  return fromContentItem(await createContentItem({ kind: "research_resource", payload: toContentPayload(input), sortOrder: input.sortOrder }, authorEmail));
+  return fromContentItem(await createContentItem({ kind: "research_resource", payload: { ...toContentPayload(input), publishedAt: departmentPublishedAt(input.status) }, sortOrder: input.sortOrder }, authorEmail));
 }
 
 export async function updateDepartmentEntry(id: string, input: DepartmentEntryInput, authorEmail: string): Promise<DepartmentEntry | null> {
-  const item = await updateContentItem(id, { kind: "research_resource", payload: toContentPayload(input), sortOrder: input.sortOrder }, authorEmail);
+  const existing = await getDepartmentEntryById(id);
+  if (!existing) return null;
+  const item = await updateContentItem(id, { kind: "research_resource", payload: { ...toContentPayload(input), publishedAt: departmentPublishedAt(input.status, existing) }, sortOrder: input.sortOrder }, authorEmail);
   return item ? fromContentItem(item) : null;
 }
 
-export async function deleteDepartmentEntry(id: string): Promise<void> {
+export async function deleteDepartmentEntry(id: string, authorEmail?: string): Promise<void> {
+  const entry = await getDepartmentEntryById(id);
+  if (entry?.entryType === "teacher" && entry.teacherSourceName) {
+    await updateDepartmentEntry(id, { ...entry, hidden: true }, authorEmail || entry.authorEmail);
+    return;
+  }
   await deleteContentItem(id);
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadEditorialFile } from "@/lib/editorial-upload-client";
 import { useMemo, useState } from "react";
 import type { DocumentStatus, PageDocument, PageDocumentInput } from "@/lib/documents";
 import type { Publisher } from "@/lib/auth";
@@ -73,48 +74,33 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
 
   async function upload(file: File) {
     setBusy(true); setMessage("Завантажуємо документ…");
-    const data = new FormData();
-    data.append("file", file);
-    data.append("purpose", "document");
-    data.append("pagePath", form.pagePath);
-    const response = await fetch("/api/uploads", { method: "POST", body: data });
-    const result = await response.json() as { url?: string; fileName?: string; mimeType?: string; fileSize?: number; error?: string };
-    if (!response.ok || !result.url) {
-      setMessage(result.error || "Не вдалося завантажити документ");
-      setBusy(false);
-      return;
-    }
-    setForm((current) => ({
-      ...current,
-      fileUrl: result.url || "",
-      fileName: result.fileName || file.name,
-      mimeType: result.mimeType || file.type,
-      fileSize: result.fileSize || file.size,
-      title: current.title || file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " "),
-    }));
-    setMessage("Файл завантажено. Тепер збережіть документ.");
-    setBusy(false);
+    try {
+      const result = await uploadEditorialFile(file, "document", form.pagePath);
+      setForm((current) => ({ ...current, fileUrl: result.url, fileName: result.fileName,
+        mimeType: result.mimeType, fileSize: result.fileSize,
+        title: current.title || file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " "),
+      }));
+      setMessage("Файл завантажено. Тепер збережіть документ.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Не вдалося завантажити документ");
+    } finally { setBusy(false); }
   }
 
   async function save(event: React.FormEvent) {
     event.preventDefault(); setBusy(true); setMessage("Зберігаємо документ…");
-    const payload = form.pagePath === "/schedule"
-      ? { ...form, category: buildScheduleDocumentCategory(scheduleSelection) }
-      : form;
-    const response = await fetch(editing ? `/api/documents/${editing}` : "/api/documents", {
-      method: editing ? "PATCH" : "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const result = await response.json() as PageDocument & { error?: string };
-    if (!response.ok) {
-      setMessage(result.error || "Не вдалося зберегти документ");
-      setBusy(false);
-      return;
-    }
-    setDocuments((current) => editing ? current.map((item) => item.id === editing ? result : item) : [result, ...current]);
-    setMessage(result.status === "published" ? "Документ опубліковано на вибраній сторінці та автоматично додано до загального каталогу" : "Чернетку документа збережено");
-    setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setScheduleSelection(defaultScheduleDocumentSelection); setProgrammeDocumentKind("Освітня програма"); setProgrammeDocumentYear(""); setBusy(false);
+    try {
+      const payload = form.pagePath === "/schedule" ? { ...form, category: buildScheduleDocumentCategory(scheduleSelection) } : form;
+      const response = await fetch(editing ? `/api/documents/${editing}` : "/api/documents", {
+        method: editing ? "PATCH" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload),
+      });
+      const result = await response.json() as PageDocument & { error?: string };
+      if (!response.ok) throw new Error(result.error || "Не вдалося зберегти документ");
+      setDocuments((current) => editing ? current.map((item) => item.id === editing ? result : item) : [result, ...current]);
+      setMessage(result.status === "published" ? "Документ опубліковано на вибраній сторінці та автоматично додано до загального каталогу" : "Чернетку документа збережено");
+      setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setScheduleSelection(defaultScheduleDocumentSelection); setProgrammeDocumentKind("Освітня програма"); setProgrammeDocumentYear("");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Не вдалося зберегти документ");
+    } finally { setBusy(false); }
   }
 
   function edit(item: PageDocument) {
@@ -146,12 +132,14 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
   async function remove(document: PageDocument) {
     if (!confirm(`Видалити «${document.title}» зі сторінки?`)) return;
     setBusy(true);
-    const response = await fetch(`/api/documents/${document.id}`, { method: "DELETE" });
-    if (response.ok) {
+    try {
+      const response = await fetch(`/api/documents/${document.id}`, { method: "DELETE" });
+      if (!response.ok) throw new Error("Не вдалося видалити документ");
       setDocuments((current) => current.filter((item) => item.id !== document.id));
       setMessage("Документ видалено зі сторінки");
-    } else setMessage("Не вдалося видалити документ");
-    setBusy(false);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Не вдалося видалити документ");
+    } finally { setBusy(false); }
   }
 
   return <section className="document-manager" id="documents">

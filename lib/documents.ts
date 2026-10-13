@@ -1,3 +1,4 @@
+import { getLocalDocuments, createLocalDocument, updateLocalDocument, deleteLocalDocument } from "./documents-local";
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -77,7 +78,7 @@ function toRow(input: PageDocumentInput, authorEmail: string) {
 }
 
 export async function getAllDocuments(): Promise<PageDocument[]> {
-  if (!isSupabaseConfigured()) return [];
+  if (!isSupabaseConfigured()) return getLocalDocuments();
   const { data, error } = await createSupabaseAdmin()
     .from("editorial_documents")
     .select("*")
@@ -89,7 +90,7 @@ export async function getAllDocuments(): Promise<PageDocument[]> {
 }
 
 export async function getPublicDocuments(pagePath: string): Promise<PageDocument[]> {
-  if (!isSupabaseConfigured()) return [];
+  if (!isSupabaseConfigured()) return (await getLocalDocuments(true)).filter((document) => [pagePath, "*"].includes(document.pagePath));
   const { data, error } = await createSupabasePublicClient()
     .from("editorial_documents")
     .select("*")
@@ -102,7 +103,7 @@ export async function getPublicDocuments(pagePath: string): Promise<PageDocument
 }
 
 export async function getPublishedDocuments(): Promise<PageDocument[]> {
-  if (!isSupabaseConfigured()) return [];
+  if (!isSupabaseConfigured()) return getLocalDocuments(true);
   const { data, error } = await createSupabasePublicClient()
     .from("editorial_documents")
     .select("*")
@@ -113,7 +114,7 @@ export async function getPublishedDocuments(): Promise<PageDocument[]> {
 }
 
 export async function getDocumentById(id: string): Promise<PageDocument | null> {
-  if (!isSupabaseConfigured()) return null;
+  if (!isSupabaseConfigured()) return (await getLocalDocuments()).find((document) => document.id === id) || null;
   const { data, error } = await createSupabaseAdmin()
     .from("editorial_documents")
     .select("*")
@@ -124,6 +125,7 @@ export async function getDocumentById(id: string): Promise<PageDocument | null> 
 }
 
 export async function createDocument(input: PageDocumentInput, authorEmail: string): Promise<PageDocument> {
+  if (!isSupabaseConfigured()) return createLocalDocument(input, authorEmail);
   const { data, error } = await createSupabaseAdmin()
     .from("editorial_documents")
     .insert(toRow(input, authorEmail))
@@ -135,6 +137,16 @@ export async function createDocument(input: PageDocumentInput, authorEmail: stri
 
 export async function createDocuments(inputs: PageDocumentInput[], authorEmail: string): Promise<PageDocument[]> {
   if (!inputs.length) return [];
+  if (!isSupabaseConfigured()) {
+    const created: PageDocument[] = [];
+    try {
+      for (const input of inputs) created.push(await createLocalDocument(input, authorEmail));
+      return created;
+    } catch (error) {
+      for (const document of created) await deleteLocalDocument(document.id);
+      throw error;
+    }
+  }
   const { data, error } = await createSupabaseAdmin()
     .from("editorial_documents")
     .insert(inputs.map((input) => toRow(input, authorEmail)))
@@ -144,6 +156,7 @@ export async function createDocuments(inputs: PageDocumentInput[], authorEmail: 
 }
 
 export async function updateDocument(id: string, input: PageDocumentInput, authorEmail: string): Promise<PageDocument | null> {
+  if (!isSupabaseConfigured()) return updateLocalDocument(id, input, authorEmail);
   const { data, error } = await createSupabaseAdmin()
     .from("editorial_documents")
     .update(toRow(input, authorEmail))
@@ -155,6 +168,7 @@ export async function updateDocument(id: string, input: PageDocumentInput, autho
 }
 
 export async function deleteDocument(id: string): Promise<void> {
+  if (!isSupabaseConfigured()) return deleteLocalDocument(id);
   const { error } = await createSupabaseAdmin().from("editorial_documents").delete().eq("id", id);
   if (error) throw error;
 }

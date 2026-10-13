@@ -1,48 +1,35 @@
-type EditorialRichTextProps = {
-  text: string;
-  language?: "uk" | "en";
-};
+import { createElement, type ReactNode } from "react";
+import { editorialLink, editorialTextDocument, type EditorialTextNode } from "@/lib/editorial-text";
 
-type TextBlock =
-  | { type: "heading"; text: string }
-  | { type: "list"; items: string[] }
-  | { type: "paragraph"; text: string };
+type EditorialRichTextProps = { text: string; language?: "uk" | "en"; headingOffset?: number };
 
-const bulletPattern = /^[-•–]\s+/;
-const numberedPattern = /^\d+[.)]\s+/;
-
-function parseText(text: string): TextBlock[] {
-  return text
-    .split(/\n\s*\n+/)
-    .map((block) => block.trim())
-    .filter(Boolean)
-    .map((block) => {
-      const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
-      if (lines.length > 0 && lines.every((line) => bulletPattern.test(line) || numberedPattern.test(line))) {
-        return {
-          type: "list" as const,
-          items: lines.map((line) => line.replace(bulletPattern, "").replace(numberedPattern, "")),
-        };
+function renderNode(node: EditorialTextNode, key: string, offset: number): ReactNode {
+  if (node.type === "text") {
+    let text: ReactNode = node.text || "";
+    for (const [index, mark] of (node.marks || []).entries()) {
+      const markKey = `${key}-mark-${index}`;
+      if (mark.type === "link") {
+        const href = editorialLink(mark.attrs?.href);
+        if (href) text = <a href={href} target="_blank" rel="noopener noreferrer" key={markKey}>{text}</a>;
+      } else {
+        const tag = ({ bold: "strong", italic: "em", underline: "u", strike: "s", code: "code" } as Record<string, string>)[mark.type];
+        if (tag) text = createElement(tag, { key: markKey }, text);
       }
-      if (/^#{1,3}\s+/.test(block)) {
-        return { type: "heading" as const, text: block.replace(/^#{1,3}\s+/, "") };
-      }
-      return { type: "paragraph" as const, text: block.replace(/\n+/g, " ") };
-    });
+    }
+    return <span key={key}>{text}</span>;
+  }
+  if (node.type === "hardBreak") return <br key={key} />;
+  if (node.type === "horizontalRule") return <hr key={key} />;
+  const children = (node.content || []).map((child, index) => renderNode(child, `${key}-${index}`, offset));
+  if (node.type === "heading") return createElement(`h${Math.min(6, (node.attrs?.level || 2) + offset)}`, { key }, children);
+  if (node.type === "orderedList") return <ol start={node.attrs?.start || 1} key={key}>{children}</ol>;
+  if (node.type === "codeBlock") return <pre key={key}><code>{children}</code></pre>;
+  const tag = ({ paragraph: "p", bulletList: "ul", listItem: "li", blockquote: "blockquote" } as Record<string, string>)[node.type];
+  return tag ? createElement(tag, { key }, children) : null;
 }
 
-export function EditorialRichText({ text, language = "uk" }: EditorialRichTextProps) {
-  const blocks = parseText(text);
-  const sectionLabel = language === "uk" ? "Фрагмент" : "Section";
-
-  return <div className="editorial-richtext">
-    {blocks.map((block, index) => {
-      if (block.type === "heading") return <h2 key={`${block.text}-${index}`}>{block.text}</h2>;
-      if (block.type === "list") return <div className="editorial-list" key={`list-${index}`}><span>{String(index + 1).padStart(2, "0")}</span><ul>{block.items.map((item) => <li key={item}>{item}</li>)}</ul></div>;
-      return <div className="editorial-paragraph" key={`${block.text.slice(0, 24)}-${index}`}>
-        <span><b>{String(index + 1).padStart(2, "0")}</b>{sectionLabel}</span>
-        <p>{block.text}</p>
-      </div>;
-    })}
-  </div>;
+export function EditorialRichText({ text, headingOffset = 0 }: EditorialRichTextProps) {
+  const doc = editorialTextDocument(text);
+  if (!doc.content?.length) return null;
+  return <div className="editorial-richtext">{doc.content.map((node, index) => renderNode(node, String(index), headingOffset))}</div>;
 }

@@ -13,15 +13,16 @@ type PageDocumentsProps = {
   excludeCategoryPrefixes?: string[];
   title?: string;
   description?: string;
+  showEmptyTitle?: boolean;
 };
 
-export async function PageDocuments({ pagePath, emptyMessage, includeCategoryPrefixes = [], excludeCategoryPrefixes = [], title = "Файли та офіційні матеріали", description = "Актуальні документи, додані редакцією Академії." }: PageDocumentsProps) {
+export async function PageDocuments({ pagePath, emptyMessage, includeCategoryPrefixes = [], excludeCategoryPrefixes = [], title = "Файли та офіційні матеріали", description = "Актуальні документи, додані редакцією Академії.", showEmptyTitle = false }: PageDocumentsProps) {
   const matchesPrefix = (category: string, prefixes: string[]) => prefixes.some((prefix) => category.toLocaleLowerCase("uk-UA").startsWith(prefix.toLocaleLowerCase("uk-UA")));
   const documents = (await getPublicDocuments(pagePath)).filter((document) =>
     (!includeCategoryPrefixes.length || matchesPrefix(document.category, includeCategoryPrefixes))
       && (!excludeCategoryPrefixes.length || !matchesPrefix(document.category, excludeCategoryPrefixes)),
   );
-  if (!documents.length) return emptyMessage ? <div className="wrap"><p className="academic-empty-state">{emptyMessage}</p></div> : null;
+  if (!documents.length) return emptyMessage ? <section className="page-documents"><div className="wrap">{showEmptyTitle && <div className="sec-head"><h2>{title}</h2></div>}<p className="academic-empty-state">{emptyMessage}</p></div></section> : null;
 
   return <section className="page-documents"><div className="wrap">
     <div className="sec-head"><div><div className="idx">Документи сторінки</div><h2>{title}</h2></div><p>{description}</p></div>

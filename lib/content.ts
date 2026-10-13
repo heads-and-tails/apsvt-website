@@ -252,7 +252,7 @@ export async function getContentItems(kind: ContentKind): Promise<ContentItem[]>
 }
 
 export async function getPublicContent(kind: ContentKind): Promise<PublicContentItem[]> {
-  return (await getContentItems(kind)).map(({ id, kind: itemKind, payload, sortOrder }) => ({ id, kind: itemKind, payload, sortOrder }));
+  return (await getContentItems(kind)).filter((item) => item.payload.editorialSurface !== "document").map(({ id, kind: itemKind, payload, sortOrder }) => ({ id, kind: itemKind, payload, sortOrder }));
 }
 
 export async function getAllContent(): Promise<ContentItem[]> {

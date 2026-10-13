@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import type { DepartmentEntry } from "@/lib/department-content";
+import { isEditorialPagePath } from "@/lib/editorial-access";
 import { DepartmentEditorialContent } from "./DepartmentEditorialContent";
 
 const ignoredPrefixes = ["/panel", "/student", "/api", "/auth", "/en"];
@@ -27,7 +28,7 @@ export function UniversalPageMaterials() {
   );
 
   useEffect(() => {
-    if (isIgnoredPath(pathname)) return;
+    if (isIgnoredPath(pathname) || !isEditorialPagePath(pathname)) return;
     const controller = new AbortController();
     fetch(`/api/page-materials?path=${encodeURIComponent(pathname)}`, { signal: controller.signal })
       .then((response) => response.ok ? response.json() : [])
@@ -87,7 +88,7 @@ export function UniversalPageMaterials() {
       if (!entry.body.startsWith("main > ")) return;
       try {
         const element = document.querySelector<HTMLElement>(entry.body);
-        if (!element) return;
+        if (!element || element.closest("[data-editorial-rendered=\'true\']")) return;
         if (entry.role === "text") {
           const original = element.innerHTML;
           element.textContent = entry.summary;
