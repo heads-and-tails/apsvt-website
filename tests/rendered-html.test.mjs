@@ -154,10 +154,10 @@ test("finance programmes offer direct bachelor and master navigation without pho
 
 test("finance materials follow the department's course structure and link to supplied PDFs",async()=>{
   const html=await (await render("/programs/finance#overview")).text();
-  for(const label of ["Документи бакалаврату","1 курс","2 курс","3 курс","4 курс","Документи магістратури","Фахова фінансова підготовка","27","Грантове фінансування","Видання кафедри фінансів"]){
+  for(const label of ["Документи бакалаврату","1 курс","2 курс","3 курс","4 курс","Документи магістратури","Програмні дисципліни","Фахова фінансова підготовка","27","Грантове фінансування","Видання кафедри фінансів"]){
     assert.match(html,new RegExp(label));
   }
-  for(const file of ["bachelor-fulltime-2026.pdf","bachelor-fulltime-2025.pdf","bachelor-parttime-2025.pdf","bachelor-fulltime-2024.pdf","bachelor-parttime-2024.pdf","bachelor-parttime-2023.pdf","master-programme-2025.pdf","master-parttime-2025.pdf"]){
+  for(const file of ["bachelor-fulltime-2026.pdf","bachelor-fulltime-2025.pdf","bachelor-parttime-2025.pdf","bachelor-fulltime-2024.pdf","bachelor-parttime-2024.pdf","bachelor-parttime-2023.pdf","master-programme-2025.pdf","master-fulltime-2025.pdf","master-parttime-2025.pdf"]){
     assert.match(html,new RegExp(file));
     const bytes=await readFile(new URL(`../public/documents/programmes/finance/${file}`,import.meta.url));
     assert.ok(bytes.length>100000,`${file} should be an attached PDF`);
