@@ -690,6 +690,28 @@ test("separates marketing bachelor and master materials and publishes stakeholde
   }
 });
 
+test("publishes marketing master programmes and nested methodical document folders",async()=>{
+  const marketing=await (await render("/programs/marketing")).text();
+  assert.match(marketing,/Освітньо-професійна програма «Маркетинг» 2026 року/);
+  assert.match(marketing,/Освітньо-професійна програма «Маркетинг» 2025 року/);
+  assert.match(marketing,/Кваліфікаційні роботи/);
+  assert.match(marketing,/Магістратура/);
+  assert.match(marketing,/Графік консультацій викладачів/);
+  for(const relativePath of [
+    "programmes/opp-marketing-master-2025.pdf",
+    "programmes/opp-marketing-master-2026.pdf",
+    "methodical/qualification-master-2025.pdf",
+    "methodical/qualification-master-2026.pdf",
+    "methodical/teacher-consultations-2026-2027.pdf",
+  ]){
+    const href=`/documents/marketing/${relativePath}`;
+    assert.ok(marketing.includes(`href="${href}"`),`Missing link: ${href}`);
+    const bytes=await readFile(new URL(`../public/documents/marketing/${relativePath}`,import.meta.url));
+    assert.equal(bytes.subarray(0,5).toString(),"%PDF-");
+    assert.ok(bytes.length>100_000);
+  }
+});
+
 test("publishes the two requested marketing programme discussion announcements",async()=>{
   const [march,may]=await Promise.all([
     (await render("/news/obhovorennia-opp-marketynh-12-bereznia-2026")).text(),

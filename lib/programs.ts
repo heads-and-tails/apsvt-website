@@ -118,7 +118,7 @@ export const programs: Program[] = [
     ],
     careers:["Маркетинг-менеджер","Бренд-менеджер","Дослідник ринку","Фахівець із комунікацій","Customer experience manager"],
     international:["Jean Monnet winter school","Міжнародні бізнес-проєкти","Подвійний диплом"],
-    materials:[{label:"ОПП D5 «Маркетинг» · бакалавр",href:`${officialProgrammeFileBase}/d5-marketing-bachelor.pdf`},{label:"ОПП D5 «Маркетинг» · магістр",href:`${officialProgrammeFileBase}/d5-marketing-master.pdf`},{label:"Кафедра маркетингу",href:"/materials/marketing-department-6d479b9a4.html"}],
+    materials:[{label:"ОПП D5 «Маркетинг» · бакалавр",href:`${officialProgrammeFileBase}/d5-marketing-bachelor.pdf`},{label:"ОПП D5 «Маркетинг» · магістр, 2026",href:"/documents/marketing/programmes/opp-marketing-master-2026.pdf"},{label:"ОПП D5 «Маркетинг» · магістр, 2025",href:"/documents/marketing/programmes/opp-marketing-master-2025.pdf"},{label:"Кафедра маркетингу",href:"/materials/marketing-department-6d479b9a4.html"}],
     tags:["креативність","люди","аналітика","бренди"],
   },
   {
