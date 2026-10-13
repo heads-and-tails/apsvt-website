@@ -26,6 +26,7 @@ export type DepartmentEntry = {
   fileUrl: string;
   fileName: string;
   date: string;
+  hideDate?: boolean;
   role: string;
   email: string;
   profileUrl: string;
@@ -62,6 +63,7 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
     && typeof entry.fileUrl === "string"
     && typeof entry.fileName === "string"
     && typeof entry.date === "string"
+    && (entry.hideDate === undefined || typeof entry.hideDate === "boolean")
     && typeof entry.role === "string"
     && typeof entry.email === "string"
     && typeof entry.profileUrl === "string"
@@ -105,6 +107,7 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
     fileUrl: payload.fileUrl || "",
     fileName: payload.fileName || "",
     date: payload.date || "",
+    hideDate: payload.hideDate === "true",
     role: payload.role || "",
     email: payload.email || "",
     profileUrl: payload.profileUrl || "",
@@ -134,6 +137,7 @@ function toContentPayload(input: DepartmentEntryInput): Record<string, string> {
     fileUrl: input.fileUrl.trim(),
     fileName: input.fileName.trim(),
     date: input.date,
+    hideDate: input.hideDate ? "true" : "false",
     role: input.role.trim(),
     email: input.email.trim(),
     profileUrl: input.profileUrl.trim(),

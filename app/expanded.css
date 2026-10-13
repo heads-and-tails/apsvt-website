@@ -3615,3 +3615,6 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
 .law-seed-teachers button span{flex:1;font-weight:700}
 .law-seed-teachers button b{font-size:12px}
 .admissions-active-panel [id]{scroll-margin-top:86px}
+
+.operations-fields .department-checkbox{display:flex;align-items:center;gap:10px;line-height:1.5}
+.operations-fields .department-checkbox input{width:18px;min-width:18px;height:18px;margin:0;padding:0;accent-color:var(--cobalt)}

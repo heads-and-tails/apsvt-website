@@ -584,17 +584,19 @@ async function ensureSupabasePosts(): Promise<void> {
   supabaseSeeded = true;
 }
 
-export async function getPosts(options: { includeDrafts?: boolean; limit?: number } = {}): Promise<Post[]> {
+export async function getPosts(options: { includeDrafts?: boolean; limit?: number; slugs?: string[] } = {}): Promise<Post[]> {
+  if (options.slugs && !options.slugs.length) return [];
   if (isSupabaseConfigured()) {
     try {
       await ensureSupabasePosts();
       const client = options.includeDrafts ? createSupabaseAdmin() : createSupabasePublicClient();
-      const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
+      const limit = Math.max(1, Math.min(options.limit ?? 50, options.slugs?.length ?? 100));
       let query = client.from("editorial_posts").select("*")
         .neq("category", "__telegram_editorial__")
         .neq("category", "__byteslab_workspace__")
         .neq("category", "__academy_scheduler__");
       if (!options.includeDrafts) query = query.eq("status", "published");
+      if (options.slugs) query = query.in("slug", options.slugs);
       const { data, error } = await query.order("featured", { ascending: false }).order("published_at", { ascending: false, nullsFirst: false }).limit(limit);
       if (error) throw error;
       if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>)).filter((post) => !post.category.startsWith("__"));
@@ -606,15 +608,21 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
     await ensurePosts();
     const database = await db();
     if (!database) throw new Error("D1_UNAVAILABLE");
-    const where = options.includeDrafts
+    let where = options.includeDrafts
       ? "WHERE substr(category,1,2) != '__'"
       : "WHERE status = 'published' AND substr(category,1,2) != '__'";
-    const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
-    const result = await database.prepare(`SELECT * FROM posts ${where} ORDER BY featured DESC, COALESCE(published_at, created_at) DESC LIMIT ?`).bind(limit).all<Record<string, unknown>>();
+    const parameters: (string | number)[] = [];
+    if (options.slugs) {
+      where += ` AND slug IN (${options.slugs.map(() => "?").join(",")})`;
+      parameters.push(...options.slugs);
+    }
+    const limit = Math.max(1, Math.min(options.limit ?? 50, options.slugs?.length ?? 100));
+    const result = await database.prepare(`SELECT * FROM posts ${where} ORDER BY featured DESC, COALESCE(published_at, created_at) DESC LIMIT ?`).bind(...parameters, limit).all<Record<string, unknown>>();
     return result.results.map(fromRow).filter((post) => !post.category.startsWith("__"));
   } catch {
     return seedPosts
       .filter((post) => options.includeDrafts || post.status === "published")
+      .filter((post) => !options.slugs || options.slugs.includes(post.slug))
       .sort((a, b) => Number(b.featured) - Number(a.featured) || String(b.publishedAt || b.createdAt).localeCompare(String(a.publishedAt || a.createdAt)))
       .slice(0, options.limit ?? 50);
   }

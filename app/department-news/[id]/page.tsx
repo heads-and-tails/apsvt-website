@@ -37,7 +37,7 @@ export default async function Page({ params }: Props) {
   if (!entry || entry.entryType !== "news") notFound();
 
   const pageTitle = pageTitleFor(entry.pagePath);
-  const date = formatDate(entry.date);
+  const date = entry.hideDate ? "" : formatDate(entry.date);
   const heroImage = entry.imageUrl || "/apsvt-students-real.jpg";
 
   return <main id="top">
@@ -53,7 +53,7 @@ export default async function Page({ params }: Props) {
         <EditorialRichText text={entry.body} />
         <Link className="back-link" href={`${entry.pagePath}#department-news`}>← До новин підрозділу</Link>
       </article>
-      <aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Підрозділ</b>{pageTitle}</li>{date && <li><b>Опубліковано</b>{date}</li>}<li><b>Автор</b>Редакція АПСВТ</li></ul></aside>
+      <aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Підрозділ</b>{pageTitle}</li>{date && <li><b>Опубліковано</b>{date}</li>}</ul></aside>
     </div></section>
     <SiteFooter />
   </main>;

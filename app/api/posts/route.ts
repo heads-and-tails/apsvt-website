@@ -4,7 +4,7 @@ import { requirePagePublisher } from "@/lib/auth";
 
 export const dynamic="force-dynamic";
 
-function valid(value:unknown):value is PostInput{if(!value||typeof value!=="object")return false;const v=value as Record<string,unknown>;return typeof v.title==="string"&&v.title.trim().length>=3&&typeof v.excerpt==="string"&&typeof v.body==="string"&&typeof v.category==="string"&&typeof v.imageUrl==="string"&&typeof v.imageAlt==="string"&&(v.status==="draft"||v.status==="published")&&typeof v.featured==="boolean"}
+function valid(value:unknown):value is PostInput{if(!value||typeof value!=="object")return false;const v=value as Record<string,unknown>;return typeof v.title==="string"&&v.title.trim().length>=3&&typeof v.excerpt==="string"&&typeof v.body==="string"&&typeof v.category==="string"&&typeof v.imageUrl==="string"&&typeof v.imageAlt==="string"&&(v.status==="draft"||v.status==="published")&&typeof v.featured==="boolean"&&(v.hideDate===undefined||typeof v.hideDate==="boolean")}
 
 export async function GET(){try{await requirePagePublisher("/news");return NextResponse.json(await getPosts({includeDrafts:true,limit:100}))}catch{return NextResponse.json({error:"Доступ заборонено"},{status:403})}}
 

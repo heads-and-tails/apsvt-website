@@ -41,7 +41,7 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
     getAllContent(),
     getAllDocuments(),
     getAllDepartmentEntries(),
-    publisher.role === "admin" ? getEditorialProfiles() : Promise.resolve([]),
+    publisher.role === "admin" && isSupabaseConfigured() ? getEditorialProfiles() : Promise.resolve([]),
     publisher.role === "admin" ? getStudentFinanceAdminData() : Promise.resolve({ available: false, profiles: [], contracts: [], charges: [], payments: [], notifications: [] }),
   ]);
   const posts = canEditPage(publisher, "/news") ? allPosts : [];
