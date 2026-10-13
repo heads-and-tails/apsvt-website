@@ -30,6 +30,7 @@ import { academicCompetitionNewsSlug } from "@/lib/academic-competition";
 const IMG = "https://images.unsplash.com";
 export const stakeholderDiscussionNewsSlug = "obhovorennia-osvitnikh-prohram-d8-d4-2026";
 export const erasmusDaysNewsSlug = "erasmus-days-2026-apsvt";
+export const aiTrainingNewsSlug = "treninh-shtuchnyi-intelekt-osvita-nauka-2026";
 export const studyUaExpoNewsSlug = "study-ua-osvitnia-vystavka-kyiv-2026";
 export const mentalHealthConferenceNewsSlug = "mental-health-conference-2026";
 export const pilcSeiteNewsSlug = "natalia-goncharenko-pilc-seite-2026";
@@ -86,6 +87,22 @@ export const seedPosts: Post[] = [
     createdAt: "2026-05-02T10:00:00.000Z",
     updatedAt: "2026-10-11T16:30:00.000Z",
     authorEmail: "nadezda_pisarenko@ukr.net",
+  },
+  {
+    id: "seed-ai-training-2026-10-13",
+    slug: aiTrainingNewsSlug,
+    title: "В Академії відбувся тренінг із використання штучного інтелекту",
+    excerpt: "13 жовтня 2026 року в Академії пройшов тренінг про застосування ШІ в освітній, науковій та міжнародній проєктній діяльності.",
+    body: "13 жовтня 2026 року в Академії праці, соціальних відносин і туризму відбувся тренінг, присвячений можливостям використання штучного інтелекту (ШІ) в освітній, науковій та міжнародній проєктній діяльності.\n\nЗахід провела проректор з міжнародної діяльності Наталія Гончаренко.\n\nОсновну увагу було приділено практичним можливостям застосування сучасних інструментів штучного інтелекту для підвищення ефективності професійної діяльності науково-педагогічних працівників, підготовки міжнародних грантових заявок та реалізації освітніх проєктів.\n\nУ межах тренінгу розглянуто:\n\n- Основні принципи роботи штучного інтелекту, великих мовних моделей та нейромереж.\n- Можливості використання ChatGPT та інших інструментів ШІ для аналізу інформації, структурування матеріалів і підготовки проєктної документації.\n- Основи промпт-інжинірингу — формування ефективних запитів для отримання якісних результатів від систем штучного інтелекту.\n- Використання ШІ під час розроблення міжнародних освітніх проєктів, зокрема в межах програми Erasmus+.\n- Доступні міжнародні освітні ресурси для самостійного опанування технологій ШІ, серед яких AI for Everyone, Elements of AI, DeepLearning.AI, LearnPrompting та Google Cloud Generative AI Learning Path.\n- Етичні та правові аспекти застосування штучного інтелекту відповідно до європейських підходів, зокрема положень EU AI Act.\n\nОкрему увагу приділено питанням академічної доброчесності, захисту персональних даних, дотримання авторських прав та необхідності критичної перевірки інформації, отриманої за допомогою ШІ.\n\nУчасників також ознайомлено з добіркою освітніх ресурсів для самостійного навчання, підготовленою в межах PROJECT LAB.\n\nПроведення таких заходів сприяє розвитку цифрових компетентностей науково-педагогічних працівників Академії, впровадженню інноваційних освітніх технологій та розширенню можливостей міжнародного співробітництва.",
+    category: "Міжнародне",
+    imageUrl: "/ai-training-2026-01.jpeg",
+    imageAlt: "Наталія Гончаренко проводить тренінг із використання ШІ",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-13T10:11:40.000Z",
+    createdAt: "2026-10-13T10:11:40.000Z",
+    updatedAt: "2026-10-13T10:11:40.000Z",
+    authorEmail: "yaroslav-z@ukr.net",
   },
   {
     id: "seed-erasmus-days-2026-apsvt",
@@ -543,7 +560,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug || post.slug === marketingDiscussionMarchNewsSlug || post.slug === marketingDiscussionMayNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug || post.slug === marketingDiscussionMarchNewsSlug || post.slug === marketingDiscussionMayNewsSlug || post.slug === aiTrainingNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }

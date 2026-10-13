@@ -33,6 +33,18 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
+test("publishes Yaroslav Zhuravel's AI training report with three supplied event photos",async()=>{
+  const article=await render("/news/treninh-shtuchnyi-intelekt-osvita-nauka-2026");
+  assert.equal(article.status,200);
+  const html=await article.text();
+  assert.match(html,/13 жовтня 2026 року в Академії праці/);
+  assert.match(html,/Наталія Гончаренко/);
+  for(const file of ["ai-training-2026-01.jpeg","ai-training-2026-02.jpeg","ai-training-2026-03.jpeg"]){
+    assert.match(html,new RegExp(file));
+  }
+  assert.doesNotMatch(html,/115656\.png/);
+});
+
 test("serves every main public section in English",async()=>{
   const paths=["/en/about","/en/programs","/en/admissions","/en/tuition","/en/people","/en/international","/en/research","/en/research/journals","/en/research/conferences","/en/facilities","/en/facilities/campus","/en/facilities/dormitory","/en/facilities/library","/en/events","/en/students","/en/schedule","/en/exam-schedule","/en/academic-calendar","/en/materials","/en/stories","/en/faq","/en/news","/en/contacts"];
   for(const path of paths){
