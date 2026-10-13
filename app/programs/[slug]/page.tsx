@@ -23,6 +23,7 @@ import { MarketingTeam } from "./MarketingTeam";
 import { MarketingCareers, MarketingDepartmentAbout } from "./MarketingDepartmentContent";
 import { MarketingStudentLife } from "./MarketingStudentLife";
 import { MarketingEducationPrograms } from "./MarketingEducationPrograms";
+import { MarketingQuality } from "./MarketingQuality";
 import { MarketingMethodicalFolders } from "./MarketingMethodicalFolders";
 import { FinanceInternational, financeProjectSections } from "./FinanceInternational";
 import { FinanceMasterProgramme } from "./FinanceMasterProgramme";
@@ -50,11 +51,12 @@ const marketingSections: readonly SectionHubItem[] = [
   { id: "department", index: "01", title: "Про кафедру", description: "Місія, напрями роботи та освітнє середовище кафедри маркетингу.", icon: "D5" },
   { id: "department-team", index: "02", title: "Науково-педагогічний склад", description: "Викладачі, освіта, наукові інтереси та професійні профілі.", icon: "NPP" },
   { id: "curriculum", index: "03", title: "Освітні програми", description: "Рівні освіти, навчальні плани, обов’язкові й вибіркові компоненти.", icon: "OP", aliases: ["overview", "education-levels", "electives", "course-annotations"] },
-  { id: "science", index: "04", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI" },
-  { id: "programme-documents", index: "05", title: "Навчально-методичне забезпечення", description: "Офіційні програми, плани, дисципліни й матеріали кафедри.", icon: "PDF" },
-  { id: "marketing-student-life", index: "06", title: "Студентське життя та самоврядування", description: "Гурток MARKETHINK, студентські ініціативи й участь у житті Академії.", icon: "M" },
-  { id: "careers", index: "07", title: "Кар’єра і працевлаштування", description: "Професійні ролі, практика, роботодавці та кар’єрні можливості.", icon: "GO", aliases: ["practice"] },
-  { id: "department-news", index: "08", title: "Новини", description: "Події, публікації та оголошення кафедри маркетингу.", icon: "NEWS" },
+  { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг якості освіти та обговорення змін до ОПП за рівнями.", icon: "✓", aliases: ["marketing-quality-discussion", "marketing-stakeholder-call"] },
+  { id: "science", index: "05", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI" },
+  { id: "programme-documents", index: "06", title: "Навчально-методичне забезпечення", description: "Офіційні програми, плани, дисципліни й матеріали кафедри.", icon: "PDF" },
+  { id: "marketing-student-life", index: "07", title: "Студентське життя та самоврядування", description: "Гурток MARKETHINK, студентські ініціативи й участь у житті Академії.", icon: "M" },
+  { id: "careers", index: "08", title: "Кар’єра і працевлаштування", description: "Професійні ролі, практика, роботодавці та кар’єрні можливості.", icon: "GO", aliases: ["practice"] },
+  { id: "department-news", index: "09", title: "Новини", description: "Події, публікації та оголошення кафедри маркетингу.", icon: "NEWS" },
 ];
 
 const financeSections: readonly SectionHubItem[] = [
@@ -90,7 +92,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     : [];
   const activeSections = slug === "marketing" ? marketingSections : slug === "finance" ? financeSections : programmeSections;
   const navigatorDescription = slug === "marketing"
-    ? "Оберіть склад кафедри, освітні програми, науку, матеріали, студентське життя, кар’єру або новини — відкриється тільки потрібний розділ."
+    ? "Оберіть склад кафедри, освітні програми, якість освіти, науку, матеріали, студентське життя, кар’єру або новини — відкриється тільки потрібний розділ."
     : slug === "finance"
       ? "Оберіть програми, освітнє середовище, міжнародні проєкти, якість, вступ, новини або контакти — відкриється тільки потрібний розділ."
       : "Оберіть навчальний план, кафедру, кар’єру, вступні матеріали або міжнародні можливості — відкриється тільки потрібний розділ.";
@@ -98,7 +100,8 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <MarketingDepartmentAbout key="marketing-about" />,
     <MarketingTeam entries={departmentEntries.filter((entry) => entry.entryType === "teacher")} key="marketing-team" />,
     <MarketingEducationPrograms key="marketing-programmes" />,
-    <section className="marketing-science-clean" id="science" key="marketing-science"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Наукова діяльність</div><h2>Наукова діяльність кафедри</h2></div><p>У розділі залишено лише матеріали, підтверджені кафедрою.</p></div><div className="marketing-science-clean-grid">
+    <MarketingQuality key="marketing-quality" />,
+    <section className="marketing-science-clean" id="science" key="marketing-science"><div className="wrap"><div className="sec-head"><div><div className="idx">05 / Наукова діяльність</div><h2>Наукова діяльність кафедри</h2></div><p>У розділі залишено лише матеріали, підтверджені кафедрою.</p></div><div className="marketing-science-clean-grid">
       <Link href="/research/conferences#marketing-proceedings"><span>01</span><small>Конференції</small><h3>Збірники матеріалів конференцій</h3><p>Повні PDF за 2024, 2025 та 2026 роки.</p><b>→</b></Link>
       <Link href="/research/journals#marketing-publications"><span>02</span><small>Наукові видання</small><h3>Монографії кафедри</h3><p>Дві колективні монографії, підготовлені викладачами кафедри.</p><b>→</b></Link>
       <Link href="/research/journals#marketing-publications"><span>03</span><small>Навчальне видання</small><h3>Соціально відповідальний маркетинг</h3><p>Навчальний посібник кафедри.</p><b>→</b></Link>
@@ -127,7 +130,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       </details>
     </article>
     </div></section>,
-    <section className="programme-documents" id="programme-documents" key="marketing-methodical"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">05 / Навчально-методичне забезпечення</div><h2>Офіційні програми й матеріали</h2></div><Link href="/documents#education">Усі освітні документи →</Link></div><div className="programme-document-list">
+    <section className="programme-documents" id="programme-documents" key="marketing-methodical"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">06 / Навчально-методичне забезпечення</div><h2>Офіційні програми й матеріали</h2></div><Link href="/documents#education">Усі освітні документи →</Link></div><div className="programme-document-list">
       {program.materials.map((material, index) => <a href={material.href} target={material.href.endsWith(".pdf") ? "_blank" : undefined} rel={material.href.endsWith(".pdf") ? "noreferrer" : undefined} key={material.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{material.href.endsWith(".pdf") ? "PDF · офіційний документ" : "Матеріали кафедри"}</small><h3>{material.label}</h3></div><b>{material.href.endsWith(".pdf") ? "↗" : "→"}</b></a>)}
       <Link href="/research/journals#marketing-publications"><span>{String(program.materials.length + 1).padStart(2, "0")}</span><div><small>Повні тексти</small><h3>Монографії та навчальний посібник кафедри</h3></div><b>→</b></Link>
     </div><MarketingMethodicalFolders /></div></section>,

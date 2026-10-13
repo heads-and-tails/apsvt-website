@@ -5,7 +5,7 @@ export function MarketingStudentLife() {
   return <section className="marketing-student-life" id="marketing-student-life">
     <div className="wrap">
       <div className="marketing-student-intro">
-        <div><div className="idx">06 / Студентське життя</div><h2>{content.studentTitle}</h2></div>
+        <div><div className="idx">07 / Студентське життя</div><h2>{content.studentTitle}</h2></div>
       </div>
       <div className="marketing-verbatim-grid">
         {content.students.map((person) => <article className="marketing-verbatim-card" key={person.name}>
