@@ -109,3 +109,63 @@ test("binds legacy faculty biographies, names and newest portraits before staff 
   assert.equal(source[1].summary, "Другий профіль");
   assert.equal(legacyProfiles.legacyFacultyProfiles(source, entries, "faculty-leadership")[1].summary, "Другий профіль");
 });
+
+test("respects successful empty published-news queries and preserves fallback for backend failures", async () => {
+  const mockUrl = `data:text/javascript;base64,${Buffer.from(`
+    export const state = { rows: [], error: null, reads: [] };
+    function query() {
+      return {
+        mode: "", equals: [], includes: [], excludes: [],
+        select(mode) { this.mode = mode; return this; },
+        eq(key, value) { this.equals.push([key, value]); return this; },
+        in(key, values) { this.includes.push([key, values]); return this; },
+        neq(key, value) { this.excludes.push([key, value]); return this; },
+        order() { return this; }, limit() { return this; }, update() { return this; },
+        upsert() { return Promise.resolve({ error: null }); },
+        then(resolve, reject) {
+          if (this.mode === "id") return Promise.resolve({ data: [{ id: "existing" }], error: null }).then(resolve, reject);
+          if (this.mode !== "*") return Promise.resolve({ data: null, error: null }).then(resolve, reject);
+          state.reads.push({ equals: this.equals, includes: this.includes });
+          const rows = state.rows.filter(row => this.equals.every(([key, value]) => row[key] === value)
+            && this.includes.every(([key, values]) => values.includes(row[key]))
+            && this.excludes.every(([key, value]) => row[key] !== value));
+          return Promise.resolve({ data: state.error ? null : rows, error: state.error }).then(resolve, reject);
+        },
+      };
+    }
+    export function createSupabaseAdmin() { return { from: query }; }
+    export function createSupabasePublicClient() { return { from: query }; }
+    export function isSupabaseConfigured() { return true; }
+  `).toString("base64")}`;
+  const { state } = await import(mockUrl);
+  const posts = await import(await moduleUrl("../lib/data.ts", {
+    "@/lib/supabase/admin": mockUrl,
+    "@/lib/supabase/public": mockUrl,
+    "@/lib/supabase/config": mockUrl,
+    "@/lib/entrance-results": await moduleUrl("../lib/entrance-results.ts"),
+    "@/lib/admissions-rankings": await moduleUrl("../lib/admissions-rankings.ts"),
+    "@/lib/academic-competition": await moduleUrl("../lib/academic-competition.ts"),
+  }));
+  const slug = posts.psychologyCollectiveMeetingNewsSlug;
+  state.rows = [{
+    id: "seed-psychology-collective-meeting-2026-10-19", slug,
+    title: "Saved database article", excerpt: "", body: "Saved database body", category: "Оголошення",
+    image_url: "/program-psychology.jpg", image_alt: "", status: "draft", featured: true,
+    published_at: null, created_at: "2026-10-14T10:47:29Z", updated_at: "2026-10-14T10:47:29Z",
+    author_email: "publisher@example.test",
+  }];
+  assert.deepEqual(await posts.getPosts({ slugs: [slug] }), []);
+  assert.deepEqual(state.reads.at(-1).equals, [["status", "published"]]);
+  assert.deepEqual(state.reads.at(-1).includes, [["slug", [slug]]]);
+  const drafts = await posts.getPosts({ includeDrafts: true, slugs: [slug] });
+  assert.equal(drafts[0].status, "draft");
+  assert.equal(drafts[0].body, "Saved database body");
+  state.rows[0].status = "published";
+  assert.equal((await posts.getPosts({ slugs: [slug] }))[0].body, "Saved database body");
+  assert.deepEqual(await posts.getPosts({ slugs: ["missing-publication"] }), []);
+  state.error = { message: "Backend unavailable" };
+  const fallback = await posts.getPosts({ slugs: [slug] });
+  assert.equal(fallback.length, 1);
+  assert.equal(fallback[0].slug, slug);
+  assert.equal(fallback[0].body, posts.seedPosts.find(post => post.slug === slug).body);
+});

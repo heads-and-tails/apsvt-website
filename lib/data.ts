@@ -616,7 +616,7 @@ export async function getPosts(options: { includeDrafts?: boolean; limit?: numbe
       if (options.slugs) query = query.in("slug", options.slugs);
       const { data, error } = await query.order("featured", { ascending: false }).order("published_at", { ascending: false, nullsFirst: false }).limit(limit);
       if (error) throw error;
-      if (data?.length) return data.map((row) => fromRow(row as Record<string, unknown>)).filter((post) => !post.category.startsWith("__"));
+      if (data) return data.map((row) => fromRow(row as Record<string, unknown>)).filter((post) => !post.category.startsWith("__"));
     } catch {
       // Keep the public site available with bundled editorial content.
     }
