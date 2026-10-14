@@ -483,13 +483,13 @@ export const officialDocuments: OfficialDocument[] = [
   {
     id: "anti-bullying-measures",
     category: "integrity",
-    title: "План заходів із запобігання булінгу, мобінгу, кібербулінгу та харасменту",
-    description: "Перелік інформаційних, профілактичних і навчальних заходів Академії на 2024/25 навчальний рік.",
-    href: "/documents/archive/old-site/anti-bullying-measures-2025.pdf",
+    title: "План заходів щодо запобігання та протидії булінгу, мобінгу, кібербулінгу, харасменту на 2026–2027 н.р.",
+    description: "Інформаційні, профілактичні та навчальні заходи Академії на 2026–2027 навчальний рік.",
+    href: "/documents/regulations/anti-bullying-measures-2026-2027.pdf",
     format: "PDF",
     pages: 1,
-    updated: "2024/25",
-    status: "reference",
+    updated: "2026–2027",
+    status: "current",
   },
   {
     id: "anticorruption-plan",

@@ -407,6 +407,20 @@ test("lists the 2026 academic staff vacancy competition regulation with its orig
   assert.equal(bytes.subarray(0,4).toString(),"%PDF");
 });
 
+test("replaces the outdated bullying measures plan with the 2026–2027 signed PDF",async()=>{
+  const [regulationsHtml,documentsHtml]=await Promise.all([
+    (await render("/documents/regulations")).text(),
+    (await render("/documents")).text(),
+  ]);
+  for(const html of [regulationsHtml,documentsHtml]){
+    assert.match(html,/План заходів щодо запобігання та протидії булінгу/);
+    assert.match(html,/anti-bullying-measures-2026-2027\.pdf/);
+    assert.doesNotMatch(html,/anti-bullying-measures-2025\.pdf/);
+  }
+  const bytes=await readFile(new URL("../public/documents/regulations/anti-bullying-measures-2026-2027.pdf",import.meta.url));
+  assert.equal(bytes.subarray(0,4).toString(),"%PDF");
+});
+
 test("gives every law programme level a stable page and keeps dates optional",async()=>{
   const facultyHtml=await (await render("/departments/law-faculty#faculty-programmes")).text();
   const programmePaths=[
@@ -541,7 +555,7 @@ test("publishes a curated archive restored from the former Academy website",asyn
   assert.doesNotMatch(documentsHtml,/href="\/documents\/archive"/);
   assert.match(documentsHtml,/Методичні та наукові матеріали/);
   assert.match(archiveHtml,/Важливі файли\.<br\/><em>Знову доступні\.<\/em>/);
-  assert.match(archiveHtml,/<b>21<\/b><p>важливий файл<\/p>/);
+  assert.match(archiveHtml,/<b>20<\/b><p>важливий файл<\/p>/);
   assert.match(archiveHtml,/Відновлено зі старої версії сайту|Архів старої версії/);
   assert.match(archiveHtml,/internal-quality-system\.pdf/);
   assert.match(archiveHtml,/conference-proceedings-2025\.pdf/);
