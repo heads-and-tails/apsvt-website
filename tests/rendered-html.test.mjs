@@ -398,6 +398,15 @@ test("publishes the conference results, current regulations and mobility guide",
   }
 });
 
+test("lists the 2026 academic staff vacancy competition regulation with its original PDF",async()=>{
+  const html=await (await render("/documents/regulations")).text();
+  assert.match(html,/Положення про проведення конкурсу на заміщення вакантних посад науково-педагогічних працівників/);
+  assert.match(html,/href="\/documents\/regulations\/npp-vacancy-competition-2026\.pdf"/);
+  assert.match(html,/12 сторінок/);
+  const bytes=await readFile(new URL("../public/documents/regulations/npp-vacancy-competition-2026.pdf",import.meta.url));
+  assert.equal(bytes.subarray(0,4).toString(),"%PDF");
+});
+
 test("gives every law programme level a stable page and keeps dates optional",async()=>{
   const facultyHtml=await (await render("/departments/law-faculty#faculty-programmes")).text();
   const programmePaths=[
