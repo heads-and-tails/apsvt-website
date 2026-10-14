@@ -293,6 +293,11 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .faculty-subpage-content{padding:36px 0 64px;min-height:260px}
 .faculty-subpage-content h2{font-size:clamp(26px,3vw,40px);line-height:1.2;margin-bottom:22px}
 .faculty-subpage-content p{font-size:18px;line-height:1.6}
+.faculty-council-part{padding:32px 0;border-top:1px solid var(--line)}
+.faculty-council-part-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.faculty-council-part-head h3{font-size:clamp(26px,3.2vw,40px);line-height:1.15}
+.faculty-council-part-head>a{color:var(--cobalt);text-decoration:underline;text-underline-offset:4px}
+.faculty-council-materials .department-section-grid img,.faculty-subpage-content .department-public-content--inline .department-section-grid img{aspect-ratio:auto}
 @media(max-width:760px){.faculty-subpage-links{grid-template-columns:1fr}.finance-project-links a{padding:18px}.faculty-subpage-hero{padding:130px 0 32px}}
 .greenfinedu-intro{display:grid;grid-template-columns:minmax(300px,.7fr) minmax(0,1.3fr);gap:clamp(45px,8vw,110px);align-items:start}.greenfinedu-code{display:inline-block;margin:18px 0 12px;padding:7px 10px;background:var(--gold);font:8px var(--mono);text-transform:uppercase}.greenfinedu-intro h2{font-size:clamp(54px,8vw,105px);line-height:.84;letter-spacing:-.06em;color:#16412b}.greenfinedu-intro .lead{font-size:clamp(19px,2vw,27px);line-height:1.38;color:#16412b}.greenfinedu-intro p+p{margin-top:20px;font-size:14px;line-height:1.7;color:#58655d}
 .greenfinedu-facts{display:grid;grid-template-columns:repeat(3,1fr);margin:60px 0;border-top:1px solid #53725f;border-left:1px solid #53725f}.greenfinedu-facts>div{min-height:150px;padding:22px;border-right:1px solid #53725f;border-bottom:1px solid #53725f;display:flex;flex-direction:column;justify-content:space-between}.greenfinedu-facts b{font:700 clamp(32px,4.5vw,64px) var(--disp);color:#16412b}.greenfinedu-facts span{font:9px var(--mono);text-transform:uppercase;color:#53665b}
