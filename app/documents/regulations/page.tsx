@@ -11,6 +11,14 @@ export const metadata: Metadata = {
 const regulations = [
   {
     year: "2026",
+    title: "Положення про проведення конкурсу на заміщення вакантних посад науково-педагогічних працівників",
+    description: "Порядок проведення конкурсу на заміщення вакантних посад науково-педагогічних працівників Академії.",
+    href: "/documents/regulations/npp-vacancy-competition-2026.pdf",
+    pages: "12 сторінок",
+    direct: true,
+  },
+  {
+    year: "2026",
     title: "Положення про організацію освітнього процесу в АПСВТ",
     description: "П’ята редакція комплексного положення про рівні освіти, організацію навчання, оцінювання, академічну мобільність та атестацію.",
     href: "/documents/regulations/educational-process-2026.pdf",
