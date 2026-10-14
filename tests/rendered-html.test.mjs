@@ -1382,6 +1382,7 @@ test("keeps four law departments to five closed sections and separates programme
   }
   const faculty=await (await render("/departments/law-faculty")).text();
   assert.doesNotMatch(faculty,/id="faculty-discussion"|Рішення та протоколи/);
+  assert.match(faculty,/class="faculty-council-materials"/);
   for(const slug of ["d8-law-bachelor","d8-law-master","d8-law-phd","d4-public-administration-bachelor","d4-public-administration-master","d4-public-administration-phd"]){
     const html=await (await render(`/departments/law-faculty/faculty-programmes/${slug}`)).text();
     assert.match(html,/<h2>Робочі програми<\/h2>/);

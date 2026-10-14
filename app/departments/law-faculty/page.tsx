@@ -13,6 +13,7 @@ import { lawFacultyPath, lawFacultyStructure, lawFacultyLegacySections } from "@
 import { AcademicNews } from "../../components/AcademicNews";
 import { teachersForSection } from "../../components/LawDepartmentFiveSections";
 import { AcademicProfileCard } from "../../components/AcademicProfileCard";
+import { FacultyCouncilContent } from "../../components/FacultyCouncilContent";
 
 export const dynamic = "force-dynamic";
 
@@ -107,7 +108,7 @@ export default async function Page() {
 
       <section className="faculty-structure-section faculty-science-directory" id="municipal-law-school"><div className="wrap"><div className="sec-head"><div><div className="idx">08 / Наукова школа муніципального права</div><h2>Наукова школа муніципального права</h2></div><p>Окремий розділ для історії школи, учасників, досліджень, публікацій і конкурсних робіт.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-gold" href={`${lawFacultyPath}/municipal-law-school/general`}><span>01 / Наукова школа</span><h3>Школа муніципального права</h3><p>Дослідження місцевого самоврядування, муніципальної правотворчості та розвитку громад.</p><b>Відкрити напрям →</b></Link><Link className="faculty-link-card" href="/research/journals"><span>02 / Публікації</span><h3>Наукові видання</h3><p>Журнали, збірники, монографії та відкриті дослідження.</p><b>Перейти до видань →</b></Link></div></div></section>
 
-      <section className="faculty-structure-section faculty-governance" id="faculty-council"><div className="wrap"><div className="sec-head"><div><div className="idx">09 / Вчена рада</div><h2>Вчена рада</h2></div><p>Склад, положення та план роботи.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-dark" href="/documents#governance"><span>01 / Документи</span><h3>Вчена рада юридичного факультету</h3><p>Офіційні матеріали колегіального органу.</p><b>Перейти до документів →</b></Link></div></div></section>
+      <section className="faculty-structure-section faculty-governance" id="faculty-council"><div className="wrap"><div className="sec-head"><div><div className="idx">09 / Вчена рада</div><h2>Вчена рада</h2></div><p>Склад, положення та план роботи.</p></div></div><FacultyCouncilContent /></section>
 
       <section className="faculty-structure-section faculty-governance" id="faculty-student-government"><div className="wrap"><div className="sec-head"><div><div className="idx">10 / Студентське самоврядування</div><h2>Студентське самоврядування</h2></div><p>Студентська рада, її склад, проєкти, ініціативи, новини, події та контакти публікуються окремо від Вченої ради.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-gold" href="/students/council"><span>01 / Студенти</span><h3>Студентська рада</h3><p>Команда, проєкти, ініціативи, події та контакти.</p><b>Відкрити студентську раду →</b></Link></div></div></section>
 

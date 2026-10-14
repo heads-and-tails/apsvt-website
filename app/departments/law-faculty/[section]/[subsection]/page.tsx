@@ -49,7 +49,9 @@ export default async function Page({ params }: Props) {
     <section className="faculty-subpage-content" id="content"><div className="wrap"><h2>{page.title}</h2>
       {!visibleEntries.length && !documents.length && !["faculty-programmes", "faculty-repository"].includes(section) && <p>Матеріали ще не оприлюднено.</p>}
       {section === "faculty-programmes" && programmePage && <div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-blue" href={programmePage.href}><span>{programmePage.code}</span><h3>{programmePage.level}</h3><p>Опис програми, освітні компоненти, навчальні плани, практична підготовка та матеріали вступу.</p><b>Відкрити сторінку програми →</b></Link>{programmePage.documentHref && <a className="faculty-link-card faculty-link-card-gold" href={programmePage.documentHref} target="_blank" rel="noreferrer"><span>Офіційний документ</span><h3>Освітня програма</h3><p>Затверджений PDF з компетентностями, результатами навчання та структурою програми.</p><b>Відкрити PDF ↗</b></a>}</div>}
-    </div><DepartmentEditorialContent entries={visibleEntries} />
+    </div>{section === "faculty-council"
+      ? <div className="wrap"><DepartmentEditorialContent inline entries={visibleEntries} /></div>
+      : <DepartmentEditorialContent entries={visibleEntries} />}
       {section === "faculty-programmes" ? <>
         <PageDocuments pagePath={page.path} excludeCategoryPrefixes={["Робоча програма", "Анотація"]} />
         <PageDocuments pagePath={page.path} showEmptyTitle includeCategoryPrefixes={["Робоча програма"]} title="Робочі програми" description="Робочі програми дисциплін цього рівня освіти." emptyMessage="Робочі програми ще не оприлюднено." />
