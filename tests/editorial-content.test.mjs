@@ -13,6 +13,22 @@ const textUrl = await moduleUrl("../lib/editorial-text.ts");
 const text = await import(textUrl);
 const media = await import(await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }));
 const dates = await import(await moduleUrl("../lib/department-news-date.ts"));
+const academicNews = await import(await moduleUrl("../lib/academic-news.ts"));
+
+test("keeps explicitly requested faculty news visible once without changing ordinary relevance", () => {
+  const post = (id, title) => ({ id, slug: id, title, excerpt: "", body: "", category: "Оголошення" });
+  const posts = [
+    post("conference", "Психологія, ментальне та психічне здоров’я, соціальний розвиток"),
+    post("meeting", "Збори трудового колективу факультету психології"),
+    post("community", "Соціальне благополуччя"),
+    post("unrelated", "Новини Академії"),
+  ];
+  assert.deepEqual(academicNews.selectAcademicNews(posts, ["psychology", "social-work"], 2).map(p => p.id), ["conference", "meeting"]);
+  assert.deepEqual(academicNews.selectAcademicNews(posts, ["psychology", "social-work"], 2, ["meeting"]).map(p => p.id), ["meeting", "conference"]);
+  assert.deepEqual(academicNews.selectAcademicNews(posts, ["psychology"], 3, ["meeting", "meeting", "missing"]).map(p => p.id), ["meeting", "conference", "community"]);
+  assert.deepEqual(academicNews.selectAcademicNews(posts, ["psychology"], 1, ["unrelated"]).map(p => p.id), ["unrelated"]);
+  assert.deepEqual(academicNews.selectAcademicNews(posts, ["psychology"], 2, ["missing"]), academicNews.selectAcademicNews(posts, ["psychology"], 2));
+});
 
 test("keeps legacy Word paragraphs, font bullets, numbered lists and scientific links readable", () => {
   const doc = text.editorialTextDocument("Перший абзац\r\nДругий абзац\r\n\r\n## Освіта\n\n\uF02D\tПерша теза\n\uF02D\tДруга теза\n\n3. Третій пункт\n4. Четвертий пункт\n\n**Важливо**: [ORCID](https://orcid.org/0000-0000).\nhttps://doi.org/10.123/example(x).");

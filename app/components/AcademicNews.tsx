@@ -8,14 +8,20 @@ export async function AcademicNews({
   title = "Новини напряму",
   eyebrow = "Наука, події та спільнота",
   limit = 3,
+  prioritySlugs = [],
 }: {
   slugs: string[];
   title?: string;
   eyebrow?: string;
   limit?: number;
+  prioritySlugs?: string[];
 }) {
-  const posts = await getPosts({ limit: 60 });
-  const selected = selectAcademicNews(posts, slugs, limit);
+  const [posts, priorityPosts] = await Promise.all([
+    getPosts({ limit: 60 }),
+    prioritySlugs.length ? getPosts({ slugs: prioritySlugs }) : Promise.resolve([]),
+  ]);
+  const allPosts = [...new Map([...posts, ...priorityPosts].map((post) => [post.id, post])).values()];
+  const selected = selectAcademicNews(allPosts, slugs, limit, prioritySlugs);
   if (!selected.length) return null;
   return <section className="academic-news-section"><div className="wrap">
     <div className="sec-head"><div><div className="idx">{eyebrow}</div><h2>{title}</h2></div><Link className="sec-link" href="/news">Усі новини →</Link></div>

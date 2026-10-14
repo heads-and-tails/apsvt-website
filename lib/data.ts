@@ -42,6 +42,7 @@ export const internationalAiTrainingTitle = "Використання штучн
 export const mentalHealthConferenceResultsNewsSlug = "mental-health-conference-2026-results";
 export const marketingDiscussionMarchNewsSlug = "obhovorennia-opp-marketynh-12-bereznia-2026";
 export const marketingDiscussionMayNewsSlug = "obhovorennia-opp-marketynh-17-travnia-2026";
+export const psychologyCollectiveMeetingNewsSlug = "zbory-kolektyvu-fakultetu-psykholohii-19-zhovtnia-2026";
 
 const hiddenDateMarker = "<!-- APSVT_HIDE_DATE -->";
 
@@ -56,6 +57,22 @@ function encodePostBody(post: Pick<Post, "body" | "hideDate">): string {
 }
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-psychology-collective-meeting-2026-10-19",
+    slug: psychologyCollectiveMeetingNewsSlug,
+    title: "Збори трудового колективу факультету психології та соціального розвитку",
+    excerpt: "19 жовтня 2026 року о 18:00 відбудуться збори трудового колективу факультету психології та соціального розвитку Академії.",
+    body: "19.10.26 року у 18.00 відбудуться збори трудового колективу факультету психології та соціального розвитку Академії праці, соціальних відносин і туризму.\n\nПорядок денний:\n\n1. Про організацію роботи зборів трудового колективу факультету психології та соціального розвитку Академії праці, соціальних відносин і туризму.\n2. Про вибори членів Вченої Ради факультету психології та соціального розвитку Академії праці, соціальних відносин і туризму.\n3. Про звернення до ректора Академії праці, соціальних відносин і туризму В.Б. Сухомлина про оголошення конкурсу декана факультету психології та соціального розвитку.",
+    category: "Оголошення",
+    imageUrl: "/program-psychology.jpg",
+    imageAlt: "Психологічна освіта та робота з людьми",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-14T10:47:29.000Z",
+    createdAt: "2026-10-14T10:47:29.000Z",
+    updatedAt: "2026-10-14T10:47:29.000Z",
+    authorEmail: "glebk60@gmail.com",
+  },
   {
     id: "seed-marketing-discussion-march-2026",
     slug: marketingDiscussionMarchNewsSlug,
@@ -560,7 +577,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug || post.slug === marketingDiscussionMarchNewsSlug || post.slug === marketingDiscussionMayNewsSlug || post.slug === aiTrainingNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug || post.slug === marketingDiscussionMarchNewsSlug || post.slug === marketingDiscussionMayNewsSlug || post.slug === aiTrainingNewsSlug || post.slug === psychologyCollectiveMeetingNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }

@@ -8,6 +8,7 @@ import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 import { EducationQualitySection } from "../../components/EducationQualitySection";
 import { AcademicNews } from "../../components/AcademicNews";
+import { psychologyCollectiveMeetingNewsSlug } from "@/lib/data";
 import { PsychologyFacultyTeam } from "./PsychologyFacultyTeam";
 import { AcademicProfileCard } from "../../components/AcademicProfileCard";
 import { psychologyFacultyTeam } from "@/lib/psychology-faculty-team";
@@ -95,7 +96,7 @@ export default async function Page() {
 
     <EducationQualitySection entries={departmentEntries} pagePath="/departments/psychology-social-development-faculty" index="15" id="faculty-quality" discussionEmail="k.psychology22@gmail.com" />
 
-    <div id="department-news"><AcademicNews slugs={["psychology", "social-work"]} title="Новини факультету й кафедр" limit={4} /><DepartmentEditorialContent entries={departmentEntries} /></div>
+    <div id="department-news"><AcademicNews slugs={["psychology", "social-work"]} title="Новини факультету й кафедр" limit={5} prioritySlugs={[psychologyCollectiveMeetingNewsSlug]} /><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
     <SiteFooter />
   </main>;

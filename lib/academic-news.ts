@@ -18,7 +18,7 @@ function searchable(post: Post) {
   return `${post.title} ${post.excerpt} ${post.body} ${post.category}`.toLocaleLowerCase("uk-UA");
 }
 
-export function selectAcademicNews(posts: Post[], slugs: string[], limit = 3) {
+export function selectAcademicNews(posts: Post[], slugs: string[], limit = 3, prioritySlugs: string[] = []) {
   const keywords = [...new Set(slugs.flatMap((slug) => programmeKeywords[slug] || []))];
   const scored = posts.map((post, order) => {
     const haystack = searchable(post);
@@ -29,7 +29,11 @@ export function selectAcademicNews(posts: Post[], slugs: string[], limit = 3) {
     .filter((item) => item.score > 0)
     .sort((a, b) => b.score - a.score || a.order - b.order)
     .map((item) => item.post);
-  const selected = [...relevant];
+  const priorityPosts = prioritySlugs.flatMap((slug) => {
+    const post = posts.find((item) => item.slug === slug);
+    return post ? [post] : [];
+  });
+  const selected = [...new Map([...priorityPosts, ...relevant].map((post) => [post.id, post])).values()];
   for (const post of posts) {
     if (selected.length >= limit) break;
     if (!selected.some((item) => item.id === post.id)) selected.push(post);
