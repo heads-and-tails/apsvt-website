@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
+import { strFromU8, unzipSync } from "fflate";
 
 let workerPromise;
 async function worker(){
@@ -307,6 +308,14 @@ test("publishes both corrected Project Lab presentations in the international se
     const bytes=await readFile(new URL(`../public/documents/international/project-lab/${name}`,import.meta.url));
     assert.equal(bytes.subarray(0,2).toString(),"PK");
     assert.ok(bytes.length>50000);
+    const archive = unzipSync(bytes);
+    const slides = Object.entries(archive).filter(([path]) => /^ppt\/slides\/slide\d+\.xml$/.test(path));
+    assert.equal(slides.length, 10);
+    const text = slides.flatMap(([, xml]) => [...strFromU8(xml).matchAll(/<a:t\b[^>]*>([\s\S]*?)<\/a:t>/g)].map(match => match[1])).join(" ");
+    assert.doesNotMatch(text, /Заявки без плагіату, що повністю відповідають вимогам EU AI Act|Обов['’]язкове декларування використання ШІ згідно з EU AI Act 2026/);
+    assert.match(text, name.includes("academy")
+      ? /Практичні навички для підготовки оригінальних заявок із перевіркою фактів, джерел та вимог конкретного конкурсу/
+      : /Перевіряйте вимоги конкретного конкурсу щодо використання ШІ; дотримуйтеся правил оригінальності, точності та інтелектуальної власності/);
   }
 });
 
