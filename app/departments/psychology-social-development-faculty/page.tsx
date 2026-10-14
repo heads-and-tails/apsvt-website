@@ -14,6 +14,8 @@ import { AcademicProfileCard } from "../../components/AcademicProfileCard";
 import { psychologyFacultyTeam } from "@/lib/psychology-faculty-team";
 import { PsychologyFacultyLaboratory, PsychologyFacultyPractice, PsychologyFacultyScience } from "./PsychologyFacultyDetails";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Факультет психології та соціального розвитку",
   description: "Факультет психології та соціального розвитку АПСВТ: кафедри, освітні програми, наука, практика та якість освіти.",
