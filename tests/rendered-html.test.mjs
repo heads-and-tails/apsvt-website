@@ -319,6 +319,27 @@ test("publishes the PILC and SEITE 2026 international programme",async()=>{
   assert.doesNotMatch(articleHtml,/0506073117|050 607 31 17/);
 });
 
+test("publishes the faculty staff meeting through both news lists and its Ukrainian/English articles",async()=>{
+  const slug = "zbory-kolektyvu-fakultetu-psykholohii-19-zhovtnia-2026";
+  for (const path of ["/news", "/departments/psychology-social-development-faculty"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    const cards = (html.match(/<a\b[^>]*>/g) || []).filter(tag => tag.includes('class="news"') && tag.includes(`href="/news/${slug}"`));
+    assert.equal(cards.length, 1);
+    assert.match(html, /19 жовтня 2026 року о 18:00/);
+  }
+  for (const path of [`/news/${slug}`, `/en/news/${slug}`]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    const agenda = html.match(/<ol[^>]*>([\s\S]*?)<\/ol>/)?.[1];
+    assert.ok(agenda);
+    assert.equal((agenda.match(/<li>/g) || []).length, 3);
+    assert.match(html, path.startsWith("/en/") ? /19 October 2026 at 18:00/ : /19\.10\.26 року у 18\.00/);
+  }
+});
+
 test("publishes the guest lecture in Academy and faculty news",async()=>{
   const [homeHtml,newsHtml,facultyHtml,articleHtml]=await Promise.all([
     (await render("/")).text(),
