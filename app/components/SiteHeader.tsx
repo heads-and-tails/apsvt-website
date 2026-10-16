@@ -102,7 +102,7 @@ const enLinks: readonly NavItem[] = [
   ] },
 ] as const;
 
-export function SiteHeader() {
+export function SiteHeader({ englishHref }: { englishHref?: string } = {}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [openMenuGroup, setOpenMenuGroup] = useState<string | null>(null);
@@ -115,7 +115,7 @@ export function SiteHeader() {
     .sort((left, right) => right.href.length - left.href.length)
     .find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))?.href;
   const ukPath = english ? pathname.replace(/^\/en/, "") || "/" : pathname;
-  const enPath = english ? pathname : `/en${pathname === "/" ? "" : pathname}`;
+  const enPath = english ? pathname : englishHref ?? `/en${pathname === "/" ? "" : pathname}`;
 
   useEffect(() => {
     if (!open) return;
