@@ -40,6 +40,15 @@ test("preserves every supplied public-administration original and separates doct
   assert.equal(administrationMaterials.getPublicAdministrationPublication("d8-law-phd"), undefined);
 });
 
+test("keeps the supplied master's package complete with its correct guarantor and accreditation", () => {
+  const programme = administrationMaterials.getPublicAdministrationPublication("d4-public-administration-master");
+  assert.equal(1 + programme.groups.flatMap(group => group.files).length, 9);
+  assert.ok(programme.facts.some(fact => fact.value === "56066"));
+  assert.ok(programme.facts.some(fact => fact.value.includes("Міщенко Катерина Семенівна")));
+  assert.ok(programme.facts.some(fact => fact.value.includes("01.07.2029")));
+  assert.equal(programme.groups.find(group => group.id === "thesis").files.length, 3);
+});
+
 test("keeps staff links stable and summaries short without dropping the full source profile", () => {
   assert.equal(profiles.academicProfilePath("profile/with ? separators"), "/people/profile%2Fwith%20%3F%20separators");
   assert.equal(profiles.academicProfilePath("stable-id", "en"), "/en/people/stable-id");

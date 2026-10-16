@@ -82,6 +82,103 @@ export const publicAdministrationPublications: ProgrammePublication[] = [
         ]
       }
     ]
+  },
+  {
+    "id": "d4-public-administration-master",
+    "facts": [
+      {
+        "label": "Гарант ОПП",
+        "value": "Міщенко Катерина Семенівна — кандидат наук з державного управління, доцент."
+      },
+      {
+        "label": "Ідентифікатор ОП у ЄДЕБО",
+        "value": "56066"
+      },
+      {
+        "label": "Акредитація",
+        "value": "Сертифікат № 6830 від 26.12.2023 діє до 01.07.2029. Наступна акредитація запланована на липень 2029 року."
+      }
+    ],
+    "currentDocument": {
+      "title": "Освітньо-професійна програма · 2025–2026",
+      "href": "/documents/programmes/public-administration/master/programme-2025-2026.pdf",
+      "format": "PDF",
+      "sha256": "b86fd3e1113096540dea1677adedf3b22e74593b0cbb18e79f6fed17708bdf4a"
+    },
+    "groups": [
+      {
+        "id": "curricula",
+        "title": "Навчальні плани",
+        "files": [
+          {
+            "title": "Навчальний план · денна форма · 2025–2026",
+            "href": "/documents/programmes/public-administration/master/curriculum-full-time-2025-2026.pdf",
+            "format": "PDF",
+            "sha256": "f013d6acd0ec22464c590d7d9a788adcf506293e21cd14e2e7a5357ed1d5bbe2"
+          },
+          {
+            "title": "Навчальний план · заочна форма · 2025–2026",
+            "href": "/documents/programmes/public-administration/master/curriculum-part-time-2025-2026.pdf",
+            "format": "PDF",
+            "sha256": "6dacea295af4ef50c00b804547190777a0ec3e28710c911f92b8c3cbe8be6e8f"
+          }
+        ]
+      },
+      {
+        "id": "practice",
+        "title": "Практична підготовка",
+        "files": [
+          {
+            "title": "Робоча програма переддипломної практики",
+            "href": "/documents/programmes/public-administration/master/pre-diploma-practice.pdf",
+            "format": "PDF",
+            "sha256": "ea7799642439ab83d7e1a510e7685be636a6a99594525908690a8dece5bec8e2"
+          },
+          {
+            "title": "Бази практики",
+            "href": "/documents/programmes/public-administration/practice-bases.pdf",
+            "format": "PDF",
+            "sha256": "940e0e23ae558d669ad6dfd41fd5115e8673793fa90b505564031025812ee582"
+          }
+        ]
+      },
+      {
+        "id": "thesis",
+        "title": "Магістерська (кваліфікаційна) робота",
+        "files": [
+          {
+            "title": "Методичні рекомендації до написання магістерської роботи",
+            "href": "/documents/programmes/public-administration/master/thesis-guidelines.pdf",
+            "format": "PDF",
+            "sha256": "803f07799368b6257a8c9c2a09feb7126abc55e0652d35abf0c6fd4f6586adbf"
+          },
+          {
+            "title": "Перелік тем магістерських робіт",
+            "href": "/documents/programmes/public-administration/master/thesis-topics.pdf",
+            "format": "PDF",
+            "sha256": "ee40d84071c6ee17c82565d762c25a5f86097cea88986ca573dd16ac0f991230"
+          },
+          {
+            "title": "Заява про вибір теми та керівника магістерської роботи",
+            "href": "/documents/programmes/public-administration/master/thesis-application.pdf",
+            "format": "PDF",
+            "sha256": "ca75d000628b3b5c47a9d423be67206cba891139710dfd89532bef21f0a8e4e4"
+          }
+        ]
+      },
+      {
+        "id": "accreditation",
+        "title": "Акредитація",
+        "files": [
+          {
+            "title": "Сертифікат про акредитацію № 6830",
+            "href": "/documents/programmes/public-administration/master/accreditation-certificate-6830.pdf",
+            "format": "PDF",
+            "sha256": "52cf1d3aba85e2e3175e00a53ddac29ac969733947cf2046c2e575b3770fb52f"
+          }
+        ]
+      }
+    ]
   }
 ];
 

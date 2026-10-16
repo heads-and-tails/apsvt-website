@@ -99,7 +99,7 @@ export const programs: Program[] = [
     ],
     careers:["Державний службовець","Менеджер громади","Аналітик публічної політики","Керівник соціального проєкту","Фахівець громадської організації"],
     international:["Європейські студії","Спільні дослідницькі проєкти","Мобільність і міжнародні конференції"],
-    materials:[{label:"ОПП D4 «Публічне управління та адміністрування» · магістр",href:`${officialProgrammeFileBase}/d4-public-administration-master.pdf`},{label:"Кафедра Публічного Управління та Публічної Служби",href:"/materials/admin-department-30395593c.html"},{label:"Освітня діяльність",href:"/materials/educational-701ba56bb.html"}],
+    materials:[{label:"ОПП D4 «Публічне управління та адміністрування» · магістр",href:"/documents/programmes/public-administration/master/programme-2025-2026.pdf"},{label:"Кафедра Публічного Управління та Публічної Служби",href:"/materials/admin-department-30395593c.html"},{label:"Освітня діяльність",href:"/materials/educational-701ba56bb.html"}],
     tags:["суспільство","управління","політика","громади"],
   },
   {

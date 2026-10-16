@@ -22,7 +22,7 @@ const facultyProgrammePages: Record<string, { code: string; level: string; href:
   "d8-law-master": { code: "D8 «Право»", level: "Другий (магістерський) рівень", href: "/programs/law#education-levels", documentHref: `${officialProgrammeFileBase}/d8-law-master.pdf` },
   "d8-law-phd": { code: "D8 «Право»", level: "Третій (освітньо-науковий) рівень", href: "/research/postgraduate-doctoral#phd" },
   "d4-public-administration-bachelor": { code: "D4 «Публічне управління та адміністрування»", level: "Перший (бакалаврський) рівень", href: "/programs/public-administration#education-levels" },
-  "d4-public-administration-master": { code: "D4 «Публічне управління та адміністрування»", level: "Другий (магістерський) рівень", href: "/programs/public-administration#education-levels", documentHref: `${officialProgrammeFileBase}/d4-public-administration-master.pdf` },
+  "d4-public-administration-master": { code: "D4 «Публічне управління та адміністрування»", level: "Другий (магістерський) рівень", href: "/programs/public-administration#education-levels", documentHref: "/documents/programmes/public-administration/master/programme-2025-2026.pdf" },
   "d4-public-administration-phd": { code: "D4 «Публічне управління та адміністрування»", level: "Третій (освітньо-науковий) рівень", href: "/research/postgraduate-doctoral#phd", documentHref: "/documents/programmes/phd/2025/d4-public-administration.pdf" },
 };
 
