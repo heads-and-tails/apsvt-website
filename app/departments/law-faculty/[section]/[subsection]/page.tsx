@@ -11,6 +11,8 @@ import { DepartmentEditorialContent } from "@/app/components/DepartmentEditorial
 import { PageDocuments } from "@/app/components/PageDocuments";
 import { ThesesCatalogue } from "@/app/research/theses/ThesesCatalogue";
 import { officialProgrammeFileBase } from "@/lib/programme-documents";
+import { getPublicAdministrationPublication } from "@/lib/public-administration-materials";
+import { PublicAdministrationMaterials } from "@/app/components/PublicAdministrationMaterials";
 
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ section: string; subsection: string }> };
@@ -39,6 +41,8 @@ export default async function Page({ params }: Props) {
   const siblings = lawFacultyStructure.find((item) => item.id === section)!.children;
   const programme = subsection === "law" ? "law" : "public-administration";
   const programmePage = facultyProgrammePages[subsection];
+  const publication = section === "faculty-programmes" ? getPublicAdministrationPublication(subsection) : undefined;
+  const programmeDocument = publication?.currentDocument.href || programmePage?.documentHref;
   const theses = section === "faculty-repository" ? (await getPublicContent("student_thesis")).filter(({ payload }) => programme === "law" ? /(?:D8|081|право)/i.test(payload.program || "") : /(?:D4|281|публічн)/i.test(payload.program || "")) : [];
   return <main id="top" data-page-materials-server="true"><SiteHeader />
     <section className="faculty-subpage-hero"><div className="wrap">
@@ -48,8 +52,8 @@ export default async function Page({ params }: Props) {
     <details className="wrap faculty-sibling-nav"><summary>Інші підрозділи · {page.parentTitle}</summary><nav className="faculty-subpage-links" aria-label={page.parentTitle}>{siblings.map(([id, title]) => <Link href={`${lawFacultyPath}/${section}/${id}`} aria-current={id === subsection ? "page" : undefined} key={id}>{title}</Link>)}</nav></details>
     <section className="faculty-subpage-content" id="content"><div className="wrap"><h2>{page.title}</h2>
       {!visibleEntries.length && !documents.length && !["faculty-programmes", "faculty-repository"].includes(section) && <p>Матеріали ще не оприлюднено.</p>}
-      {section === "faculty-programmes" && programmePage && <div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-blue" href={programmePage.href}><span>{programmePage.code}</span><h3>{programmePage.level}</h3><p>Опис програми, освітні компоненти, навчальні плани, практична підготовка та матеріали вступу.</p><b>Відкрити сторінку програми →</b></Link>{programmePage.documentHref && <a className="faculty-link-card faculty-link-card-gold" href={programmePage.documentHref} target="_blank" rel="noreferrer"><span>Офіційний документ</span><h3>Освітня програма</h3><p>Затверджений PDF з компетентностями, результатами навчання та структурою програми.</p><b>Відкрити PDF ↗</b></a>}</div>}
-    </div>{section === "faculty-council"
+      {section === "faculty-programmes" && programmePage && <div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-blue" href={programmePage.href}><span>{programmePage.code}</span><h3>{programmePage.level}</h3><p>Опис програми, освітні компоненти, навчальні плани, практична підготовка та матеріали вступу.</p><b>Відкрити сторінку програми →</b></Link>{programmeDocument && <a className="faculty-link-card faculty-link-card-gold" href={programmeDocument} target="_blank" rel="noreferrer"><span>Офіційний документ</span><h3>Освітня програма</h3><p>Затверджений PDF з компетентностями, результатами навчання та структурою програми.</p><b>Відкрити PDF ↗</b></a>}</div>}
+    </div>{publication && <PublicAdministrationMaterials publication={publication} />}{section === "faculty-council"
       ? <div className="wrap"><DepartmentEditorialContent inline entries={visibleEntries} /></div>
       : <DepartmentEditorialContent entries={visibleEntries} />}
       {section === "faculty-programmes" ? <>
