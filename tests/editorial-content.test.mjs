@@ -20,6 +20,33 @@ const dates = await import(await moduleUrl("../lib/department-news-date.ts"));
 const academicNews = await import(await moduleUrl("../lib/academic-news.ts"));
 const profiles = await import(await moduleUrl("../lib/academic-profile.ts"));
 const administrationMaterials = await import(await moduleUrl("../lib/public-administration-materials.ts"));
+const discussionArchive = await import(await moduleUrl("../lib/public-administration-announcements.ts"));
+
+test("preserves the six historical discussion texts, dates and source photographs in the archive", async () => {
+  const articles = discussionArchive.publicAdministrationAnnouncements;
+  assert.equal(articles.length, 6);
+  const sourceTextHashes = ["b4ea476acf469a905960a65bd177c6238288f969465e3faebf2040e56f67fbbf", "11a2bfa992bd6a6bfba9dcef739b9e15dc88f27457e9b2d3aa14e3fd8ee0fadd", "4134d0c3e14a6a6262b4ff87cac0aef1d27c0c59ccd34dc3ac2b3947e6766e21", "dac4f98616ce0c6afb5913e197a88eea4eba7beb2593b178060dceb5d8e7e3a2", "c083e8716150858c851b376cc2e283f526f179adf4295647f25717fc74726fff", "e57de4fddfdd7fd146ba74cab4375e63d12c7ae9a3fbd4a0e2eafd6438a6db86"];
+  const imageHashes = ["78279f5d8b4617de961049505d3b53b29c2db049d0cfd0c95e9534d4f58cb0f5", "4f4b20ccd7d88829c1538f87a0b04c1363a4162de40456d8fdf13fec5bd68d79", "6115d0f62068cd2c11d3a65dfb9d1588fe6d2aae4ff0901533313044a36d8243", "3d7d298f09b761500e6622545b84fa3dda56ffeca4959b24b2c5fa72e2abc2aa", "c34001dfd059fd4f0ed8a87b64c8b8ef13f03dd09f8ed70c50b8998ae6dea839", "d0273e2cd856e25350a0521a644bdd4398c0dca97d46aebce02ec7a7bc988505"];
+  const index = JSON.parse(await readFile(new URL("../public/materials-index.json", import.meta.url), "utf8"));
+  let imageIndex = 0;
+  for (const [i, article] of articles.entries()) {
+    assert.equal(createHash("sha256").update(article.paragraphs.join("\n\n")).digest("hex"), sourceTextHashes[i]);
+    assert.equal(article.date, ["2023-04-18", "2024-03-07", "2025-05-19"][Math.floor(i / 2)]);
+    assert.equal(article.images.length, article.kind === "report" ? 2 : 0);
+    const record = index.find(record => record.href === `/news/archive/${article.slug}`);
+    assert.equal(record.category, "Новини та події");
+    assert.equal(record.date, article.dateLabel);
+    assert.equal(record.summary, article.paragraphs[0]);
+    assert.ok(administrationMaterials.getPublicAdministrationPublication("d4-public-administration-bachelor").groups.find(group => group.id === "drafts").files.some(file => file.href === article.projectHref));
+    for (const image of article.images) {
+      assert.equal(image.fit, "contain");
+      const bytes = await readFile(new URL(`../public${image.url}`, import.meta.url));
+      assert.equal(createHash("sha256").update(bytes).digest("hex"), imageHashes[imageIndex++]);
+    }
+  }
+  assert.equal(index.filter(record => record.category === "Новини та події").length, 751);
+  assert.equal(discussionArchive.getPublicAdministrationAnnouncement("unknown-record"), undefined);
+});
 
 test("preserves every supplied public-administration original and separates doctoral draft materials", async () => {
   for (const publication of administrationMaterials.publicAdministrationPublications) {
