@@ -66,6 +66,22 @@ test("publishes the complete supplied master's package and uses its approved OPP
   assert.ok((await(await render("/programs/public-administration")).text()).includes(current));
 });
 
+test("publishes bachelor's course materials without false empty states and exposes the approved OPP in catalogues",async()=>{
+  const html=await(await render("/departments/law-faculty/faculty-programmes/d4-public-administration-bachelor")).text();
+  for(const value of ["Качан Яна Віталіївна","56065","Умовна (відкладена)","21.04.2027","березень 2027","mandatory-programmes","mandatory-annotations","elective-annotations","archive-2024","archive-2023","programme-discussion-records","student-survey-records"])assert.ok(html.includes(value),value);
+  assert.doesNotMatch(html,/Робочі програми ще не оприлюднено|Анотації ще не оприлюднено/);
+  for(const group of ["mandatory-programmes","mandatory-annotations","elective-annotations","archive-2024","archive-2023","drafts"]){
+    const disclosure=html.match(new RegExp(`<details[^>]*id="${group}"[^>]*>`));
+    assert.ok(disclosure,group);assert.doesNotMatch(disclosure[0],/\bopen\b/);
+  }
+  const current="/documents/programmes/public-administration/bachelor/programme-2025-2026.pdf";
+  assert.ok(html.includes(current));
+  assert.ok((await(await render("/documents")).text()).includes(current));
+  assert.ok((await(await render("/programs/public-administration")).text()).includes(current));
+  const master=await(await render("/departments/law-faculty/faculty-programmes/d4-public-administration-master")).text();
+  assert.match(master,/Робочі програми ще не оприлюднено/);
+});
+
 test("renders a separate guarantor and teaching-team section on every A5 programme",async()=>{
   for(const slug of ["digital-bachelor","digital-master","information-security-bachelor","information-security-master","phd"]){
     const response=await render(`/programs/professional-education/${slug}`);
@@ -1482,8 +1498,13 @@ test("keeps four law departments to five closed sections and separates programme
   assert.match(faculty,/class="faculty-council-materials"/);
   for(const slug of ["d8-law-bachelor","d8-law-master","d8-law-phd","d4-public-administration-bachelor","d4-public-administration-master","d4-public-administration-phd"]){
     const html=await (await render(`/departments/law-faculty/faculty-programmes/${slug}`)).text();
-    assert.match(html,/<h2>Робочі програми<\/h2>/);
-    assert.match(html,/<h2>Анотації<\/h2>/);
+    if(slug==="d4-public-administration-bachelor"){
+      assert.match(html,/<summary>Робочі програми · обов’язкові дисципліни<\/summary>/);
+      assert.match(html,/<summary>Анотації · обов’язкові дисципліни<\/summary>/);
+    }else{
+      assert.match(html,/<h2>Робочі програми<\/h2>/);
+      assert.match(html,/<h2>Анотації<\/h2>/);
+    }
   }
   for(const path of ["faculty-council/meetings","faculty-council/decisions","faculty-council/protocols","faculty-discussion/about"]){
     assert.equal((await render(`/departments/law-faculty/${path}`)).status,404,path);

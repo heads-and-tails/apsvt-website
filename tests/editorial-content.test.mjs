@@ -49,6 +49,24 @@ test("keeps the supplied master's package complete with its correct guarantor an
   assert.equal(programme.groups.find(group => group.id === "thesis").files.length, 3);
 });
 
+test("keeps the complete bachelor's package grouped with conditional accreditation and historical versions", () => {
+  const programme = administrationMaterials.getPublicAdministrationPublication("d4-public-administration-bachelor");
+  const files = [programme.currentDocument, ...programme.groups.flatMap(group => group.files)];
+  assert.equal(files.length, 153);
+  assert.equal(new Set(files.map(file => file.sha256)).size, 153);
+  assert.ok(programme.facts.some(fact => fact.value === "56065"));
+  assert.ok(programme.facts.some(fact => fact.value.includes("Качан Яна Віталіївна")));
+  const accreditation = programme.facts.find(fact => fact.label === "Акредитація").value;
+  for (const value of ["Умовна (відкладена)", "20649", "22.04.2026", "21.04.2027", "березень 2027"]) assert.ok(accreditation.includes(value));
+  for (const [id, count] of [["mandatory-programmes", 39], ["mandatory-annotations", 37], ["elective-annotations", 33], ["archive-2024", 11], ["archive-2023", 3], ["drafts", 3], ["programme-discussion-records", 4], ["student-survey-records", 5]]) {
+    const group = programme.groups.find(group => group.id === id);
+    assert.equal(group.files.length, count, id);
+    assert.equal(group.collapsed, true, id);
+  }
+  assert.ok(programme.currentDocument.title.includes("2025–2026"));
+  assert.ok(programme.groups.find(group => group.id === "practice").files.some(file => file.href === "/documents/programmes/public-administration/practice-bases.pdf"));
+});
+
 test("keeps staff links stable and summaries short without dropping the full source profile", () => {
   assert.equal(profiles.academicProfilePath("profile/with ? separators"), "/people/profile%2Fwith%20%3F%20separators");
   assert.equal(profiles.academicProfilePath("stable-id", "en"), "/en/people/stable-id");
