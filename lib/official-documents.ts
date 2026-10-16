@@ -748,7 +748,7 @@ export const officialDocuments: OfficialDocument[] = [
     description: "Освітньо-наукова програма третього рівня вищої освіти.",
     href: "/documents/programmes/phd/2025/d4-public-administration.pdf",
     format: "PDF",
-    pages: 17,
+    pages: 18,
     updated: "2025",
     status: "current",
   },

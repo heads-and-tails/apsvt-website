@@ -43,6 +43,20 @@ test("returns 404 for missing staff profiles in both languages without replacing
   assert.equal((await render("/en/people")).status,200);
 });
 
+test("publishes the supplied D4 doctoral files with guarantor information and separate closed drafts",async()=>{
+  const response=await render("/departments/law-faculty/faculty-programmes/d4-public-administration-phd");
+  assert.equal(response.status,200);
+  const html=await response.text();
+  assert.match(html,/Васильєва Наталія Вікторівна/);
+  assert.match(html,/Ще не проводилася/);
+  for(const file of ["phd/2025/d4-public-administration.pdf","public-administration/phd/curriculum-full-time-2025-2026.pdf","public-administration/phd/curriculum-part-time-2025-2026.pdf","public-administration/phd/teaching-team-qualifications.doc","public-administration/phd/draft-programme-2025.pdf","public-administration/phd/draft-curriculum-full-time-2025.pdf","public-administration/phd/draft-curriculum-part-time-2025.pdf"])assert.ok(html.includes(file),file);
+  const drafts=html.match(/<details[^>]*id="drafts"[^>]*>/);
+  assert.ok(drafts);
+  assert.doesNotMatch(drafts[0],/\bopen\b/);
+  const law=await(await render("/departments/law-faculty/faculty-programmes/d8-law-bachelor")).text();
+  assert.doesNotMatch(law,/public-admin-materials/);
+});
+
 test("renders a separate guarantor and teaching-team section on every A5 programme",async()=>{
   for(const slug of ["digital-bachelor","digital-master","information-security-bachelor","information-security-master","phd"]){
     const response=await render(`/programs/professional-education/${slug}`);

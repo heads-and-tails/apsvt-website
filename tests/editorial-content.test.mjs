@@ -4,6 +4,7 @@ import test from "node:test";
 import ts from "typescript";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { createHash } from "node:crypto";
 
 async function moduleUrl(path, imports = {}) {
   const source = await readFile(new URL(path, import.meta.url), "utf8");
@@ -18,6 +19,26 @@ const media = await import(await moduleUrl("../lib/department-media.ts", { "./ed
 const dates = await import(await moduleUrl("../lib/department-news-date.ts"));
 const academicNews = await import(await moduleUrl("../lib/academic-news.ts"));
 const profiles = await import(await moduleUrl("../lib/academic-profile.ts"));
+const administrationMaterials = await import(await moduleUrl("../lib/public-administration-materials.ts"));
+
+test("preserves every supplied public-administration original and separates doctoral draft materials", async () => {
+  for (const publication of administrationMaterials.publicAdministrationPublications) {
+    const files = [publication.currentDocument, ...publication.groups.flatMap(group => group.files)];
+    assert.equal(new Set(files.map(file => file.href)).size, files.length);
+    for (const file of files) {
+      const bytes = await readFile(new URL(`../public${file.href}`, import.meta.url));
+      assert.equal(createHash("sha256").update(bytes).digest("hex"), file.sha256, file.title);
+    }
+  }
+  const phd = administrationMaterials.getPublicAdministrationPublication("d4-public-administration-phd");
+  assert.equal(1 + phd.groups.flatMap(group => group.files).length, 7);
+  const drafts = phd.groups.find(group => group.id === "drafts");
+  assert.equal(drafts.collapsed, true);
+  assert.equal(drafts.files.length, 3);
+  assert.ok(drafts.files.every(file => file.title.startsWith("Проєкт")));
+  assert.ok(phd.facts.some(fact => fact.value.includes("Васильєва Наталія Вікторівна")));
+  assert.equal(administrationMaterials.getPublicAdministrationPublication("d8-law-phd"), undefined);
+});
 
 test("keeps staff links stable and summaries short without dropping the full source profile", () => {
   assert.equal(profiles.academicProfilePath("profile/with ? separators"), "/people/profile%2Fwith%20%3F%20separators");
