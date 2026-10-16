@@ -1,0 +1,4 @@
+.programme-discussion-hero h1{max-width:24ch;font-size:clamp(36px,5vw,76px)}
+.historical-programme-article{max-width:980px;padding-top:36px}
+.historical-programme-article .department-authored-images{margin-top:32px}
+.programme-discussion-navigation{display:flex;flex-wrap:wrap;gap:24px;margin-top:36px}

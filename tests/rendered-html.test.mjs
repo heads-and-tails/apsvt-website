@@ -82,6 +82,25 @@ test("publishes bachelor's course materials without false empty states and expos
   assert.match(master,/Робочі програми ще не оприлюднено/);
 });
 
+test("renders six dated historical discussion articles with source projects and photos outside current news",async()=>{
+  const programme=await(await render("/departments/law-faculty/faculty-programmes/d4-public-administration-bachelor")).text();
+  const currentNews=await(await render("/news")).text();
+  for(const [year,date,dateLabel] of [[2023,"2023-04-18","18.04.2023"],[2024,"2024-03-07","07.03.2024"],[2025,"2025-05-19","19.05.2025"]]){
+    for(const kind of ["announcement","report"]){
+      const path=`/news/archive/public-administration-bachelor-discussion-${year}-${kind}`;
+      const response=await render(path);assert.equal(response.status,200,path);const html=await response.text();
+      assert.ok(programme.includes(path));assert.ok(!currentNews.includes(path));
+      assert.ok(html.includes(`<time dateTime="${date}">${dateLabel}</time>`));
+      assert.match(html,/Проєкт ОПП «Публічне управління та адміністрування»/);
+      assert.match(html,/href="\/news\/archive"/);
+      assert.match(html,/href="\/departments\/law-faculty\/faculty-programmes\/d4-public-administration-bachelor"/);
+      assert.equal((html.match(/src="\/images\/programme-discussions\//g)||[]).length,kind==="report"?2:0);
+      assert.ok(html.includes(kind==="announcement"?"відбудеться":year===2024?"було проведено":"відбулося"));
+    }
+  }
+  assert.equal((await render("/news/archive/unknown-programme-discussion")).status,404);
+});
+
 test("renders a separate guarantor and teaching-team section on every A5 programme",async()=>{
   for(const slug of ["digital-bachelor","digital-master","information-security-bachelor","information-security-master","phd"]){
     const response=await render(`/programs/professional-education/${slug}`);
@@ -261,11 +280,11 @@ test("links the recovered May 2026 news archive from the public news section",as
     (await render("/news/archive")).text(),
   ]);
   assert.match(newsHtml,/href="\/news\/archive"/);
-  assert.match(newsHtml,/745 новин/);
+  assert.match(newsHtml,/751 матеріал/);
   assert.match(archiveHtml,/Архів[\s\S]*новин/);
   assert.match(archiveHtml,/Збережена копія станом на травень 2026 року/);
   const index=JSON.parse(await readFile(new URL("../public/materials-index.json",import.meta.url),"utf8"));
-  assert.equal(index.filter((item)=>item.category==="Новини та події").length,745);
+  assert.equal(index.filter((item)=>item.category==="Новини та події").length,751);
 });
 
 test("renders editorially managed public information",async()=>{
