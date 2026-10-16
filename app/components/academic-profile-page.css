@@ -1,0 +1,12 @@
+.staff-profile-hero h1{max-width:1100px;overflow-wrap:anywhere}
+.staff-profile-layout{display:grid;grid-template-columns:minmax(220px,340px) minmax(0,1fr);gap:clamp(28px,5vw,76px);align-items:start}
+.staff-profile-layout--text{grid-template-columns:minmax(0,1fr);max-width:960px}
+.staff-profile-portrait,.staff-profile-content{min-width:0}
+.staff-profile-portrait .department-authored-images{margin-top:0}
+.staff-profile-content .lede{white-space:pre-line}
+.staff-profile-content .academic-profile-links{margin-top:28px;gap:14px}
+.staff-profile-content .academic-profile-links a{font-size:11px;overflow-wrap:anywhere}
+.staff-profile-disciplines{margin:28px 0;padding:0}
+.staff-profile-disciplines h2{font-size:clamp(23px,3vw,32px);margin-bottom:16px}
+.staff-profile-disciplines ul{padding-left:20px;line-height:1.7}
+@media(max-width:760px){.staff-profile-layout{grid-template-columns:minmax(0,1fr)}.staff-profile-portrait{width:100%;max-width:440px;justify-self:center}}

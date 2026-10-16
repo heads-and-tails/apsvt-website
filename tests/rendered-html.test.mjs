@@ -34,6 +34,15 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
+test("returns 404 for missing staff profiles in both languages without replacing the people index",async()=>{
+  for(const path of ["/people/missing-staff-profile","/en/people/missing-staff-profile"]){
+    const response=await render(path);
+    assert.equal(response.status,404,path);
+  }
+  assert.equal((await render("/people")).status,200);
+  assert.equal((await render("/en/people")).status,200);
+});
+
 test("renders a separate guarantor and teaching-team section on every A5 programme",async()=>{
   for(const slug of ["digital-bachelor","digital-master","information-security-bachelor","information-security-master","phd"]){
     const response=await render(`/programs/professional-education/${slug}`);

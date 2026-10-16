@@ -2,11 +2,14 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import ts from "typescript";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 
 async function moduleUrl(path, imports = {}) {
   const source = await readFile(new URL(path, import.meta.url), "utf8");
-  let code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
-  for (const [from, to] of Object.entries(imports)) code = code.replaceAll(`from "${from}"`, `from "${to}"`);
+  let code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText;
+  code = code.replace(/^import "[^"\n]+\.css";\s*$/gm, "");
+  for (const [from, to] of Object.entries({ react: import.meta.resolve("react"), "react/jsx-runtime": import.meta.resolve("react/jsx-runtime"), ...imports })) code = code.replaceAll(`from "${from}"`, `from "${to}"`);
   return `data:text/javascript;base64,${Buffer.from(code).toString("base64")}`;
 }
 const textUrl = await moduleUrl("../lib/editorial-text.ts");
@@ -14,6 +17,53 @@ const text = await import(textUrl);
 const media = await import(await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }));
 const dates = await import(await moduleUrl("../lib/department-news-date.ts"));
 const academicNews = await import(await moduleUrl("../lib/academic-news.ts"));
+const profiles = await import(await moduleUrl("../lib/academic-profile.ts"));
+
+test("keeps staff links stable and summaries short without dropping the full source profile", () => {
+  assert.equal(profiles.academicProfilePath("profile/with ? separators"), "/people/profile%2Fwith%20%3F%20separators");
+  assert.equal(profiles.academicProfilePath("stable-id", "en"), "/en/people/stable-id");
+  assert.equal(profiles.academicProfileSummary("  Короткий\nпрофіль  "), "Короткий профіль");
+  const original = "Професійна діяльність та науковий розвиток. ".repeat(15);
+  const short = profiles.academicProfileSummary(original);
+  assert.ok(short.length <= 240);
+  assert.ok(short.endsWith("…"));
+  assert.ok(original.startsWith(short.slice(0, -1)));
+  assert.ok(profiles.academicProfileSummary("а".repeat(300)).length <= 240);
+  assert.equal(profiles.academicProfileSummary(""), "");
+});
+
+test("public staff pages reject hidden, draft, missing and other record types", () => {
+  const published = { entryType: "teacher", status: "published", hidden: false };
+  assert.equal(profiles.isPublicTeacher(published), true);
+  for (const entry of [null, { ...published, hidden: true }, { ...published, status: "draft" }, { ...published, entryType: "news" }, { ...published, entryType: "material" }]) assert.equal(profiles.isPublicTeacher(entry), false);
+});
+
+test("server-renders complete staff profiles and concise managed cards with the existing editing metadata", async () => {
+  const dataUrl = code => `data:text/javascript;base64,${Buffer.from(code).toString("base64")}`;
+  const linkUrl = dataUrl(`import { createElement } from ${JSON.stringify(import.meta.resolve("react"))}; export default function Link(props) { return createElement("a", props); }`);
+  const chromeUrl = dataUrl("export function SiteHeader(){return null;} export function SiteFooter(){return null;} export function EnglishFooter(){return null;}");
+  const mediaUrl = await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl });
+  const departmentMediaUrl = await moduleUrl("../app/components/DepartmentMedia.tsx", { "@/lib/department-media": mediaUrl });
+  const richTextUrl = await moduleUrl("../app/components/EditorialRichText.tsx", { "@/lib/editorial-text": textUrl });
+  const resumeUrl = await moduleUrl("../app/components/TeacherResume.tsx", { "./EditorialRichText": richTextUrl });
+  const cardUrl = await moduleUrl("../app/components/AcademicProfileCard.tsx", { "next/link": linkUrl, "@/lib/academic-profile": await moduleUrl("../lib/academic-profile.ts"), "@/lib/department-media": mediaUrl, "./DepartmentMedia": departmentMediaUrl, "./TeacherResume": resumeUrl });
+  const { AcademicProfileCard, departmentTeacherProfile } = await import(cardUrl);
+  const { AcademicProfilePage } = await import(await moduleUrl("../app/components/AcademicProfilePage.tsx", { "next/link": linkUrl, "./AcademicProfileCard": cardUrl, "./DepartmentMedia": departmentMediaUrl, "./EditorialRichText": richTextUrl, "./SiteHeader": chromeUrl, "./SiteFooter": chromeUrl, "./EnglishFooter": chromeUrl }));
+  const entry = { id: "stable-teacher", pagePath: "/departments/digital-technologies", sectionId: "department-team", title: "Авторський профіль", summary: "Професійна діяльність та досвід викладання. ".repeat(15), body: "## Освіта\n\nПовна авторська біографія і професійний розвиток.", role: "Доцент", teacherDegree: "Доктор філософії", teacherTags: ["Методика викладання"], images: [], attachments: [{ url: "/document.pdf", label: "Публікації" }], profileLinks: [{ href: "https://orcid.org/0000-0000-0000-0001", label: "ORCID" }], authorEmail: "private-editor@example.com" };
+  const person = departmentTeacherProfile(entry);
+  const card = renderToStaticMarkup(createElement(AcademicProfileCard, { person }));
+  assert.match(card, /href="\/people\/stable-teacher"/);
+  assert.match(card, /data-academic-profile=/);
+  assert.doesNotMatch(card, /<details/);
+  assert.ok(card.includes(profiles.academicProfileSummary(entry.summary)));
+  const html = renderToStaticMarkup(createElement(AcademicProfilePage, { entry }));
+  for (const value of [entry.summary, "Повна авторська біографія", "Методика викладання", "/document.pdf", "https://orcid.org/0000-0000-0000-0001"]) assert.ok(html.includes(value), value);
+  assert.match(html, /href="\/departments\/digital-technologies#department-team"/);
+  assert.doesNotMatch(html, /private-editor@example.com/);
+  const native = renderToStaticMarkup(createElement(AcademicProfileCard, { person: { ...person, managedId: undefined } }));
+  assert.match(native, /<details/);
+  assert.ok(native.includes(entry.summary));
+});
 
 test("keeps explicitly requested faculty news visible once without changing ordinary relevance", () => {
   const post = (id, title) => ({ id, slug: id, title, excerpt: "", body: "", category: "Оголошення" });
