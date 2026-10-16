@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function NewsArchivePage() {
   return <main id="top">
-    <SiteHeader />
+    <SiteHeader englishHref="/en/news" />
     <section className="phero">
       <div className="wrap">
         <div className="crumb">Головна / Новини / Архів</div>

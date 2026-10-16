@@ -101,6 +101,17 @@ test("renders six dated historical discussion articles with source projects and 
   assert.equal((await render("/news/archive/unknown-programme-discussion")).status,404);
 });
 
+test("takes the Ukrainian source archive EN control to the available English news index",async()=>{
+  const paths=["/news/archive",...[2023,2024,2025].flatMap(year=>["announcement","report"].map(kind=>`/news/archive/public-administration-bachelor-discussion-${year}-${kind}`))];
+  for(const path of paths){
+    const html=await(await render(path)).text();
+    const toggle=html.match(/<a[^>]*class="lang-toggle"[^>]*>/)?.[0];
+    assert.ok(toggle);assert.match(toggle,/href="\/en\/news"/);
+  }
+  const english=await render("/en/news");assert.equal(english.status,200);
+  assert.match(await english.text(),/News and/);
+});
+
 test("renders a separate guarantor and teaching-team section on every A5 programme",async()=>{
   for(const slug of ["digital-bachelor","digital-master","information-security-bachelor","information-security-master","phd"]){
     const response=await render(`/programs/professional-education/${slug}`);

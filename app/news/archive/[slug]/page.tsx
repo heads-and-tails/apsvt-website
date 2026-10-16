@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProgrammeDiscussionPage({ params }: Props) {
   const article = getPublicAdministrationAnnouncement((await params).slug);
   if (!article) notFound();
-  return <main id="top"><SiteHeader />
+  return <main id="top"><SiteHeader englishHref="/en/news" />
     <section className="phero programme-discussion-hero"><div className="wrap">
       <nav className="crumb" aria-label="Навігаційний ланцюжок"><Link href="/news/archive">Архів новин</Link> / <time dateTime={article.date}>{article.dateLabel}</time></nav>
       <h1>{article.title}</h1>
