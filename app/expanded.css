@@ -1857,6 +1857,7 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .academic-profile-copy>small{display:block;min-height:40px;color:var(--cobalt);font:600 10px/1.45 var(--body);text-transform:none}
 .academic-profile-copy>h3{margin:12px 0 16px;font-size:clamp(25px,2.25vw,33px);line-height:.98;overflow-wrap:anywhere;text-wrap:balance}
 .academic-profile-copy>p{color:rgba(9,14,24,.68);font-size:13px;line-height:1.65}
+.academic-profile-copy>.academic-profile-detail-link{display:block;margin-top:auto;padding-top:22px;color:var(--cobalt);font:700 10px/1.5 var(--mono);text-transform:uppercase}
 .academic-profile-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
 .academic-profile-tags span{padding:7px 8px;background:#e8e5dd;font:8px/1.35 var(--mono);letter-spacing:.03em;text-transform:uppercase}
 .academic-profile-copy>details{margin-top:auto;padding-top:22px}

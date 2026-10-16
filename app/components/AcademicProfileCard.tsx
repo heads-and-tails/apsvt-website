@@ -1,4 +1,6 @@
+import Link from "next/link";
 import type { DepartmentEntry } from "@/lib/department-content";
+import { academicProfilePath, academicProfileSummary } from "@/lib/academic-profile";
 import { departmentImages, departmentAttachments, type DepartmentImage } from "@/lib/department-media";
 import { departmentImageStyle } from "./DepartmentMedia";
 import { TeacherResumeText } from "./TeacherResume";
@@ -61,6 +63,7 @@ export function AcademicProfileCard({
 }) {
   const links = person.links || [];
   const hasDetails = Boolean(person.details || links.length);
+  const profilePath = person.managedId ? academicProfilePath(person.managedId) : undefined;
 
   return <article className="academic-profile-card" data-academic-profile={JSON.stringify(person)} data-editorial-rendered={person.managedId ? "true" : undefined}>
     <div className={`academic-profile-photo faculty-portrait-surface${person.imageCrop === "caption" ? " academic-profile-photo--caption" : ""}`}>
@@ -71,12 +74,13 @@ export function AcademicProfileCard({
     <div className="academic-profile-copy">
       {badge && <em className="academic-profile-badge">{badge}</em>}
       <small>{person.role}</small>
-      <h3>{person.name}</h3>
-      <p>{person.summary}</p>
-      {person.tags && person.tags.length > 0 && <div className="academic-profile-tags">
+      <h3>{profilePath ? <Link href={profilePath}>{person.name}</Link> : person.name}</h3>
+      <p>{profilePath ? academicProfileSummary(person.summary) : person.summary}</p>
+      {!profilePath && person.tags && person.tags.length > 0 && <div className="academic-profile-tags">
         {person.tags.map((tag) => <span key={tag}>{tag}</span>)}
       </div>}
-      {hasDetails && <details>
+      {profilePath && <Link className="academic-profile-detail-link" href={profilePath} aria-label={`Повний профіль — ${person.name}`}>Повний профіль →</Link>}
+      {!profilePath && hasDetails && <details>
         <summary>{detailsLabel}<i>+</i></summary>
         {person.details && <TeacherResumeText text={person.details} />}
         {links.length > 0 && <div className="academic-profile-links">
