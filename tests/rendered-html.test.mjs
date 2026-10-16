@@ -34,6 +34,18 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
+test("renders a separate guarantor and teaching-team section on every A5 programme",async()=>{
+  for(const slug of ["digital-bachelor","digital-master","information-security-bachelor","information-security-master","phd"]){
+    const response=await render(`/programs/professional-education/${slug}`);
+    assert.equal(response.status,200);
+    const html=await response.text();
+    assert.match(html,/id="programme-team"/);
+    assert.match(html,/Гарант і група забезпечення ОП/);
+    assert.match(html,/id="programme-documents"/);
+    assert.match(html,/id="curriculum"/);
+  }
+});
+
 test("publishes Yaroslav Zhuravel's AI training report with three supplied event photos",async()=>{
   const article=await render("/news/treninh-shtuchnyi-intelekt-osvita-nauka-2026");
   assert.equal(article.status,200);

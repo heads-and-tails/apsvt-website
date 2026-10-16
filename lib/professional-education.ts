@@ -14,6 +14,7 @@ export const professionalEducationProgrammes = [
 
 export const professionalEducationSections = [
   { id: "overview", label: "Про освітню програму" },
+  { id: "programme-team", label: "Гарант і група забезпечення ОП" },
   { id: "programme-documents", label: "Освітня програма" },
   { id: "curriculum", label: "Навчальні плани" },
   { id: "disciplines", label: "Обов’язкові дисципліни" },
