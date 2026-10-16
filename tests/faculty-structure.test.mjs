@@ -68,6 +68,18 @@ test('both finance projects and empty publishing slots are available in editor',
   const ids = registry.editorialSectionsForPage('/programs/finance').map((section) => section.id);
   for (const id of ['greenfinedu', 'eu-financial-sector', 'eu-financial-sector-about', 'eu-financial-sector-documents']) assert.ok(ids.includes(id));
 });
+test('marketing club, student subsections and repository have separate editorial slots', () => {
+  const ids = registry.editorialSectionsForPage('/programs/marketing').map((section) => section.id);
+  for (const id of ['science-club', 'marketing-student-life', 'marketing-student-science', 'marketing-repository']) assert.ok(ids.includes(id));
+  assert.equal(ids.length, new Set(ids).size);
+  const page = fs.readFileSync(path.join(root, 'app/programs/[slug]/page.tsx'), 'utf8');
+  assert.ok(!page.includes('/materials/3331-0b35c55db.html'));
+  assert.ok(page.includes('id="science-club"'));
+  assert.ok(page.includes('id="marketing-repository"'));
+  const students = fs.readFileSync(path.join(root, 'app/programs/[slug]/MarketingStudentLife.tsx'), 'utf8');
+  assert.ok(students.includes('Студентське життя: навчання, можливості, досягнення'));
+  assert.ok(students.includes('Студентська наука: конференції, дослідження, досягнення'));
+});
 test('faculty content is rendered on demand after editorial changes', () => {
   const source = fs.readFileSync(path.join(root, 'app/departments/law-faculty/page.tsx'), 'utf8');
   assert.ok(source.includes('export const dynamic = "force-dynamic"'));

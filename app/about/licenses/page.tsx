@@ -225,6 +225,49 @@ const archiveCertificates: Certificate[] = [
   },
 ];
 
+const historicalArchiveBase = "/documents/licenses/email-archive-2026-10";
+const historicalCertificateGroups: { title: string; certificates: Certificate[] }[] = [
+  { title: "1996–1999 · ранні документи", certificates: [
+    { title: "Ліцензія на підготовку з маркетингу", level: "Історична ліцензія · 1996", number: "Серія ВПІ-ІІІ № 110111", publishedTerm: "Видано 23.12.1996", image: `${historicalArchiveBase}/3602a-02.jpg` },
+    { title: "Ліцензія на підготовку з маркетингу", level: "Історична ліцензія · 1998", number: "Серія ВПІ-ІІІ № 110111", publishedTerm: "Видано 17.07.1998", image: `${historicalArchiveBase}/3602a-01.jpg` },
+    { title: "Маркетинг", level: "Історичний сертифікат · 1999", number: "Серія НІ-ІІІ № 115002", publishedTerm: "Видано 12.08.1999", image: `${historicalArchiveBase}/3602a-03.jpg` },
+  ] },
+  { title: "2014 · сертифікати акредитації", certificates: [
+    { title: "Фінанси і кредит", level: "Спеціаліст", number: "НІ-ІІІ № 1171823", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-01.jpg` },
+    { title: "Фінанси і кредит", level: "Бакалавр", number: "НІ-ІІ № 1171822", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-02.jpg` },
+    { title: "Соціальна робота", level: "Спеціаліст", number: "НІ-ІІІ № 1171825", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-03.jpg` },
+    { title: "Соціальна робота", level: "Магістр", number: "НІ-IV № 1171826", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-04.jpg` },
+    { title: "Соціальна робота", level: "Бакалавр", number: "НІ-ІІ № 1171824", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-05.jpg` },
+    { title: "Соціологія", level: "Магістр", number: "НІ-IV № 1171817", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-06.jpg` },
+    { title: "Соціологія", level: "Бакалавр", number: "НІ-ІІ № 1171816", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-07.jpg` },
+    { title: "Право", level: "Спеціаліст", number: "НІ-ІІІ № 1171819", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-08.jpg` },
+    { title: "Право", level: "Бакалавр", number: "НІ-ІІ № 1171818", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-09.jpg` },
+    { title: "Маркетинг", level: "Спеціаліст", number: "НІ-ІІІ № 1171821", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-10.jpg` },
+    { title: "Маркетинг", level: "Бакалавр", number: "НІ-ІІ № 1171820", publishedTerm: "Видано 11.08.2014", image: `${historicalArchiveBase}/350ed-11.jpg` },
+  ] },
+  { title: "2015 · сертифікати акредитації", certificates: [
+    { title: "Фінанси і кредит", level: "Магістр", number: "НІ-IV № 1176480", publishedTerm: "Видано 03.07.2015", image: `${historicalArchiveBase}/98b45-01.jpg` },
+    { title: "Право", level: "Магістр", number: "НІ-IV № 1176479", publishedTerm: "Видано 03.07.2015", image: `${historicalArchiveBase}/98b45-02.jpg` },
+    { title: "Менеджмент", level: "Бакалавр", number: "НІ-ІІ № 1173427", publishedTerm: "Видано 09.02.2015", image: `${historicalArchiveBase}/98b45-03.jpg` },
+    { title: "Менеджмент організацій і адміністрування", level: "Спеціаліст", number: "НІ-ІІІ № 1173428", publishedTerm: "Видано 09.02.2015", image: `${historicalArchiveBase}/98b45-04.jpg` },
+  ] },
+  { title: "2016 · сертифікати акредитації", certificates: [
+    { title: "Соціологія", level: "Спеціаліст", number: "НІ-ІІІ № 1180229", publishedTerm: "Видано 06.07.2016", image: `${historicalArchiveBase}/ba29a-01.jpg` },
+    { title: "Маркетинг", level: "Магістр", number: "НІ-IV № 1180450", publishedTerm: "Видано 06.07.2016", image: `${historicalArchiveBase}/ba29a-02.jpg` },
+  ] },
+];
+
+const historicalLicensePages = [
+  { title: "Основний аркуш ліцензії", image: `${historicalArchiveBase}/350ed-19.jpg` },
+  { title: "Додаток до ліцензії · аркуш 1", image: `${historicalArchiveBase}/350ed-18.jpg` },
+  { title: "Додаток до ліцензії · аркуш 2", image: `${historicalArchiveBase}/350ed-17.jpg` },
+  { title: "Додаток до ліцензії · аркуш 3", image: `${historicalArchiveBase}/350ed-16.jpg` },
+  { title: "Зворотний бік · скан 1", image: `${historicalArchiveBase}/350ed-15.jpg` },
+  { title: "Зворотний бік · скан 2", image: `${historicalArchiveBase}/350ed-14.jpg` },
+  { title: "Зворотний бік · скан 3", image: `${historicalArchiveBase}/350ed-13.jpg` },
+  { title: "Зворотний бік · скан 4", image: `${historicalArchiveBase}/350ed-12.jpg` },
+];
+
 function CertificateCard({ certificate, index }: { certificate: Certificate; index: number }) {
   return (
     <a className="license-certificate-card" href={certificate.image} target="_blank" rel="noreferrer">
@@ -291,8 +334,8 @@ export default function LicensesPage() {
           </div>
           <aside className="license-hero-card">
             <span>Документи у розділі</span>
-            <b>30</b>
-            <p>1 ліцензійний документ<br />22 сертифікати та архівні скани<br />7 матеріалів акредитаційних експертиз</p>
+            <b>58</b>
+            <p>1 ліцензійний документ<br />42 сертифікати та архівні скани<br />8 аркушів історичної ліцензії<br />7 матеріалів акредитаційних експертиз</p>
             <a href="#license-document">Перейти до ліцензії ↓</a>
           </aside>
         </div>
@@ -384,6 +427,21 @@ export default function LicensesPage() {
               {archiveCertificates.map((certificate, index) => (
                 <CertificateCard certificate={certificate} index={index + programmeCertificates.length} key={`${certificate.title}-${certificate.level}`} />
               ))}
+            </div>
+            <div className="historical-archive-collections">
+              {historicalCertificateGroups.map((group) => <section className="historical-archive-group" key={group.title}>
+                <h3>{group.title}</h3>
+                <div className="license-certificate-grid archive">
+                  {group.certificates.map((certificate, index) => <CertificateCard certificate={certificate} index={index + 1} key={certificate.image} />)}
+                </div>
+              </section>)}
+              <section className="historical-archive-group">
+                <h3>2014 · ліцензія та додатки</h3>
+                <p>Окремі скани основного аркуша, трьох сторінок додатка та чотирьох зворотів. Це історичний комплект, а не підтвердження чинної ліцензії.</p>
+                <div className="historical-license-pages">
+                  {historicalLicensePages.map((page, index) => <a href={page.image} target="_blank" rel="noreferrer" key={page.image}><span>{String(index + 1).padStart(2, "0")}</span><b>{page.title}</b><small>JPG ↗</small></a>)}
+                </div>
+              </section>
             </div>
           </details>
         </div>

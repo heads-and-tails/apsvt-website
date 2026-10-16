@@ -54,9 +54,10 @@ const marketingSections: readonly SectionHubItem[] = [
   { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг якості освіти та обговорення змін до ОПП за рівнями.", icon: "✓", aliases: ["marketing-quality-discussion", "marketing-stakeholder-call"] },
   { id: "science", index: "05", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI" },
   { id: "programme-documents", index: "06", title: "Навчально-методичне забезпечення", description: "Офіційні програми, плани, дисципліни й матеріали кафедри.", icon: "PDF" },
-  { id: "marketing-student-life", index: "07", title: "Студентське життя та самоврядування", description: "Гурток MARKETHINK, студентські ініціативи й участь у житті Академії.", icon: "M" },
-  { id: "careers", index: "08", title: "Кар’єра і працевлаштування", description: "Професійні ролі, практика, роботодавці та кар’єрні можливості.", icon: "GO", aliases: ["practice"] },
-  { id: "department-news", index: "09", title: "Новини", description: "Події, публікації та оголошення кафедри маркетингу.", icon: "NEWS" },
+  { id: "marketing-student-life", index: "07", title: "Студентське життя та самоврядування", description: "Студентське життя й студентська наука — окремі підрозділи.", icon: "M", aliases: ["marketing-student-life-content", "marketing-student-science"] },
+  { id: "marketing-repository", index: "08", title: "РЕПОЗИТАРІЙ", description: "Доступні наукові видання та матеріали кафедри.", icon: "ARC" },
+  { id: "careers", index: "09", title: "Кар’єра і працевлаштування", description: "Професійні ролі, практика, роботодавці та кар’єрні можливості.", icon: "GO", aliases: ["practice"] },
+  { id: "department-news", index: "10", title: "Новини", description: "Події, публікації та оголошення кафедри маркетингу.", icon: "NEWS" },
 ];
 
 const financeSections: readonly SectionHubItem[] = [
@@ -92,7 +93,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     : [];
   const activeSections = slug === "marketing" ? marketingSections : slug === "finance" ? financeSections : programmeSections;
   const navigatorDescription = slug === "marketing"
-    ? "Оберіть склад кафедри, освітні програми, якість освіти, науку, матеріали, студентське життя, кар’єру або новини — відкриється тільки потрібний розділ."
+    ? "Оберіть склад кафедри, освітні програми, якість освіти, науку, матеріали, студентське життя, репозитарій, кар’єру або новини — відкриється тільки потрібний розділ."
     : slug === "finance"
       ? "Оберіть програми, освітнє середовище, міжнародні проєкти, якість, вступ, новини або контакти — відкриється тільки потрібний розділ."
       : "Оберіть навчальний план, кафедру, кар’єру, вступні матеріали або міжнародні можливості — відкриється тільки потрібний розділ.";
@@ -105,15 +106,9 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       <Link href="/research/conferences#marketing-proceedings"><span>01</span><small>Конференції</small><h3>Збірники матеріалів конференцій</h3><p>Повні PDF за 2024, 2025 та 2026 роки.</p><b>→</b></Link>
       <Link href="/research/journals#marketing-publications"><span>02</span><small>Наукові видання</small><h3>Монографії кафедри</h3><p>Дві колективні монографії, підготовлені викладачами кафедри.</p><b>→</b></Link>
       <Link href="/research/journals#marketing-publications"><span>03</span><small>Навчальне видання</small><h3>Соціально відповідальний маркетинг</h3><p>Навчальний посібник кафедри.</p><b>→</b></Link>
-      <Link href="/materials/3331-0b35c55db.html"><span>04</span><small>Науковий гурток</small><h3>MARKETHINK</h3><p>Матеріали гуртка та участі студентів у конференціях.</p><b>→</b></Link>
     </div>
-    <details className="marketing-project-folder marketing-student-achievements" id="marketing-student-achievements">
-      <summary><span><small>Матеріали здобувачів</small><strong>Наукові здобутки здобувачів</strong></span><b aria-hidden="true">+</b></summary>
-      <div className="marketing-achievement-list">
-        <a href="/documents/marketing/student-achievements/2026.pdf" target="_blank" rel="noreferrer"><span>2026</span><div><small>Календарний рік</small><h4>Наукові здобутки здобувачів</h4></div><b>PDF · 20 сторінок ↗</b></a>
-        <a href="/documents/marketing/student-achievements/2025.pdf" target="_blank" rel="noreferrer"><span>2025</span><div><small>Календарний рік</small><h4>Наукові здобутки здобувачів</h4></div><b>PDF · 17 сторінок ↗</b></a>
-      </div>
-    </details>
+    <div className="marketing-science-club" id="science-club"><div className="idx">05 / Науковий гурток</div><h3>Науковий гурток</h3><DepartmentEditorialContent entries={departmentEntries.filter((entry) => entry.sectionId === "science-club" && !["hero", "override", "teacher", "partner"].includes(entry.entryType))} inline /></div>
+    <DepartmentEditorialContent entries={departmentEntries.filter((entry) => entry.sectionId === "science" && !["hero", "override", "teacher", "partner"].includes(entry.entryType))} inline />
     <article className="marketing-international-expertise" id="marketing-international-expertise">
       <header><div className="idx">05 / Міжнародний вимір</div><h3>Міжнародна та експертна діяльність НПП кафедри</h3></header>
       <div className="marketing-international-copy">
@@ -134,9 +129,10 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       {program.materials.map((material, index) => <a href={material.href} target={material.href.endsWith(".pdf") ? "_blank" : undefined} rel={material.href.endsWith(".pdf") ? "noreferrer" : undefined} key={material.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{material.href.endsWith(".pdf") ? "PDF · офіційний документ" : "Матеріали кафедри"}</small><h3>{material.label}</h3></div><b>{material.href.endsWith(".pdf") ? "↗" : "→"}</b></a>)}
       <Link href="/research/journals#marketing-publications"><span>{String(program.materials.length + 1).padStart(2, "0")}</span><div><small>Повні тексти</small><h3>Монографії та навчальний посібник кафедри</h3></div><b>→</b></Link>
     </div><MarketingMethodicalFolders /></div></section>,
-    <MarketingStudentLife key="marketing-student-life" />,
+    <MarketingStudentLife entries={departmentEntries} key="marketing-student-life" />,
+    <section className="marketing-repository" id="marketing-repository" key="marketing-repository"><div className="wrap"><div className="idx">08 / Матеріали кафедри</div><h2>РЕПОЗИТАРІЙ</h2><div className="marketing-repository-links"><Link href="/research/journals#marketing-publications">Монографії та навчальний посібник →</Link><Link href="/research/conferences#marketing-proceedings">Збірники матеріалів конференцій →</Link></div><DepartmentEditorialContent entries={departmentEntries.filter((entry) => entry.sectionId === "marketing-repository" && !["hero", "override", "teacher", "partner"].includes(entry.entryType))} inline /></div></section>,
     <MarketingCareers key="marketing-careers" />,
-    <div id="department-news" key="marketing-news"><AcademicNews slugs={[slug]} title="Новини кафедри маркетингу" /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType))} /></div>,
+    <div id="department-news" key="marketing-news"><AcademicNews slugs={[slug]} title="Новини кафедри маркетингу" /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "override", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", "marketing-student-life", "marketing-student-science", "marketing-repository"].includes(entry.sectionId))} /></div>,
   ] : null;
   const financeSectionContent = slug === "finance" ? [
     <div id="overview" key="finance-programmes">

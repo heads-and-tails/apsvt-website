@@ -9,6 +9,20 @@ export const financeProjectSections = [
 ] as const;
 
 export function editorialSectionsForPage(path: string): { id: string; label: string }[] {
+  if (path === "/programs/marketing") return [
+    { id: "department", label: "Про кафедру" },
+    { id: "department-team", label: "Науково-педагогічний склад" },
+    { id: "curriculum", label: "Освітні програми" },
+    { id: "quality", label: "Якість освіти" },
+    { id: "science", label: "Наукова діяльність" },
+    { id: "science-club", label: "Науковий гурток" },
+    { id: "programme-documents", label: "Навчально-методичне забезпечення" },
+    { id: "marketing-student-life", label: "Студентське життя: навчання, можливості, досягнення" },
+    { id: "marketing-student-science", label: "Студентська наука: конференції, дослідження, досягнення" },
+    { id: "marketing-repository", label: "РЕПОЗИТАРІЙ" },
+    { id: "careers", label: "Кар’єра і працевлаштування" },
+    { id: "department-news", label: "Новини" },
+  ];
   if (["/departments/constitutional-law", "/departments/criminal-law", "/departments/private-law", "/departments/public-administration"].includes(path)) return [
     { id: "department-about", label: "Загальна інформація про кафедру" },
     { id: "department-head", label: "Завідувач кафедри" },
