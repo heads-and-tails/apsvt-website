@@ -80,6 +80,18 @@ test("records first publication rather than draft creation and keeps hidden date
 const lawStructureUrl = await moduleUrl("../lib/law-faculty-structure.ts");
 const programmeDocumentsUrl = await moduleUrl("../lib/programme-documents.ts");
 const professionalUrl = await moduleUrl("../lib/professional-education.ts", { "./programme-documents": programmeDocumentsUrl });
+const professional = await import(professionalUrl);
+const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl }));
+
+test("offers the programme team in the editor for all five A5 programmes without changing department sections", () => {
+  assert.equal(professional.professionalEducationProgrammes.length, 5);
+  for (const programme of professional.professionalEducationProgrammes) {
+    const configured = sections.editorialSectionsForPage(programme.path);
+    assert.deepEqual(configured.find(section => section.id === "programme-team"), { id: "programme-team", label: "Гарант і група забезпечення ОП" });
+    assert.deepEqual(configured.filter(section => section.id !== "programme-team").map(section => section.id), ["overview", "programme-documents", "curriculum", "disciplines", "electives", "practice", "admissions", "quality", "documents"]);
+  }
+  assert.equal(sections.editorialSectionsForPage(professional.digitalDepartmentPath).some(section => section.id === "programme-team"), false);
+});
 const access = await import(await moduleUrl("../lib/editorial-access.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl }));
 
 test("the configured faculty editor can manage all requested pages and cannot edit unrelated pages", async () => {
