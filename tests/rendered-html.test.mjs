@@ -57,6 +57,15 @@ test("publishes the supplied D4 doctoral files with guarantor information and se
   assert.doesNotMatch(law,/public-admin-materials/);
 });
 
+test("publishes the complete supplied master's package and uses its approved OPP in current catalogues",async()=>{
+  const html=await(await render("/departments/law-faculty/faculty-programmes/d4-public-administration-master")).text();
+  for(const value of ["Міщенко Катерина Семенівна","56066","01.07.2029","липень 2029","thesis-guidelines.pdf","thesis-topics.pdf","thesis-application.pdf","accreditation-certificate-6830.pdf","curriculum-full-time-2025-2026.pdf","curriculum-part-time-2025-2026.pdf","pre-diploma-practice.pdf","practice-bases.pdf"])assert.ok(html.includes(value),value);
+  const current="/documents/programmes/public-administration/master/programme-2025-2026.pdf";
+  assert.ok(html.includes(current));
+  assert.ok((await(await render("/documents")).text()).includes(current));
+  assert.ok((await(await render("/programs/public-administration")).text()).includes(current));
+});
+
 test("renders a separate guarantor and teaching-team section on every A5 programme",async()=>{
   for(const slug of ["digital-bachelor","digital-master","information-security-bachelor","information-security-master","phd"]){
     const response=await render(`/programs/professional-education/${slug}`);

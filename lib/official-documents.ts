@@ -234,7 +234,7 @@ export const officialDocuments: OfficialDocument[] = [
   {
     id: "programme-public-administration-master-2025", category: "education", title: "ОПП D4 «Публічне управління та адміністрування» — магістр",
     description: "Офіційна освітньо-професійна програма другого рівня вищої освіти.",
-    href: `${officialProgrammeFileBase}/d4-public-administration-master.pdf`, format: "PDF", pages: 18, updated: "2025", status: "current",
+    href: "/documents/programmes/public-administration/master/programme-2025-2026.pdf", format: "PDF", pages: 18, updated: "2025", status: "current",
   },
   {
     id: "programme-finance-master-2025", category: "education", title: "ОПП D2 «Фінанси, банківська справа, страхування та фондовий ринок» — магістр",
