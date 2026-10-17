@@ -22,6 +22,7 @@ export function editorialSectionsForPage(path: string): { id: string; label: str
     ...marketingStudentSections.map(({ id, title }) => ({ id, label: title })),
     { id: "careers", label: "Кар’єра і працевлаштування" },
     { id: "department-news", label: "Новини" },
+    { id: "marketing-repository", label: "Репозитарій" },
   ];
   if (["/departments/constitutional-law", "/departments/criminal-law", "/departments/private-law", "/departments/public-administration"].includes(path)) return [
     { id: "department-about", label: "Загальна інформація про кафедру" },

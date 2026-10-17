@@ -37,12 +37,13 @@ export default async function Page({ params }: Props) {
   const pageTitle = pageTitleFor(entry.pagePath);
   const date = departmentPublicationDate(entry)?.label || "";
   const isMarketingClubNews = entry.pagePath === "/programs/marketing" && entry.sectionId === "science-club";
+  const isMarketingRepositoryNews = entry.pagePath === "/programs/marketing" && entry.sectionId === "marketing-repository";
   const studentSection = entry.pagePath === "/programs/marketing" ? marketingStudentSections.find((section) => section.id === entry.sectionId) : undefined;
-  const returnSection = isMarketingClubNews ? "science-club" : studentSection?.id || "department-news";
-  const returnLabel = isMarketingClubNews ? "← До наукового гуртка" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
+  const returnSection = isMarketingClubNews ? "science-club" : isMarketingRepositoryNews ? "marketing-repository" : studentSection?.id || "department-news";
+  const returnLabel = isMarketingClubNews ? "← До наукового гуртка" : isMarketingRepositoryNews ? "← До репозитарію" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
 
   return <main id="top">
-    <SiteHeader englishHref={isMarketingClubNews || studentSection ? "/en/news" : undefined} />
+    <SiteHeader englishHref={isMarketingClubNews || isMarketingRepositoryNews || studentSection ? "/en/news" : undefined} />
     <section className="detail-hero">
       <div className="wrap"><div className="detail-kicker mono">{pageTitle}{date ? ` · ${date}` : ""}</div><h1>{entry.title}</h1>{entry.summary && <p className="detail-deck">{entry.summary}</p>}</div>
     </section>
