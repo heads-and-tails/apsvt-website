@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
+import { historicalAccreditationScans, type AccreditationScan as Certificate } from "@/lib/accreditation-archive";
 
 export const metadata: Metadata = {
   title: "Ліцензії та акредитація",
@@ -11,14 +12,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
-
-type Certificate = {
-  title: string;
-  level: string;
-  number: string;
-  publishedTerm: string;
-  image: string;
-};
 
 type CurrentCertificate = {
   title: string;
@@ -225,11 +218,13 @@ const archiveCertificates: Certificate[] = [
   },
 ];
 
+const archivedScans = [...archiveCertificates, ...historicalAccreditationScans];
+
 function CertificateCard({ certificate, index }: { certificate: Certificate; index: number }) {
   return (
     <a className="license-certificate-card" href={certificate.image} target="_blank" rel="noreferrer">
       <div className="license-certificate-image">
-        <img src={certificate.image} alt={`Скан: ${certificate.title}, ${certificate.level}`} />
+        <img src={certificate.image} alt={`Скан: ${certificate.title}, ${certificate.level}`} style={certificate.previewRotation ? { transform: "rotate(180deg)" } : undefined} />
       </div>
       <div className="license-certificate-copy">
         <span>{String(index + 1).padStart(2, "0")} / {certificate.level}</span>
@@ -279,7 +274,7 @@ const licenseSections: readonly SectionHubItem[] = [
 export default function LicensesPage() {
   return (
     <main id="top">
-      <SiteHeader />
+      <SiteHeader englishHref="/en/materials" />
 
       <section className="license-hero">
         <div className="wrap license-hero-grid">
@@ -291,8 +286,8 @@ export default function LicensesPage() {
           </div>
           <aside className="license-hero-card">
             <span>Документи у розділі</span>
-            <b>30</b>
-            <p>1 ліцензійний документ<br />22 сертифікати та архівні скани<br />7 матеріалів акредитаційних експертиз</p>
+            <b>{1 + currentCertificates.length + programmeCertificates.length + archivedScans.length + expertDocuments.length}</b>
+            <p>1 ліцензійний документ<br />Сертифікати та архівні скани: {currentCertificates.length + programmeCertificates.length + archivedScans.length}<br />{expertDocuments.length} матеріалів акредитаційних експертиз</p>
             <a href="#license-document">Перейти до ліцензії ↓</a>
           </aside>
         </div>
@@ -381,8 +376,8 @@ export default function LicensesPage() {
             </summary>
             <p className="license-archive-note">Архів збережено для прозорості та історії акредитації. Він не підтверджує чинний статус програми на сьогодні.</p>
             <div className="license-certificate-grid archive">
-              {archiveCertificates.map((certificate, index) => (
-                <CertificateCard certificate={certificate} index={index + programmeCertificates.length} key={`${certificate.title}-${certificate.level}`} />
+              {archivedScans.map((certificate, index) => (
+                <CertificateCard certificate={certificate} index={index + programmeCertificates.length} key={certificate.image} />
               ))}
             </div>
           </details>
