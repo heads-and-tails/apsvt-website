@@ -617,6 +617,16 @@ section{padding-block:clamp(72px,8vw,112px)}
 @media(max-width:620px){.schedule-directory-nav a{min-height:82px;padding:17px}.schedule-collection{margin-inline:-18px}.schedule-collection>header{grid-template-columns:42px minmax(0,1fr)}.schedule-collection>header>span{width:38px;height:38px}.schedule-study-forms summary,.schedule-semesters summary{padding:17px 15px;gap:10px}.schedule-study-forms summary b{display:none}.schedule-course-grid{grid-template-columns:1fr}.schedule-publish-note{margin-inline:-18px;padding:23px}}
 
 .marketing-student-life{background:#eeece5;scroll-margin-top:88px}
+.marketing-student-life .marketing-student-intro h2{max-width:18ch}
+@media(max-width:650px){.marketing-student-life .marketing-student-intro h2{font-size:clamp(28px,8.2vw,38px)}}
+.marketing-student-subnav{display:grid;gap:0;border-top:1px solid var(--line)}
+.marketing-student-subnav>a{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 0;border-bottom:1px solid var(--line);font-size:clamp(18px,2vw,26px);line-height:1.4}
+.marketing-student-subnav>a>span{color:var(--cobalt);font-size:28px}
+.marketing-student-subnav>a:focus-visible{outline:3px solid var(--cobalt);outline-offset:4px}
+.marketing-student-subsection{margin-top:48px;padding-top:32px;border-top:1px solid var(--line);scroll-margin-top:110px}
+.marketing-student-subsection>h3{max-width:34ch;margin:0 0 28px;font-size:clamp(28px,3.4vw,46px);line-height:1.15}
+.marketing-student-roster-title{max-width:36ch;margin:36px 0 0;font-size:clamp(22px,2.4vw,32px);line-height:1.2}
+.marketing-student-subsection>.department-public-content{margin-top:32px}
 .marketing-student-life-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink);margin-top:42px}
 .marketing-student-life-grid article{display:flex;min-height:330px;flex-direction:column;padding:clamp(24px,3vw,38px);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);background:#f8f6ef}
 .marketing-student-life-grid article:first-child{background:var(--gold)}

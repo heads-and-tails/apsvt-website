@@ -22,6 +22,7 @@ import { AcademicNews } from "@/app/components/AcademicNews";
 import { MarketingTeam } from "./MarketingTeam";
 import { MarketingCareers, MarketingDepartmentAbout } from "./MarketingDepartmentContent";
 import { MarketingStudentLife } from "./MarketingStudentLife";
+import { marketingStudentSections } from "@/lib/marketing-student-sections";
 import { MarketingScienceClub } from "./MarketingScienceClub";
 import { MarketingEducationPrograms } from "./MarketingEducationPrograms";
 import { MarketingQuality } from "./MarketingQuality";
@@ -55,7 +56,7 @@ const marketingSections: readonly SectionHubItem[] = [
   { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг якості освіти та обговорення змін до ОПП за рівнями.", icon: "✓", aliases: ["marketing-quality-discussion", "marketing-stakeholder-call"] },
   { id: "science", index: "05", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI", aliases: ["science-club"] },
   { id: "programme-documents", index: "06", title: "Навчально-методичне забезпечення", description: "Офіційні програми, плани, дисципліни й матеріали кафедри.", icon: "PDF" },
-  { id: "marketing-student-life", index: "07", title: "Студентське життя та самоврядування", description: "Гурток MARKETHINK, студентські ініціативи й участь у житті Академії.", icon: "M" },
+  { id: "marketing-student-life", index: "07", title: "Студентське життя та самоврядування", description: "Гурток MARKETHINK, студентські ініціативи й участь у житті Академії.", icon: "M", aliases: marketingStudentSections.map((section) => section.id) },
   { id: "careers", index: "08", title: "Кар’єра і працевлаштування", description: "Професійні ролі, практика, роботодавці та кар’єрні можливості.", icon: "GO", aliases: ["practice"] },
   { id: "department-news", index: "09", title: "Новини", description: "Події, публікації та оголошення кафедри маркетингу.", icon: "NEWS" },
 ];
@@ -137,9 +138,9 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       {program.materials.map((material, index) => <a href={material.href} target={material.href.endsWith(".pdf") ? "_blank" : undefined} rel={material.href.endsWith(".pdf") ? "noreferrer" : undefined} key={material.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{material.href.endsWith(".pdf") ? "PDF · офіційний документ" : "Матеріали кафедри"}</small><h3>{material.label}</h3></div><b>{material.href.endsWith(".pdf") ? "↗" : "→"}</b></a>)}
       <Link href="/research/journals#marketing-publications"><span>{String(program.materials.length + 1).padStart(2, "0")}</span><div><small>Повні тексти</small><h3>Монографії та навчальний посібник кафедри</h3></div><b>→</b></Link>
     </div><MarketingMethodicalFolders /></div></section>,
-    <MarketingStudentLife key="marketing-student-life" />,
+    <MarketingStudentLife entries={departmentEntries} key="marketing-student-life" />,
     <MarketingCareers key="marketing-careers" />,
-    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club"].includes(entry.sectionId))} /></div>,
+    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
   ] : null;
   const financeSectionContent = slug === "finance" ? [
     <div id="overview" key="finance-programmes">
