@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
-import { historicalAccreditationScans, type AccreditationScan as Certificate } from "@/lib/accreditation-archive";
+import { historicalAccreditationScans, historicalProgrammeScans, historicalLicenseScans, type AccreditationScan as Certificate } from "@/lib/accreditation-archive";
 
 export const metadata: Metadata = {
   title: "Ліцензії та акредитація",
@@ -218,7 +218,7 @@ const archiveCertificates: Certificate[] = [
   },
 ];
 
-const archivedScans = [...archiveCertificates, ...historicalAccreditationScans];
+const archivedScans = [...archiveCertificates, ...historicalAccreditationScans, ...historicalProgrammeScans];
 
 function CertificateCard({ certificate, index }: { certificate: Certificate; index: number }) {
   return (
@@ -286,8 +286,8 @@ export default function LicensesPage() {
           </div>
           <aside className="license-hero-card">
             <span>Документи у розділі</span>
-            <b>{1 + currentCertificates.length + programmeCertificates.length + archivedScans.length + expertDocuments.length}</b>
-            <p>1 ліцензійний документ<br />Сертифікати та архівні скани: {currentCertificates.length + programmeCertificates.length + archivedScans.length}<br />{expertDocuments.length} матеріалів акредитаційних експертиз</p>
+            <b>{1 + currentCertificates.length + programmeCertificates.length + archivedScans.length + historicalLicenseScans.length + expertDocuments.length}</b>
+            <p>1 ліцензійний документ<br />Сертифікати та архівні скани: {currentCertificates.length + programmeCertificates.length + archivedScans.length}<br />Аркуші історичної ліцензії: {historicalLicenseScans.length}<br />{expertDocuments.length} матеріалів акредитаційних експертиз</p>
             <a href="#license-document">Перейти до ліцензії ↓</a>
           </aside>
         </div>
@@ -380,6 +380,17 @@ export default function LicensesPage() {
                 <CertificateCard certificate={certificate} index={index + programmeCertificates.length} key={certificate.image} />
               ))}
             </div>
+            <section aria-labelledby="historical-license-heading">
+              <div className="license-section-head">
+                <div><h2 id="historical-license-heading">Ліцензія 2014 року та додатки</h2></div>
+                <p>Ліцензія АЕ № 527684 від 15.12.2014: основний аркуш, три аркуші додатка та чотири зворотні боки.</p>
+              </div>
+              <div className="license-certificate-grid archive">
+                {historicalLicenseScans.map((scan, index) => (
+                  <CertificateCard certificate={scan} index={index} key={scan.image} />
+                ))}
+              </div>
+            </section>
           </details>
         </div>
       </section></div>

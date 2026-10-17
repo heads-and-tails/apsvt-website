@@ -633,6 +633,25 @@ test("archives the original 1990s scans and reuses the existing 2021 law certifi
   assert.match(html,/href="\/en\/materials"/);
 });
 
+test("publishes every unique historical certificate and all eight licence packet originals",async()=>{
+  const html=await(await render("/about/licenses")).text();
+  const sources=JSON.parse(await readFile(new URL("./fixtures/historical-accreditation-scans.json",import.meta.url),"utf8"));
+  assert.equal(sources.length,25);
+  assert.equal(new Set(sources.map(source=>source.sha256)).size,25);
+  for(const {file,sha256,metadata}of sources){
+    assert.equal(createHash("sha256").update(await readFile(new URL(`../public/documents/licenses/historical/${file}`,import.meta.url))).digest("hex"),sha256,file);
+    const cards=html.match(new RegExp(`<a\\b[^>]*href="/documents/licenses/historical/${file.replaceAll(".","\\.")}"[^>]*>[\\s\\S]*?</a>`,"g"))||[];
+    assert.equal(cards.length,1,file);
+    for(const text of metadata)assert.ok(cards[0].includes(text),`${file}: ${text}`);
+  }
+  const packet=html.match(/<section aria-labelledby="historical-license-heading">([\s\S]*?)<\/section>/)?.[1];
+  assert.ok(packet);
+  assert.equal((packet.match(/class="license-certificate-card"/g)||[]).length,8);
+  assert.ok(packet.includes("три аркуші додатка та чотири зворотні боки"));
+  assert.ok(packet.includes("Зворотний бік · печатка"));
+  assert.match(html,/Аркуші історичної ліцензії: <!-- -->8/);
+});
+
 test("publishes the official documents hub in the footer",async()=>{
   const [homeHtml,documentsHtml]=await Promise.all([
     (await render("/")).text(),
