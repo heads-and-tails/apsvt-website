@@ -810,6 +810,20 @@ test("enriches programme pages with departments, practice partners, people and l
   assert.match(marketing,/nadiia-pysarenko\.webp/);
 });
 
+test("keeps marketing news department-authored without removing Academy-wide articles",async()=>{
+  const marketing=await(await render("/programs/marketing")).text();
+  for(const slug of ["mental-health-conference-2026-results","natalia-goncharenko-pilc-seite-2026","marketing-research-international-conference-2026"]){
+    assert.ok(!marketing.includes(`href="/news/${slug}"`),slug);
+    assert.equal((await render(`/news/${slug}`)).status,200,slug);
+  }
+  assert.match(marketing,/id="department-news"/);
+  assert.doesNotMatch(marketing,/class="academic-news-section"/);
+  const finance=await(await render("/programs/finance")).text();
+  assert.match(finance,/class="academic-news-section"/);
+  const news=await render("/news");assert.equal(news.status,200);
+  assert.match(await news.text(),/mental-health-conference-2026-results/);
+});
+
 test("publishes the marketing students' 2025 and 2026 research achievements",async()=>{
   const marketing=await (await render("/programs/marketing")).text();
   assert.match(marketing,/id="marketing-student-achievements"/);

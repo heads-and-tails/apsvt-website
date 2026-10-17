@@ -136,7 +136,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     </div><MarketingMethodicalFolders /></div></section>,
     <MarketingStudentLife key="marketing-student-life" />,
     <MarketingCareers key="marketing-careers" />,
-    <div id="department-news" key="marketing-news"><AcademicNews slugs={[slug]} title="Новини кафедри маркетингу" /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType))} /></div>,
+    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType))} /></div>,
   ] : null;
   const financeSectionContent = slug === "finance" ? [
     <div id="overview" key="finance-programmes">
