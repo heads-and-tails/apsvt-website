@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
+import { createHash } from "node:crypto";
 
 let workerPromise;
 async function worker(){
@@ -612,6 +613,24 @@ test("publishes the Academy licence, accreditation scans and verification links"
     assert.equal(image[0],0xff,`${scan} should remain a JPEG`);
     assert.equal(image[1],0xd8,`${scan} should remain a JPEG`);
   }
+});
+
+test("archives the original 1990s scans and reuses the existing 2021 law certificate",async()=>{
+  const html=await(await render("/about/licenses")).text();
+  const sources=[
+    ["historical/1996-marketing-specialist-license-110111.jpg","cc2741568b09b2f895a35bafa6cd64c19b4ce9300485bd08f255f25b79dd4bbe"],
+    ["historical/1998-marketing-specialist-license-110111.jpg","d71f0ba92628f82e921c8a4e6b4c5ef4e135c45f0248ba87ca8c59cf9e0d53ae"],
+    ["historical/1999-marketing-specialist-accreditation-115002.jpg","6c38d0b9b759e42d6d7a0e0dda8281f3379de0a1e03afbc2fe3495063ef4e7de"],
+    ["16-bachelor-archive.jpg","e4deb3f24d91e6390c84d0304f51825dac3be1501231e4fe9a962536d9dd1394"],
+  ];
+  for(const[file,sha256]of sources){
+    assert.equal(createHash("sha256").update(await readFile(new URL(`../public/documents/licenses/${file}`,import.meta.url))).digest("hex"),sha256,file);
+    assert.equal((html.match(new RegExp(`<a\\b[^>]*href="/documents/licenses/${file.replaceAll(".","\\.")}"`,"g"))||[]).length,1,file);
+  }
+  for(const date of ["23.12.1996","01.07.1999","17.07.1998","31.12.1999","12.08.1999","01.07.2004"])assert.ok(html.includes(date),date);
+  assert.match(html,/rotate\(180deg\)/);
+  assert.match(html,/не підтверджує чинний статус програми/);
+  assert.match(html,/href="\/en\/materials"/);
 });
 
 test("publishes the official documents hub in the footer",async()=>{
