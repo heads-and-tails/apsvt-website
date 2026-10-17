@@ -870,6 +870,17 @@ test("keeps two separately addressable marketing student subsections with all or
   assert.doesNotMatch(await(await render("/programs/finance")).text(),/id="marketing-student-science"/);
 });
 
+test("publishes an independent marketing repository without demonstration materials",async()=>{
+  const html=await(await render("/programs/marketing")).text();
+  assert.match(html,/id="marketing-repository" aria-labelledby="marketing-repository-title"/);
+  assert.match(html,/id="marketing-repository-title">РЕПОЗИТАРІЙ/);
+  const repository=html.slice(html.indexOf('<section class="marketing-repository"'),html.indexOf('</section>',html.indexOf('<section class="marketing-repository"')));
+  assert.doesNotMatch(repository,/Демонстраційний|documents\/examples|thesis-marketing-demo|placeholder/);
+  assert.match(html,/id="marketing-student-experience"/);
+  assert.match(html,/id="marketing-student-science"/);
+  assert.doesNotMatch(await(await render("/programs/finance")).text(),/id="marketing-repository"/);
+});
+
 test("separates marketing bachelor and master materials and publishes stakeholder documents",async()=>{
   const marketing=await (await render("/programs/marketing#curriculum")).text();
   assert.match(marketing,/Оберіть рівень освіти/);

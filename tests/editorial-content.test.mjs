@@ -229,6 +229,11 @@ test("makes both marketing student subsections selectable before any entries exi
   ]);
 });
 
+test("offers a separate empty marketing repository without changing unrelated page destinations", () => {
+  assert.deepEqual(sections.editorialSectionsForPage("/programs/marketing").find((section) => section.id === "marketing-repository"), { id: "marketing-repository", label: "Репозитарій" });
+  assert.equal(sections.editorialSectionsForPage("/programs/finance").some((section) => section.id === "marketing-repository"), false);
+});
+
 test("offers the programme team in the editor for all five A5 programmes without changing department sections", () => {
   assert.equal(professional.professionalEducationProgrammes.length, 5);
   for (const programme of professional.professionalEducationProgrammes) {
