@@ -824,6 +824,19 @@ test("keeps marketing news department-authored without removing Academy-wide art
   assert.match(await news.text(),/mental-health-conference-2026-results/);
 });
 
+test("keeps a directly addressable marketing scientific club without its retired April article",async()=>{
+  const response=await render("/programs/marketing");assert.equal(response.status,200);
+  const html=await response.text();
+  assert.match(html,/href="#science-club"/);
+  assert.match(html,/id="science-club" aria-labelledby="marketing-science-club-title"/);
+  assert.match(html,/id="marketing-science-club-title">Науковий гурток/);
+  assert.doesNotMatch(html,/href="\/materials\/3331-0b35c55db\.html"/);
+  assert.match(html,/marketing-science-club-link/);
+  for(const href of ["/research/conferences#marketing-proceedings","/research/journals#marketing-publications","/documents/marketing/student-achievements/2026.pdf","/documents/marketing/student-achievements/2025.pdf"])assert.ok(html.includes(`href="${href}"`),href);
+  assert.match(html,/Міжнародна та експертна діяльність НПП кафедри/);
+  assert.doesNotMatch(await(await render("/programs/finance")).text(),/id="science-club"/);
+});
+
 test("publishes the marketing students' 2025 and 2026 research achievements",async()=>{
   const marketing=await (await render("/programs/marketing")).text();
   assert.match(marketing,/id="marketing-student-achievements"/);

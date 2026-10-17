@@ -353,6 +353,15 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .marketing-science-clean-grid h3{max-width:15ch;margin:15px 0;font-size:clamp(28px,3.5vw,48px);line-height:.95;text-wrap:balance}
 .marketing-science-clean-grid p{max-width:44ch;color:#5f6876;line-height:1.6}
 .marketing-science-clean-grid b{position:absolute;right:28px;bottom:24px;color:var(--cobalt);font:34px var(--mono)}
+.marketing-science-clean-grid>a.marketing-science-club-link{min-height:380px;background:var(--cobalt);color:#fff;border-bottom:6px solid var(--gold)}
+.marketing-science-club-link h3{font-size:clamp(36px,5vw,68px);max-width:18ch}
+.marketing-science-clean-grid .marketing-science-club-link span,.marketing-science-clean-grid .marketing-science-club-link small{color:#fff}
+.marketing-science-clean-grid .marketing-science-club-link b{color:var(--gold)}
+.marketing-science-club{margin-top:48px;padding-top:36px;border-top:1px solid #69748a;scroll-margin-top:110px}
+.marketing-science-club>h3{margin:0 0 28px;color:#fff;font-size:clamp(28px,3.5vw,44px);line-height:1.1}
+.marketing-science-clean .department-news-grid>article{color:var(--ink)}
+.marketing-science-clean .department-article-list summary p,.marketing-science-clean .department-material-list p{color:#c8d2e4}
+.marketing-science-clean .department-material-list>a>span,.marketing-science-clean .editorial-richtext a,.marketing-science-clean .department-authored-files a{color:var(--gold)}
 .marketing-student-achievements{margin-top:clamp(34px,5vw,56px)}
 .marketing-achievement-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;padding:1px;background:rgba(10,20,38,.35)}
 .marketing-achievement-list>a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 24px;align-items:start;min-height:188px;padding:28px 30px;background:#f7f5ef;color:var(--ink)}
