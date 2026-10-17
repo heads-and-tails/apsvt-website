@@ -20,6 +20,13 @@ const programmeCopy: Record<string, ProgramCopy> = {
 export const englishPrograms: Program[] = programs.map((program)=>({...program,...programmeCopy[program.slug],materials:[]}));
 
 const postCopy: Record<string, Pick<Post,"title"|"excerpt"|"body"|"category"|"imageAlt">> = {
+  "volodymyr-lipkan-stratehichna-subiektnist-ukrainy-2026": {
+    title: "Volodymyr Lipkan on Ukraine’s role in global security",
+    excerpt: "Volodymyr Lipkan, a professor in the Department of Criminal Law, Procedure and Criminalistics, has published an opinion column on Ukraine’s strategic agency.",
+    body: "Volodymyr Lipkan, Doctor of Law and professor in the Academy’s Faculty of Law, has published an opinion column on how Ukraine’s potential was assessed before Russia’s full-scale invasion and on Ukraine’s place in the global security architecture.\n\nThe Academy invites students, researchers, legal professionals and other programme stakeholders to read the column and join a critical discussion of its arguments.\n\n[Read the column on 24 Channel](https://24tv.ua/chomu-zahodi-ne-otsinili-realniy-potentsial-ukrayini-naperedodni_n3155553)\n\n[View the Academy’s Facebook post](https://www.facebook.com/groups/apsvt/permalink/4524404904497978/)",
+    category: "Research",
+    imageAlt: "Volodymyr Lipkan, professor of criminal law, procedure and criminalistics",
+  },
   "zbory-kolektyvu-fakultetu-psykholohii-19-zhovtnia-2026": {
     title: "Staff meeting of the Faculty of Psychology and Social Development",
     excerpt: "The faculty staff meeting will take place on 19 October 2026 at 18:00.",

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { aiTrainingNewsSlug, erasmusDaysNewsSlug, getPostBySlug, getPosts, guestLectureHubertNewsSlug, internationalAiTrainingNewsSlug, internationalAiTrainingTitle, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug } from "@/lib/data";
+import { aiTrainingNewsSlug, erasmusDaysNewsSlug, getPostBySlug, getPosts, guestLectureHubertNewsSlug, internationalAiTrainingNewsSlug, internationalAiTrainingTitle, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug, volodymyrLipkanArticleNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
 import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
@@ -70,7 +70,7 @@ export default async function Page({ params }: Props) {
   return <main id="top">
     <SiteHeader />
     <section className="detail-hero image">
-      <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} /></div>
+      <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} style={post.slug === volodymyrLipkanArticleNewsSlug ? { objectPosition: "center 12%" } : undefined} /></div>
       <div className="wrap"><div className="detail-kicker mono">{post.category}{post.hideDate ? "" : ` · ${date}`}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div>
     </section>
     <div className="phero-rule" />
