@@ -8,6 +8,7 @@ import { getPublishedDepartmentEntryById } from "@/lib/department-content";
 import { DepartmentImages, DepartmentAttachments } from "@/app/components/DepartmentMedia";
 import { departmentPublicationDate } from "@/lib/department-news-date";
 import { editorialAccessOptions } from "@/lib/editorial-access";
+import { marketingStudentSections } from "@/lib/marketing-student-sections";
 
 export const dynamic = "force-dynamic";
 
@@ -36,9 +37,12 @@ export default async function Page({ params }: Props) {
   const pageTitle = pageTitleFor(entry.pagePath);
   const date = departmentPublicationDate(entry)?.label || "";
   const isMarketingClubNews = entry.pagePath === "/programs/marketing" && entry.sectionId === "science-club";
+  const studentSection = entry.pagePath === "/programs/marketing" ? marketingStudentSections.find((section) => section.id === entry.sectionId) : undefined;
+  const returnSection = isMarketingClubNews ? "science-club" : studentSection?.id || "department-news";
+  const returnLabel = isMarketingClubNews ? "← До наукового гуртка" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
 
   return <main id="top">
-    <SiteHeader englishHref={isMarketingClubNews ? "/en/news" : undefined} />
+    <SiteHeader englishHref={isMarketingClubNews || studentSection ? "/en/news" : undefined} />
     <section className="detail-hero">
       <div className="wrap"><div className="detail-kicker mono">{pageTitle}{date ? ` · ${date}` : ""}</div><h1>{entry.title}</h1>{entry.summary && <p className="detail-deck">{entry.summary}</p>}</div>
     </section>
@@ -49,7 +53,7 @@ export default async function Page({ params }: Props) {
         <DepartmentImages entry={entry} />
         <EditorialRichText text={entry.body} />
         <DepartmentAttachments entry={entry} />
-        <Link className="back-link" href={`${entry.pagePath}#${isMarketingClubNews ? "science-club" : "department-news"}`}>{isMarketingClubNews ? "← До наукового гуртка" : "← До новин підрозділу"}</Link>
+        <Link className="back-link" href={`${entry.pagePath}#${returnSection}`}>{returnLabel}</Link>
       </article>
       <aside className="detail-aside"><div className="demo-note mono">Про матеріал</div><ul className="detail-facts"><li><b>Підрозділ</b>{pageTitle}</li>{date && <li><b>Опубліковано</b>{date}</li>}</ul></aside>
     </div></section>

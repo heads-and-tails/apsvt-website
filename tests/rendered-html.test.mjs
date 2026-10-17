@@ -856,6 +856,20 @@ test("publishes the marketing students' 2025 and 2026 research achievements",asy
   }
 });
 
+test("keeps two separately addressable marketing student subsections with all original profiles",async()=>{
+  const html=await(await render("/programs/marketing")).text();
+  for(const [id,title] of [["marketing-student-experience","Студентське життя: навчання, можливості, досягнення"],["marketing-student-science","Студентська наука: конференції, дослідження, досягнення"]]){
+    assert.ok(html.includes(`href="#${id}"`));
+    assert.ok(html.includes(`id="${id}" aria-labelledby="${id}-title"`));
+    assert.ok(html.includes(`id="${id}-title">${title}`));
+  }
+  const content=JSON.parse(await readFile(new URL("../lib/marketing-verbatim.json",import.meta.url),"utf8"));
+  const studentHtml=html.slice(html.indexOf('id="marketing-student-experience"'),html.indexOf('id="marketing-student-science"'));
+  assert.equal((studentHtml.match(/class="marketing-verbatim-card"/g)||[]).length,content.students.length);
+  for(const person of content.students){assert.ok(html.includes(person.name));assert.ok(html.includes(`src="${person.image}"`));}
+  assert.doesNotMatch(await(await render("/programs/finance")).text(),/id="marketing-student-science"/);
+});
+
 test("separates marketing bachelor and master materials and publishes stakeholder documents",async()=>{
   const marketing=await (await render("/programs/marketing#curriculum")).text();
   assert.match(marketing,/Оберіть рівень освіти/);

@@ -1,5 +1,6 @@
 import { lawFacultyPath, lawFacultyStructure, lawFacultySubpages } from "./law-faculty-structure";
 import { digitalDepartmentPath, digitalDepartmentSections, professionalEducationProgrammes, professionalEducationSections } from "./professional-education";
+import { marketingStudentSections } from "./marketing-student-sections";
 
 export const financeProjectSections = [
   { id: "greenfinedu", label: "Jean Monnet GreenFinEDU" },
@@ -18,6 +19,7 @@ export function editorialSectionsForPage(path: string): { id: string; label: str
     { id: "science-club", label: "Науковий гурток" },
     { id: "programme-documents", label: "Навчально-методичне забезпечення" },
     { id: "marketing-student-life", label: "Студентське життя та самоврядування" },
+    ...marketingStudentSections.map(({ id, title }) => ({ id, label: title })),
     { id: "careers", label: "Кар’єра і працевлаштування" },
     { id: "department-news", label: "Новини" },
   ];

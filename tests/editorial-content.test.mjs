@@ -218,7 +218,16 @@ const lawStructureUrl = await moduleUrl("../lib/law-faculty-structure.ts");
 const programmeDocumentsUrl = await moduleUrl("../lib/programme-documents.ts");
 const professionalUrl = await moduleUrl("../lib/professional-education.ts", { "./programme-documents": programmeDocumentsUrl });
 const professional = await import(professionalUrl);
-const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl }));
+const studentSectionsUrl = await moduleUrl("../lib/marketing-student-sections.ts");
+const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl }));
+
+test("makes both marketing student subsections selectable before any entries exist", () => {
+  const registered = sections.editorialSectionsForPage("/programs/marketing");
+  assert.deepEqual(registered.filter((section) => ["marketing-student-experience", "marketing-student-science"].includes(section.id)), [
+    { id: "marketing-student-experience", label: "Студентське життя: навчання, можливості, досягнення" },
+    { id: "marketing-student-science", label: "Студентська наука: конференції, дослідження, досягнення" },
+  ]);
+});
 
 test("offers the programme team in the editor for all five A5 programmes without changing department sections", () => {
   assert.equal(professional.professionalEducationProgrammes.length, 5);
