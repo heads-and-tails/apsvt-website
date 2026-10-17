@@ -35,6 +35,22 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
+test("publishes the sourced Volodymyr Lipkan column in Academy news",async()=>{
+  const slug="volodymyr-lipkan-stratehichna-subiektnist-ukrainy-2026";
+  const response=await render(`/news/${slug}`);
+  assert.equal(response.status,200);
+  const html=await response.text();
+  assert.match(html,/Володимир Ліпкан про роль України у світовій безпековій архітектурі/);
+  assert.match(html,/people\/law\/criminal\/volodymyr-lipkan\.jpg/);
+  assert.match(html,/https:\/\/24tv\.ua\/chomu-zahodi-ne-otsinili-realniy-potentsial-ukrayini-naperedodni_n3155553/);
+  assert.match(html,/https:\/\/www\.facebook\.com\/groups\/apsvt\/permalink\/4524404904497978/);
+  const news=await(await render("/news")).text();
+  assert.ok(news.includes(`/news/${slug}`));
+  const english=await render(`/en/news/${slug}`);
+  assert.equal(english.status,200);
+  assert.match(await english.text(),/Volodymyr Lipkan on Ukraine/);
+});
+
 test("returns 404 for missing staff profiles in both languages without replacing the people index",async()=>{
   for(const path of ["/people/missing-staff-profile","/en/people/missing-staff-profile"]){
     const response=await render(path);

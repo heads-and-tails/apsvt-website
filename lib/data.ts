@@ -43,6 +43,7 @@ export const mentalHealthConferenceResultsNewsSlug = "mental-health-conference-2
 export const marketingDiscussionMarchNewsSlug = "obhovorennia-opp-marketynh-12-bereznia-2026";
 export const marketingDiscussionMayNewsSlug = "obhovorennia-opp-marketynh-17-travnia-2026";
 export const psychologyCollectiveMeetingNewsSlug = "zbory-kolektyvu-fakultetu-psykholohii-19-zhovtnia-2026";
+export const volodymyrLipkanArticleNewsSlug = "volodymyr-lipkan-stratehichna-subiektnist-ukrainy-2026";
 
 const hiddenDateMarker = "<!-- APSVT_HIDE_DATE -->";
 
@@ -57,6 +58,22 @@ function encodePostBody(post: Pick<Post, "body" | "hideDate">): string {
 }
 
 export const seedPosts: Post[] = [
+  {
+    id: "seed-volodymyr-lipkan-article-2026-10-17",
+    slug: volodymyrLipkanArticleNewsSlug,
+    title: "Володимир Ліпкан про роль України у світовій безпековій архітектурі",
+    excerpt: "Професор кафедри кримінального права, процесу та криміналістики Володимир Ліпкан опублікував авторську колонку про стратегічну суб’єктність України.",
+    body: "Доктор юридичних наук, професор кафедри кримінального права, процесу та криміналістики юридичного факультету Академії Володимир Ліпкан опублікував авторську колонку про оцінку потенціалу України напередодні повномасштабної війни та її місце у світовій безпековій архітектурі.\n\nЗапрошуємо студентів, науковців, правників та інших стейкхолдерів освітніх програм Академії ознайомитися з публікацією і долучитися до фахового обговорення порушених у ній питань.\n\n[Прочитати авторську колонку на 24 Каналі](https://24tv.ua/chomu-zahodi-ne-otsinili-realniy-potentsial-ukrayini-naperedodni_n3155553)\n\n[Переглянути допис Академії у Facebook](https://www.facebook.com/groups/apsvt/permalink/4524404904497978/)",
+    category: "Наука",
+    imageUrl: "/people/law/criminal/volodymyr-lipkan.jpg",
+    imageAlt: "Володимир Ліпкан, професор кафедри кримінального права, процесу та криміналістики",
+    status: "published",
+    featured: true,
+    publishedAt: "2026-10-17T10:25:00.000Z",
+    createdAt: "2026-10-17T10:25:00.000Z",
+    updatedAt: "2026-10-17T10:25:00.000Z",
+    authorEmail: "yaroslav-z@ukr.net",
+  },
   {
     id: "seed-psychology-collective-meeting-2026-10-19",
     slug: psychologyCollectiveMeetingNewsSlug,
@@ -577,7 +594,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug || post.slug === marketingDiscussionMarchNewsSlug || post.slug === marketingDiscussionMayNewsSlug || post.slug === aiTrainingNewsSlug || post.slug === psychologyCollectiveMeetingNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug || post.slug === marketingDiscussionMarchNewsSlug || post.slug === marketingDiscussionMayNewsSlug || post.slug === aiTrainingNewsSlug || post.slug === psychologyCollectiveMeetingNewsSlug || post.slug === volodymyrLipkanArticleNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
