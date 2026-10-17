@@ -664,7 +664,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       if (purpose === "image") {
         setForm((current) => ({ ...current, imageUrl: result.url, imageAlt: current.imageAlt || current.title || file.name.replace(/[-_]/g, " ") }));
       } else {
-        setForm((current) => ({ ...current, fileUrl: result.url, fileName: result.fileName || file.name, title: current.title || file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ") }));
+        setForm((current) => ({ ...current, fileUrl: new URL(result.url, window.location.origin).href, fileName: result.fileName || file.name, title: current.title || file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ") }));
       }
       setMessage("Файл готовий. Тепер збережіть запис.");
     } catch (error) {

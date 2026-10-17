@@ -22,6 +22,7 @@ import { AcademicNews } from "@/app/components/AcademicNews";
 import { MarketingTeam } from "./MarketingTeam";
 import { MarketingCareers, MarketingDepartmentAbout } from "./MarketingDepartmentContent";
 import { MarketingStudentLife } from "./MarketingStudentLife";
+import { MarketingScienceClub } from "./MarketingScienceClub";
 import { MarketingEducationPrograms } from "./MarketingEducationPrograms";
 import { MarketingQuality } from "./MarketingQuality";
 import { MarketingMethodicalFolders } from "./MarketingMethodicalFolders";
@@ -52,7 +53,7 @@ const marketingSections: readonly SectionHubItem[] = [
   { id: "department-team", index: "02", title: "Науково-педагогічний склад", description: "Викладачі, освіта, наукові інтереси та професійні профілі.", icon: "NPP" },
   { id: "curriculum", index: "03", title: "Освітні програми", description: "Рівні освіти, навчальні плани, обов’язкові й вибіркові компоненти.", icon: "OP", aliases: ["overview", "education-levels", "electives", "course-annotations"] },
   { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг якості освіти та обговорення змін до ОПП за рівнями.", icon: "✓", aliases: ["marketing-quality-discussion", "marketing-stakeholder-call"] },
-  { id: "science", index: "05", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI" },
+  { id: "science", index: "05", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI", aliases: ["science-club"] },
   { id: "programme-documents", index: "06", title: "Навчально-методичне забезпечення", description: "Офіційні програми, плани, дисципліни й матеріали кафедри.", icon: "PDF" },
   { id: "marketing-student-life", index: "07", title: "Студентське життя та самоврядування", description: "Гурток MARKETHINK, студентські ініціативи й участь у житті Академії.", icon: "M" },
   { id: "careers", index: "08", title: "Кар’єра і працевлаштування", description: "Професійні ролі, практика, роботодавці та кар’єрні можливості.", icon: "GO", aliases: ["practice"] },
@@ -101,12 +102,14 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <MarketingTeam entries={departmentEntries.filter((entry) => entry.entryType === "teacher")} key="marketing-team" />,
     <MarketingEducationPrograms key="marketing-programmes" />,
     <MarketingQuality key="marketing-quality" />,
-    <section className="marketing-science-clean" id="science" key="marketing-science"><div className="wrap"><div className="sec-head"><div><div className="idx">05 / Наукова діяльність</div><h2>Наукова діяльність кафедри</h2></div><p>У розділі залишено лише матеріали, підтверджені кафедрою.</p></div><div className="marketing-science-clean-grid">
+    <section className="marketing-science-clean" id="science" key="marketing-science"><div className="wrap"><div className="sec-head"><div><div className="idx">05 / Наукова діяльність</div><h2>Наукова діяльність кафедри</h2></div></div><div className="marketing-science-clean-grid">
       <Link href="/research/conferences#marketing-proceedings"><span>01</span><small>Конференції</small><h3>Збірники матеріалів конференцій</h3><p>Повні PDF за 2024, 2025 та 2026 роки.</p><b>→</b></Link>
       <Link href="/research/journals#marketing-publications"><span>02</span><small>Наукові видання</small><h3>Монографії кафедри</h3><p>Дві колективні монографії, підготовлені викладачами кафедри.</p><b>→</b></Link>
       <Link href="/research/journals#marketing-publications"><span>03</span><small>Навчальне видання</small><h3>Соціально відповідальний маркетинг</h3><p>Навчальний посібник кафедри.</p><b>→</b></Link>
-      <Link href="/materials/3331-0b35c55db.html"><span>04</span><small>Науковий гурток</small><h3>MARKETHINK</h3><p>Матеріали гуртка та участі студентів у конференціях.</p><b>→</b></Link>
+      <a className="marketing-science-club-link" href="#science-club"><span>04</span><small>MARKETHINK</small><h3>Науковий гурток</h3><b aria-hidden="true">↓</b></a>
     </div>
+    <MarketingScienceClub entries={departmentEntries} />
+    <DepartmentEditorialContent entries={departmentEntries.filter((entry) => entry.sectionId === "science" && !["override", "hero", "teacher", "partner"].includes(entry.entryType))} inline />
     <details className="marketing-project-folder marketing-student-achievements" id="marketing-student-achievements">
       <summary><span><small>Матеріали здобувачів</small><strong>Наукові здобутки здобувачів</strong></span><b aria-hidden="true">+</b></summary>
       <div className="marketing-achievement-list">
@@ -136,7 +139,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     </div><MarketingMethodicalFolders /></div></section>,
     <MarketingStudentLife key="marketing-student-life" />,
     <MarketingCareers key="marketing-careers" />,
-    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType))} /></div>,
+    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club"].includes(entry.sectionId))} /></div>,
   ] : null;
   const financeSectionContent = slug === "finance" ? [
     <div id="overview" key="finance-programmes">

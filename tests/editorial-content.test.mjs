@@ -22,6 +22,18 @@ const profiles = await import(await moduleUrl("../lib/academic-profile.ts"));
 const administrationMaterials = await import(await moduleUrl("../lib/public-administration-materials.ts"));
 const discussionArchive = await import(await moduleUrl("../lib/public-administration-announcements.ts"));
 
+test("scientific club renders only published visible club materials and keeps its empty heading", async () => {
+  const rendererUrl = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))}; export function DepartmentEditorialContent({entries}){return entries.map(entry=>createElement("article",{key:entry.id},entry.title))}`).toString("base64")}`;
+  const { MarketingScienceClub } = await import(await moduleUrl("../app/programs/[slug]/MarketingScienceClub.tsx", { "@/app/components/DepartmentEditorialContent": rendererUrl }));
+  const entry = { id: "published", sectionId: "science-club", status: "published", entryType: "news", title: "Published club news" };
+  const html = renderToStaticMarkup(createElement(MarketingScienceClub, { entries: [entry, { ...entry, id: "draft", status: "draft", title: "Draft" }, { ...entry, id: "hidden", hidden: true, title: "Hidden" }, { ...entry, id: "other", sectionId: "department-news", title: "Other section" }, { ...entry, id: "teacher", entryType: "teacher", title: "Teacher profile" }] }));
+  assert.match(html, /Published club news/);
+  assert.doesNotMatch(html, /Draft|Hidden|Other section|Teacher profile/);
+  const empty = renderToStaticMarkup(createElement(MarketingScienceClub, { entries: [] }));
+  assert.match(empty, /Науковий гурток/);
+  assert.doesNotMatch(empty, /<article|placeholder|перевірк/i);
+});
+
 test("preserves the six historical discussion texts, dates and source photographs in the archive", async () => {
   const articles = discussionArchive.publicAdministrationAnnouncements;
   assert.equal(articles.length, 6);
