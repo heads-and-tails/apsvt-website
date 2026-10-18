@@ -219,7 +219,15 @@ const programmeDocumentsUrl = await moduleUrl("../lib/programme-documents.ts");
 const professionalUrl = await moduleUrl("../lib/professional-education.ts", { "./programme-documents": programmeDocumentsUrl });
 const professional = await import(professionalUrl);
 const studentSectionsUrl = await moduleUrl("../lib/marketing-student-sections.ts");
-const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl }));
+const methodicalSectionsUrl = await moduleUrl("../lib/marketing-methodical.ts");
+const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl }));
+
+test("makes every marketing methodical subsection editable", () => {
+  const registered = sections.editorialSectionsForPage("/programs/marketing").filter((section) => section.id.startsWith("marketing-methodical-"));
+  assert.equal(registered.length, 14);
+  assert.ok(registered.some((section) => section.label === "Бакалаврат · Курсові роботи"));
+  assert.ok(registered.some((section) => section.label === "Магістратура · Кваліфікаційні роботи та атестація"));
+});
 
 test("makes both marketing student subsections selectable before any entries exist", () => {
   const registered = sections.editorialSectionsForPage("/programs/marketing");

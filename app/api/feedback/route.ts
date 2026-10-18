@@ -13,18 +13,21 @@ export async function POST(request: Request) {
     const resendKey = process.env.RESEND_API_KEY;
     const from = process.env.EDITORIAL_EMAIL_FROM;
     if (resendKey && from) {
-      const response = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          from, to: ["info@socosvita.kiev.ua"], reply_to: input.email,
-          subject: `Зворотний зв’язок АПСВТ: ${input.subject}`,
-          text: `Ім’я: ${input.name}\nEmail: ${input.email}\nТема: ${input.subject}\n\n${input.message}`,
-        }),
-        signal: AbortSignal.timeout(12000),
-      });
-      if (!response.ok) throw new Error("Resend delivery failed");
-      return NextResponse.json({ ok: true });
+      try {
+        const response = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from, to: ["info@socosvita.kiev.ua"], reply_to: input.email,
+            subject: `Зворотний зв’язок АПСВТ: ${input.subject}`,
+            text: `Ім’я: ${input.name}\nEmail: ${input.email}\nТема: ${input.subject}\n\n${input.message}`,
+          }),
+          signal: AbortSignal.timeout(12000),
+        });
+        if (response.ok) return NextResponse.json({ ok: true });
+      } catch {
+        // If the configured provider is unavailable, try the alternate route below.
+      }
     }
     const response = await fetch(target, {
       method: "POST",
