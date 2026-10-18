@@ -10,9 +10,25 @@ export async function POST(request: Request) {
   if (!input) return NextResponse.json({ error: "Перевірте обов’язкові поля, адресу пошти та згоду на обробку даних." }, { status: 400 });
   if (input.website) return NextResponse.json({ ok: true });
   try {
+    const resendKey = process.env.RESEND_API_KEY;
+    const from = process.env.EDITORIAL_EMAIL_FROM;
+    if (resendKey && from) {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from, to: ["info@socosvita.kiev.ua"], reply_to: input.email,
+          subject: `Зворотний зв’язок АПСВТ: ${input.subject}`,
+          text: `Ім’я: ${input.name}\nEmail: ${input.email}\nТема: ${input.subject}\n\n${input.message}`,
+        }),
+        signal: AbortSignal.timeout(12000),
+      });
+      if (!response.ok) throw new Error("Resend delivery failed");
+      return NextResponse.json({ ok: true });
+    }
     const response = await fetch(target, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      headers: { "Content-Type": "application/json", Accept: "application/json", Origin: "https://www.socosvita.kiev.ua", Referer: "https://www.socosvita.kiev.ua/contact/feedback" },
       body: JSON.stringify({
         _subject: `Зворотний зв’язок АПСВТ: ${input.subject}`,
         _replyto: input.email,
@@ -24,8 +40,11 @@ export async function POST(request: Request) {
       }),
       signal: AbortSignal.timeout(12000),
     });
-    const result = await response.json().catch(() => null) as { success?: boolean | string } | null;
-    if (!response.ok || (result?.success !== true && result?.success !== "true")) throw new Error("Feedback delivery failed");
+    const result = await response.json().catch(() => null) as { success?: boolean | string; message?: string } | null;
+    if (!response.ok || (result?.success !== true && result?.success !== "true")) {
+      if (result?.message?.includes("Activation")) return NextResponse.json({ error: "Онлайн-надсилання очікує підтвердження поштової адреси Академії. Скористайтеся кнопкою «Відкрити лист у пошті» нижче." }, { status: 503 });
+      throw new Error("Feedback delivery failed");
+    }
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Не вдалося надіслати повідомлення. Спробуйте ще раз або напишіть на info@socosvita.kiev.ua." }, { status: 502 });

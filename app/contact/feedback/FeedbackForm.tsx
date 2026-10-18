@@ -5,12 +5,16 @@ import { useState, type FormEvent } from "react";
 export function FeedbackForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
+  const [fallbackHref, setFallbackHref] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (status === "sending") return;
     const form = event.currentTarget;
     const fields = new FormData(form);
+    const emailSubject = String(fields.get("subject") || "");
+    const emailBody = `Ім’я: ${String(fields.get("name") || "")}\nEmail: ${String(fields.get("email") || "")}\n\n${String(fields.get("message") || "")}`;
+    setFallbackHref(`mailto:info@socosvita.kiev.ua?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`);
     setStatus("sending");
     setError("");
     try {
@@ -41,6 +45,6 @@ export function FeedbackForm() {
     <label>Повідомлення <textarea name="message" rows={7} minLength={10} maxLength={5000} required /></label>
     <div className="feedback-honeypot" aria-hidden="true"><label>Сайт <input name="website" tabIndex={-1} autoComplete="off" /></label></div>
     <label className="feedback-consent"><input name="consent" type="checkbox" required /><span>Погоджуюся на обробку зазначених даних виключно для відповіді на моє звернення.</span></label>
-    <div className="feedback-actions"><button type="submit" disabled={status === "sending"}>{status === "sending" ? "Надсилаємо…" : "Надіслати повідомлення →"}</button><p role="status" aria-live="polite">{status === "sent" ? "Дякуємо! Ваше повідомлення надіслано." : status === "error" ? error : ""}</p></div>
+    <div className="feedback-actions"><button type="submit" disabled={status === "sending"}>{status === "sending" ? "Надсилаємо…" : "Надіслати повідомлення →"}</button><p role="status" aria-live="polite">{status === "sent" ? "Дякуємо! Ваше повідомлення надіслано." : status === "error" ? error : ""}</p>{status === "error" && fallbackHref && <a className="feedback-fallback" href={fallbackHref}>Відкрити лист у пошті →</a>}</div>
   </form>;
 }

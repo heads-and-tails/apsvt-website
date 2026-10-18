@@ -435,6 +435,7 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .feedback-actions button{padding:18px 24px;border:0;background:var(--gold);font:700 18px var(--disp);text-transform:uppercase;cursor:pointer}
 .feedback-actions button:disabled{opacity:.6;cursor:wait}
 .feedback-actions p{margin:0;line-height:1.5}
+.feedback-fallback{display:inline-block;padding:12px 0;color:var(--cobalt);font-weight:700;text-decoration:underline}
 .feedback-honeypot{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 @media(max-width:760px){.feedback-layout,.feedback-form-row{grid-template-columns:1fr}}
 .marketing-programme-subsection+.marketing-programme-subsection{margin-top:42px;padding-top:32px;border-top:1px solid var(--line)}
