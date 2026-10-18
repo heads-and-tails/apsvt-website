@@ -29,6 +29,7 @@ import { MarketingEducationPrograms } from "./MarketingEducationPrograms";
 import { MarketingPartners } from "./MarketingPartners";
 import { MarketingQuality } from "./MarketingQuality";
 import { MarketingMethodicalFolders } from "./MarketingMethodicalFolders";
+import { marketingMethodicalSectionIds } from "@/lib/marketing-methodical";
 import { FinanceInternational, financeProjectSections } from "./FinanceInternational";
 import { FinanceMasterProgramme } from "./FinanceMasterProgramme";
 import { FinancePublications } from "./FinancePublications";
@@ -138,14 +139,11 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       </details>
     </article>
     </div></section>,
-    <section className="programme-documents" id="programme-documents" key="marketing-methodical"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">06 / Навчально-методичне забезпечення</div><h2>Офіційні програми й матеріали</h2></div><Link href="/documents#education">Усі освітні документи →</Link></div><div className="programme-document-list">
-      {program.materials.map((material, index) => <a href={material.href} target={material.href.endsWith(".pdf") ? "_blank" : undefined} rel={material.href.endsWith(".pdf") ? "noreferrer" : undefined} key={material.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{material.href.endsWith(".pdf") ? "PDF · офіційний документ" : "Матеріали кафедри"}</small><h3>{material.label}</h3></div><b>{material.href.endsWith(".pdf") ? "↗" : "→"}</b></a>)}
-      <Link href="/research/journals#marketing-publications"><span>{String(program.materials.length + 1).padStart(2, "0")}</span><div><small>Повні тексти</small><h3>Монографії та навчальний посібник кафедри</h3></div><b>→</b></Link>
-    </div><MarketingMethodicalFolders /></div></section>,
+    <section className="programme-documents" id="programme-documents" key="marketing-methodical"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">06 / Навчально-методичне забезпечення</div><h2>Навчально-методичне забезпечення</h2></div><Link href="/documents#education">Усі освітні документи →</Link></div><MarketingMethodicalFolders entries={departmentEntries} /></div></section>,
     <MarketingStudentLife entries={departmentEntries} key="marketing-student-life" />,
     <MarketingCareers key="marketing-careers" />,
     <MarketingPartners entries={departmentEntries} key="marketing-partners" />,
-    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", "marketing-repository", "curriculum", "marketing-partner-agreements", "marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
+    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", "marketing-repository", "curriculum", "marketing-partner-agreements", "marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", ...marketingMethodicalSectionIds, ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
     <MarketingRepository entries={departmentEntries} key="marketing-repository" />,
   ] : null;
   const financeSectionContent = slug === "finance" ? [

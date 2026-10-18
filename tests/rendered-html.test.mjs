@@ -970,7 +970,9 @@ test("publishes marketing master programmes and nested methodical document folde
   assert.match(marketing,/Освітньо-професійна програма «Маркетинг» 2025 року/);
   assert.match(marketing,/Кваліфікаційні роботи/);
   assert.match(marketing,/Магістратура/);
-  assert.match(marketing,/Графік консультацій викладачів/);
+  assert.match(marketing,/Графіки консультацій викладачів/);
+  for (const section of ["Робочі програми навчальних дисциплін", "Анотації навчальних дисциплін", "Методичні рекомендації", "Практична підготовка", "Курсові роботи", "Кваліфікаційні роботи та атестація", "Навчальні та навчально-методичні видання викладачів кафедри", "Електронні освітні ресурси"]) assert.ok(marketing.includes(section), `Missing methodical subsection: ${section}`);
+  for (const sectionId of ["marketing-methodical-bachelor-work-programmes", "marketing-methodical-master-qualification", "marketing-methodical-consultations"]) assert.ok(marketing.includes(`id="${sectionId}"`), `Missing editable subsection: ${sectionId}`);
   for(const relativePath of [
     "programmes/opp-marketing-master-2025.pdf",
     "programmes/opp-marketing-master-2026.pdf",

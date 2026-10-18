@@ -63,3 +63,26 @@ test("feedback uses the site's configured mail transport when available", async 
     if (previousFrom === undefined) delete process.env.EDITORIAL_EMAIL_FROM; else process.env.EDITORIAL_EMAIL_FROM = previousFrom;
   }
 });
+
+test("feedback tries the alternate route when the configured transport fails", async () => {
+  const originalFetch = globalThis.fetch;
+  const previousKey = process.env.RESEND_API_KEY;
+  const previousFrom = process.env.EDITORIAL_EMAIL_FROM;
+  process.env.RESEND_API_KEY = "test-key";
+  process.env.EDITORIAL_EMAIL_FROM = "editorial@example.org";
+  const calls = [];
+  try {
+    globalThis.fetch = async (url) => {
+      calls.push(url);
+      if (url === "https://api.resend.com/emails") return new Response("unavailable", { status: 403 });
+      return new Response(JSON.stringify({ success: "false", message: "This form needs Activation." }), { status: 200 });
+    };
+    const response = await POST(new Request("http://localhost/api/feedback", { method: "POST", body: JSON.stringify(valid) }));
+    assert.equal(response.status, 503);
+    assert.deepEqual(calls, ["https://api.resend.com/emails", "https://formsubmit.co/ajax/info@socosvita.kiev.ua"]);
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (previousKey === undefined) delete process.env.RESEND_API_KEY; else process.env.RESEND_API_KEY = previousKey;
+    if (previousFrom === undefined) delete process.env.EDITORIAL_EMAIL_FROM; else process.env.EDITORIAL_EMAIL_FROM = previousFrom;
+  }
+});
