@@ -1553,7 +1553,6 @@ test("publishes document-based curriculum sections for every bachelor programme"
     ["finance","Корпоративні фінанси"],
     ["management","Операційний менеджмент"],
     ["public-administration","Електронне урядування"],
-    ["marketing","Маркетингові дослідження"],
     ["trade","Електронна комерція"],
     ["social-work","Кейс-менеджмент"],
   ];

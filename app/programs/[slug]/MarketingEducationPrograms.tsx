@@ -1,45 +1,40 @@
-import { ProgrammeCurriculumPlan } from "@/app/components/ProgrammeCurriculumPlan";
+import type { DepartmentEntry } from "@/lib/department-content";
+import { DepartmentEditorialContent } from "@/app/components/DepartmentEditorialContent";
 
-const programmeFolder = "https://drive.google.com/drive/folders/1dcgVBio_3E2kyrMCDS-neHA2SDEBT3pr?usp=drive_link";
+const masterProgrammes = [
+  { year: "2026", href: "/documents/marketing/programmes/opp-marketing-master-2026.pdf" },
+  { year: "2025", href: "/documents/marketing/programmes/opp-marketing-master-2025.pdf" },
+];
 
-export function MarketingEducationPrograms() {
+const levels = [
+  { id: "bachelor", label: "Бакалаврат", detail: "Перший рівень вищої освіти", number: "01" },
+  { id: "master", label: "Магістратура", detail: "Другий рівень вищої освіти", number: "02" },
+] as const;
+
+export function MarketingEducationPrograms({ entries }: { entries: DepartmentEntry[] }) {
   return <section className="marketing-programmes" id="curriculum">
     <div className="wrap">
       <header className="marketing-programmes-head">
         <div><div className="idx">03 / Освітні програми</div><h2>Оберіть рівень освіти</h2></div>
-        <p>Матеріали бакалаврату й магістратури розділено. Відкрийте потрібний блок, щоб побачити документи цього рівня. Опитування та обговорення ОПП розміщено в окремому розділі «Якість освіти».</p>
+        <p>Для кожного рівня окремо розміщуються освітні програми та навчальні плани.</p>
       </header>
-
       <div className="marketing-programme-levels">
-        <details>
-          <summary><span>01</span><div><small>Перший рівень вищої освіти</small><strong>Бакалаврат</strong></div><b aria-hidden="true">+</b></summary>
+        {levels.map((level) => <details key={level.id}>
+          <summary><span>{level.number}</span><div><small>{level.detail}</small><strong>{level.label}</strong></div><b aria-hidden="true">+</b></summary>
           <div className="marketing-programme-body">
-            <div className="marketing-programme-copy">
-              <h3>ОПП «Маркетинг» · бакалавр</h3>
-              <p>Офіційні матеріали освітньо-професійної програми спеціальності D5 «Маркетинг» першого (бакалаврського) рівня вищої освіти.</p>
-            </div>
-            <div className="marketing-programme-links">
-              <a href="/documents/official-programmes/d5-marketing-bachelor.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>Офіційний документ · PDF</small><strong>ОПП D5 «Маркетинг» · бакалавр</strong></div><b>↗</b></a>
-              <a href={programmeFolder} target="_blank" rel="noreferrer"><span>02</span><div><small>Матеріали кафедри</small><strong>Освітньо-професійна програма та матеріали до обговорення</strong></div><b>↗</b></a>
-            </div>
-            <ProgrammeCurriculumPlan slug="marketing" code="D5" title="Маркетинг" sectionId="marketing-bachelor-curriculum" />
+            {(["programmes", "plans"] as const).map((kind) => {
+              const sectionId = `marketing-${level.id}-${kind}`;
+              const sectionEntries = entries.filter((entry) => entry.sectionId === sectionId && !entry.hidden);
+              return <div className="marketing-programme-subsection" id={sectionId} key={sectionId}>
+                <h3>{kind === "programmes" ? "Освітні програми" : "Навчальні плани"}</h3>
+                {level.id === "master" && kind === "programmes" && <div className="marketing-programme-links">
+                  {masterProgrammes.map((programme, index) => <a href={programme.href} target="_blank" rel="noreferrer" key={programme.year}><span>{String(index + 1).padStart(2, "0")}</span><div><small>Магістратура · {programme.year} · PDF</small><strong>{`Освітньо-професійна програма «Маркетинг» ${programme.year} року`}</strong></div><b>↗</b></a>)}
+                </div>}
+                {sectionEntries.length > 0 ? <DepartmentEditorialContent entries={sectionEntries} inline /> : level.id === "master" && kind === "programmes" ? null : <p className="marketing-programme-empty">Матеріали цього підрозділу поки не опубліковано.</p>}
+              </div>;
+            })}
           </div>
-        </details>
-
-        <details>
-          <summary><span>02</span><div><small>Другий рівень вищої освіти</small><strong>Магістратура</strong></div><b aria-hidden="true">+</b></summary>
-          <div className="marketing-programme-body">
-            <div className="marketing-programme-copy">
-              <h3>ОПП «Маркетинг» · магістр</h3>
-              <p>Офіційні матеріали освітньо-професійної програми спеціальності D5 «Маркетинг» другого (магістерського) рівня вищої освіти.</p>
-            </div>
-            <div className="marketing-programme-links">
-              <a href="/documents/marketing/programmes/opp-marketing-master-2026.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>Магістратура · 2026 · PDF</small><strong>Освітньо-професійна програма «Маркетинг» 2026 року</strong></div><b>↗</b></a>
-              <a href="/documents/marketing/programmes/opp-marketing-master-2025.pdf" target="_blank" rel="noreferrer"><span>02</span><div><small>Магістратура · 2025 · PDF</small><strong>Освітньо-професійна програма «Маркетинг» 2025 року</strong></div><b>↗</b></a>
-              <a href={programmeFolder} target="_blank" rel="noreferrer"><span>03</span><div><small>Матеріали кафедри</small><strong>Освітньо-професійна програма та матеріали до обговорення</strong></div><b>↗</b></a>
-            </div>
-          </div>
-        </details>
+        </details>)}
       </div>
     </div>
   </section>;

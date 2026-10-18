@@ -44,6 +44,8 @@ export default defineConfig(async () => {
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 
   return {
+    // Local test builds can read assets from public/ without duplicating 500+ MB.
+    build: process.env.APSVT_TEST_SKIP_PUBLIC_COPY === "1" ? { copyPublicDir: false } : undefined,
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,

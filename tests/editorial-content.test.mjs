@@ -234,6 +234,42 @@ test("offers a separate empty marketing repository without changing unrelated pa
   assert.equal(sections.editorialSectionsForPage("/programs/finance").some((section) => section.id === "marketing-repository"), false);
 });
 
+test("offers marketing programme levels and partnership tabs as distinct editor destinations", () => {
+  const marketing = sections.editorialSectionsForPage("/programs/marketing");
+  const expected = ["marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", "marketing-partners", "marketing-partner-agreements"];
+  assert.deepEqual(marketing.filter((section) => expected.includes(section.id)).map((section) => section.id), expected);
+  assert.equal(sections.editorialSectionsForPage("/programs/finance").some((section) => expected.includes(section.id)), false);
+});
+
+test("marketing programme section keeps only existing master's PDFs until editors add new materials", async () => {
+  const rendererUrl = `data:text/javascript;base64,${Buffer.from(`export function DepartmentEditorialContent({entries}){return entries.map(entry=>entry.title).join(",")}`).toString("base64")}`;
+  const { MarketingEducationPrograms } = await import(await moduleUrl("../app/programs/[slug]/MarketingEducationPrograms.tsx", { "@/app/components/DepartmentEditorialContent": rendererUrl }));
+  const html = renderToStaticMarkup(createElement(MarketingEducationPrograms, { entries: [] }));
+  assert.match(html, /marketing-bachelor-programmes/);
+  assert.match(html, /marketing-bachelor-plans/);
+  assert.match(html, /marketing-master-programmes/);
+  assert.match(html, /marketing-master-plans/);
+  assert.match(html, /opp-marketing-master-2026\.pdf/);
+  assert.match(html, /opp-marketing-master-2025\.pdf/);
+  assert.doesNotMatch(html, /d5-marketing-bachelor\.pdf|drive\.google\.com|ProgrammeCurriculumPlan/);
+});
+
+test("feedback requires valid contact data and explicit consent", async () => {
+  const { parseFeedback } = await import(await moduleUrl("../lib/feedback-form.ts"));
+  const valid = { name: "Олена", email: "olena@example.org", subject: "Питання", message: "Запитання про сайт Академії", consent: true, website: "" };
+  assert.deepEqual(parseFeedback(valid), valid);
+  assert.equal(parseFeedback({ ...valid, consent: false }), null);
+  assert.equal(parseFeedback({ ...valid, email: "invalid" }), null);
+  assert.equal(parseFeedback({ ...valid, message: "short" }), null);
+});
+
+test("restored anticorruption plan is a local six-page PDF rather than the dead legacy page", async () => {
+  const official = await readFile(new URL("../lib/official-documents.ts", import.meta.url), "utf8");
+  assert.match(official, /id: "anticorruption-plan"[\s\S]*?href: "\/documents\/anticorruption\/plan-zakhodiv-2024-2027\.pdf"/);
+  const pdf = await readFile(new URL("../public/documents/anticorruption/plan-zakhodiv-2024-2027.pdf", import.meta.url));
+  assert.equal(pdf.subarray(0, 4).toString(), "%PDF");
+});
+
 test("offers the programme team in the editor for all five A5 programmes without changing department sections", () => {
   assert.equal(professional.professionalEducationProgrammes.length, 5);
   for (const programme of professional.professionalEducationProgrammes) {
