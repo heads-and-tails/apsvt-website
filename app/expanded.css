@@ -435,9 +435,14 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .feedback-actions button{padding:18px 24px;border:0;background:var(--gold);font:700 18px var(--disp);text-transform:uppercase;cursor:pointer}
 .feedback-actions button:disabled{opacity:.6;cursor:wait}
 .feedback-actions p{margin:0;line-height:1.5}
+.feedback-fallback{display:inline-block;padding:12px 0;color:var(--cobalt);font-weight:700;text-decoration:underline}
 .feedback-honeypot{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 @media(max-width:760px){.feedback-layout,.feedback-form-row{grid-template-columns:1fr}}
-.marketing-programme-subsection+.marketing-programme-subsection{margin-top:42px;padding-top:32px;border-top:1px solid var(--line)}
+.marketing-programme-tabs{display:flex;margin-bottom:28px;border:1px solid var(--ink)}
+.marketing-programme-tabs button{flex:1;min-height:66px;padding:16px 22px;border:0;background:var(--paper);color:var(--ink);font:700 clamp(18px,2vw,26px)/1.2 var(--disp);text-transform:uppercase;text-align:left;cursor:pointer}
+.marketing-programme-tabs button+button{border-left:1px solid var(--ink)}
+.marketing-programme-tabs button[aria-selected="true"]{background:var(--gold)}
+.marketing-programme-subsection[hidden]{display:none}
 .marketing-programme-subsection>h3{margin-bottom:18px;font-size:clamp(26px,3vw,40px)}
 .marketing-programme-empty,.marketing-partner-empty{padding:28px;border:1px solid var(--line);color:#5d6675;line-height:1.6}
 .marketing-partners{background:#e8e5dd;scroll-margin-top:88px}
@@ -448,6 +453,7 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .marketing-partners .department-public-content--inline .wrap{padding:0}
 .marketing-partners [role="tabpanel"][hidden]{display:none}
 @media(max-width:760px){.marketing-partner-tabs{display:grid}.marketing-partner-tabs button+button{border-left:0;border-top:1px solid var(--ink)}}
+@media(max-width:760px){.marketing-programme-tabs{display:grid}.marketing-programme-tabs button+button{border-left:0;border-top:1px solid var(--ink)}}
 .marketing-stakeholder-call{margin:48px 0 36px;padding:clamp(26px,4vw,50px);background:#fff;border-left:8px solid var(--cobalt);box-shadow:12px 12px 0 var(--gold)}
 .marketing-stakeholder-call>small{font:700 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}
 .marketing-stakeholder-call h3{margin:16px 0 24px;font-size:clamp(30px,4vw,52px)}

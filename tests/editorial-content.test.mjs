@@ -249,6 +249,8 @@ test("marketing programme section keeps only existing master's PDFs until editor
   assert.match(html, /marketing-bachelor-plans/);
   assert.match(html, /marketing-master-programmes/);
   assert.match(html, /marketing-master-plans/);
+  assert.match(html, /role="tab" id="marketing-bachelor-programmes-tab"/);
+  assert.match(html, /role="tab" id="marketing-master-plans-tab"/);
   assert.match(html, /opp-marketing-master-2026\.pdf/);
   assert.match(html, /opp-marketing-master-2025\.pdf/);
   assert.doesNotMatch(html, /d5-marketing-bachelor\.pdf|drive\.google\.com|ProgrammeCurriculumPlan/);
