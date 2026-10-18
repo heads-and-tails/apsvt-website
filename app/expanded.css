@@ -419,6 +419,35 @@ table.schedule-table td small{display:block;margin-top:5px;color:rgba(9,14,24,.5
 .marketing-programme-links small{display:block;font:700 9px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#697181}
 .marketing-programme-links strong{display:block;margin-top:5px;font-size:16px;line-height:1.45}
 .marketing-programme-links>a>b{font-size:24px;color:var(--cobalt)}
+.feedback-section{background:#e8e5dd}
+.feedback-layout{display:grid;grid-template-columns:minmax(240px,.7fr) minmax(0,1.3fr);gap:clamp(32px,7vw,100px)}
+.feedback-layout>div>h2{font-size:clamp(42px,5vw,70px);line-height:.95;margin:18px 0 24px}
+.feedback-layout>div>p{max-width:38ch;color:#5d6675;line-height:1.7;margin:0 0 16px}
+.feedback-layout>div>p>a{color:var(--cobalt);text-decoration:underline}
+.feedback-form{display:grid;gap:20px;padding:clamp(24px,4vw,52px);background:var(--paper);border:1px solid var(--ink)}
+.feedback-form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.feedback-form label{display:grid;gap:8px;font-weight:700}
+.feedback-form input:not([type="checkbox"]),.feedback-form textarea{width:100%;padding:14px 16px;border:1px solid #9ca3af;border-radius:0;background:#fff;font:inherit;color:var(--ink)}
+.feedback-form input:focus-visible,.feedback-form textarea:focus-visible,.feedback-form button:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px}
+.feedback-consent{display:flex!important;align-items:flex-start;gap:12px!important;font-size:14px;line-height:1.5;font-weight:400!important}
+.feedback-consent input{width:20px;height:20px;flex:none;margin:0;accent-color:var(--cobalt)}
+.feedback-actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.feedback-actions button{padding:18px 24px;border:0;background:var(--gold);font:700 18px var(--disp);text-transform:uppercase;cursor:pointer}
+.feedback-actions button:disabled{opacity:.6;cursor:wait}
+.feedback-actions p{margin:0;line-height:1.5}
+.feedback-honeypot{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+@media(max-width:760px){.feedback-layout,.feedback-form-row{grid-template-columns:1fr}}
+.marketing-programme-subsection+.marketing-programme-subsection{margin-top:42px;padding-top:32px;border-top:1px solid var(--line)}
+.marketing-programme-subsection>h3{margin-bottom:18px;font-size:clamp(26px,3vw,40px)}
+.marketing-programme-empty,.marketing-partner-empty{padding:28px;border:1px solid var(--line);color:#5d6675;line-height:1.6}
+.marketing-partners{background:#e8e5dd;scroll-margin-top:88px}
+.marketing-partner-tabs{display:flex;gap:0;margin:32px 0 24px;border:1px solid var(--ink)}
+.marketing-partner-tabs button{flex:1;min-height:76px;padding:18px 22px;border:0;background:var(--paper);color:var(--ink);font:700 clamp(18px,2vw,26px)/1.2 var(--disp);text-align:left;text-transform:uppercase;cursor:pointer}
+.marketing-partner-tabs button+button{border-left:1px solid var(--ink)}
+.marketing-partner-tabs button[aria-selected="true"]{background:var(--gold)}
+.marketing-partners .department-public-content--inline .wrap{padding:0}
+.marketing-partners [role="tabpanel"][hidden]{display:none}
+@media(max-width:760px){.marketing-partner-tabs{display:grid}.marketing-partner-tabs button+button{border-left:0;border-top:1px solid var(--ink)}}
 .marketing-stakeholder-call{margin:48px 0 36px;padding:clamp(26px,4vw,50px);background:#fff;border-left:8px solid var(--cobalt);box-shadow:12px 12px 0 var(--gold)}
 .marketing-stakeholder-call>small{font:700 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt)}
 .marketing-stakeholder-call h3{margin:16px 0 24px;font-size:clamp(30px,4vw,52px)}
