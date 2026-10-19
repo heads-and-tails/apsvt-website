@@ -4,6 +4,7 @@ import { uploadEditorialFile } from "@/lib/editorial-upload-client";
 import { useMemo, useState } from "react";
 import type { DocumentStatus, PageDocument, PageDocumentInput } from "@/lib/documents";
 import type { Publisher } from "@/lib/auth";
+import { requestJson } from "@/lib/client-request";
 import { canEditPage, editorialAccessOptions } from "@/lib/editorial-access";
 import { professionalEducationProgrammes } from "@/lib/professional-education";
 import { lawFacultySubpages } from "@/lib/law-faculty-structure";
@@ -44,6 +45,7 @@ function pageLabel(path: string): string {
 
 export function DocumentManager({ initialDocuments, publisher }: { initialDocuments: PageDocument[]; publisher: Publisher }) {
   const allowedPageOptions = pageOptions.filter(([value]) => value === "*" ? publisher.role === "admin" || publisher.accessScopes.includes("*") : canEditPage(publisher, value));
+  const bulkPageOptions = allowedPageOptions.filter(([path]) => path !== "*" && path !== "/schedule");
   const [documents, setDocuments] = useState(initialDocuments);
   const [form, setForm] = useState<PageDocumentInput>({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" });
   const [editing, setEditing] = useState<string | null>(null);
@@ -52,9 +54,64 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
   const [programmeDocumentYear, setProgrammeDocumentYear] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [bulkFiles, setBulkFiles] = useState<{ id: string; file: File; title: string }[]>([]);
+  const [bulkPagePath, setBulkPagePath] = useState(bulkPageOptions[0]?.[0] || "");
+  const [bulkCategory, setBulkCategory] = useState("Навчальні матеріали");
+  const [bulkStatus, setBulkStatus] = useState<DocumentStatus>("published");
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [bulkMessage, setBulkMessage] = useState("");
   const published = useMemo(() => documents.filter((document) => document.status === "published").length, [documents]);
   const isProfessionalProgramme = professionalEducationProgrammes.some((programme) => programme.path === form.pagePath);
   const isLawProgramme = lawFacultySubpages.some((page) => page.path === form.pagePath && page.sectionId === "faculty-programmes");
+
+  function queueFiles(files: FileList | null) {
+    if (!files?.length) return;
+    const available = Math.max(0, 20 - bulkFiles.length);
+    const incoming = Array.from(files).slice(0, available).map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+      title: file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim(),
+    }));
+    setBulkFiles((current) => [...current, ...incoming]);
+    setBulkMessage(incoming.length < files.length ? "За один раз можна додати до 20 файлів." : "Перевірте назви перед публікацією.");
+  }
+
+  async function publishBatch() {
+    if (!bulkFiles.length || !bulkCategory.trim()) {
+      setBulkMessage("Оберіть файли та вкажіть категорію.");
+      return;
+    }
+    setBulkBusy(true);
+    let completed = 0;
+    try {
+      for (const queued of bulkFiles) {
+        if (!queued.title.trim()) throw new Error(`Вкажіть назву для «${queued.file.name}».`);
+        setBulkMessage(`Завантажуємо ${completed + 1} із ${bulkFiles.length}: ${queued.file.name}`);
+        const data = new FormData();
+        data.append("file", queued.file);
+        data.append("purpose", "document");
+        data.append("pagePath", bulkPagePath);
+        const uploaded = await requestJson<{ url: string; fileName: string; mimeType: string; fileSize: number }>("/api/uploads", { method: "POST", body: data }, 60_000);
+        const created = await requestJson<PageDocument>("/api/documents", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            title: queued.title.trim(), description: "", category: bulkCategory.trim(), pagePath: bulkPagePath,
+            fileUrl: uploaded.url, fileName: uploaded.fileName, mimeType: uploaded.mimeType,
+            fileSize: uploaded.fileSize, status: bulkStatus, sortOrder: Date.now() + completed,
+          } satisfies PageDocumentInput),
+        }, 60_000);
+        setDocuments((current) => [created, ...current]);
+        setBulkFiles((current) => current.filter((item) => item.id !== queued.id));
+        completed += 1;
+      }
+      setBulkMessage(`${completed} файлів ${bulkStatus === "published" ? "опубліковано" : "збережено як чернетки"}. ${bulkStatus === "published" ? "Перевірте їх на вибраній сторінці та в загальному каталозі." : ""}`);
+    } catch (error) {
+      setBulkMessage(`${completed} із ${bulkFiles.length} файлів збережено. ${error instanceof Error ? error.message : "Не вдалося завершити завантаження."} Невдалі файли залишилися в черзі.`);
+    } finally {
+      setBulkBusy(false);
+    }
+  }
 
   function change<K extends keyof PageDocumentInput>(key: K, value: PageDocumentInput[K]) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -144,6 +201,17 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
 
   return <section className="document-manager" id="documents">
     <div className="materials-head"><div><span>Файли сторінок</span><h2>Документи</h2><p>Завантажуйте PDF, Word, Excel або PowerPoint і призначайте файл потрібній сторінці.</p></div><b>{published} опубліковано</b></div>
+    {bulkPageOptions.length > 0 && <section className="document-bulk" aria-labelledby="document-bulk-title">
+      <div><span>Швидка публікація</span><h3 id="document-bulk-title">Кілька документів одразу</h3><p>Оберіть сторінку один раз, додайте до 20 файлів і перевірте назви. Кожен файл отримає окрему картку на сторінці та в загальному каталозі.</p></div>
+      <div className="document-bulk-controls">
+        <label>Сторінка<select value={bulkPagePath} disabled={bulkBusy} onChange={(event) => setBulkPagePath(event.target.value)}>{bulkPageOptions.map(([path, label]) => <option value={path} key={path}>{label}</option>)}</select></label>
+        <label>Категорія<input value={bulkCategory} disabled={bulkBusy} onChange={(event) => setBulkCategory(event.target.value)} /></label>
+        <label>Статус<select value={bulkStatus} disabled={bulkBusy} onChange={(event) => setBulkStatus(event.target.value as DocumentStatus)}><option value="published">Опублікувати</option><option value="draft">Чернетка</option></select></label>
+      </div>
+      <label className="document-bulk-picker">Оберіть файли<input type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" disabled={bulkBusy || bulkFiles.length >= 20} onChange={(event) => { queueFiles(event.target.files); event.currentTarget.value = ""; }} /></label>
+      {bulkFiles.length > 0 && <div className="document-bulk-queue">{bulkFiles.map((item) => <div key={item.id}><label>Назва на сайті<input value={item.title} disabled={bulkBusy} onChange={(event) => setBulkFiles((current) => current.map((entry) => entry.id === item.id ? { ...entry, title: event.target.value } : entry))} /></label><small>{item.file.name}</small><button type="button" disabled={bulkBusy} onClick={() => setBulkFiles((current) => current.filter((entry) => entry.id !== item.id))}>Прибрати</button></div>)}</div>}
+      <div className="document-bulk-actions"><p role="status">{bulkMessage || "Файли до 20 МБ кожен. Розклади завантажуйте в окремому розділі «Розклад»."}</p><button type="button" disabled={bulkBusy || !bulkFiles.length || !bulkCategory.trim()} onClick={() => void publishBatch()}>{bulkBusy ? "Завантажуємо…" : `Зберегти файли (${bulkFiles.length})`}</button>{bulkMessage.includes("файлів опубліковано") && <a href={bulkPagePath} target="_blank" rel="noreferrer">Перевірити сторінку ↗</a>}</div>
+    </section>}
     <details className="document-guide" open>
       <summary><span>Підказка</span><b>Як самостійно додати або оновити документ</b><i>+</i></summary>
       <div className="document-guide-steps">
