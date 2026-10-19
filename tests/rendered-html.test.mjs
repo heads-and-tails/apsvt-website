@@ -325,6 +325,14 @@ test("renders editorially managed public information",async()=>{
   assert.match(scheduleHtml,/Розклад заліків та іспитів/);
   assert.doesNotMatch(scheduleHtml,/Основи менеджменту/);
   assert.match(scheduleHtml,/moodle\.socosvita\.kiev\.ua/);
+  assert.match(scheduleHtml,/id="ukrainian-language-foreign-students"/);
+  assert.match(scheduleHtml,/30\.01\.2027/);
+  assert.match(scheduleHtml,/ukrainian-as-foreign-language-2026-27\.pdf/);
+  assert.match(scheduleHtml,/Курс української мови та допуск до екзаменаційної сесії/);
+  assert.match(scheduleHtml,/Студенти, які не наберуть прохідний бал, не будуть допущені до сесії/);
+  assert.match(scheduleHtml,/Ваші результати тестування та фінальний статус допуску будуть опубліковані на платформі Moodle/);
+  const foreignLanguagePdf=await readFile(new URL("../public/documents/schedule/ukrainian-as-foreign-language-2026-27.pdf",import.meta.url));
+  assert.equal(foreignLanguagePdf.subarray(0,4).toString(),"%PDF");
 
   const libraryHtml=await (await render("/facilities/library")).text();
   assert.match(libraryHtml,/Конституційне право України/);
