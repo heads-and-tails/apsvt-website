@@ -4,6 +4,25 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("offers a saved course view and batch publication without widening editor access",async()=>{
+  const [scheduleResponse,studentSource,documentsSource,panelSource]=await Promise.all([
+    render("/schedule"),
+    readFile(new URL("../app/student/page.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/panel/DocumentManager.tsx",import.meta.url),"utf8"),
+    readFile(new URL("../app/panel/PanelEditor.tsx",import.meta.url),"utf8"),
+  ]);
+  assert.equal(scheduleResponse.status,200);
+  const html=await scheduleResponse.text();
+  assert.match(html,/id="my-schedule"/);
+  assert.match(html,/Мій розклад/);
+  assert.match(html,/Форма навчання/);
+  assert.match(studentSource,/href="\/schedule#my-schedule"/);
+  assert.match(documentsSource,/bulkPageOptions = allowedPageOptions\.filter/);
+  assert.match(documentsSource,/requestJson<PageDocument>\("\/api\/documents"/);
+  assert.match(documentsSource,/Невдалі файли залишилися в черзі/);
+  assert.match(panelSource,/Перевірити публікацію на сайті/);
+});
+
 let workerPromise;
 async function worker(){
   if(!workerPromise){

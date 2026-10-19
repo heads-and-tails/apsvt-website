@@ -68,6 +68,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
   const [editing, setEditing] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [publishedUrl, setPublishedUrl] = useState("");
   const [activeView, setActiveView] = useState<PanelView>(initialView);
   const published = useMemo(() => posts.filter((post) => post.status === "published").length, [posts]);
   const canManageNews = canEditPage(publisher, "/news");
@@ -96,8 +97,8 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
   function open(view: PanelView) { setActiveView(view); window.scrollTo({ top: 0, behavior: "smooth" }); }
 
   function change<K extends keyof FormState>(key: K, value: FormState[K]) { setForm((current) => ({ ...current, [key]: value })); }
-  function edit(post: Post) { setEditing(post.id); setForm({ title: post.title, excerpt: post.excerpt, body: post.body, category: post.category, imageUrl: post.imageUrl, imageAlt: post.imageAlt, status: post.status, featured: post.featured, hideDate: Boolean(post.hideDate), publishedAt: post.publishedAt, slug: post.slug }); open("news-editor"); }
-  function reset() { setEditing(null); setForm(empty); setMessage(""); }
+  function edit(post: Post) { setEditing(post.id); setPublishedUrl(""); setForm({ title: post.title, excerpt: post.excerpt, body: post.body, category: post.category, imageUrl: post.imageUrl, imageAlt: post.imageAlt, status: post.status, featured: post.featured, hideDate: Boolean(post.hideDate), publishedAt: post.publishedAt, slug: post.slug }); open("news-editor"); }
+  function reset() { setEditing(null); setForm(empty); setMessage(""); setPublishedUrl(""); }
   async function upload(file: File) {
     setBusy(true);
     setMessage("Завантажуємо фото…");
@@ -141,6 +142,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
       status: requestedStatus,
       publishedAt: requestedStatus === "published" ? form.publishedAt : null,
     };
+    setPublishedUrl("");
     setBusy(true);
     setMessage(requestedStatus === "published" ? "Публікуємо матеріал…" : "Зберігаємо чернетку…");
     try {
@@ -151,6 +153,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
       });
       setPosts((current) => editing ? current.map((post) => post.id === editing ? result : post) : [result, ...current]);
       setMessage(result.status === "published" ? "Матеріал опубліковано" : "Чернетку збережено");
+      setPublishedUrl(result.status === "published" ? `/news/${result.slug}` : "");
       setEditing(null);
       setForm(empty);
     } catch (error) {
@@ -184,7 +187,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
           <label>Альтернативний опис<input value={form.imageAlt} onChange={(event) => change("imageAlt", event.target.value)} placeholder="Що зображено на фото" /></label>
           <label>Або URL зображення<input type="url" value={form.imageUrl} onChange={(event) => change("imageUrl", event.target.value)} placeholder="https://…" /></label>
           <div className="publish-box">
-            <p aria-live="polite">{message || "Збережіть матеріал як чернетку для перевірки або опублікуйте його одразу."}</p>
+            <p aria-live="polite">{message || "Збережіть матеріал як чернетку для перевірки або опублікуйте його одразу."}{publishedUrl && <> <a href={publishedUrl} target="_blank" rel="noreferrer">Перевірити публікацію на сайті ↗</a></>}</p>
             <div className="publish-actions">
               <button className="secondary draft-action" disabled={busy} type="submit" name="status" value="draft">{busy ? "Зачекайте…" : "Зберегти як чернетку"}</button>
               <button disabled={busy} type="submit" name="status" value="published">{busy ? "Зачекайте…" : "Опублікувати зараз"}</button>
