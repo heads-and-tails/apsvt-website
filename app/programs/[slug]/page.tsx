@@ -107,7 +107,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <MarketingDepartmentAbout key="marketing-about" />,
     <MarketingTeam entries={departmentEntries.filter((entry) => entry.entryType === "teacher")} key="marketing-team" />,
     <MarketingEducationPrograms entries={departmentEntries} key="marketing-programmes" />,
-    <MarketingQuality key="marketing-quality" />,
+    <MarketingQuality entries={departmentEntries} key="marketing-quality" />,
     <section className="marketing-science-clean" id="science" key="marketing-science"><div className="wrap"><div className="sec-head"><div><div className="idx">05 / Наукова діяльність</div><h2>Наукова діяльність кафедри</h2></div></div><div className="marketing-science-clean-grid">
       <Link href="/research/conferences#marketing-proceedings"><span>01</span><small>Конференції</small><h3>Збірники матеріалів конференцій</h3><p>Повні PDF за 2024, 2025 та 2026 роки.</p><b>→</b></Link>
       <Link href="/research/journals#marketing-publications"><span>02</span><small>Наукові видання</small><h3>Монографії кафедри</h3><p>Дві колективні монографії, підготовлені викладачами кафедри.</p><b>→</b></Link>
@@ -143,7 +143,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <MarketingStudentLife entries={departmentEntries} key="marketing-student-life" />,
     <MarketingCareers key="marketing-careers" />,
     <MarketingPartners entries={departmentEntries} key="marketing-partners" />,
-    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", "marketing-repository", "curriculum", "marketing-partner-agreements", "marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", ...marketingMethodicalSectionIds, ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
+    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", "quality", "marketing-quality-discussion", "marketing-repository", "curriculum", "marketing-partner-agreements", "marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", ...marketingMethodicalSectionIds, ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
     <MarketingRepository entries={departmentEntries} key="marketing-repository" />,
   ] : null;
   const financeSectionContent = slug === "finance" ? [

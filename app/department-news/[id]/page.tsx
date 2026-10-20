@@ -38,9 +38,10 @@ export default async function Page({ params }: Props) {
   const date = departmentPublicationDate(entry)?.label || "";
   const isMarketingClubNews = entry.pagePath === "/programs/marketing" && entry.sectionId === "science-club";
   const isMarketingRepositoryNews = entry.pagePath === "/programs/marketing" && entry.sectionId === "marketing-repository";
+  const isMarketingQualityNews = entry.pagePath === "/programs/marketing" && ["quality", "marketing-quality-discussion"].includes(entry.sectionId);
   const studentSection = entry.pagePath === "/programs/marketing" ? marketingStudentSections.find((section) => section.id === entry.sectionId) : undefined;
-  const returnSection = isMarketingClubNews ? "science-club" : isMarketingRepositoryNews ? "marketing-repository" : studentSection?.id || "department-news";
-  const returnLabel = isMarketingClubNews ? "← До наукового гуртка" : isMarketingRepositoryNews ? "← До репозитарію" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
+  const returnSection = isMarketingClubNews ? "science-club" : isMarketingRepositoryNews ? "marketing-repository" : isMarketingQualityNews ? "quality" : studentSection?.id || "department-news";
+  const returnLabel = isMarketingClubNews ? "← До наукового гуртка" : isMarketingRepositoryNews ? "← До репозитарію" : isMarketingQualityNews ? "← До обговорення ОПП" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
 
   return <main id="top">
     <SiteHeader englishHref={isMarketingClubNews || isMarketingRepositoryNews || studentSection ? "/en/news" : undefined} />

@@ -224,9 +224,18 @@ const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { 
 
 test("makes every marketing methodical subsection editable", () => {
   const registered = sections.editorialSectionsForPage("/programs/marketing").filter((section) => section.id.startsWith("marketing-methodical-"));
-  assert.equal(registered.length, 14);
+  assert.equal(registered.length, 18);
   assert.ok(registered.some((section) => section.label === "Бакалаврат · Курсові роботи"));
   assert.ok(registered.some((section) => section.label === "Магістратура · Кваліфікаційні роботи та атестація"));
+  for (const level of ["bachelor", "master"]) for (const type of ["work-programmes", "annotations"]) {
+    assert.ok(registered.some((section) => section.id === `marketing-methodical-${level}-${type}-electives` && section.label.endsWith("· Вибіркові дисципліни")));
+  }
+});
+
+test("keeps marketing quality discussion separate and editable in the panel", () => {
+  const marketing = sections.editorialSectionsForPage("/programs/marketing");
+  assert.deepEqual(marketing.find((section) => section.id === "marketing-quality-discussion"), { id: "marketing-quality-discussion", label: "Якість освіти · Обговорення змін до ОПП" });
+  assert.equal(sections.editorialSectionsForPage("/programs/finance").some((section) => section.id === "marketing-quality-discussion"), false);
 });
 
 test("makes both marketing student subsections selectable before any entries exist", () => {

@@ -51,6 +51,18 @@ test("publishes the sourced Volodymyr Lipkan column in Academy news",async()=>{
   assert.match(await english.text(),/Volodymyr Lipkan on Ukraine/);
 });
 
+test("publishes the supplied legal-faculty podcast announcement and image", async () => {
+  const slug = "anna-puhachova-vid-tsiny-do-tsinnosti-2026";
+  const response = await render(`/news/${slug}`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Від ціни до цінності/);
+  assert.match(html, /Анна Пугачова/);
+  assert.match(html, /22 жовтня, 14:00/);
+  assert.match(html, /law-value-podcast-2026\.png/);
+  assert.ok((await (await render("/news")).text()).includes(`/news/${slug}`));
+});
+
 test("returns 404 for missing staff profiles in both languages without replacing the people index",async()=>{
   for(const path of ["/people/missing-staff-profile","/en/people/missing-staff-profile"]){
     const response=await render(path);
@@ -961,6 +973,8 @@ test("separates marketing bachelor and master materials and publishes stakeholde
   assert.doesNotMatch(programmeBody,/marketing-stakeholder-call|anketa-stakeholderiv-mahistr-2026|propozytsii-stakeholderiv-mahistr-2026/);
   const qualityBody=marketing.slice(marketing.indexOf('class="marketing-quality"'),marketing.indexOf('class="marketing-science-clean"'));
   assert.equal((qualityBody.match(/id="marketing-stakeholder-call"/g)||[]).length,1,"Stakeholder call is not duplicated");
+  assert.doesNotMatch(qualityBody,/розміщено нижче в розділі/);
+  for (const id of ["marketing-discussion-2026-students", "marketing-discussion-2026-employers", "marketing-discussion-2026-seminar"]) assert.match(qualityBody, new RegExp(`/department-news/${id}`));
   for(const slug of ["obhovorennia-opp-marketynh-12-bereznia-2026","obhovorennia-opp-marketynh-17-travnia-2026"]){
     assert.match(qualityBody,new RegExp(slug));
   }
@@ -981,6 +995,7 @@ test("publishes marketing master programmes and nested methodical document folde
   assert.match(marketing,/Графіки консультацій викладачів/);
   for (const section of ["Робочі програми навчальних дисциплін", "Анотації навчальних дисциплін", "Методичні рекомендації", "Практична підготовка", "Курсові роботи", "Кваліфікаційні роботи та атестація", "Навчальні та навчально-методичні видання викладачів кафедри", "Електронні освітні ресурси"]) assert.ok(marketing.includes(section), `Missing methodical subsection: ${section}`);
   for (const sectionId of ["marketing-methodical-bachelor-work-programmes", "marketing-methodical-master-qualification", "marketing-methodical-consultations"]) assert.ok(marketing.includes(`id="${sectionId}"`), `Missing editable subsection: ${sectionId}`);
+  for (const level of ["bachelor", "master"]) for (const type of ["work-programmes", "annotations"]) assert.ok(marketing.includes(`id="marketing-methodical-${level}-${type}-electives"`));
   for(const relativePath of [
     "programmes/opp-marketing-master-2025.pdf",
     "programmes/opp-marketing-master-2026.pdf",

@@ -36,6 +36,7 @@ export type ScheduleImportInput = {
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { marketingQualitySeedContent } from "@/lib/marketing-quality-seeds";
 
 const SEED_AUTHOR = "editorial@apsvt.local";
 const SEED_DATE = "2026-07-18T00:00:00.000Z";
@@ -45,6 +46,7 @@ function seed(id: string, kind: ContentKind, payload: ContentPayload, sortOrder:
 }
 
 export const seedContent: ContentItem[] = [
+  ...marketingQualitySeedContent,
   seed("lesson-01", "lesson", { date: "07.09", day: "Понеділок", time: "09:00–10:20", course: "Іноземна мова", type: "Практичне", group: "1 курс", faculty: "Економіка і туризм", teacher: "О. Мельник", room: "214" }, 10),
   seed("lesson-02", "lesson", { date: "07.09", day: "Понеділок", time: "10:35–11:55", course: "Основи менеджменту", type: "Лекція", group: "1 курс", faculty: "Економіка і туризм", teacher: "Н. Василець", room: "305" }, 20),
   seed("lesson-03", "lesson", { date: "07.09", day: "Понеділок", time: "12:20–13:40", course: "Теорія держави і права", type: "Лекція", group: "1 курс", faculty: "Право", teacher: "Я. Журавель", room: "118" }, 30),
@@ -230,9 +232,21 @@ function toSupabaseRow(item: ContentItem) {
   };
 }
 
+let marketingQualitySeedsEnsured = false;
+async function ensureMarketingQualitySeeds(): Promise<void> {
+  if (marketingQualitySeedsEnsured || !isSupabaseConfigured()) return;
+  const { error } = await createSupabaseAdmin().from("editorial_content_items").upsert(
+    marketingQualitySeedContent.map(toSupabaseRow),
+    { onConflict: "id", ignoreDuplicates: true },
+  );
+  if (error) throw error;
+  marketingQualitySeedsEnsured = true;
+}
+
 export async function getContentItems(kind: ContentKind): Promise<ContentItem[]> {
   if (isSupabaseConfigured()) {
     try {
+      if (kind === "research_resource") await ensureMarketingQualitySeeds();
       const { data, error } = await createSupabasePublicClient().from("editorial_content_items").select("*").eq("kind", kind).order("sort_order", { ascending: true });
       if (error) throw error;
       if (data?.length) return data.map((row) => applyPublishedCorrections(fromRow(row as Record<string, unknown>)));
@@ -258,6 +272,7 @@ export async function getPublicContent(kind: ContentKind): Promise<PublicContent
 export async function getAllContent(): Promise<ContentItem[]> {
   if (isSupabaseConfigured()) {
     try {
+      await ensureMarketingQualitySeeds();
       const { data, error } = await createSupabaseAdmin().from("editorial_content_items").select("*").order("kind").order("sort_order");
       if (error) throw error;
       return (data || []).map((row) => applyPublishedCorrections(fromRow(row as Record<string, unknown>)));

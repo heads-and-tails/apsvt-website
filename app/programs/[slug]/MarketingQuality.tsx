@@ -1,4 +1,7 @@
 import Link from "next/link";
+import type { DepartmentEntry } from "@/lib/department-content";
+import { departmentPublicationDate } from "@/lib/department-news-date";
+import { DepartmentImages } from "@/app/components/DepartmentMedia";
 
 const discussionNews = [
   { date: "12 березня 2026", href: "/news/obhovorennia-opp-marketynh-12-bereznia-2026" },
@@ -32,7 +35,7 @@ function QualityLevel({master}:{master:boolean}) {
   return <details className="marketing-quality-level">
     <summary><span>{master ? "02" : "01"}</span><strong>{master ? "Магістратура" : "Бакалаврат"}</strong><b aria-hidden="true">+</b></summary>
     {master ? <div className="marketing-quality-level-body">
-      <p>Звернення «Шановні стейкхолдери!» розміщено нижче в розділі «Обговорення змін до ОПП» без повторення тексту.</p>
+      <MasterDiscussion />
       <div className="marketing-programme-links">
         <a href="/documents/marketing/stakeholders/anketa-stakeholderiv-mahistr-2026.pdf" target="_blank" rel="noreferrer"><span>01</span><div><small>Анкета · PDF</small><strong>Анкета для стейкхолдерів</strong></div><b>↗</b></a>
         <a href="/documents/marketing/stakeholders/propozytsii-stakeholderiv-mahistr-2026.pdf" target="_blank" rel="noreferrer"><span>02</span><div><small>Обговорення ОПП · PDF</small><strong>Таблиця пропозицій стейкхолдерів та результатів їх розгляду</strong></div><b>↗</b></a>
@@ -41,7 +44,9 @@ function QualityLevel({master}:{master:boolean}) {
   </details>;
 }
 
-export function MarketingQuality() {
+export function MarketingQuality({ entries }: { entries: DepartmentEntry[] }) {
+  const discussionEntries = entries.filter((entry) => entry.entryType === "news" && !entry.hidden && ["quality", "marketing-quality-discussion"].includes(entry.sectionId))
+    .sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt));
   return <section className="marketing-quality" id="quality"><div className="wrap">
     <header className="marketing-quality-head"><div className="idx">04 / Якість освіти</div><h2>Якість освіти</h2></header>
     <div className="marketing-quality-folders">
@@ -53,7 +58,8 @@ export function MarketingQuality() {
         <summary><span>02</span><strong>Обговорення змін до ОПП</strong><b aria-hidden="true">+</b></summary>
         <div className="marketing-quality-folder-body">
           <details className="marketing-quality-level"><summary><span>01</span><strong>Бакалаврат</strong><b aria-hidden="true">+</b></summary><p className="marketing-quality-empty">У цьому підрозділі матеріали ще не розміщено.</p></details>
-          <details className="marketing-quality-level"><summary><span>02</span><strong>Магістратура</strong><b aria-hidden="true">+</b></summary><div className="marketing-quality-level-body"><MasterDiscussion /></div></details>
+          <details className="marketing-quality-level"><summary><span>02</span><strong>Магістратура</strong><b aria-hidden="true">+</b></summary><div className="marketing-quality-level-body"><div className="marketing-programme-links">{discussionNews.map((item, index) => <Link href={item.href} key={item.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>Оголошення</small><strong>Обговорення ОПП «Маркетинг» · {item.date}</strong></div><b>→</b></Link>)}</div></div></details>
+          {discussionEntries.length > 0 && <div className="marketing-quality-announcements"><h3>Повідомлення та результати обговорень</h3><div className="marketing-quality-announcement-grid">{discussionEntries.map((entry) => <article key={entry.id}><Link href={`/department-news/${entry.id}`}><DepartmentImages entry={entry} /><div>{departmentPublicationDate(entry) && <time dateTime={departmentPublicationDate(entry)!.dateTime}>{departmentPublicationDate(entry)!.label}</time>}<h4>{entry.title}</h4><span>Читати повністю →</span></div></Link></article>)}</div></div>}
         </div>
       </details>
     </div>
