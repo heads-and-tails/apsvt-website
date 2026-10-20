@@ -41,7 +41,20 @@ export function MarketingMethodicalFolders({ entries }: { entries: DepartmentEnt
               <div className="marketing-methodical-file-list">{files.filter((entry) => academicYear(entry) === year).map((entry) => <a href={entry.fileUrl} target="_blank" rel="noreferrer" key={entry.id}><span>{year}</span><strong>{entry.title}</strong><b>{entry.fileUrl.toLowerCase().split("?")[0].endsWith(".pdf") ? "PDF ↗" : "↗"}</b></a>)}</div>
             </div>)}
             {retained.length > 0 && <div className="marketing-methodical-file-list">{retained.map((file) => <a href={file.href} target="_blank" rel="noreferrer" key={file.href}><span>{file.year}</span><strong>{file.title}</strong><b>{file.href.endsWith(".pdf") ? "PDF ↗" : "↗"}</b></a>)}</div>}
-            {!sectionEntries.length && !retained.length && <p className="marketing-methodical-empty">Матеріали цього підрозділу поки не опубліковано.</p>}
+            {section.children?.map((child) => {
+              const childEntries = entries.filter((entry) => entry.sectionId === child.id && !entry.hidden);
+              const childFiles = childEntries.filter((entry) => entry.entryType === "material" && entry.fileUrl);
+              const childYears = [...new Set(childFiles.map(academicYear))].sort((a, b) => b.localeCompare(a, "uk"));
+              return <details className="marketing-methodical-elective-subfolder" id={child.id} key={child.id}>
+                <summary><strong>{child.title}</strong><b aria-hidden="true">+</b></summary>
+                <div className="marketing-methodical-elective-body">
+                  <DepartmentEditorialContent entries={childEntries.filter((entry) => entry.entryType !== "material")} inline />
+                  {childYears.map((year) => <div className="marketing-methodical-year" key={year}><h4>{year === "Рік не зазначено" ? year : `${year} навчальний рік`}</h4><div className="marketing-methodical-file-list">{childFiles.filter((entry) => academicYear(entry) === year).map((entry) => <a href={entry.fileUrl} target="_blank" rel="noreferrer" key={entry.id}><span>{year}</span><strong>{entry.title}</strong><b>{entry.fileUrl.toLowerCase().split("?")[0].endsWith(".pdf") ? "PDF ↗" : "↗"}</b></a>)}</div></div>)}
+                  {!childEntries.length && <p className="marketing-methodical-empty">Матеріали цього підрозділу поки не опубліковано.</p>}
+                </div>
+              </details>;
+            })}
+            {!sectionEntries.length && !retained.length && !section.children?.length && <p className="marketing-methodical-empty">Матеріали цього підрозділу поки не опубліковано.</p>}
           </details>;
         })}
       </div>

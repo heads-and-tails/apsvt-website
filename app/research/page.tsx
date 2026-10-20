@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const resources = await getContentItems("research_resource");
+  const resources = (await getContentItems("research_resource"))
+    .filter(({ payload }) => typeof payload.url === "string" && payload.url.trim());
 
   return (
     <main id="top">
