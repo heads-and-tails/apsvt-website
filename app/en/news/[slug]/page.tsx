@@ -25,7 +25,7 @@ export default async function NewsArticle({ params }: Props) {
 
   return <main id="top" className="english-page"><SiteHeader />
     <section className="detail-hero"><div className="wrap"><Link className="back-link" href="/en/news">← All news</Link><div className="detail-kicker mono">{post.category}{!original?.hideDate && ` · ${date}`}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div></section>
-    <div className="article-cover"><img src={post.imageUrl} alt={post.imageAlt} /></div>
+    {post.imageUrl && <div className="article-cover"><img src={post.imageUrl} alt={post.imageAlt} /></div>}
     <section className="article-section"><div className="wrap detail-layout"><article className="detail-copy"><EditorialRichText text={post.body} language="en" /></article><aside className="detail-aside"><div className="panel"><h3>Discover APSVT</h3><ul><li><span className="y">Study</span><Link href="/en/programs">Degree programmes</Link></li><li><span className="y">Apply</span><Link href="/en/admissions">Admissions 2026</Link></li><li><span className="y">Meet</span><Link href="/en/events">Academy events</Link></li></ul></div></aside></div></section>
     <EnglishFooter />
   </main>;

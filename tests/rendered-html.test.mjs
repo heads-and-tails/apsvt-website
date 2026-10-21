@@ -75,6 +75,13 @@ test("publishes the complete EduPro announcement with the supplied registration 
   assert.match(html, /class="lang-toggle"[^>]*href="\/en\/news"|href="\/en\/news"[^>]*class="lang-toggle"/);
   assert.ok((await (await render("/news")).text()).includes(path));
   assert.ok((await (await render("/")).text()).includes(path));
+  const englishIndex = await (await render("/en/news")).text();
+  assert.ok(englishIndex.includes(`/en${path}`));
+  assert.doesNotMatch(englishIndex, /<img[^>]*src=""/);
+  const englishArticle = await (await render(`/en${path}`)).text();
+  assert.match(englishArticle, /EDUPRO2026/);
+  assert.doesNotMatch(englishArticle, /article-cover|<img[^>]*src=""/);
+  assert.match(await (await render("/en/news/anna-puhachova-vid-tsiny-do-tsinnosti-2026")).text(), /class="article-cover"/);
 });
 
 test("returns 404 for missing staff profiles in both languages without replacing the people index",async()=>{
