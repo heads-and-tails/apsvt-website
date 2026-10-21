@@ -3,6 +3,7 @@ import { digitalDepartmentPath, digitalDepartmentSections, professionalEducation
 import { marketingStudentSections } from "./marketing-student-sections";
 import { marketingMethodicalGroups } from "./marketing-methodical";
 import { marketingMobilitySection } from "./marketing-mobility";
+import { marketingTeacherAchievementsSection } from "./marketing-teacher-achievements";
 
 export const financeProjectSections = [
   { id: "greenfinedu", label: "Jean Monnet GreenFinEDU" },
@@ -15,6 +16,7 @@ export function editorialSectionsForPage(path: string): { id: string; label: str
   if (path === "/programs/marketing") return [
     { id: "department", label: "Про кафедру" },
     { id: "department-team", label: "Науково-педагогічний склад" },
+    { id: marketingTeacherAchievementsSection.id, label: marketingTeacherAchievementsSection.label },
     { id: "curriculum", label: "Освітні програми" },
     { id: "marketing-bachelor-programmes", label: "Бакалаврат · Освітні програми" },
     { id: "marketing-bachelor-plans", label: "Бакалаврат · Навчальні плани" },

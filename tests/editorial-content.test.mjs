@@ -222,7 +222,27 @@ const studentSectionsUrl = await moduleUrl("../lib/marketing-student-sections.ts
 const methodicalSectionsUrl = await moduleUrl("../lib/marketing-methodical.ts");
 const mobilityUrl = await moduleUrl("../lib/marketing-mobility.ts");
 const mobility = await import(mobilityUrl);
-const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl }));
+const teacherAchievementsUrl = await moduleUrl("../lib/marketing-teacher-achievements.ts");
+const teacherAchievements = await import(teacherAchievementsUrl);
+const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl, "./marketing-teacher-achievements": teacherAchievementsUrl }));
+
+test("teacher achievements has a separate editorial target and renders published posts, photos and PDFs only", async () => {
+  const section = teacherAchievements.marketingTeacherAchievementsSection;
+  assert.ok(sections.editorialSectionsForPage("/programs/marketing").some(item => item.id === section.id && item.label === section.label));
+  assert.ok(!sections.editorialSectionsForPage("/programs/finance").some(item => item.id === section.id));
+  const renderer = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export function DepartmentEditorialContent({entries}){return entries.map(entry=>createElement("article",{key:entry.id},entry.title));}`).toString("base64")}`;
+  const { MarketingTeacherAchievements } = await import(await moduleUrl("../app/programs/[slug]/MarketingTeacherAchievements.tsx", { "@/lib/marketing-teacher-achievements": teacherAchievementsUrl, "@/app/components/DepartmentEditorialContent": renderer }));
+  const entry = { id: "news", sectionId: section.id, status: "published", entryType: "news", title: "Published achievement" };
+  const allowed = [entry, { ...entry, id: "photo", entryType: "photo", title: "Confirming photo" }, { ...entry, id: "pdf", entryType: "material", title: "Supporting PDF" }];
+  const excluded = [{ ...entry, id: "draft", status: "draft", title: "Private draft" }, { ...entry, id: "hidden", hidden: true, title: "Hidden item" }, { ...entry, id: "teacher", entryType: "teacher", title: "Teacher profile" }, { ...entry, id: "other", sectionId: "department-news", title: "Other news" }];
+  const html = renderToStaticMarkup(createElement(MarketingTeacherAchievements, { entries: [...allowed, ...excluded] }));
+  for (const item of allowed) assert.ok(html.includes(item.title));
+  for (const item of excluded) assert.ok(!html.includes(item.title));
+  const empty = renderToStaticMarkup(createElement(MarketingTeacherAchievements, { entries: excluded }));
+  assert.ok(empty.includes(section.title));
+  assert.match(empty, /матеріали ще не розміщено/);
+  assert.doesNotMatch(empty, /<article/);
+});
 
 test("places the existing mobility report in the master's subsection without overriding an editor's later placement", () => {
   const id = "68097e3c-0d97-43f3-b41a-fd90a58bc99d";
