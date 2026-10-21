@@ -11,6 +11,7 @@ import { isDepartmentImage, isDepartmentAttachment, parseDepartmentMedia, type D
 import { editorialTextIsValid, editorialLink } from "./editorial-text";
 import { isEditorialPagePath } from "@/lib/editorial-access";
 import { educationQualityRubrics } from "@/lib/education-quality";
+import { marketingMobilitySectionId } from "./marketing-mobility";
 
 export const departmentEntryTypes = ["override", "hero", "section", "news", "article", "material", "photo", "teacher", "partner", "quality"] as const;
 export type DepartmentEntryType = (typeof departmentEntryTypes)[number];
@@ -111,7 +112,7 @@ function fromContentItem(item: ContentItem): DepartmentEntry {
   return {
     id: item.id,
     pagePath: payload.pagePath || "",
-    sectionId: payload.sectionId || "",
+    sectionId: marketingMobilitySectionId(item.id, payload.pagePath || "", payload.sectionId || ""),
     entryType: isDepartmentEntryType(payload.entryType) ? payload.entryType : "section",
     title: payload.title || "",
     summary: payload.summary || "",

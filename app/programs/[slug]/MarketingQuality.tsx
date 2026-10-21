@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { departmentPublicationDate } from "@/lib/department-news-date";
 import { DepartmentImages } from "@/app/components/DepartmentMedia";
+import { MarketingMobility } from "./MarketingMobility";
 
 const discussionNews = [
   { date: "12 березня 2026", href: "/news/obhovorennia-opp-marketynh-12-bereznia-2026" },
@@ -62,6 +63,7 @@ export function MarketingQuality({ entries }: { entries: DepartmentEntry[] }) {
           {discussionEntries.length > 0 && <div className="marketing-quality-announcements"><h3>Повідомлення та результати обговорень</h3><div className="marketing-quality-announcement-grid">{discussionEntries.map((entry) => <article key={entry.id}><Link href={`/department-news/${entry.id}`}><DepartmentImages entry={entry} /><div>{departmentPublicationDate(entry) && <time dateTime={departmentPublicationDate(entry)!.dateTime}>{departmentPublicationDate(entry)!.label}</time>}<h4>{entry.title}</h4><span>Читати повністю →</span></div></Link></article>)}</div></div>}
         </div>
       </details>
+      <MarketingMobility entries={entries} />
     </div>
   </div></section>;
 }

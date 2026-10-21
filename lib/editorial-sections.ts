@@ -2,6 +2,7 @@ import { lawFacultyPath, lawFacultyStructure, lawFacultySubpages } from "./law-f
 import { digitalDepartmentPath, digitalDepartmentSections, professionalEducationProgrammes, professionalEducationSections } from "./professional-education";
 import { marketingStudentSections } from "./marketing-student-sections";
 import { marketingMethodicalGroups } from "./marketing-methodical";
+import { marketingMobilitySection } from "./marketing-mobility";
 
 export const financeProjectSections = [
   { id: "greenfinedu", label: "Jean Monnet GreenFinEDU" },
@@ -21,6 +22,7 @@ export function editorialSectionsForPage(path: string): { id: string; label: str
     { id: "marketing-master-plans", label: "Магістратура · Навчальні плани" },
     { id: "quality", label: "Якість освіти" },
     { id: "marketing-quality-discussion", label: "Якість освіти · Обговорення змін до ОПП" },
+    { id: marketingMobilitySection.id, label: marketingMobilitySection.label },
     { id: "science", label: "Наукова діяльність" },
     { id: "science-club", label: "Науковий гурток" },
     { id: "programme-documents", label: "Навчально-методичне забезпечення" },
