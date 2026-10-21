@@ -220,7 +220,34 @@ const professionalUrl = await moduleUrl("../lib/professional-education.ts", { ".
 const professional = await import(professionalUrl);
 const studentSectionsUrl = await moduleUrl("../lib/marketing-student-sections.ts");
 const methodicalSectionsUrl = await moduleUrl("../lib/marketing-methodical.ts");
-const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl }));
+const mobilityUrl = await moduleUrl("../lib/marketing-mobility.ts");
+const mobility = await import(mobilityUrl);
+const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl }));
+
+test("places the existing mobility report in the master's subsection without overriding an editor's later placement", () => {
+  const id = "68097e3c-0d97-43f3-b41a-fd90a58bc99d";
+  assert.equal(mobility.marketingMobilitySectionId(id, "/programs/marketing", "department-news"), mobility.marketingMobilitySection.id);
+  assert.equal(mobility.marketingMobilitySectionId(id, "/programs/marketing", "science-club"), "science-club");
+  assert.equal(mobility.marketingMobilitySectionId("another-report", "/programs/marketing", "department-news"), "department-news");
+  assert.equal(mobility.marketingMobilitySectionId(id, "/programs/finance", "department-news"), "department-news");
+  assert.ok(sections.editorialSectionsForPage("/programs/marketing").some(section => section.id === mobility.marketingMobilitySection.id && section.label === mobility.marketingMobilitySection.label));
+  assert.ok(!sections.editorialSectionsForPage("/programs/finance").some(section => section.id === mobility.marketingMobilitySection.id));
+});
+
+test("mobility subsection shows only its visible published content and keeps a usable empty section", async () => {
+  const renderer = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export function DepartmentEditorialContent({entries}){return entries.map(entry=>createElement("article",{key:entry.id},entry.title));}`).toString("base64")}`;
+  const { MarketingMobility } = await import(await moduleUrl("../app/programs/[slug]/MarketingMobility.tsx", { "@/lib/marketing-mobility": mobilityUrl, "@/app/components/DepartmentEditorialContent": renderer }));
+  const published = { id: "visible", sectionId: mobility.marketingMobilitySection.id, status: "published", entryType: "news", title: "Visible mobility report" };
+  const variants = [{ ...published, id: "draft", status: "draft", title: "Private draft" }, { ...published, id: "hidden", hidden: true, title: "Hidden report" }, { ...published, id: "other", sectionId: "department-news", title: "Other news" }, { ...published, id: "teacher", entryType: "teacher", title: "Teacher record" }];
+  const html = renderToStaticMarkup(createElement(MarketingMobility, { entries: [published, ...variants] }));
+  assert.match(html, /Visible mobility report/);
+  assert.doesNotMatch(html, /Private draft|Hidden report|Other news|Teacher record/);
+  assert.match(html, /Магістратура/);
+  const empty = renderToStaticMarkup(createElement(MarketingMobility, { entries: variants }));
+  assert.match(empty, /Академічна мобільність та визнання результатів навчання/);
+  assert.match(empty, /матеріали ще не розміщено/);
+  assert.doesNotMatch(empty, /<article/);
+});
 
 test("makes every marketing methodical subsection editable", () => {
   const registered = sections.editorialSectionsForPage("/programs/marketing").filter((section) => section.id.startsWith("marketing-methodical-"));

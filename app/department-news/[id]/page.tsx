@@ -9,6 +9,7 @@ import { DepartmentImages, DepartmentAttachments } from "@/app/components/Depart
 import { departmentPublicationDate } from "@/lib/department-news-date";
 import { editorialAccessOptions } from "@/lib/editorial-access";
 import { marketingStudentSections } from "@/lib/marketing-student-sections";
+import { marketingMobilitySection } from "@/lib/marketing-mobility";
 
 export const dynamic = "force-dynamic";
 
@@ -39,12 +40,13 @@ export default async function Page({ params }: Props) {
   const isMarketingClubNews = entry.pagePath === "/programs/marketing" && entry.sectionId === "science-club";
   const isMarketingRepositoryNews = entry.pagePath === "/programs/marketing" && entry.sectionId === "marketing-repository";
   const isMarketingQualityNews = entry.pagePath === "/programs/marketing" && ["quality", "marketing-quality-discussion"].includes(entry.sectionId);
+  const isMarketingMobilityNews = entry.pagePath === "/programs/marketing" && entry.sectionId === marketingMobilitySection.id;
   const studentSection = entry.pagePath === "/programs/marketing" ? marketingStudentSections.find((section) => section.id === entry.sectionId) : undefined;
-  const returnSection = isMarketingClubNews ? "science-club" : isMarketingRepositoryNews ? "marketing-repository" : isMarketingQualityNews ? "quality" : studentSection?.id || "department-news";
-  const returnLabel = isMarketingClubNews ? "← До наукового гуртка" : isMarketingRepositoryNews ? "← До репозитарію" : isMarketingQualityNews ? "← До обговорення ОПП" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
+  const returnSection = isMarketingClubNews ? "science-club" : isMarketingRepositoryNews ? "marketing-repository" : isMarketingMobilityNews ? marketingMobilitySection.id : isMarketingQualityNews ? "quality" : studentSection?.id || "department-news";
+  const returnLabel = isMarketingClubNews ? "← До наукового гуртка" : isMarketingRepositoryNews ? "← До репозитарію" : isMarketingMobilityNews ? "← До академічної мобільності" : isMarketingQualityNews ? "← До обговорення ОПП" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
 
   return <main id="top">
-    <SiteHeader englishHref={isMarketingClubNews || isMarketingRepositoryNews || studentSection ? "/en/news" : undefined} />
+    <SiteHeader englishHref={isMarketingClubNews || isMarketingRepositoryNews || isMarketingMobilityNews || studentSection ? "/en/news" : undefined} />
     <section className="detail-hero">
       <div className="wrap"><div className="detail-kicker mono">{pageTitle}{date ? ` · ${date}` : ""}</div><h1>{entry.title}</h1>{entry.summary && <p className="detail-deck">{entry.summary}</p>}</div>
     </section>
