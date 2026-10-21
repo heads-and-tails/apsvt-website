@@ -21,6 +21,30 @@ const academicNews = await import(await moduleUrl("../lib/academic-news.ts"));
 const profiles = await import(await moduleUrl("../lib/academic-profile.ts"));
 const administrationMaterials = await import(await moduleUrl("../lib/public-administration-materials.ts"));
 const discussionArchive = await import(await moduleUrl("../lib/public-administration-announcements.ts"));
+const eduproUrl = await moduleUrl("../lib/edupro-news.ts");
+const edupro = await import(eduproUrl);
+
+test("preserves the complete supplied EduPro announcement without email history or an invented image", () => {
+  const post = edupro.eduproAnnouncement;
+  const text = `${post.title}${post.excerpt}${post.body}`.normalize("NFC").replace(/[^\p{L}\p{N}]/gu, "").toLowerCase();
+  assert.equal(createHash("sha256").update(text).digest("hex"), "7dbe460bbb822a62be264eda0528a6be7b246fc620db793c2973dcc986971a71");
+  assert.equal(post.slug, edupro.eduproNewsSlug);
+  assert.equal(post.imageUrl, "");
+  assert.equal(post.status, "published");
+  assert.doesNotMatch(post.body, /з повагою|ivan\.kucha|Розклад занять|gmail_quote/i);
+});
+
+test("news cards support an announcement without a supplied image and preserve existing photo cards", async () => {
+  const link = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export default function Link(props){return createElement("a",props);}`).toString("base64")}`;
+  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": await moduleUrl("../lib/post-image.ts") }));
+  const html = renderToStaticMarkup(createElement(NewsCard, { post: edupro.eduproAnnouncement }));
+  assert.ok(html.includes(`/news/${edupro.eduproNewsSlug}`));
+  assert.match(html, /EDUPRO2026/);
+  assert.doesNotMatch(html, /<img|class="ph"/);
+  const photo = renderToStaticMarkup(createElement(NewsCard, { post: { ...edupro.eduproAnnouncement, imageUrl: "/source-photo.jpg", imageAlt: "Original source photo" } }));
+  assert.match(photo, /src="\/source-photo.jpg"/);
+  assert.match(photo, /alt="Original source photo"/);
+});
 
 test("scientific club renders only published visible club materials and keeps its empty heading", async () => {
   const rendererUrl = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))}; export function DepartmentEditorialContent({entries}){return entries.map(entry=>createElement("article",{key:entry.id},entry.title))}`).toString("base64")}`;
@@ -404,6 +428,7 @@ test("respects successful empty published-news queries and preserves fallback fo
   `).toString("base64")}`;
   const { state } = await import(mockUrl);
   const posts = await import(await moduleUrl("../lib/data.ts", {
+    "./edupro-news": eduproUrl,
     "@/lib/supabase/admin": mockUrl,
     "@/lib/supabase/public": mockUrl,
     "@/lib/supabase/config": mockUrl,
