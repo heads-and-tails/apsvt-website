@@ -30,6 +30,7 @@ import { MarketingPartners } from "./MarketingPartners";
 import { MarketingQuality } from "./MarketingQuality";
 import { MarketingMethodicalFolders } from "./MarketingMethodicalFolders";
 import { marketingMobilitySection } from "@/lib/marketing-mobility";
+import { marketingTeacherAchievementsSection } from "@/lib/marketing-teacher-achievements";
 import { marketingMethodicalSectionIds } from "@/lib/marketing-methodical";
 import { FinanceInternational, financeProjectSections } from "./FinanceInternational";
 import { FinanceMasterProgramme } from "./FinanceMasterProgramme";
@@ -55,7 +56,7 @@ const programmeSections: readonly SectionHubItem[] = [
 
 const marketingSections: readonly SectionHubItem[] = [
   { id: "department", index: "01", title: "Про кафедру", description: "Місія, напрями роботи та освітнє середовище кафедри маркетингу.", icon: "D5" },
-  { id: "department-team", index: "02", title: "Науково-педагогічний склад", description: "Викладачі, освіта, наукові інтереси та професійні профілі.", icon: "NPP" },
+  { id: "department-team", index: "02", title: "Науково-педагогічний склад", description: "Викладачі, освіта, наукові інтереси та професійні профілі.", icon: "NPP", aliases: [marketingTeacherAchievementsSection.id] },
   { id: "curriculum", index: "03", title: "Освітні програми", description: "Рівні освіти, навчальні плани, обов’язкові й вибіркові компоненти.", icon: "OP", aliases: ["overview", "education-levels", "electives", "course-annotations"] },
   { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг якості освіти та обговорення змін до ОПП за рівнями.", icon: "✓", aliases: ["marketing-quality-discussion", "marketing-stakeholder-call", marketingMobilitySection.id] },
   { id: "science", index: "05", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI", aliases: ["science-club"] },
@@ -106,7 +107,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       : "Оберіть навчальний план, кафедру, кар’єру, вступні матеріали або міжнародні можливості — відкриється тільки потрібний розділ.";
   const marketingSectionContent = slug === "marketing" ? [
     <MarketingDepartmentAbout key="marketing-about" />,
-    <MarketingTeam entries={departmentEntries.filter((entry) => entry.entryType === "teacher")} key="marketing-team" />,
+    <MarketingTeam entries={departmentEntries.filter((entry) => entry.entryType === "teacher")} achievements={departmentEntries} key="marketing-team" />,
     <MarketingEducationPrograms entries={departmentEntries} key="marketing-programmes" />,
     <MarketingQuality entries={departmentEntries} key="marketing-quality" />,
     <section className="marketing-science-clean" id="science" key="marketing-science"><div className="wrap"><div className="sec-head"><div><div className="idx">05 / Наукова діяльність</div><h2>Наукова діяльність кафедри</h2></div></div><div className="marketing-science-clean-grid">
@@ -144,7 +145,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <MarketingStudentLife entries={departmentEntries} key="marketing-student-life" />,
     <MarketingCareers key="marketing-careers" />,
     <MarketingPartners entries={departmentEntries} key="marketing-partners" />,
-    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", "quality", "marketing-quality-discussion", marketingMobilitySection.id, "marketing-repository", "curriculum", "marketing-partner-agreements", "marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", ...marketingMethodicalSectionIds, ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
+    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", "quality", "marketing-quality-discussion", marketingMobilitySection.id, marketingTeacherAchievementsSection.id, "marketing-repository", "curriculum", "marketing-partner-agreements", "marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", ...marketingMethodicalSectionIds, ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
     <MarketingRepository entries={departmentEntries} key="marketing-repository" />,
   ] : null;
   const financeSectionContent = slug === "finance" ? [

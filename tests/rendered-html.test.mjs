@@ -962,6 +962,8 @@ test("separates marketing bachelor and master materials and publishes stakeholde
   assert.match(marketing,/Другий рівень вищої освіти/);
   assert.match(marketing,/id="quality"/);
   assert.match(marketing,/id="marketing-master-mobility"/);
+  assert.match(marketing,/id="marketing-teacher-achievements"/);
+  assert.match(marketing,/Професійні та наукові здобутки викладачів/);
   assert.match(marketing,/Академічна мобільність та визнання результатів навчання/);
   assert.ok(marketing.indexOf('id="curriculum"') < marketing.indexOf('id="quality"'),"Quality follows programmes");
   assert.match(marketing,/Результати моніторингу якості освіти/);
