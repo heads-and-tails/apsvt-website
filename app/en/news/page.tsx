@@ -17,7 +17,7 @@ export default async function NewsPage() {
     <section className="phero"><div className="wrap"><div className="crumb">Home / News</div><h1>News and<br />stories</h1><p className="lead">Education, research, international partnerships and the people of the Academy.</p></div></section>
     <div className="phero-rule" />
     <section><div className="wrap"><div className="news-grid">{englishPosts.map((post) => <Link className="news" href={`/en/news/${post.slug}`} key={post.slug}>
-      <div className="ph"><img src={post.imageUrl} alt={post.imageAlt} /></div>
+      {post.imageUrl && <div className="ph"><img src={post.imageUrl} alt={post.imageAlt} /></div>}
       <div className="in">{!dateSettings.get(post.slug) && <span className="date">{format.format(new Date(post.publishedAt || post.createdAt))}</span>}<h3>{post.title}</h3><p>{post.excerpt}</p><span className="cat">{post.category}</span></div>
     </Link>)}</div></div></section><EnglishFooter />
   </main>;

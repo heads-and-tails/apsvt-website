@@ -10,6 +10,7 @@ import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDo
 import { NewsCard } from "../../components/NewsCard";
 import { EditorialRichText } from "../../components/EditorialRichText";
 import { academicCompetitionDocument, academicCompetitionNewsSlug } from "@/lib/academic-competition";
+import { eduproNewsSlug } from "@/lib/edupro-news";
 
 export const dynamic = "force-dynamic";
 
@@ -40,8 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.excerpt,
-    openGraph: { title: post.title, description: post.excerpt, type: "article", images: [{ url: image.imageUrl, alt: image.imageAlt }] },
-    twitter: { card: "summary_large_image", title: post.title, description: post.excerpt, images: [image.imageUrl] },
+    openGraph: { title: post.title, description: post.excerpt, type: "article", images: image.imageUrl ? [{ url: image.imageUrl, alt: image.imageAlt }] : undefined },
+    twitter: { card: image.imageUrl ? "summary_large_image" : "summary", title: post.title, description: post.excerpt, images: image.imageUrl ? [image.imageUrl] : undefined },
   };
 }
 
@@ -68,9 +69,9 @@ export default async function Page({ params }: Props) {
   const isAiTrainingNews = post.slug === aiTrainingNewsSlug;
 
   return <main id="top">
-    <SiteHeader />
-    <section className="detail-hero image">
-      <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} style={post.slug === volodymyrLipkanArticleNewsSlug ? { objectPosition: "center 12%" } : undefined} /></div>
+    <SiteHeader englishHref={post.slug === eduproNewsSlug ? "/en/news" : undefined} />
+    <section className={heroImage.imageUrl ? "detail-hero image" : "detail-hero"}>
+      {heroImage.imageUrl && <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} style={post.slug === volodymyrLipkanArticleNewsSlug ? { objectPosition: "center 12%" } : undefined} /></div>}
       <div className="wrap"><div className="detail-kicker mono">{post.category}{post.hideDate ? "" : ` · ${date}`}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div>
     </section>
     <div className="phero-rule" />

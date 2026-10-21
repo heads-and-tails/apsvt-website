@@ -30,7 +30,8 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/mental-health-conference-science-2026\.jpg/);
   assert.match(html,/Запрошуємо стати частиною Erasmus\+ Days 2026!/);
   assert.match(html,/Гостьова лекція Єнс-Райнхольда Губерта/);
-  assert.match(html,/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
+  assert.match(html,/EDUPRO2026: AI FOR EDUCATORS/);
+  assert.match(await (await render("/news")).text(),/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
   assert.match(html,/Навчання «Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО»/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
@@ -61,6 +62,26 @@ test("publishes the supplied legal-faculty podcast announcement and image", asyn
   assert.match(html, /22 жовтня, 14:00/);
   assert.match(html, /law-value-podcast-2026\.png/);
   assert.ok((await (await render("/news")).text()).includes(`/news/${slug}`));
+});
+
+test("publishes the complete EduPro announcement with the supplied registration URL and a text-only hero", async () => {
+  const path = "/news/edupro2026-ai-for-educators";
+  const response = await render(path);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  for (const value of ["EDUPRO2026", "10 листопада 2026", "0,5 кредиту ECTS", "Security for AI", "Moodle LMS", "https://career.softserveinc.com/en-us/technology/course/edupro-workshops"]) assert.ok(html.includes(value), value);
+  assert.match(html, /<section class="detail-hero">/);
+  assert.doesNotMatch(html, /detail-hero-bg|<img[^>]*src=""/);
+  assert.match(html, /class="lang-toggle"[^>]*href="\/en\/news"|href="\/en\/news"[^>]*class="lang-toggle"/);
+  assert.ok((await (await render("/news")).text()).includes(path));
+  assert.ok((await (await render("/")).text()).includes(path));
+  const englishIndex = await (await render("/en/news")).text();
+  assert.ok(englishIndex.includes(`/en${path}`));
+  assert.doesNotMatch(englishIndex, /<img[^>]*src=""/);
+  const englishArticle = await (await render(`/en${path}`)).text();
+  assert.match(englishArticle, /EDUPRO2026/);
+  assert.doesNotMatch(englishArticle, /article-cover|<img[^>]*src=""/);
+  assert.match(await (await render("/en/news/anna-puhachova-vid-tsiny-do-tsinnosti-2026")).text(), /class="article-cover"/);
 });
 
 test("returns 404 for missing staff profiles in both languages without replacing the people index",async()=>{
