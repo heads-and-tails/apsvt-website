@@ -14,6 +14,7 @@ const enrollmentOrderGroups = [
     title: "Магістратура",
     description: "Накази про зарахування вступників на програми другого рівня вищої освіти.",
     orders: [
+      { title: "Наказ про зарахування № 252/с", date: "15 жовтня 2026", details: "Офіційний наказ і додатки про зарахування вступників до магістратури.", pages: 9, href: "/documents/admissions/enrollment-orders/2026-10/order-252s-2026-10-15.pdf" },
       { title: "Наказ про зарахування № 222/с", date: "24 вересня 2026", details: "Офіційний наказ і додатки про зарахування вступників до магістратури.", pages: 16, href: "/documents/admissions/enrollment-orders/2026-09/order-222s-2026-09-24.pdf" },
       { title: "Наказ про зарахування № 197/с", date: "01 вересня 2026", details: "Офіційний наказ і додатки про зарахування вступників до магістратури.", pages: 3, href: "/documents/admissions/enrollment-orders/2026-09/order-197s-2026-09-01.pdf" },
       { title: "Накази про зарахування на магістратуру", date: "31 серпня 2026", details: "Зведений файл наказів і додатків за магістерськими освітніми програмами.", pages: 33, href: "/documents/admissions/enrollment-orders/2026-08/master-enrollment-orders-2026-08-31.pdf" },
