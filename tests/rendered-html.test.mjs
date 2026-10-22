@@ -29,7 +29,7 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/Освітні траєкторії/);
   assert.match(html,/mental-health-conference-science-2026\.jpg/);
   assert.match(html,/Запрошуємо стати частиною Erasmus\+ Days 2026!/);
-  assert.match(html,/Гостьова лекція Єнс-Райнхольда Губерта/);
+  assert.match(await (await render("/news")).text(),/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(html,/EDUPRO2026: AI FOR EDUCATORS/);
   assert.match(await (await render("/news")).text(),/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
   assert.match(html,/Навчання «Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО»/);
@@ -528,14 +528,14 @@ test("publishes the faculty staff meeting through both news lists and its Ukrain
   }
 });
 
-test("publishes the guest lecture in Academy and faculty news",async()=>{
-  const [homeHtml,newsHtml,facultyHtml,articleHtml]=await Promise.all([
+test("preserves the earlier guest lecture as the homepage news advances",async()=>{
+  const [homeHtml,newsHtml,articleHtml]=await Promise.all([
     (await render("/")).text(),
     (await render("/news")).text(),
-    (await render("/departments/psychology-social-development-faculty")).text(),
     (await render("/news/guest-lecture-jens-reinhold-hubert-2026")).text(),
   ]);
-  for(const html of [homeHtml,newsHtml,facultyHtml]) assert.match(html,/Гостьова лекція Єнс-Райнхольда Губерта/);
+  assert.match(homeHtml,/Студенти юридичного факультету долучилися до гостьової лекції суддів Конституційного Суду України/);
+  assert.match(newsHtml,/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(articleHtml,/8 жовтня · 13:20/);
   assert.match(articleHtml,/820 3384 7880 · код 977364/);
   assert.match(articleHtml,/news-guest-lecture-2026-10-08\.png/);
@@ -1804,4 +1804,35 @@ test("publishes the complete 8 October master English interview result in its da
   const pdf=await readFile(new URL(`../public${href}`,import.meta.url));
   assert.equal(pdf.subarray(0,5).toString(),"%PDF-");
   assert.equal(createHash("sha256").update(pdf).digest("hex"),"70297949790048fe2489f71da61c260bf6e7c07f5ed5ad32750166810d6869ad");
+});
+
+
+test("publishes the supplied court lecture report and corrected original poster in both news routes",async()=>{
+  const { constitutionalCourtLectureNews:post,constitutionalCourtLecturePoster:poster }=await import("../lib/constitutional-court-lecture-news.ts");
+  assert.equal(createHash("sha256").update(post.body).digest("hex"),"629e73588c528d83688752cf7f0f527e13689c07c0e32825459e558421e15993");
+  const paragraphs=post.body.split("\n\n");
+  assert.equal(paragraphs.length,6);
+  const escape=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#x27;");
+  const [article,english,listing,home,faculty]=await Promise.all([render(`/news/${post.slug}`),render(`/en/news/${post.slug}`),render("/news"),render("/"),render("/departments/law-faculty")]);
+  for(const response of [article,english]){
+    assert.equal(response.status,200);
+    const html=await response.text();
+    assert.ok(html.includes(escape(post.title)));
+    const start=html.indexOf('class="editorial-richtext"');
+    const body=html.slice(start,html.indexOf("</div>",start));
+    assert.equal((body.match(/<p>/g)??[]).length,6);
+    for(const paragraph of paragraphs)assert.ok(body.includes(escape(paragraph)));
+    assert.doesNotMatch(body,/zoom\.us|Просимо долучитися/);
+    assert.ok(html.includes(poster.src));
+    assert.ok(html.includes(escape(poster.alt)));
+    if(response===article){
+      assert.match(html,/class="lecture-news-poster"/);
+      assert.ok(html.includes(poster.caption));
+      assert.match(html,/22 жовтня 2026/);
+    }
+  }
+  for(const response of [listing,home,faculty])assert.ok((await response.text()).includes(`href="/news/${post.slug}"`));
+  const image=await readFile(new URL(`../public${poster.src}`,import.meta.url));
+  assert.equal(image.subarray(0,3).toString("hex"),"ffd8ff");
+  assert.equal(createHash("sha256").update(image).digest("hex"),"b0d1aa70ccc941552542e2cc031c33fc103ecfd2b07a2f1bfe1b22d2d12cf7f8");
 });
