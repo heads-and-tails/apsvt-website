@@ -343,6 +343,24 @@ test("keeps corrected admissions and archive documents in their requested sectio
   const masterOrderPdf=await readFile(new URL(`../public${octoberMasterOrder}`,import.meta.url));
   assert.equal(masterOrderPdf.subarray(0,5).toString(),"%PDF-");
   assert.equal(createHash("sha256").update(masterOrderPdf).digest("hex"),"9b4c60c8cc26c014f684184c552051fcfa8cb01f853f7784b18a009489878572");
+  const bachelorOrders=admissionsHtml.slice(bachelorStart,masterStart).replaceAll("<!-- -->","");
+  for(const [number,pages,sha256] of [
+    [250,9,"4f47e777c5df5468afc484e8f0d578c6d0bf0832119653341a0f677754134f2c"],
+    [251,5,"08c9845457f66da4a7dabc5cdb0489b6e7a9ba9c40eda54e59c6b0b56aef6151"],
+  ]){
+    const href=`/documents/admissions/enrollment-orders/2026-10/order-${number}s-2026-10-15.pdf`;
+    const start=bachelorOrders.indexOf(`href="${href}"`);
+    assert.ok(start>=0,`Bachelor order ${number} is linked in its folder`);
+    const card=bachelorOrders.slice(start,bachelorOrders.indexOf("</a>",start));
+    assert.ok(card.includes(`№ ${number}/с`));
+    assert.ok(card.includes("15 жовтня 2026"));
+    assert.ok(card.includes(`${pages} стор.`));
+    assert.ok(!masterOrders.includes(href));
+    assert.ok(!admissionsHtml.slice(phdStart,ordersEnd).includes(href));
+    const pdf=await readFile(new URL(`../public${href}`,import.meta.url));
+    assert.equal(pdf.subarray(0,5).toString(),"%PDF-");
+    assert.equal(createHash("sha256").update(pdf).digest("hex"),sha256);
+  }
   assert.match(documentsHtml,/Етичний кодекс АПСВТ/);
   assert.match(documentsHtml,/План запобігання, виявлення та протидії корупції/);
   assert.match(documentsHtml,/Архів матеріалів із запобігання та протидії корупції/);
