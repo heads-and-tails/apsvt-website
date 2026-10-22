@@ -3,6 +3,8 @@ const enrollmentOrderGroups = [
     title: "Бакалаврат",
     description: "Накази про зарахування вступників на програми першого рівня вищої освіти.",
     orders: [
+      { title: "Наказ про зарахування № 250/с", date: "15 жовтня 2026", details: "Офіційний наказ і додатки про зарахування вступників на навчання.", pages: 9, href: "/documents/admissions/enrollment-orders/2026-10/order-250s-2026-10-15.pdf" },
+      { title: "Наказ про зарахування № 251/с", date: "15 жовтня 2026", details: "Офіційний наказ і додатки про зарахування вступників на навчання.", pages: 5, href: "/documents/admissions/enrollment-orders/2026-10/order-251s-2026-10-15.pdf" },
       { title: "Наказ про зарахування № 218/с", date: "18 вересня 2026", details: "Офіційний наказ і додатки про зарахування вступників на навчання.", pages: 18, href: "/documents/admissions/enrollment-orders/2026-09/order-218s-2026-09-18.pdf" },
       { title: "Наказ про зарахування № 219/с", date: "18 вересня 2026", details: "Офіційний наказ і додатки про зарахування вступників на навчання.", pages: 4, href: "/documents/admissions/enrollment-orders/2026-09/order-219s-2026-09-18.pdf" },
       { title: "Наказ про зарахування", date: "17 серпня 2026", details: "Офіційний документ Приймальної комісії з додатками до наказу.", pages: 11, href: "/documents/admissions/enrollment-orders/2026-08/order-2026-08-17.pdf" },
