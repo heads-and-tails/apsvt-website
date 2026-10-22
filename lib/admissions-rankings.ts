@@ -335,4 +335,29 @@ export const masterRankingDocumentCount = masterApplicantRankings.reduce(
   (total, group) => total + group.documents.length,
   0,
 );
-export const applicantRankingDocumentCount = bachelorRankingDocumentCount + september16RankingDocumentCount + masterRankingDocumentCount;
+export const october16ApplicantRankings: Record<"bachelor" | "master" | "phd", ApplicantRankingGroup[]> = {
+  bachelor: [{
+    code: "PDF",
+    programme: "Рейтингові списки від 16 жовтня 2026 року",
+    documents: [{ title: "Рейтингові списки вступників до бакалаврату", meta: "Від 16 жовтня 2026 року · 10 стор.", pages: 10, href: "/documents/admissions/rankings/2026-10-16/bachelor.pdf" }],
+  }],
+  master: [{
+    code: "PDF",
+    programme: "Рейтингові списки від 16 жовтня 2026 року",
+    documents: [{ title: "Рейтингові списки вступників до магістратури", meta: "Від 16 жовтня 2026 року · 6 стор.", pages: 6, href: "/documents/admissions/rankings/2026-10-16/master.pdf" }],
+  }],
+  phd: [{
+    code: "PDF",
+    programme: "Рейтингові списки від 16 жовтня 2026 року",
+    documents: [{ title: "Рейтинговий список вступників для здобуття ступеня доктора філософії", meta: "Від 16 жовтня 2026 року · 1 стор.", pages: 1, href: "/documents/admissions/rankings/2026-10-16/phd.pdf" }],
+  }],
+};
+
+export const october16RankingDocumentCounts = {
+  bachelor: october16ApplicantRankings.bachelor.reduce((total, group) => total + group.documents.length, 0),
+  master: october16ApplicantRankings.master.reduce((total, group) => total + group.documents.length, 0),
+  phd: october16ApplicantRankings.phd.reduce((total, group) => total + group.documents.length, 0),
+};
+
+export const applicantRankingDocumentCount = bachelorRankingDocumentCount + september16RankingDocumentCount + masterRankingDocumentCount
+  + october16RankingDocumentCounts.bachelor + october16RankingDocumentCounts.master + october16RankingDocumentCounts.phd;
