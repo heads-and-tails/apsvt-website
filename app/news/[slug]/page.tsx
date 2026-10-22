@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
@@ -11,6 +12,7 @@ import { NewsCard } from "../../components/NewsCard";
 import { EditorialRichText } from "../../components/EditorialRichText";
 import { academicCompetitionDocument, academicCompetitionNewsSlug } from "@/lib/academic-competition";
 import { eduproNewsSlug } from "@/lib/edupro-news";
+import { constitutionalCourtLectureNewsSlug, constitutionalCourtLecturePoster } from "@/lib/constitutional-court-lecture-news";
 
 export const dynamic = "force-dynamic";
 
@@ -57,6 +59,7 @@ export default async function Page({ params }: Props) {
   const entranceResultDocuments = getEntranceResultDocumentsForNews(post.slug);
   const isMasterEntranceResultsNews = post.slug === entranceResultsNewsSlugAugust6;
   const isApplicantRankingsNews = post.slug === applicantRankingsNewsSlug;
+  const isConstitutionalCourtLectureNews = post.slug === constitutionalCourtLectureNewsSlug;
   const isAcademicCompetitionNews = post.slug === academicCompetitionNewsSlug;
   const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
   const isErasmusDaysNews = post.slug === erasmusDaysNewsSlug;
@@ -79,6 +82,10 @@ export default async function Page({ params }: Props) {
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
         <EditorialRichText text={articleBody} />
+        {isConstitutionalCourtLectureNews && <figure className="lecture-news-poster">
+          <a href={constitutionalCourtLecturePoster.src} target="_blank" rel="noreferrer"><Image src={constitutionalCourtLecturePoster.src} alt={constitutionalCourtLecturePoster.alt} width={constitutionalCourtLecturePoster.width} height={constitutionalCourtLecturePoster.height} unoptimized /></a>
+          <figcaption>{constitutionalCourtLecturePoster.caption}</figcaption>
+        </figure>}
         {isAiTrainingNews && <div className="ai-training-gallery" aria-label="Фотографії з тренінгу">
           <figure><img src="/ai-training-2026-01.jpeg" alt="Наталія Гончаренко під час тренінгу за робочим столом" loading="lazy" /><figcaption>Тренінг із використання ШІ в Академії</figcaption></figure>
           <figure><img src="/ai-training-2026-02.jpeg" alt="Робота з навчальними матеріалами під час тренінгу" loading="lazy" /><figcaption>Робота з навчальними матеріалами</figcaption></figure>

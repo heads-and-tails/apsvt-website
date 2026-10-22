@@ -429,6 +429,7 @@ test("respects successful empty published-news queries and preserves fallback fo
   const { state } = await import(mockUrl);
   const posts = await import(await moduleUrl("../lib/data.ts", {
     "./edupro-news": eduproUrl,
+    "./constitutional-court-lecture-news": await moduleUrl("../lib/constitutional-court-lecture-news.ts"),
     "@/lib/supabase/admin": mockUrl,
     "@/lib/supabase/public": mockUrl,
     "@/lib/supabase/config": mockUrl,

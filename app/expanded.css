@@ -3742,3 +3742,6 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
 @media(max-width:760px){.editor-media-image{grid-template-columns:minmax(0,1fr)}}
 .editor-media-images,.editor-media-files{grid-template-columns:minmax(0,1fr)}.editor-media-images>*,.editor-media-files>*{min-width:0}.editor-media-upload input[type=file]{min-width:0;font:12px var(--body)}
 @media(max-width:760px){.editor-media-upload{grid-template-columns:minmax(0,1fr)}.editor-media-upload input[type=file]{width:100%!important}}
+
+/* Preserve the supplied lecture poster at its original aspect ratio. */
+.lecture-news-poster{margin:36px 0 0}.lecture-news-poster a,.lecture-news-poster img{display:block}.lecture-news-poster img{width:100%;height:auto}.lecture-news-poster figcaption{margin-top:12px;font-size:12px;line-height:1.5;color:#697282}
