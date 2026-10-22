@@ -201,6 +201,14 @@ export const masterEntranceResultsSeptember17: EntranceResultDocument[] = [
   },
 ];
 
+export const masterEntranceResultsOctober8: EntranceResultDocument[] = [
+  {
+    title: "Співбесіда з англійської мови",
+    href: "/documents/admissions/results/2026-10-08/english-language-interview-master.pdf",
+    pages: 1,
+  },
+];
+
 export function getEntranceResultDocumentsForNews(slug: string): EntranceResultDocument[] | null {
   if (slug === entranceResultsNewsSlugAugust6) return masterEntranceResultsAugust6;
   if (slug === entranceResultsNewsSlugJuly31) return bachelorEntranceResultsJuly31;
