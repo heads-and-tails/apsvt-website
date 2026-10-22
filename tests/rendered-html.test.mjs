@@ -1131,7 +1131,7 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   assert.match(html,/8–11 вересня 2026/);
   assert.match(html,/02 \/ Магістратура/);
   assert.match(html,/Рейтингові списки<br\/>вступників/);
-  assert.match(html,/43 PDF-документів/);
+  assert.match(html,/44 PDF-документів/);
   assert.match(html,/rankings\/2026-08-03\/law-full-time-first-year\.pdf/);
   assert.match(html,/rankings\/2026-08-03\/marketing-full-time-first-year\.pdf/);
 
@@ -1185,9 +1185,9 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   }
 });
 
-test("publishes the master applicant ratings from August and September as 47 grouped PDFs",async()=>{
+test("preserves 47 archived master ranking PDFs alongside the October release",async()=>{
   const html=await (await render("/admissions")).text();
-  assert.match(html,/47 PDF-документів/);
+  assert.match(html,/48 PDF-документів/);
   assert.match(html,/Рейтингові списки вступників від 24\.08\.2026/);
   assert.match(html,/Рейтингові списки вступників від 23\.09\.2026/);
   assert.match(html,/rankings\/2026-08-24-master\/law-full-time-recommended\.pdf/);
@@ -1761,4 +1761,28 @@ test("supports bulk schedule files in the panel and the Telegram bot",async()=>{
   assert.match(telegram,/ed:sch:replace/);
   assert.match(telegram,/Надішліть наступний файл/);
   assert.match(styles,/@media\(max-width:700px\).*schedule-manager-intro/s);
+});
+
+
+test("publishes the 16 October rankings at all three study levels with complete source PDFs",async()=>{
+  const html=await (await render("/admissions")).text();
+  const start=html.indexOf('id="applicant-rankings"');
+  const section=html.slice(start,html.indexOf("</section>",start)).replaceAll("<!-- -->","");
+  const articles=new Map([...section.matchAll(/<article[^>]*id="([^"]+)"[^>]*>([\s\S]*?)<\/article>/g)].map(match=>[match[1],match[2]]));
+  assert.match(section,/<aside>[\s\S]*?<b>93<\/b>/);
+  assert.match(section,/href="#rankings-phd"[^>]*>[\s\S]*?<b>Доктор філософії<\/b>/);
+  assert.equal((section.match(/<a href="\/documents\/admissions\/rankings\//g)??[]).length,93);
+  for(const [id,file,pages,sha256] of [["rankings-october-16-bachelor", "bachelor", 10, "2b941a05b0060399ca6ffbd7a85e1a43d52a8bcb530ea62f3bd60fb749ad9a41"], ["rankings-master", "master", 6, "16063edf8c9dacbcfb0757f73b18595ed864115ff1d181088538ad9db2b4c854"], ["rankings-phd", "phd", 1, "ce577583e2ae50249a76e83ebb882fdd0aedce895379ad97ebd2b8e500ec36b4"]]){
+    const href=`/documents/admissions/rankings/2026-10-16/${file}.pdf`;
+    const article=articles.get(id);
+    assert.ok(article,`${id} is a visible ranking section`);
+    assert.ok(section.includes(`href="#${id}"`));
+    assert.ok(article.includes(href));
+    assert.ok(article.includes("від 16 жовтня 2026 року"));
+    assert.ok(article.includes(`${pages} стор.`));
+    for(const [otherId,other] of articles)if(otherId!==id)assert.ok(!other.includes(href));
+    const pdf=await readFile(new URL(`../public${href}`,import.meta.url));
+    assert.equal(pdf.subarray(0,5).toString(),"%PDF-");
+    assert.equal(createHash("sha256").update(pdf).digest("hex"),sha256);
+  }
 });

@@ -35,7 +35,7 @@ const admissionsSections: readonly AdmissionsSectionMeta[] = [
   { id: "entrance-programs", index: "06", title: "Програми випробувань", description: "Офіційні програми підготовки у форматі PDF.", icon: "PDF", aliases: ["programs-bachelor", "programs-master", "programs-phd"] },
   { id: "entrance-results", index: "07", title: "Результати випробувань", description: "Опубліковані результати співбесід та іспитів.", icon: "✓", aliases: ["results-bachelor", "results-master"] },
   { id: "enrollment-orders", index: "07.1", title: "Накази про зарахування", description: "Офіційні накази, впорядковані за датою і рівнем.", icon: "№" },
-  { id: "applicant-rankings", index: "08", title: "Рейтингові списки", description: "Списки вступників на бакалаврат і магістратуру.", icon: "TOP", aliases: ["rankings-bachelor", "rankings-master"] },
+  { id: "applicant-rankings", index: "08", title: "Рейтингові списки", description: "Списки вступників на бакалаврат, магістратуру та аспірантуру.", icon: "TOP", aliases: ["rankings-october-16-bachelor", "rankings-september-16", "rankings-bachelor", "rankings-master", "rankings-phd"] },
   { id: "admission-rules", index: "09", title: "Правила і документи", description: "Нормативні документи приймальної комісії з пошуком.", icon: "§" },
   { id: "document-assistant", index: "10", title: "Запитати помічника", description: "Швидка відповідь на основі офіційних документів.", icon: "?" },
   { id: "test", index: "11", title: "Обрати програму", description: "Короткий тест для вибору освітньої траєкторії.", icon: "↗" },
