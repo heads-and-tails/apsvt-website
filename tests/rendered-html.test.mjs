@@ -1786,3 +1786,22 @@ test("publishes the 16 October rankings at all three study levels with complete 
     assert.equal(createHash("sha256").update(pdf).digest("hex"),sha256);
   }
 });
+
+
+test("publishes the complete 8 October master English interview result in its dated folder",async()=>{
+  const html=await (await render("/admissions")).text();
+  const start=html.indexOf('id="results-master"');
+  const master=html.slice(start,html.indexOf("</article>",start)).replaceAll("<!-- -->","");
+  const href="/documents/admissions/results/2026-10-08/english-language-interview-master.pdf";
+  assert.ok(master.includes("Результати вступних випробувань від 8 жовтня 2026 року"));
+  const cardStart=master.indexOf(`href="${href}"`);
+  assert.ok(cardStart>=0 && cardStart<master.indexOf("/results/2026-09-17/"));
+  const card=master.slice(cardStart,master.indexOf("</a>",cardStart));
+  assert.ok(card.includes("Співбесіда з англійської мови"));
+  assert.ok(card.includes("Магістратура · 8 жовтня 2026"));
+  assert.ok(card.includes("PDF · 1 сторінка"));
+  assert.ok(!html.slice(html.indexOf('id="results-bachelor"'),start).includes(href));
+  const pdf=await readFile(new URL(`../public${href}`,import.meta.url));
+  assert.equal(pdf.subarray(0,5).toString(),"%PDF-");
+  assert.equal(createHash("sha256").update(pdf).digest("hex"),"70297949790048fe2489f71da61c260bf6e7c07f5ed5ad32750166810d6869ad");
+});
