@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
 import { getPublicContent } from "@/lib/content";
-import { academicCompetitionDocument, academicCompetitionDeadline } from "@/lib/academic-competition";
+import { academicCompetitionDocument, deanCompetitionDeadline, deanCompetitionDocument } from "@/lib/academic-competition";
 
 export const metadata: Metadata = {
   title: "Вакансії та конкурси",
@@ -12,22 +12,25 @@ export const metadata: Metadata = {
 };
 export const dynamic = "force-dynamic";
 
-const externalDocuments = [
-  "Заява про участь у конкурсі на ім’я ректора Академії.",
-  "Заповнений особовий листок з обліку кадрів.",
-  "Дві фотокартки розміром 4 × 6 см.",
-  "Засвідчені копії документів про повну вищу освіту, науковий ступінь, вчене звання та стажування.",
-  "Засвідчена копія паспорта громадянина України.",
-  "Довідка з основного місця роботи (за наявності) та відомості про науково-педагогічний стаж у закладах вищої освіти.",
-  "Список наукових праць та винаходів за останні п’ять років.",
-  "Інформація про підготовку науково-педагогічних кадрів.",
+const qualificationRequirements = [
+  "Вища освіта відповідного напряму підготовки (магістр або спеціаліст).",
+  "Науковий ступінь доктора наук або доктора філософії (кандидата наук).",
+  "Вчене звання професора або доцента.",
+  "Науково-педагогічний стаж не менше 5 років.",
+  "Досконале володіння українською мовою.",
 ];
 
-const internalDocuments = [
+const requiredDocuments = [
   "Заява про участь у конкурсі на ім’я ректора Академії.",
-  "Список наукових праць та винаходів за останні п’ять років.",
-  "Копія документа про стажування або звіт зі стажування протягом терміну попереднього контракту.",
-  "Комплексний звіт визначеної форми про роботу протягом терміну попереднього контракту.",
+  "Паспорт громадянина України та засвідчена відповідно до чинного законодавства копія.",
+  "Заповнений особовий листок з обліку кадрів.",
+  "Дві фотокартки розміром 4 × 6 см.",
+  "Документи про повну вищу освіту, науковий ступінь і вчене звання та їхні засвідчені копії.",
+  "Документи, які підтверджують володіння державною мовою відповідно до вимог законодавства.",
+  "Довідка з основного місця роботи для осіб, які не є працівниками Академії (за наявності).",
+  "Відомості про науково-педагогічний стаж у закладах вищої освіти.",
+  "Досягнення у професійній діяльності за останні п’ять років, зокрема список наукових праць та винаходів.",
+  "Копії документів про стажування та підвищення кваліфікації за останні п’ять років.",
 ];
 
 type VacancyFaculty = {
@@ -55,12 +58,7 @@ function groupVacancies(items: Awaited<ReturnType<typeof getPublicContent>>): Va
 
 export default async function VacanciesPage() {
   const vacancyItems = await getPublicContent("vacancy");
-  const currentCompetitionItems = vacancyItems.filter((item) => item.payload.competition === "2-3");
-  const previousCompetitionItems = vacancyItems.filter((item) => item.payload.competition !== "2-3");
-  const currentVacancies = groupVacancies(currentCompetitionItems);
-  const previousVacancies = groupVacancies(previousCompetitionItems);
-  const departmentCount = currentVacancies.reduce((total, faculty) => total + faculty.departments.length, 0);
-  const positionCount = currentVacancies.reduce((total, faculty) => total + faculty.departments.reduce((sum, department) => sum + department.roles.reduce((roleSum, role) => roleSum + role.count, 0), 0), 0);
+  const previousVacancies = groupVacancies(vacancyItems.filter((item) => item.payload.competition === "2-3"));
   return (
     <main id="top">
       <SiteHeader />
@@ -70,17 +68,16 @@ export default async function VacanciesPage() {
           <div className="crumb">Головна / Вакансії та конкурси</div>
           <div className="vacancies-hero-grid">
             <div>
-              <span className="vacancies-kicker">Приєднуйтеся до команди АПСВТ</span>
-              <h1>Шукаємо<br /><em>викладачів</em></h1>
+              <span className="vacancies-kicker">Конкурс на заміщення посади</span>
+              <h1>Шукаємо<br /><em>декана</em></h1>
               <p>
-                Академія оголосила конкурс №2 і №3 на заміщення посад
-                науково-педагогічних працівників. Оберіть підрозділ, перевірте
-                перелік документів і подайте заяву до 16 вересня.
+                Академія оголосила конкурс на посаду декана факультету психології та
+                соціального розвитку. Документи приймаються до {deanCompetitionDeadline} включно.
               </p>
               <div className="vacancies-hero-actions">
-                <a href="#competition-2-3">Переглянути посади ↓</a>
+                <a href="#competition-dean-2026">Переглянути посаду ↓</a>
                 <a
-                  href={academicCompetitionDocument}
+                  href={deanCompetitionDocument}
                   download
                 >
                   Завантажити оголошення ↗
@@ -90,20 +87,20 @@ export default async function VacanciesPage() {
 
             <aside aria-label="Коротко про конкурс">
               <span>У конкурсному оголошенні</span>
-              <b>{positionCount}</b>
-              <strong>відкритих посад</strong>
+              <b>1</b>
+              <strong>відкрита посада</strong>
               <dl>
                 <div>
                   <dt>Період подання</dt>
-                  <dd>До {academicCompetitionDeadline} включно</dd>
+                  <dd>До {deanCompetitionDeadline} включно</dd>
                 </div>
                 <div>
                   <dt>Напрями</dt>
-                  <dd>Мови · гуманітарні науки · психологія</dd>
+                  <dd>Психологія та соціальний розвиток</dd>
                 </div>
                 <div>
-                  <dt>Підрозділи</dt>
-                  <dd>{departmentCount} кафедри</dd>
+                  <dt>Підрозділ</dt>
+                  <dd>Факультет психології та соціального розвитку</dd>
                 </div>
                 <div>
                   <dt>Формат подання</dt>
@@ -115,59 +112,41 @@ export default async function VacanciesPage() {
         </div>
       </section>
 
-      <section className="vacancy-board" id="competition-2-3">
+      <section className="vacancy-board" id="competition-dean-2026">
         <div className="wrap">
           <header className="vacancy-board-head">
             <div>
-              <span>01 / Конкурс №2 і №3</span>
-              <h2>Актуальні позиції</h2>
+              <span>01 / Конкурс №3</span>
+              <h2>Актуальна посада</h2>
             </div>
             <p>
-              18 штатних посад у трьох підрозділах. Заяви та документи
-              приймаються особисто до 16 вересня 2026 року включно.
+              Одна штатна посада декана факультету психології та соціального розвитку.
+              Заяви та документи приймаються особисто до {deanCompetitionDeadline} включно.
             </p>
           </header>
+          <section className="vacancy-faculty">
+            <header>
+              <span>01</span>
+              <h3>Факультет психології та соціального розвитку</h3>
+              <b>1 посада</b>
+            </header>
+            <div className="vacancy-departments">
+              <article className="vacancy-department">
+                <div className="vacancy-department-title"><span>01</span><h4>Декан факультету</h4></div>
+                <div className="vacancy-roles"><div className="vacancy-role"><strong>Декан факультету</strong><span><b>1</b> посада</span></div></div>
+              </article>
+            </div>
+          </section>
 
-          {currentVacancies.map((faculty, facultyIndex) => (
-            <section className="vacancy-faculty" key={faculty.name}>
-              <header>
-                <span>{String(facultyIndex + 1).padStart(2, "0")}</span>
-                <h3>{faculty.name}</h3>
-                <b>{faculty.departments.length} {faculty.departments.length === 1 ? "кафедра" : faculty.departments.length < 5 ? "кафедри" : "кафедр"}</b>
-              </header>
-              <div className="vacancy-departments">
-                {faculty.departments.map((department, departmentIndex) => (
-                  <article className="vacancy-department" key={department.name}>
-                    <div className="vacancy-department-title">
-                      <span>{String(departmentIndex + 1).padStart(2, "0")}</span>
-                      <h4>{department.name}</h4>
-                    </div>
-                    <div className="vacancy-roles">
-                      {department.roles.map((role) => (
-                        <div className="vacancy-role" key={role.title}>
-                          <strong>{role.title}</strong>
-                          <span>
-                            <b>{role.count}</b>
-                            {role.count === 1 ? " посада" : role.count < 5 ? " посади" : " посад"}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-          ))}
-
-          <div className="vacancy-archive" id="previous-competition">
+          <div className="vacancy-archive" id="competition-2-3">
             <div>
               <span>Попереднє оголошення</span>
-              <h2>Конкурс від 21 липня 2026 року</h2>
-              <p>Посади юридичного факультету та факультету економіки, соціальних технологій і туризму. Період подання заяв: 21 липня — 24 серпня 2026 року.</p>
+              <h2>Конкурс №2 і №3</h2>
+              <p>Попередній конкурс на 18 посад кафедри української та іноземних мов і гуманітарних наук і факультету психології та соціального розвитку. Подання заяв завершилося 16 вересня 2026 року.</p>
             </div>
-            <a href="/documents/vacancies/konkurs-naukovo-pedagogichnyh-pracivnykiv-2025-2026.docx" download>Завантажити попереднє оголошення ↗</a>
+            <a href={academicCompetitionDocument} download>Завантажити попереднє оголошення ↗</a>
           </div>
-          <details className="vacancy-previous-list">
+          <details className="vacancy-previous-list" id="previous-competition">
             <summary>Переглянути посади попереднього конкурсу <span>+</span></summary>
             {previousVacancies.map((faculty, facultyIndex) => (
               <section className="vacancy-faculty" key={faculty.name}>
@@ -197,6 +176,14 @@ export default async function VacanciesPage() {
               </section>
             ))}
           </details>
+          <div className="vacancy-archive">
+            <div>
+              <span>Архів</span>
+              <h2>Конкурс від 21 липня 2026 року</h2>
+              <p>Посади юридичного факультету та факультету економіки, соціальних технологій і туризму. Період подання заяв: 21 липня — 24 серпня 2026 року.</p>
+            </div>
+            <a href="/documents/vacancies/konkurs-naukovo-pedagogichnyh-pracivnykiv-2025-2026.docx" download>Завантажити оголошення ↗</a>
+          </div>
         </div>
       </section>
 
@@ -204,21 +191,21 @@ export default async function VacanciesPage() {
         <div className="wrap">
           <header className="vacancy-apply-head">
             <div>
-              <span>02 / Документи</span>
-              <h2>Як взяти участь</h2>
+              <span>02 / Вимоги та документи</span>
+              <h2>Умови участі</h2>
             </div>
             <p>
-              Комплект залежить від того, чи працює кандидат в Академії.
-              Підготуйте документи за відповідним переліком.
+              Вимоги до посади та перелік документів наведено в оголошенні,
+              надісланому Академією. Оригінал доступний для завантаження.
             </p>
           </header>
 
           <div className="vacancy-checklists">
             <article>
-              <span>Зовнішнім кандидатам</span>
-              <h3>Якщо ви не працюєте в Академії</h3>
+              <span>Посада декана</span>
+              <h3>Кваліфікаційні вимоги</h3>
               <ol>
-                {externalDocuments.map((item, index) => (
+                {qualificationRequirements.map((item, index) => (
                   <li key={item}>
                     <b>{String(index + 1).padStart(2, "0")}</b>
                     <p>{item}</p>
@@ -227,10 +214,10 @@ export default async function VacanciesPage() {
               </ol>
             </article>
             <article>
-              <span>Працівникам АПСВТ</span>
-              <h3>Якщо ви вже працюєте в Академії</h3>
+              <span>Для претендентів</span>
+              <h3>Документи для участі</h3>
               <ol>
-                {internalDocuments.map((item, index) => (
+                {requiredDocuments.map((item, index) => (
                   <li key={item}>
                     <b>{String(index + 1).padStart(2, "0")}</b>
                     <p>{item}</p>
@@ -248,7 +235,8 @@ export default async function VacanciesPage() {
             <span>03 / Подання заяви</span>
             <h2>Особисто в Академії</h2>
             <p>
-              Документи за конкурсом №2 і №3 приймаються до 16 вересня 2026 року включно.
+              Документи на посаду декана факультету психології та соціального розвитку
+              приймаються до {deanCompetitionDeadline} включно.
               Заяви приймає навчально-методичний відділ: м. Київ,
               вул. Кільцева дорога, 3-А, кабінет №216 або №227.
             </p>
@@ -257,7 +245,7 @@ export default async function VacanciesPage() {
           <div className="vacancy-submit-actions">
             <Link href="/contacts">Контакти й маршрут →</Link>
             <a
-              href={academicCompetitionDocument}
+              href={deanCompetitionDocument}
               download
             >
               Завантажити оригінал .DOCX ↗

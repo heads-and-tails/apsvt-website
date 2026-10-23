@@ -10,7 +10,7 @@ import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, mast
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
 import { NewsCard } from "../../components/NewsCard";
 import { EditorialRichText } from "../../components/EditorialRichText";
-import { academicCompetitionDocument, academicCompetitionNewsSlug } from "@/lib/academic-competition";
+import { academicCompetitionDocument, academicCompetitionNewsSlug, deanCompetitionDocument, deanCompetitionNewsSlug } from "@/lib/academic-competition";
 import { eduproNewsSlug } from "@/lib/edupro-news";
 import { constitutionalCourtLectureNewsSlug, constitutionalCourtLecturePoster } from "@/lib/constitutional-court-lecture-news";
 
@@ -61,6 +61,7 @@ export default async function Page({ params }: Props) {
   const isApplicantRankingsNews = post.slug === applicantRankingsNewsSlug;
   const isConstitutionalCourtLectureNews = post.slug === constitutionalCourtLectureNewsSlug;
   const isAcademicCompetitionNews = post.slug === academicCompetitionNewsSlug;
+  const isDeanCompetitionNews = post.slug === deanCompetitionNewsSlug;
   const isStakeholderDiscussionNews = post.slug === stakeholderDiscussionNewsSlug;
   const isErasmusDaysNews = post.slug === erasmusDaysNewsSlug;
   const isStudyUaExpoNews = post.slug === studyUaExpoNewsSlug;
@@ -158,6 +159,11 @@ export default async function Page({ params }: Props) {
           <Link href="/vacancies#competition-2-3"><b>01</b><strong>Посади, умови та перелік документів</strong><small>Переглянути →</small></Link>
           <a href={academicCompetitionDocument} download><b>02</b><strong>Офіційне оголошення</strong><small>DOCX · завантажити ↗</small></a>
           <Link href="/vacancies#competition-2-3">Перейти до розділу «Вакансії та конкурси» →</Link>
+        </div>}
+        {isDeanCompetitionNews && <div className="news-result-files">
+          <span>Посада декана · подання до 27 листопада 2026 року</span>
+          <Link href="/vacancies#competition-dean-2026"><b>01</b><strong>Вимоги та перелік документів</strong><small>Переглянути →</small></Link>
+          <a href={deanCompetitionDocument} download><b>02</b><strong>Офіційне оголошення</strong><small>DOCX · завантажити ↗</small></a>
         </div>}
         <Link className="back-link" href="/news">← До всіх новин</Link>
       </article>
