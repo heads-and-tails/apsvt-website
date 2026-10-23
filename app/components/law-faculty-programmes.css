@@ -1,0 +1,14 @@
+.law-programme-navigation{scroll-margin-top:90px;background:var(--paper)}
+.law-programme-navigation .faculty-programme-grid{margin-top:28px}
+.law-programme-navigation .faculty-programme-grid a{min-width:0}
+.law-programme-navigation h3{overflow-wrap:anywhere}
+.law-programme-section-links{display:flex;flex-wrap:wrap;gap:12px 24px;padding-top:28px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.law-programme-section-links a{color:var(--cobalt);line-height:1.6;text-underline-offset:4px}
+.law-programme-section{padding:36px 0;scroll-margin-top:90px}
+.law-programme-section h2{font-size:clamp(26px,4vw,42px);margin-bottom:24px}
+.law-programme-section .programme-material-group>h3{font-size:clamp(22px,3vw,30px);margin-bottom:18px}
+.law-programme-section .programme-material-facts{margin-bottom:0}
+.law-programme-section .department-public-content--inline .department-public-section{padding:0}
+.law-programme-section .department-public-content--inline .department-public-section>.wrap{max-width:none;padding:0}
+.law-faculty-programme .programme-material-list small{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:600px){.law-programme-section{padding:28px 0}.law-programme-section-links{gap:10px 18px}.law-faculty-programme .programme-material-list a{flex-wrap:wrap}}

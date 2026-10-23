@@ -107,6 +107,33 @@ test("publishes the supplied D4 doctoral files with guarantor information and se
   assert.doesNotMatch(law,/public-admin-materials/);
 });
 
+test("gives each law-faculty degree its own complete programme structure and direct level navigation", async () => {
+  const slugs = ["d8-law-bachelor", "d8-law-master", "d8-law-phd", "d4-public-administration-bachelor", "d4-public-administration-master", "d4-public-administration-phd"];
+  for (const slug of slugs) {
+    const path = `/departments/law-faculty/faculty-programmes/${slug}`;
+    const response = await render(path);
+    assert.equal(response.status, 200, path);
+    const html = await response.text();
+    for (const id of ["programme-information", "programme-document", "study-plans", "working-programmes", "course-annotations"]) {
+      assert.equal((html.match(new RegExp(`id="${id}"`, "g")) || []).length, 1, `${slug} ${id}`);
+    }
+    assert.match(html, /Назва освітньої програми/);
+    assert.match(html, /Рівень вищої освіти/);
+    assert.doesNotMatch(html, /Відкрити сторінку програми →/);
+    const languageLink = html.match(/<a[^>]*class="lang-toggle"[^>]*>/)?.[0];
+    assert.match(languageLink || "", /href="\/en\/programs\/law#education-levels"/);
+    if (slug === "d8-law-phd") assert.match(html, /Муніципальне право/);
+  }
+  for (const prefix of ["", "/en"]) {
+    const html = await (await render(`${prefix}/programs/law`)).text();
+    for (const slug of slugs) assert.ok(html.includes(`href="/departments/law-faculty/faculty-programmes/${slug}"`), slug);
+    assert.equal((html.match(/id="education-levels"/g) || []).length, 1);
+  }
+  assert.equal((await render("/departments/law-faculty/faculty-programmes/missing-programme")).status, 404);
+  const council = await (await render("/departments/law-faculty/faculty-council/plan")).text();
+  assert.doesNotMatch(council, /law-faculty-programme|programme-information/);
+});
+
 test("publishes the complete supplied master's package and uses its approved OPP in current catalogues",async()=>{
   const html=await(await render("/departments/law-faculty/faculty-programmes/d4-public-administration-master")).text();
   for(const value of ["Міщенко Катерина Семенівна","56066","01.07.2029","липень 2029","thesis-guidelines.pdf","thesis-topics.pdf","thesis-application.pdf","accreditation-certificate-6830.pdf","curriculum-full-time-2025-2026.pdf","curriculum-part-time-2025-2026.pdf","pre-diploma-practice.pdf","practice-bases.pdf"])assert.ok(html.includes(value),value);
@@ -614,7 +641,9 @@ test("gives every law programme level a stable page and keeps dates optional",as
     assert.match(facultyHtml,new RegExp(`href="${path}"`));
     const response=await render(path);
     assert.equal(response.status,200,`${path} should render`);
-    assert.match(await response.text(),/Опис програми, освітні компоненти, навчальні плани/);
+    const html = await response.text();
+    assert.match(html,/Інформація про освітню програму/);
+    assert.match(html,/id="study-plans"/);
   }
 
   const panel=await readFile(new URL("../app/panel/PanelEditor.tsx",import.meta.url),"utf8");
@@ -1718,8 +1747,8 @@ test("keeps four law departments to five closed sections and separates programme
       assert.match(html,/<summary>Робочі програми · обов’язкові дисципліни<\/summary>/);
       assert.match(html,/<summary>Анотації · обов’язкові дисципліни<\/summary>/);
     }else{
-      assert.match(html,/<h2>Робочі програми<\/h2>/);
-      assert.match(html,/<h2>Анотації<\/h2>/);
+      assert.match(html,/<h2>Робочі програми навчальних дисциплін<\/h2>/);
+      assert.match(html,/<h2>Анотації навчальних дисциплін<\/h2>/);
     }
   }
   for(const path of ["faculty-council/meetings","faculty-council/decisions","faculty-council/protocols","faculty-discussion/about"]){

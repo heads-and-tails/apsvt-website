@@ -240,6 +240,21 @@ test("records first publication rather than draft creation and keeps hidden date
 
 const lawStructureUrl = await moduleUrl("../lib/law-faculty-structure.ts");
 const programmeDocumentsUrl = await moduleUrl("../lib/programme-documents.ts");
+const lawProgrammes = await import(await moduleUrl("../lib/law-faculty-programmes.ts", { "./law-faculty-structure": lawStructureUrl, "./programme-documents": programmeDocumentsUrl }));
+
+test("classifies programme materials without mixing approved programmes, study plans and course files", () => {
+  for (const [title, category, expected] of [
+    ['Освітньо-професійна програма "Право"', "content", "programme-document"],
+    ['Освітньо-наукова програма "Муніципальне право"', "content", "programme-document"],
+    ["НАВЧАЛЬНИЙ ПЛАН заочної форми", "content", "study-plans"],
+    ["Фінансове право", "Робоча програма · 2026", "working-programmes"],
+    ["Анотація робочої програми", "Анотація · 2026", "course-annotations"],
+    ["Конституційне право", "Анотація · 2026", "course-annotations"],
+    ["Сертифікат акредитації", "Інший документ", null],
+  ]) assert.equal(lawProgrammes.lawProgrammeDocumentSection(title, category), expected, title);
+  assert.equal(new Set(lawProgrammes.lawFacultyProgrammes.map(programme => lawProgrammes.lawProgrammePath(programme.id))).size, 6);
+});
+
 const professionalUrl = await moduleUrl("../lib/professional-education.ts", { "./programme-documents": programmeDocumentsUrl });
 const professional = await import(professionalUrl);
 const studentSectionsUrl = await moduleUrl("../lib/marketing-student-sections.ts");
