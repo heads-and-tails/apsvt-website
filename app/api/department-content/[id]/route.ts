@@ -7,6 +7,8 @@ import {
 } from "@/lib/department-content";
 import { requirePagePublisher } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { getAllDocuments } from "@/lib/documents";
+import { isProgrammeFolder, programmeFolderHasDocuments, programmeFolderRole } from "@/lib/programme-folders";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +23,9 @@ export async function PATCH(request: Request, context: Context) {
     if (!existing) return NextResponse.json({ error: "Запис не знайдено" }, { status: 404 });
     await requirePagePublisher(existing.pagePath);
     const publisher = await requirePagePublisher(body.pagePath);
+    if (body.role === programmeFolderRole && !isProgrammeFolder(body)) return NextResponse.json({ error: "Оберіть розділ робочих програм або анотацій відповідної освітньої програми" }, { status: 400 });
+    if (isProgrammeFolder(existing) && (!isProgrammeFolder(body) || existing.pagePath !== body.pagePath || existing.sectionId !== body.sectionId)
+      && programmeFolderHasDocuments(existing, await getAllDocuments())) return NextResponse.json({ error: "Спочатку перенесіть або видаліть документи з папки" }, { status: 409 });
     const entry = await updateDepartmentEntry(id, body, publisher.email);
     revalidatePath(existing.pagePath);
     if (existing.pagePath !== body.pagePath) revalidatePath(body.pagePath);
@@ -37,6 +42,7 @@ export async function DELETE(_: Request, context: Context) {
     const existing = await getDepartmentEntryById(id);
     if (!existing) return NextResponse.json({ error: "Запис не знайдено" }, { status: 404 });
     const publisher = await requirePagePublisher(existing.pagePath);
+    if (isProgrammeFolder(existing) && programmeFolderHasDocuments(existing, await getAllDocuments())) return NextResponse.json({ error: "Спочатку перенесіть або видаліть документи з папки" }, { status: 409 });
     await deleteDepartmentEntry(id, publisher.email);
     revalidatePath(existing.pagePath);
     return NextResponse.json({ ok: true });

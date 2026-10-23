@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createDocument, getAllDocuments, type PageDocumentInput } from "@/lib/documents";
 import { requirePagePublisher, requirePublisher } from "@/lib/auth";
 import { canEditPage } from "@/lib/editorial-access";
+import { validProgrammeDocumentFolder } from "@/lib/programme-folder-validation";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,7 @@ export async function POST(request: Request) {
     const body: unknown = await request.json();
     if (!valid(body)) return NextResponse.json({ error: "Заповніть дані документа та завантажте файл" }, { status: 400 });
     const publisher = await requirePagePublisher(body.pagePath);
+    if (!await validProgrammeDocumentFolder(body)) return NextResponse.json({ error: "Оберіть папку відповідної програми та розділу" }, { status: 400 });
     return NextResponse.json(await createDocument(body, publisher.email), { status: 201 });
   } catch (error) {
     const denied = error instanceof Error && (error.message === "UNAUTHORIZED" || error.message === "FORBIDDEN_SCOPE");

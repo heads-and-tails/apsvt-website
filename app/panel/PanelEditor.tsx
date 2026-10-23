@@ -16,6 +16,7 @@ import type { StudentFinanceAdminData } from "@/lib/student-finance";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { DepartmentManager } from "./DepartmentManager";
 import { requestJson } from "@/lib/client-request";
+import { isProgrammeFolder } from "@/lib/programme-folders";
 
 type FormState = { title: string; excerpt: string; body: string; category: string; imageUrl: string; imageAlt: string; status: "draft" | "published"; featured: boolean; hideDate: boolean; publishedAt: string | null; slug?: string };
 type PanelView = "overview" | "assistant" | "news-editor" | "materials" | "departments" | "operations" | "schedule" | "documents" | "finance" | "access";
@@ -64,6 +65,9 @@ function PanelOverview({ posts, documents, departmentEntries, canManageNews, can
 
 export function PanelEditor({ initialPosts, initialContent, initialDocuments, initialDepartmentEntries, publisher, initialProfiles, initialStudentFinance, initialView = "overview" }: { initialPosts: Post[]; initialContent: ContentItem[]; initialDocuments: PageDocument[]; initialDepartmentEntries: DepartmentEntry[]; publisher: Publisher; initialProfiles: EditorialProfile[]; initialStudentFinance: StudentFinanceAdminData; initialView?: PanelView }) {
   const [posts, setPosts] = useState(initialPosts);
+  const [documents, setDocuments] = useState(initialDocuments);
+  const [programmeFolders, setProgrammeFolders] = useState(initialDepartmentEntries.filter(isProgrammeFolder));
+  const departmentEntries = initialDepartmentEntries.filter((entry) => !isProgrammeFolder(entry));
   const [form, setForm] = useState<FormState>(empty);
   const [editing, setEditing] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -87,7 +91,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
     ...(canManageDepartment ? [{ id: "departments" as const, label: "Сторінки", icon: "WEB", hint: "Увесь контент сайту" }] : []),
     ...(allowedKinds.length ? [{ id: "operations" as const, label: "Розділи сайту", icon: "Р", hint: "Події, вступ, розклад" }] : []),
     ...(canManageSchedule ? [{ id: "schedule" as const, label: "Розклад", icon: "📅", hint: "Комплекти й заміна" }] : []),
-    { id: "documents", label: "Документи", icon: "D", hint: `${initialDocuments.length} файлів` },
+    { id: "documents", label: "Документи", icon: "D", hint: `${documents.length} файлів` },
   ];
   const adminNav: NavItem[] = [
     ...(isAdmin ? [{ id: "finance" as const, label: "Студенти й оплата", icon: "₴", hint: "Договори та платежі" }, { id: "access" as const, label: "Користувачі", icon: "ID", hint: "Ролі та доступ" }] : []),
@@ -165,9 +169,9 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
     <aside className="panel-side panel-side-v2"><div className="panel-brand"><span>АП</span><b>Редакційна<br />панель</b></div><nav aria-label="Розділи редакційної панелі"><PanelNavGroup label="Головне" items={primaryNav} activeView={activeView} onOpen={open} /><PanelNavGroup label="Контент" items={contentNav} activeView={activeView} onOpen={open} /><PanelNavGroup label="Адміністрування" items={adminNav} activeView={activeView} onOpen={open} /><div className="panel-nav-group panel-nav-links"><small>Інструменти</small><a href="/panel/scheduler"><span>PL</span><div><b>Планувальник</b><i>Розклад занять</i></div></a><a href="/panel/workspace"><span>BW</span><div><b>BytesLab × Академія</b><i>Робочий простір</i></div></a></div></nav><div className="panel-user"><span>{isAdmin ? "Адміністратор" : scopeLabel}</span><b>{publisher.displayName}</b><form action="/auth/signout" method="post"><button type="submit">Вийти</button></form></div></aside>
     <main className="panel-main panel-main-v2">
       <header className="panel-top panel-top-v2"><div><span>{activeTitle.eyebrow} · {isAdmin ? "повний доступ" : scopeLabel}</span><h1>{editing && activeView === "news-editor" ? "Редагувати матеріал" : activeTitle.title}</h1><p>{activeTitle.description}</p></div><div className="panel-header-actions"><a href="/documents/editorial-panel-guide.pdf" target="_blank">Інструкція ↗</a><a className="primary" href="/" target="_blank">Відкрити сайт ↗</a></div></header>
-      <div className="panel-kpis"><div><span>Опубліковано</span><b>{published}</b><i>новин і оголошень</i></div><div><span>Документи</span><b>{initialDocuments.length}</b><i>завантажено через панель</i></div><div><span>Додано через панель</span><b>{initialDepartmentEntries.length}</b><i>карток і замін на сторінках</i></div><button type="button" onClick={() => open("assistant")}><span>Швидка дія</span><b>Передати файл AI</b><i>→</i></button></div>
+      <div className="panel-kpis"><div><span>Опубліковано</span><b>{published}</b><i>новин і оголошень</i></div><div><span>Документи</span><b>{documents.length}</b><i>завантажено через панель</i></div><div><span>Додано через панель</span><b>{departmentEntries.length}</b><i>карток і замін на сторінках</i></div><button type="button" onClick={() => open("assistant")}><span>Швидка дія</span><b>Передати файл AI</b><i>→</i></button></div>
 
-      {activeView === "overview" && <PanelOverview posts={posts} documents={initialDocuments} departmentEntries={initialDepartmentEntries} canManageNews={canManageNews} canManageDepartment={canManageDepartment} canManageOperations={allowedKinds.length > 0} canManageSchedule={canManageSchedule} isAdmin={isAdmin} open={open} />}
+      {activeView === "overview" && <PanelOverview posts={posts} documents={documents} departmentEntries={departmentEntries} canManageNews={canManageNews} canManageDepartment={canManageDepartment} canManageOperations={allowedKinds.length > 0} canManageSchedule={canManageSchedule} isAdmin={isAdmin} open={open} />}
       {activeView === "assistant" && <AiEditorialAssistant publisher={publisher} />}
       {activeView === "news-editor" && canManageNews && <form className="editor" id="editor" noValidate onSubmit={submit}>
         <section className="editor-fields">
@@ -194,10 +198,10 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
         </aside>
       </form>}
       {activeView === "materials" && canManageNews && <section className="materials panel-materials" id="materials"><div className="materials-head"><div><span>Архів редакції</span><h2>Усі матеріали</h2><p>Редагуйте чернетки, перевіряйте опубліковані матеріали або створіть новий.</p></div><button type="button" onClick={() => { reset(); open("news-editor"); }}>+ Новий</button></div><div className="material-list">{posts.map((post) => <article key={post.id}><div className="material-thumb"><img src={post.imageUrl || "/apsvt-students-real.jpg"} alt="" /></div><div><span>{post.category} · {post.status === "published" ? "Опубліковано" : "Чернетка"}</span><h3>{post.title}</h3><p>{post.excerpt}</p></div><div className="material-actions"><button onClick={() => edit(post)}>Редагувати</button>{post.status === "published" && <a href={`/news/${post.slug}`} target="_blank">Переглянути ↗</a>}<button className="danger" onClick={() => void remove(post.id)}>Видалити</button></div></article>)}</div></section>}
-      {activeView === "departments" && canManageDepartment && <DepartmentManager initialEntries={initialDepartmentEntries} publisher={publisher} />}
+      {activeView === "departments" && canManageDepartment && <DepartmentManager initialEntries={departmentEntries} publisher={publisher} />}
       {activeView === "operations" && allowedKinds.length > 0 && <OperationsEditor initialContent={initialContent} allowedKinds={allowedKinds} />}
       {activeView === "schedule" && canManageSchedule && <ScheduleDocumentManager initialDocuments={initialDocuments} />}
-      {activeView === "documents" && <DocumentManager initialDocuments={initialDocuments} publisher={publisher} />}
+      {activeView === "documents" && <DocumentManager documents={documents} setDocuments={setDocuments} folders={programmeFolders} setFolders={setProgrammeFolders} publisher={publisher} />}
       {activeView === "finance" && isAdmin && <StudentFinanceManager initialData={initialStudentFinance} />}
       {activeView === "access" && isAdmin && <AccessManager initialProfiles={initialProfiles} currentUserId={publisher.id} />}
     </main>

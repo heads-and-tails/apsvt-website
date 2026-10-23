@@ -2,6 +2,8 @@ import { getLocalDocuments, createLocalDocument, updateLocalDocument, deleteLoca
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { getPublishedDepartmentEntries } from "./department-content";
+import { isProgrammeFolder, parseProgrammeDocumentCategory, programmeDocumentIsVisible } from "./programme-folders";
 
 export type DocumentStatus = "draft" | "published";
 
@@ -90,7 +92,7 @@ export async function getAllDocuments(): Promise<PageDocument[]> {
 }
 
 export async function getPublicDocuments(pagePath: string): Promise<PageDocument[]> {
-  if (!isSupabaseConfigured()) return (await getLocalDocuments(true)).filter((document) => [pagePath, "*"].includes(document.pagePath));
+  if (!isSupabaseConfigured()) return visibleProgrammeDocuments((await getLocalDocuments(true)).filter((document) => [pagePath, "*"].includes(document.pagePath)));
   const { data, error } = await createSupabasePublicClient()
     .from("editorial_documents")
     .select("*")
@@ -99,18 +101,27 @@ export async function getPublicDocuments(pagePath: string): Promise<PageDocument
     .order("sort_order")
     .order("created_at", { ascending: false });
   if (error) return [];
-  return (data as DocumentRow[]).map(fromRow);
+  return visibleProgrammeDocuments((data as DocumentRow[]).map(fromRow));
 }
 
 export async function getPublishedDocuments(): Promise<PageDocument[]> {
-  if (!isSupabaseConfigured()) return getLocalDocuments(true);
+  if (!isSupabaseConfigured()) return visibleProgrammeDocuments(await getLocalDocuments(true));
   const { data, error } = await createSupabasePublicClient()
     .from("editorial_documents")
     .select("*")
     .eq("status", "published")
     .order("updated_at", { ascending: false });
   if (error) return [];
-  return (data as DocumentRow[]).map(fromRow);
+  return visibleProgrammeDocuments((data as DocumentRow[]).map(fromRow));
+}
+
+async function visibleProgrammeDocuments(documents: PageDocument[]): Promise<PageDocument[]> {
+  if (!documents.some((document) => {
+    const parsed = parseProgrammeDocumentCategory(document.category);
+    return parsed.folderId || parsed.invalidFolder;
+  })) return documents;
+  const folders = (await getPublishedDepartmentEntries()).filter(isProgrammeFolder);
+  return documents.filter((document) => programmeDocumentIsVisible(document, folders));
 }
 
 export async function getDocumentById(id: string): Promise<PageDocument | null> {

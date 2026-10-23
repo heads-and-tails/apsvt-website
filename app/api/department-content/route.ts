@@ -7,6 +7,7 @@ import {
 import { requirePagePublisher, requirePublisher } from "@/lib/auth";
 import { canEditPage } from "@/lib/editorial-access";
 import { revalidatePath } from "next/cache";
+import { isProgrammeFolder, programmeFolderRole } from "@/lib/programme-folders";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
     const body: unknown = await request.json();
     if (!isDepartmentEntryInput(body)) return NextResponse.json({ error: "Заповніть обов’язкові поля" }, { status: 400 });
     const publisher = await requirePagePublisher(body.pagePath);
+    if (body.role === programmeFolderRole && !isProgrammeFolder(body)) return NextResponse.json({ error: "Оберіть розділ робочих програм або анотацій відповідної освітньої програми" }, { status: 400 });
     const entry = await createDepartmentEntry(body, publisher.email);
     revalidatePath(body.pagePath);
     console.log(JSON.stringify({
