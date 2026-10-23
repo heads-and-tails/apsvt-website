@@ -436,12 +436,17 @@ test("renders editorially managed public information",async()=>{
   assert.doesNotMatch(vacanciesHtml,/Термін у розміщеному оголошенні/);
   assert.match(vacanciesHtml,/21 липня — 24 серпня 2026 року/);
   assert.match(vacanciesHtml,/Конкурс №2 і №3/);
-  assert.match(vacanciesHtml,/<b>18<\/b><strong>відкритих посад<\/strong>/);
-  assert.match(vacanciesHtml,/До [\s\S]{0,80}16 вересня 2026 року[\s\S]{0,80} включно/);
+  assert.match(vacanciesHtml,/<b>1<\/b><strong>відкрита посада<\/strong>/);
+  assert.match(vacanciesHtml,/До [\s\S]{0,80}27 листопада 2026 року[\s\S]{0,80} включно/);
+  assert.match(vacanciesHtml,/Декан факультету/);
+  assert.match(vacanciesHtml,/Конкурс №3/);
+  assert.match(vacanciesHtml,/Копії документів про стажування та підвищення кваліфікації/);
+  assert.match(vacanciesHtml,/id="competition-2-3"/);
   assert.match(vacanciesHtml,/Кафедра української та іноземних мов і гуманітарних наук/);
   assert.match(vacanciesHtml,/Кафедра клінічної психології та психотерапії/);
   assert.match(vacanciesHtml,/Кафедра психології бізнесу та управління/);
   assert.match(vacanciesHtml,/konkurs-2-3-movy-psykholohiia-2026\.docx/);
+  assert.match(vacanciesHtml,/konkurs-3-dekan-fpsr-2026\.docx/);
 
   const researchHtml=await (await render("/research")).text();
   assert.match(researchHtml,/Ресурси Академії/);
@@ -461,6 +466,25 @@ test("publishes academic competition 2 and 3 in news",async()=>{
   assert.match(articleHtml,/до 16 вересня 2026 року включно/i);
   assert.match(articleHtml,/href="\/vacancies#competition-2-3"/);
   assert.match(articleHtml,/konkurs-2-3-movy-psykholohiia-2026\.docx/);
+});
+
+test("publishes the dean competition and retains prior competitions as archives",async()=>{
+  const slug="konkurs-dekan-fakultetu-psykholohii-2026";
+  const [homeHtml,newsHtml,articleHtml,vacanciesHtml]=await Promise.all([
+    (await render("/")).text(),
+    (await render("/news")).text(),
+    (await render(`/news/${slug}`)).text(),
+    (await render("/vacancies")).text(),
+  ]);
+  assert.match(homeHtml,/Шукаємо<br\/>декана/);
+  assert.match(homeHtml,/href="\/vacancies#competition-dean-2026"/);
+  assert.match(newsHtml,/Оголошено конкурс на посаду декана факультету психології та соціального розвитку/);
+  assert.match(articleHtml,/27 листопада 2026 року/);
+  assert.match(articleHtml,/href="\/vacancies#competition-dean-2026"/);
+  assert.match(articleHtml,/konkurs-3-dekan-fpsr-2026\.docx/);
+  assert.match(vacanciesHtml,/Подання заяв завершилося 16 вересня 2026 року/);
+  const document=await readFile(new URL("../public/documents/vacancies/konkurs-3-dekan-fpsr-2026.docx",import.meta.url));
+  assert.equal(document.subarray(0,2).toString(),"PK");
 });
 
 test("publishes the Mental Health conference and Academy strategy",async()=>{
