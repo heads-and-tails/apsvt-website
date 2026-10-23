@@ -1,0 +1,6 @@
+.marketing-interactive-intro{max-width:1000px;font-size:16px;line-height:1.75}
+.marketing-interactive-intro p{margin:0 0 20px}
+.marketing-interactive-intro ul{list-style:disc;padding-left:24px;margin:0 0 20px}
+.marketing-interactive-intro li+li{margin-top:12px}
+.marketing-interactive-resources summary small{font-size:.65em;color:var(--cobalt)}
+.marketing-interactive-description{margin:0 0 20px;font-size:15px;line-height:1.6}

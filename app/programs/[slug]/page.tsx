@@ -33,6 +33,9 @@ import { MarketingMethodicalFolders } from "./MarketingMethodicalFolders";
 import { marketingMobilitySection } from "@/lib/marketing-mobility";
 import { marketingTeacherAchievementsSection } from "@/lib/marketing-teacher-achievements";
 import { marketingMethodicalSectionIds } from "@/lib/marketing-methodical";
+import { marketingInteractiveSection } from "@/lib/marketing-interactive-resources";
+import { MarketingInteractiveResources } from "./MarketingInteractiveResources";
+import "./marketing-interactive-resources.css";
 import { FinanceInternational, financeProjectSections } from "./FinanceInternational";
 import { FinanceMasterProgramme } from "./FinanceMasterProgramme";
 import { FinancePublications } from "./FinancePublications";
@@ -67,6 +70,7 @@ const marketingSections: readonly SectionHubItem[] = [
   { id: "marketing-partners", index: "09", title: "Партнери кафедри", description: "Наші партнери, договори та меморандуми про співпрацю.", icon: "CO" },
   { id: "department-news", index: "10", title: "Новини", description: "Події, публікації та оголошення кафедри маркетингу.", icon: "NEWS" },
   { id: "marketing-repository", index: "11", title: "Репозитарій", description: "Документи й матеріали кафедри.", icon: "DOC" },
+  { ...marketingInteractiveSection, index: "12", icon: "↗" },
 ];
 
 const financeSections: readonly SectionHubItem[] = [
@@ -148,6 +152,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <MarketingPartners entries={departmentEntries} key="marketing-partners" />,
     <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", "quality", "marketing-quality-discussion", marketingMobilitySection.id, marketingTeacherAchievementsSection.id, "marketing-repository", "curriculum", "marketing-partner-agreements", "marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", ...marketingMethodicalSectionIds, ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
     <MarketingRepository entries={departmentEntries} key="marketing-repository" />,
+    <MarketingInteractiveResources key={marketingInteractiveSection.id} />,
   ] : null;
   const financeSectionContent = slug === "finance" ? [
     <div id="overview" key="finance-programmes">

@@ -627,6 +627,19 @@ test("replaces the outdated bullying measures plan with the 2026–2027 signed P
   assert.equal(bytes.subarray(0,4).toString(),"%PDF");
 });
 
+test("marketing publishes a dedicated interactive catalogue without changing other programme navigators",async()=>{
+  const html=await (await render("/programs/marketing")).text();
+  for(const id of ["marketing-interactive-resources","marketing-interactive-exercises","marketing-practical-cases","marketing-webquests","marketing-learning-games"]) assert.ok(html.includes(`id="${id}"`),id);
+  assert.match(html,/Інтерактивні освітні ресурси/);
+  assert.match(html,/https:\/\/learningapps.org\/display\?v=pzuio0ts523/);
+  assert.match(html,/https:\/\/vseosvita.ua\/webquest\/play\?code=kqvdx715/);
+  assert.doesNotMatch(html,/Інтерактивна вправа № 45|Текст у розділі -|Розмістити наступні ресурси/);
+  for(const path of ["/programs/finance","/en/programs/marketing","/en/programs/law"]){
+    const response=await render(path);assert.equal(response.status,200);
+    assert.ok(!(await response.text()).includes('id="marketing-interactive-resources"'),path);
+  }
+});
+
 test("gives every law programme level a stable page and keeps dates optional",async()=>{
   const facultyHtml=await (await render("/departments/law-faculty#faculty-programmes")).text();
   const programmePaths=[
