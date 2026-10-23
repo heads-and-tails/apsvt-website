@@ -460,6 +460,57 @@ test("the configured faculty editor can manage all requested pages and cannot ed
   for (const path of ["/news", "/schedule", "/programs/marketing", "/departments/digital-technologies"]) assert.equal(access.canEditPage(profile, path), false, path);
 });
 
+test("batch documents use signed upload and retain scoped page authorization", async () => {
+  const editor = { role: "editor", accessScopes: ["/programs/marketing"] };
+  assert.equal(access.canEditPage(editor, "/programs/marketing"), true);
+  for (const path of ["/schedule", "/programs/finance", "/departments/law-faculty"]) {
+    assert.equal(access.canEditPage(editor, path), false, path);
+  }
+
+  const requestUrl = `data:text/javascript;base64,${Buffer.from(`
+    export class ClientRequestError extends Error {}
+    export const calls = [];
+    export async function requestJson(url, options) {
+      calls.push({ url, body: JSON.parse(options.body) });
+      return { bucket: "editorial-documents", path: "documents/test/course.pdf", token: "test-token", url: "https://example.test/course.pdf", fileName: "course.pdf", mimeType: "application/pdf", fileSize: 4 };
+    }
+  `).toString("base64")}`;
+  const storageUrl = `data:text/javascript;base64,${Buffer.from(`
+    export const uploads = [];
+    export function createClient() {
+      return { storage: { from(bucket) { return { async uploadToSignedUrl(path, token, file, options) { uploads.push({ bucket, path, token, file, options }); return { error: null }; } }; } } };
+    }
+  `).toString("base64")}`;
+  const { requestJson, calls } = await import(requestUrl);
+  const { uploads } = await import(storageUrl);
+  assert.equal(typeof requestJson, "function");
+  const { uploadEditorialFile } = await import(await moduleUrl("../lib/editorial-upload-client.ts", {
+    "@/lib/client-request": requestUrl,
+    "@/lib/supabase/client": storageUrl,
+  }));
+  const priorUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const priorKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.test";
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = "test-key";
+  try {
+    const file = new File(["test"], "course.pdf", { type: "application/pdf" });
+    const uploaded = await uploadEditorialFile(file, "document", "/programs/marketing");
+    assert.deepEqual(calls, [{ url: "/api/uploads/sign", body: { fileName: "course.pdf", contentType: "application/pdf", fileSize: 4, purpose: "document", pagePath: "/programs/marketing" } }]);
+    assert.equal(uploads.length, 1);
+    assert.equal(uploads[0].bucket, "editorial-documents");
+    assert.equal(uploads[0].path, "documents/test/course.pdf");
+    assert.equal(uploads[0].token, "test-token");
+    assert.equal(uploads[0].file, file);
+    assert.equal(uploads[0].options.contentType, "application/pdf");
+    assert.equal(uploaded.url, "https://example.test/course.pdf");
+  } finally {
+    if (priorUrl === undefined) delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+    else process.env.NEXT_PUBLIC_SUPABASE_URL = priorUrl;
+    if (priorKey === undefined) delete process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+    else process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = priorKey;
+  }
+});
+
 const legacyProfiles = await import(await moduleUrl("../lib/legacy-faculty-profiles.ts", { "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }) }));
 test("binds legacy faculty biographies, names and newest portraits before staff insertion or reorder", () => {
   const source = [{ name: "Перша Людина", role: "Викладач", summary: "Перший профіль", image: "/first.jpg" }, { name: "Друга Людина", role: "Доцент", summary: "Другий профіль", image: "/second.jpg" }];
