@@ -17,6 +17,7 @@ import {
   type ScheduleStudyFormId,
 } from "@/lib/schedule-documents";
 import { requestJson } from "@/lib/client-request";
+import { uploadEditorialFile } from "@/lib/editorial-upload-client";
 
 type QueuedFile = { id: string; file: File; title: string };
 type UploadResult = { url: string; fileName: string; mimeType: string; fileSize: number };
@@ -65,11 +66,7 @@ export function ScheduleDocumentManager({ initialDocuments }: { initialDocuments
   }
 
   async function upload(file: File): Promise<UploadResult> {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("purpose", "document");
-    data.append("pagePath", "/schedule");
-    return requestJson<UploadResult>("/api/uploads", { method: "POST", body: data }, 60_000);
+    return uploadEditorialFile(file, "document", "/schedule");
   }
 
   async function publishSet() {
