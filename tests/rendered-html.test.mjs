@@ -633,7 +633,9 @@ test("marketing publishes a dedicated interactive catalogue without changing oth
   assert.match(html,/Інтерактивні освітні ресурси/);
   assert.match(html,/https:\/\/learningapps.org\/display\?v=pzuio0ts523/);
   assert.match(html,/https:\/\/vseosvita.ua\/webquest\/play\?code=kqvdx715/);
-  assert.doesNotMatch(html,/Інтерактивна вправа № 45|Текст у розділі -|Розмістити наступні ресурси/);
+  assert.match(html,/Міжнародний маркетинг відомих компаній/);
+  assert.match(html,/https:\/\/learningapps.org\/display\?v=pmkfka9at23/);
+  assert.doesNotMatch(html,/Текст у розділі -|Розмістити наступні ресурси/);
   for(const path of ["/programs/finance","/en/programs/marketing","/en/programs/law"]){
     const response=await render(path);assert.equal(response.status,200);
     assert.ok(!(await response.text()).includes('id="marketing-interactive-resources"'),path);
