@@ -26,22 +26,23 @@ const edupro = await import(eduproUrl);
 const interactiveUrl = await moduleUrl("../lib/marketing-interactive-resources.ts");
 const interactive = await import(interactiveUrl);
 
-test("marketing interactive resources preserve the supplied introduction and all 97 identified source links", async () => {
+test("marketing interactive resources preserve the supplied introduction and all 98 source links", async () => {
   const { marketingInteractiveGroups: groups, marketingInteractiveIntroduction: intro } = interactive;
-  assert.deepEqual(groups.map((group) => group.resources.length), [48, 22, 10, 17]);
+  assert.deepEqual(groups.map((group) => group.resources.length), [49, 22, 10, 17]);
   const introduction = [...intro.paragraphs, intro.directionsTitle, ...intro.directions, intro.conclusion].join("\n");
   assert.equal(createHash("sha256").update(introduction).digest("hex"), "b9319e50db3f612824ef1094d6b16b508ff5d916fd08e48e3263f6ac6d2c8115");
   const catalogue = groups.map((group) => `${group.title}\n${group.description}\n${group.resources.map((resource) => `${resource.title}\t${resource.href}`).join("\n")}`).join("\n");
-  assert.equal(createHash("sha256").update(catalogue).digest("hex"), "a0a5e0d32eb995d95f309f51e889dff9f996c17099ff0f7f3bde5204d649af79");
-  assert.deepEqual(groups[0].resources.map((resource) => resource.number), Array.from({ length: 49 }, (_, index) => index + 1).filter((number) => number !== 45));
+  assert.equal(createHash("sha256").update(catalogue).digest("hex"), "a5452c736e397926f977428a637a0c759fe5147ecf4713b8d90c273562e7585c");
+  assert.deepEqual(groups[0].resources.map((resource) => resource.number), Array.from({ length: 49 }, (_, index) => index + 1));
+  assert.deepEqual(groups[0].resources[44], { number: 45, title: "Міжнародний маркетинг відомих компаній", href: "https://learningapps.org/display?v=pmkfka9at23" });
   assert.equal(groups[3].resources[1].href, groups[3].resources[5].href, "Retain the repeated link supplied for two distinct source entries");
   assert.ok(groups.flatMap((group) => group.resources).every((resource) => new URL(resource.href).protocol === "https:" && resource.href !== "https://learningapps.org/"));
   const { MarketingInteractiveResources } = await import(await moduleUrl("../app/programs/[slug]/MarketingInteractiveResources.tsx", { "@/lib/marketing-interactive-resources": interactiveUrl }));
   const html = renderToStaticMarkup(createElement(MarketingInteractiveResources));
   assert.equal((html.match(/<details /g) || []).length, 4);
-  assert.equal((html.match(/target="_blank" rel="noopener noreferrer"/g) || []).length, 97);
+  assert.equal((html.match(/target="_blank" rel="noopener noreferrer"/g) || []).length, 98);
   for (const group of groups) assert.ok(html.includes(`id="${group.id}"`));
-  assert.doesNotMatch(html, /Текст у розділі|Розмістити наступні ресурси|Інтерактивна вправа № 45|placeholder|TODO/);
+  assert.doesNotMatch(html, /Текст у розділі|Розмістити наступні ресурси|placeholder|TODO/);
 });
 
 test("preserves the complete supplied EduPro announcement without email history or an invented image", () => {

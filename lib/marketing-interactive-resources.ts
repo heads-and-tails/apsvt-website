@@ -71,6 +71,7 @@ export const marketingInteractiveGroups: readonly MarketingInteractiveGroup[] = 
       { number: 42, title: "Інтерактивна вправа № 42", href: "https://learningapps.org/display?v=pbiaiq3pt22" },
       { number: 43, title: "Інтерактивна вправа № 43", href: "https://learningapps.org/display?v=pie9kmdmn26" },
       { number: 44, title: "Інтерактивна вправа № 44", href: "https://learningapps.org/display?v=pb3q9z8k526" },
+      { number: 45, title: "Міжнародний маркетинг відомих компаній", href: "https://learningapps.org/display?v=pmkfka9at23" },
       { number: 46, title: "Інтерактивна вправа № 46", href: "https://learningapps.org/display?v=p3tpfsdma26" },
       { number: 47, title: "Інтерактивна вправа № 47", href: "https://learningapps.org/display?v=pu5ifx0cj26" },
       { number: 48, title: "Інтерактивна вправа № 48", href: "https://learningapps.org/display?v=pf5qegfc526" },
