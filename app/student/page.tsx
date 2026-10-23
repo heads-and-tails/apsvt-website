@@ -54,6 +54,8 @@ export default async function StudentPage() {
 
     <section className={styles.hero}><div className={styles.heroCopy}><span>{levelLabel[profile.degreeLevel]} · {profile.studyForm === "full_time" ? "Денна форма" : "Заочна форма"}</span><h1>Вітаємо,<br />{profile.fullName.split(" ")[0]}.</h1><p>{profile.programme} · {profile.course} курс{profile.groupName ? ` · ${profile.groupName}` : ""}</p></div><div className={styles.studentCard}><small>Студентський профіль</small><b>{profile.studentNumber}</b><span>{profile.email}</span><i>{profile.status === "active" ? "Активний" : "Статус уточнюється"}</i></div></section>
 
+    <nav className={styles.studyShortcuts} aria-label="Навчальні сервіси"><Link href="/schedule#my-schedule"><b>Мій розклад</b><span>Виберіть курс один раз і відкривайте актуальні файли</span><i>↗</i></Link><a href="https://moodle.socosvita.kiev.ua/"><b>Moodle</b><span>Завдання й матеріали дисциплін</span><i>↗</i></a><Link href="/academic-calendar"><b>Навчальний календар</b><span>Сесія, практика та канікули</span><i>↗</i></Link></nav>
+
     <section className={styles.summary}>
       <article className={balance > 0 ? styles.summaryAttention : ""}><small>Залишок до сплати</small><b>{money(balance)} <i>грн</i></b><span>{overdue.length ? `${overdue.length} прострочених нарахувань` : "Прострочень немає"}</span></article>
       <article><small>Найближчий платіж</small><b>{nearest ? money(Math.max(0, nearest.amount - nearest.paidAmount)) : "0"} <i>грн</i></b><span>{nearest ? `до ${date(nearest.dueDate)}` : "Усе сплачено"}</span></article>
