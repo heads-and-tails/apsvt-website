@@ -59,7 +59,7 @@ test("department content and programme documents survive real uploads, publishin
         created.push(["documents", doc.id]); docs.push(doc);
       }
       const html = await request(path);
-      for (const heading of ["Робочі програми", "Анотації"]) assert.match(html, new RegExp(`<h2>${heading}</h2>`));
+      for (const heading of ["Робочі програми навчальних дисциплін", "Анотації навчальних дисциплін"]) assert.match(html, new RegExp(`<h2>${heading}</h2>`));
       for (const doc of docs) assert.ok(html.includes(doc.title));
       assert.ok(!(await request("/api/public-content?kind=research_resource")).some(x => docs.some(d => d.id === x.id)), "Documents must not leak into research entries");
       const draft = await request(`/api/documents/${docs[0].id}`, "PATCH", { ...docs[0], status: "draft" });
@@ -67,7 +67,7 @@ test("department content and programme documents survive real uploads, publishin
       assert.ok(!(await request(path)).includes(draft.title));
       for (const doc of docs) await request(`/api/documents/${doc.id}`, "DELETE");
       const empty = await request(path);
-      for (const heading of ["Робочі програми", "Анотації"]) assert.match(empty, new RegExp(`<h2>${heading}</h2>`));
+      for (const heading of ["Робочі програми навчальних дисциплін", "Анотації навчальних дисциплін"]) assert.match(empty, new RegExp(`<h2>${heading}</h2>`));
     }
     console.log("PASS original upload bytes; first publication and public flags; all six programme document categories, draft/update/delete and empty headings.");
   } finally {

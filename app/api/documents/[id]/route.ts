@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { deleteDocument, getDocumentById, updateDocument, type PageDocumentInput } from "@/lib/documents";
 import { requirePagePublisher } from "@/lib/auth";
+import { validProgrammeDocumentFolder } from "@/lib/programme-folder-validation";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     if (!existing) return NextResponse.json({ error: "Документ не знайдено" }, { status: 404 });
     await requirePagePublisher(existing.pagePath);
     const publisher = await requirePagePublisher(body.pagePath);
+    if (!await validProgrammeDocumentFolder(body)) return NextResponse.json({ error: "Оберіть папку відповідної програми та розділу" }, { status: 400 });
     const document = await updateDocument(id, body, publisher.email);
     return document ? NextResponse.json(document) : NextResponse.json({ error: "Документ не знайдено" }, { status: 404 });
   } catch (error) {

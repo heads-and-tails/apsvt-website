@@ -1,5 +1,6 @@
 import type { DepartmentEntry } from "@/lib/department-content";
 import type { PageDocument } from "@/lib/documents";
+import { isProgrammeFolder, parseProgrammeDocumentCategory, programmeDocumentIsVisible } from "@/lib/programme-folders";
 import { lawProgrammeDocumentSection, lawProgrammeDocumentSections, type LawFacultyProgramme } from "@/lib/law-faculty-programmes";
 import type { ProgrammePublication } from "@/lib/public-administration-materials";
 import { DepartmentEditorialContent } from "./DepartmentEditorialContent";
@@ -22,8 +23,10 @@ export function LawFacultyProgramme({ programme, publication, entries, documents
   const materialEntries = visibleEntries.filter((entry) => entry.entryType === "material");
   const officialDocument = publication?.currentDocument.href || programme.documentHref;
   const remainingGroups = publication?.groups.filter((group) => !lawProgrammeDocumentSections.some((section) => (section.curatedGroups as readonly string[]).includes(group.id)));
-  const otherEntries = visibleEntries.filter((entry) => entry.entryType !== "material" || !lawProgrammeDocumentSection(entry.title, entry.sectionId));
-  const otherDocuments = documents.filter((document) => !lawProgrammeDocumentSection(document.title, document.category));
+  const folders = visibleEntries.filter(isProgrammeFolder);
+  const visibleDocuments = documents.filter((document) => document.status === "published" && programmeDocumentIsVisible(document, folders));
+  const otherEntries = visibleEntries.filter((entry) => !isProgrammeFolder(entry) && (entry.entryType !== "material" || !lawProgrammeDocumentSection(entry.title, entry.sectionId)));
+  const otherDocuments = visibleDocuments.filter((document) => !lawProgrammeDocumentSection(document.title, document.category));
 
   return <div className="law-faculty-programme">
     <nav className="wrap law-programme-section-links" aria-label="Розділи освітньої програми">
@@ -36,16 +39,25 @@ export function LawFacultyProgramme({ programme, publication, entries, documents
     </div></section>
     {lawProgrammeDocumentSections.map((section) => {
       const materials = materialEntries.filter((entry) => lawProgrammeDocumentSection(entry.title, entry.sectionId) === section.id);
-      const files = documents.filter((document) => lawProgrammeDocumentSection(document.title, document.category) === section.id);
+      const files = visibleDocuments.filter((document) => lawProgrammeDocumentSection(document.title, document.category) === section.id);
+      const sectionFolders = folders.filter((folder) => folder.sectionId === section.id);
+      const looseFiles = files.filter((document) => !parseProgrammeDocumentCategory(document.category).folderId);
       const groups = publication?.groups.filter((group) => (section.curatedGroups as readonly string[]).includes(group.id)) || [];
       const sourceDocument = section.id === "programme-document" ? officialDocument : undefined;
-      const hasContent = sourceDocument || materials.length || files.length || groups.some((group) => group.files.length);
+      const hasContent = sourceDocument || materials.length || looseFiles.length || sectionFolders.length || groups.some((group) => group.files.length);
       return <section id={section.id} className="law-programme-section" key={section.id}><div className="wrap">
         <h2>{section.title}</h2>
         {materials.length > 0 && <DepartmentEditorialContent inline entries={materials} />}
         {sourceDocument && !materials.some((entry) => entry.fileUrl === sourceDocument) && <ul className="programme-material-list"><li><a href={sourceDocument} target="_blank" rel="noopener noreferrer"><span>{publication?.currentDocument.title || "Освітня програма · редакція 2025"}</span><small>PDF ↗</small></a></li></ul>}
         {groups.map((group) => <ProgrammeMaterialGroup group={group} headingLevel={group.title === section.title ? null : 3} key={group.id} />)}
-        <ProgrammeDocumentLinks documents={files} />
+        {sectionFolders.map((folder) => {
+          const children = files.filter((document) => parseProgrammeDocumentCategory(document.category).folderId === folder.id);
+          return <details className="programme-material-group programme-managed-folder" key={folder.id} id={`folder-${folder.id}`}>
+            <summary>{folder.title} <small>({children.length})</small></summary>
+            {children.length ? <ProgrammeDocumentLinks documents={children} /> : <p className="academic-empty-state">Матеріали ще не оприлюднено.</p>}
+          </details>;
+        })}
+        <ProgrammeDocumentLinks documents={looseFiles} />
         {!hasContent && <p className="academic-empty-state">{section.empty}</p>}
       </div></section>;
     })}

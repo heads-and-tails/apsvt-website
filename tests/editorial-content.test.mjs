@@ -240,7 +240,49 @@ test("records first publication rather than draft creation and keeps hidden date
 
 const lawStructureUrl = await moduleUrl("../lib/law-faculty-structure.ts");
 const programmeDocumentsUrl = await moduleUrl("../lib/programme-documents.ts");
-const lawProgrammes = await import(await moduleUrl("../lib/law-faculty-programmes.ts", { "./law-faculty-structure": lawStructureUrl, "./programme-documents": programmeDocumentsUrl }));
+const lawProgrammesUrl = await moduleUrl("../lib/law-faculty-programmes.ts", { "./law-faculty-structure": lawStructureUrl, "./programme-documents": programmeDocumentsUrl });
+const lawProgrammes = await import(lawProgrammesUrl);
+const programmeFoldersUrl = await moduleUrl("../lib/programme-folders.ts", { "./law-faculty-programmes": lawProgrammesUrl });
+const programmeFolders = await import(programmeFoldersUrl);
+
+test("programme folders retain stable membership and hide unavailable, cross-section and cross-programme files", () => {
+  const path = lawProgrammes.lawProgrammePath("d8-law-master");
+  const folder = { ...programmeFolders.programmeFolderInput(path, "working-programmes", "Фахові дисципліни"), id: "folder-1" };
+  const document = { pagePath: path, category: programmeFolders.programmeDocumentCategory("Робоча програма", "2026", folder.id) };
+  assert.ok(programmeFolders.isProgrammeFolder(folder));
+  assert.ok(programmeFolders.programmeDocumentIsVisible(document, [folder]));
+  assert.ok(programmeFolders.programmeDocumentIsVisible(document, [{ ...folder, title: "Перейменована папка" }]));
+  assert.equal(programmeFolders.programmeDocumentCategoryLabel(document.category, [folder]), "Робоча програма · 2026 · Фахові дисципліни");
+  assert.ok(programmeFolders.programmeFolderHasDocuments(folder, [document]));
+  for (const variant of [{ ...folder, status: "draft" }, { ...folder, hidden: true }, { ...folder, sectionId: "course-annotations" }, { ...folder, pagePath: lawProgrammes.lawProgrammePath("d8-law-bachelor") }, { ...folder, role: "" }]) {
+    assert.equal(programmeFolders.programmeDocumentIsVisible(document, [variant]), false);
+  }
+  assert.equal(programmeFolders.programmeDocumentIsVisible(document, []), false);
+  for (const category of ["Робоча програма · папка:", "Робоча програма · папка:folder-1 · папка:folder-2", "Анотація · папка:folder-1"]) assert.equal(programmeFolders.programmeDocumentIsVisible({ ...document, category }, [folder]), false);
+  assert.ok(programmeFolders.programmeDocumentIsVisible({ ...document, category: "Робоча програма · 2025" }, []), "Legacy documents need no folder");
+});
+
+test("programme pages render clickable folder contents once and keep unpublished files out of their HTML", async () => {
+  const renderer = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export function DepartmentEditorialContent({entries}){return entries.map(entry=>createElement("article",{key:entry.id},entry.title));}`).toString("base64")}`;
+  const link = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export default function Link(props){return createElement("a",props);}`).toString("base64")}`;
+  const materials = await moduleUrl("../app/components/PublicAdministrationMaterials.tsx", { "next/link": link, "@/lib/public-administration-announcements": await moduleUrl("../lib/public-administration-announcements.ts") });
+  const { LawFacultyProgramme } = await import(await moduleUrl("../app/components/LawFacultyProgramme.tsx", {
+    "@/lib/law-faculty-programmes": lawProgrammesUrl,
+    "@/lib/programme-folders": programmeFoldersUrl,
+    "./DepartmentEditorialContent": renderer,
+    "./PublicAdministrationMaterials": materials,
+  }));
+  const programme = lawProgrammes.lawFacultyProgrammes.find((item) => item.id === "d8-law-master");
+  const folder = { ...programmeFolders.programmeFolderInput(lawProgrammes.lawProgrammePath(programme.id), "working-programmes", "Фахові дисципліни"), id: "folder-1" };
+  const document = { id: "file-1", pagePath: folder.pagePath, title: "Опублікована дисципліна", category: programmeFolders.programmeDocumentCategory("Робоча програма", "", folder.id), status: "published", fileUrl: "/original.docx", fileName: "original.docx" };
+  const html = renderToStaticMarkup(createElement(LawFacultyProgramme, { programme, entries: [folder], documents: [document, { ...document, id: "draft", status: "draft", title: "Приватна чернетка" }, { ...document, id: "orphan", title: "Втрачена папка", category: "Робоча програма · папка:missing" }] }));
+  assert.match(html, /<details[^>]+id="folder-folder-1"/);
+  assert.equal(html.split(folder.title).length - 1, 1);
+  assert.match(html, /href="\/original.docx"/);
+  assert.doesNotMatch(html, /Приватна чернетка|Втрачена папка|programme-document-folder|папка:/);
+  const empty = renderToStaticMarkup(createElement(LawFacultyProgramme, { programme, entries: [folder], documents: [] }));
+  assert.match(empty, /Матеріали ще не оприлюднено/);
+});
 
 test("classifies programme materials without mixing approved programmes, study plans and course files", () => {
   for (const [title, category, expected] of [

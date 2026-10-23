@@ -1,7 +1,10 @@
 "use client";
 
 import { uploadEditorialFile } from "@/lib/editorial-upload-client";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import type { DepartmentEntry } from "@/lib/department-content";
+import { parseProgrammeDocumentCategory, programmeDocumentCategory, programmeDocumentCategoryLabel, programmeFolderSection } from "@/lib/programme-folders";
+import { ProgrammeFolderEditor } from "./ProgrammeFolderEditor";
 import type { DocumentStatus, PageDocument, PageDocumentInput } from "@/lib/documents";
 import type { Publisher } from "@/lib/auth";
 import { canEditPage, editorialAccessOptions } from "@/lib/editorial-access";
@@ -42,32 +45,42 @@ function pageLabel(path: string): string {
   return pageOptions.find(([value]) => value === path)?.[1] || path;
 }
 
-export function DocumentManager({ initialDocuments, publisher }: { initialDocuments: PageDocument[]; publisher: Publisher }) {
+export function DocumentManager({ documents, setDocuments, folders, setFolders, publisher }: {
+  documents: PageDocument[]; setDocuments: Dispatch<SetStateAction<PageDocument[]>>;
+  folders: DepartmentEntry[]; setFolders: Dispatch<SetStateAction<DepartmentEntry[]>>; publisher: Publisher;
+}) {
   const allowedPageOptions = pageOptions.filter(([value]) => value === "*" ? publisher.role === "admin" || publisher.accessScopes.includes("*") : canEditPage(publisher, value));
-  const [documents, setDocuments] = useState(initialDocuments);
   const [form, setForm] = useState<PageDocumentInput>({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" });
   const [editing, setEditing] = useState<string | null>(null);
   const [scheduleSelection, setScheduleSelection] = useState<ScheduleDocumentSelection>(defaultScheduleDocumentSelection);
   const [programmeDocumentKind, setProgrammeDocumentKind] = useState("Освітня програма");
   const [programmeDocumentYear, setProgrammeDocumentYear] = useState("");
+  const [folderId, setFolderId] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const published = useMemo(() => documents.filter((document) => document.status === "published").length, [documents]);
   const isProfessionalProgramme = professionalEducationProgrammes.some((programme) => programme.path === form.pagePath);
   const isLawProgramme = lawFacultySubpages.some((page) => page.path === form.pagePath && page.sectionId === "faculty-programmes");
+  const folderSection = isLawProgramme ? programmeFolderSection(programmeDocumentKind) : undefined;
+  const listedDocuments = isLawProgramme ? documents.filter((document) => {
+    const parsed = parseProgrammeDocumentCategory(document.category);
+    return document.pagePath === form.pagePath && parsed.kind === programmeDocumentKind && (!folderSection || parsed.folderId === folderId);
+  }) : documents;
 
   function change<K extends keyof PageDocumentInput>(key: K, value: PageDocumentInput[K]) {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
-  function setProgrammeCategory(kind: string, year: string) {
+  function setProgrammeCategory(kind: string, year: string, nextFolderId = kind === programmeDocumentKind ? folderId : "") {
     setProgrammeDocumentKind(kind);
     setProgrammeDocumentYear(year);
-    change("category", year.trim() ? `${kind} · ${year.trim()}` : kind);
+    setFolderId(nextFolderId);
+    change("category", programmeDocumentCategory(kind, year, nextFolderId));
   }
 
   function changePagePath(pagePath: string) {
     const isProgramme = professionalEducationProgrammes.some((programme) => programme.path === pagePath) || lawFacultySubpages.some((page) => page.path === pagePath && page.sectionId === "faculty-programmes");
+    setFolderId("");
     setForm((current) => ({ ...current, pagePath, category: isProgramme ? "Освітня програма" : current.category }));
     if (isProgramme) { setProgrammeDocumentKind("Освітня програма"); setProgrammeDocumentYear(""); }
   }
@@ -97,7 +110,9 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
       if (!response.ok) throw new Error(result.error || "Не вдалося зберегти документ");
       setDocuments((current) => editing ? current.map((item) => item.id === editing ? result : item) : [result, ...current]);
       setMessage(result.status === "published" ? "Документ опубліковано на вибраній сторінці та автоматично додано до загального каталогу" : "Чернетку документа збережено");
-      setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setScheduleSelection(defaultScheduleDocumentSelection); setProgrammeDocumentKind("Освітня програма"); setProgrammeDocumentYear("");
+      setEditing(null);
+      if (isLawProgramme) setForm({ ...empty, pagePath: form.pagePath, category: form.category });
+      else { setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setScheduleSelection(defaultScheduleDocumentSelection); setProgrammeDocumentKind("Освітня програма"); setProgrammeDocumentYear(""); setFolderId(""); }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Не вдалося зберегти документ");
     } finally { setBusy(false); }
@@ -118,7 +133,8 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
       sortOrder: item.sortOrder,
     });
     setScheduleSelection(parseScheduleDocumentCategory(item.category) || defaultScheduleDocumentSelection);
-    const [kind, year = ""] = item.category.split("·").map((part) => part.trim());
+    const { kind, year, folderId: itemFolderId } = parseProgrammeDocumentCategory(item.category);
+    setFolderId(itemFolderId);
     if (professionalEducationProgrammes.some((programme) => programme.path === item.pagePath) || lawFacultySubpages.some((page) => page.path === item.pagePath && page.sectionId === "faculty-programmes")) {
       setProgrammeDocumentKind(kind || "Освітня програма");
       setProgrammeDocumentYear(year);
@@ -127,7 +143,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
     window.document.querySelector("#document-editor")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function reset() { setEditing(null); setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setScheduleSelection(defaultScheduleDocumentSelection); setProgrammeDocumentKind("Освітня програма"); setProgrammeDocumentYear(""); setMessage(""); }
+  function reset() { setEditing(null); setForm({ ...empty, pagePath: form.pagePath, category: form.category }); setMessage(""); }
 
   async function remove(document: PageDocument) {
     if (!confirm(`Видалити «${document.title}» зі сторінки?`)) return;
@@ -136,6 +152,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
       const response = await fetch(`/api/documents/${document.id}`, { method: "DELETE" });
       if (!response.ok) throw new Error("Не вдалося видалити документ");
       setDocuments((current) => current.filter((item) => item.id !== document.id));
+      if (editing === document.id) reset();
       setMessage("Документ видалено зі сторінки");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Не вдалося видалити документ");
@@ -157,7 +174,7 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
     <div className="document-layout">
       <form className="document-form" id="document-editor" onSubmit={save}>
         <div className="operations-form-head"><div><small>До 20 МБ</small><h3>{editing ? "Редагувати документ" : "Додати документ"}</h3></div>{editing && <button type="button" onClick={reset}>Скасувати</button>}</div>
-        <label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName}</b><span>Файл готовий до публікації</span></> : <><b>Оберіть файл</b><span>PDF, DOC, DOCX, XLS, XLSX, PPT або PPTX</span></>}<input type="file" required={!form.fileUrl} disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); }} /></label>
+        <label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName}</b><span>Файл готовий до публікації</span></> : <><b>Оберіть файл</b><span>PDF, DOC, DOCX, XLS, XLSX, PPT або PPTX</span></>}<input type="file" required={!form.fileUrl} disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); event.target.value = ""; }} /></label>
         <div className="document-fields">
           <label>Назва документа<input required value={form.title} onChange={(event) => change("title", event.target.value)} /></label>
           {form.pagePath !== "/schedule" && !isProfessionalProgramme && !isLawProgramme && <label>Категорія<input required value={form.category} onChange={(event) => change("category", event.target.value)} placeholder="Наказ, положення, програма…" /></label>}
@@ -165,7 +182,8 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
             <legend>Де показати документ у програмі</legend>
             <p>Додавайте необмежену кількість освітніх програм і навчальних планів: один файл на кожний потрібний рік.</p>
             <label>Тип документа<select value={programmeDocumentKind} onChange={(event) => setProgrammeCategory(event.target.value, programmeDocumentYear)}><option>Освітня програма</option><option>Навчальний план</option>{isLawProgramme && <><option>Робоча програма</option><option>Анотація</option></>}<option>Інший документ</option></select></label>
-            <label>Рік / навчальний рік<input required value={programmeDocumentYear} onChange={(event) => setProgrammeCategory(programmeDocumentKind, event.target.value)} placeholder="Наприклад: 2026 або 2026/27" /></label>
+            <label>Рік / навчальний рік<input required={!folderSection} value={programmeDocumentYear} onChange={(event) => setProgrammeCategory(programmeDocumentKind, event.target.value)} placeholder="Наприклад: 2026 або 2026/27" /></label>
+            {folderSection && <ProgrammeFolderEditor pagePath={form.pagePath} sectionId={folderSection} folders={folders} setFolders={setFolders} documents={documents} selectedId={folderId} onSelect={(id) => setProgrammeCategory(programmeDocumentKind, programmeDocumentYear, id)} busy={busy} setBusy={setBusy} onMessage={setMessage} />}
           </fieldset>}
           <label className="wide">Короткий опис<textarea rows={3} value={form.description} onChange={(event) => change("description", event.target.value)} /></label>
           <label>Сторінка<select value={form.pagePath} onChange={(event) => changePagePath(event.target.value)}>{allowedPageOptions.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label>
@@ -181,10 +199,11 @@ export function DocumentManager({ initialDocuments, publisher }: { initialDocume
             <label className="wide">Спеціальність<input value={scheduleSelection.specialty} onChange={(event) => setScheduleSelection((current) => ({ ...current, specialty: event.target.value }))} placeholder="Наприклад: D8 Право" /></label>
           </fieldset>}
         </div>
-        <div className="operations-save"><p>{message || "Після збереження файл з’явиться на вибраній сторінці."}</p><button disabled={busy || !form.fileUrl} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити документ" : "Додати на сторінку"}</button></div>
+        <div className="operations-save"><p role="status">{message || "Після збереження файл з’явиться на вибраній сторінці."}</p><button disabled={busy || !form.fileUrl} type="submit">{busy ? "Зберігаємо…" : editing ? "Оновити документ" : "Додати на сторінку"}</button></div>
       </form>
-      <div className="document-list"><div className="operations-list-head"><div><small>Усі файли</small><h3>Документи сторінок</h3></div><b>{documents.length}</b></div>
-        {documents.map((document) => <article key={document.id}><div><small>{pageLabel(document.pagePath)} · {document.status === "published" ? "Опубліковано" : "Чернетка"}</small><h4>{document.title}</h4><p>{document.pagePath === "/schedule" ? scheduleDocumentCategoryLabel(document.category) : document.category} · {document.fileName}</p></div><div><a href={document.fileUrl} target="_blank" rel="noreferrer">Відкрити ↗</a><button type="button" onClick={() => edit(document)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => void remove(document)}>Видалити</button></div></article>)}
+      <div className="document-list"><div className="operations-list-head"><div><small>{isLawProgramme ? "Вибрана програма та розділ" : "Усі файли"}</small><h3>Документи сторінок</h3></div><b>{listedDocuments.length}</b></div>
+        {listedDocuments.length === 0 && <p>У вибраному розділі документів ще немає.</p>}
+        {listedDocuments.map((document) => <article key={document.id}><div><small>{pageLabel(document.pagePath)} · {document.status === "published" ? "Опубліковано" : "Чернетка"}</small><h4>{document.title}</h4><p>{document.pagePath === "/schedule" ? scheduleDocumentCategoryLabel(document.category) : programmeDocumentCategoryLabel(document.category, folders)} · {document.fileName}</p></div><div><a href={document.fileUrl} target="_blank" rel="noreferrer">Відкрити ↗</a><button disabled={busy} type="button" onClick={() => edit(document)}>Редагувати</button><button className="danger" disabled={busy} type="button" onClick={() => void remove(document)}>Видалити</button></div></article>)}
       </div>
     </div>
   </section>;
