@@ -13,6 +13,7 @@ import { PsychologyFacultyTeam } from "./PsychologyFacultyTeam";
 import { AcademicProfileCard } from "../../components/AcademicProfileCard";
 import { psychologyFacultyTeam } from "@/lib/psychology-faculty-team";
 import { PsychologyFacultyLaboratory, PsychologyFacultyPractice, PsychologyFacultyScience } from "./PsychologyFacultyDetails";
+import { officialProgrammeFileBase } from "@/lib/programme-documents";
 
 export const dynamic = "force-dynamic";
 
@@ -28,9 +29,11 @@ const departments = [
 ] as const;
 
 const programmes = [
-  ["C4", "Психологія", "Освітньо-професійна програма першого (бакалаврського) рівня вищої освіти.", "/programs/psychology"],
-  ["I10", "Соціальна робота та консультування", "Освітньо-професійна програма першого (бакалаврського) рівня вищої освіти.", "/programs/social-work"],
-];
+  { code: "C4", title: "ОПП C4 «Психологія»", level: "Бакалавр", documents: [{ title: "Освітньо-професійна програма · PDF", href: `${officialProgrammeFileBase}/c4-psychology-bachelor-2024-2025.pdf` }] },
+  { code: "C4", title: "ОПП «Клінічна психологія»", level: "Магістр", documents: [] },
+  { code: "C4", title: "ОПП «Психологія бізнесу та управління»", level: "Магістр", documents: [{ title: "Освітньо-професійна програма · PDF", href: `${officialProgrammeFileBase}/c4-psychology-business-management-master-2024-2025.pdf` }] },
+  { code: "C4", title: "ОНП C4 «Психологія»", level: "Доктор філософії", documents: [{ title: "Освітньо-наукова програма · PDF", href: "/documents/programmes/phd/2025/c4-psychology.pdf" }] },
+] as const;
 
 const discussionProgrammes = [
   "Освітньо-професійна програма «Психологія» · перший (бакалаврський) рівень вищої освіти",
@@ -39,10 +42,30 @@ const discussionProgrammes = [
   "Освітньо-наукова програма «Психологія» · третій (доктор філософії) рівень вищої освіти",
 ] as const;
 
+const facultyCouncil = [
+  "Бегеза Людмила, доктор психологічних наук, професор, завідувач кафедри психології бізнесу та управління (тимчасово головуючий).",
+  "Пріб Альберт, доктор філософії з підприємництва, торгівлі та біржової діяльності, доцент кафедри соціально-трудових відносин та соціальної роботи (секретар).",
+  "Балашова Наталія, кандидат економічних наук, доцент, завідувач кафедри соціально-трудових відносин та соціальної роботи.",
+  "Білоус Володимир, кандидат медичних наук, завідувач кафедри клінічної психології та психотерапії.",
+  "Абдряхімов Ростислав, доктор медичних наук, професор, професор кафедри клінічної психології та психотерапії.",
+  "Карагодіна Олена, доктор медичних наук, професор, професор кафедри клінічної психології та психотерапії.",
+  "Мілютіна Катерина, доктор психологічних наук, професор, професор кафедри психології бізнесу та управління.",
+  "Борець Олеся, доктор філософії у галузі психології, доцент кафедри психології бізнесу та управління.",
+  "Житниська Марія, кандидат педагогічних наук, доцент, доцент кафедри психології бізнесу та управління.",
+  "Тесленко Валентин, доктор педагогічних наук, професор, професор кафедри соціально-трудових відносин та соціальної роботи.",
+  "Судаков Микола, кандидат соціологічних наук, доцент, доцент кафедри соціально-трудових відносин та соціальної роботи.",
+  "Пріб Гліб, доктор медичних наук, професор, проректор з наукової роботи.",
+  "Яковенко Ольга, лаборант кафедри психології бізнесу та управління.",
+  "Зубченко Катерина, здобувач 3 курсу, першого бакалаврського рівня вищої освіти за спеціальністю С4 Психологія.",
+  "Єфімчук Максим, здобувач першого курсу другого (магістерського) рівня вищої освіти спеціальності І10 Соціальна робота та консультування",
+] as const;
+
+const discussionSheetUrl = "https://docs.google.com/spreadsheets/d/1LvXqlDlwumX9ySv6mYPD2oMNCP__62YDhhQXANhQBAQ/edit?usp=sharing";
+
 const facultySections: readonly SectionHubItem[] = [
   { id: "faculty-about", index: "01", title: "Про факультет", description: "Місія, напрями підготовки та рівні освіти.", icon: "F" },
   { id: "faculty-leadership", index: "02", title: "Керівництво та деканат", description: "Координація факультету та підтримка студентів і викладачів.", icon: "DEC" },
-  { id: "faculty-council", index: "03", title: "Вчена рада факультету", description: "Матеріали факультетської Вченої ради готуються до публікації.", icon: "RAD" },
+  { id: "faculty-council", index: "03", title: "Вчена рада факультету", description: "Склад Вченої ради факультету.", icon: "RAD" },
   { id: "departments", index: "04", title: "Кафедри", description: "Три окремі кафедри з повною структурою сторінок.", icon: "3" },
   { id: "faculty-laboratory", index: "05", title: "Навчально-дослідна лабораторія", description: "Дослідницькі методики, інструменти та практична робота.", icon: "LAB" },
   { id: "faculty-team", index: "06", title: "Науково-педагогічний склад", description: "Профілі викладачів і наукові інтереси факультету.", icon: "NPP" },
@@ -52,7 +75,7 @@ const facultySections: readonly SectionHubItem[] = [
   { id: "faculty-proposals", index: "10", title: "Проєкти, пропозиції та результати розгляду", description: "Матеріали консультацій зі стейкголдерами й рішення.", icon: "OP" },
   { id: "faculty-accreditation", index: "11", title: "Матеріали акредитаційних справ", description: "Папка матеріалів акредитації спеціальності C4 «Психологія».", icon: "C4" },
   { id: "faculty-repository", index: "12", title: "Репозитарій", description: "Кваліфікаційні роботи та відкриті наукові матеріали.", icon: "REP" },
-  { id: "faculty-programmes", index: "13", title: "Освітні програми", description: "Бакалаврські програми C4 «Психологія» та I10 «Соціальна робота».", icon: "BA" },
+  { id: "faculty-programmes", index: "13", title: "Освітні програми", description: "Чотири освітні програми C4 «Психологія» за рівнями вищої освіти.", icon: "C4" },
   { id: "faculty-practice", index: "14", title: "Практика й партнери", description: "Професійне середовище, практика та партнерські кейси.", icon: "PR" },
   { id: "faculty-quality", index: "15", title: "Якість освіти", description: "Моніторинг, обговорення змін та оцінювання НПП.", icon: "✓" },
   { id: "department-news", index: "16", title: "Новини факультету", description: "Актуальні матеріали й події кафедр.", icon: "NEWS" },
@@ -72,7 +95,7 @@ export default async function Page() {
 
     <section className="faculty-structure-section faculty-leadership" id="faculty-leadership"><div className="wrap"><div className="sec-head"><div><div className="idx">02 / Керівництво та деканат</div><h2>Команда, що координує факультет</h2></div><p>Організаційна, методична та комунікаційна підтримка студентів, викладачів і кафедр.</p></div><div className="faculty-leadership-grid">{dean && <AcademicProfileCard person={{ name: dean.name, role: dean.role, summary: dean.summary, image: dean.image, tags: dean.interests, links: dean.profiles }} />}<AcademicProfileCard badge="Методистка деканату" person={{ name: "Лариса Ламанова", role: "методистка деканату факультету", summary: "Супроводжує методичну та комунікаційну роботу факультету.", image: "/people/psychology-faculty/larysa-lamanova.jpeg", tags: ["методична робота", "комунікація з кафедрами"] }} /><aside className="faculty-office-card"><span>Деканат</span><h3>Організаційна підтримка студентів і викладачів</h3><ul><li>організація освітнього процесу;</li><li>комунікація з кафедрами;</li><li>практична підготовка;</li><li>студентські звернення;</li><li>документообіг факультету.</li></ul><a href="mailto:k.psychology22@gmail.com">Контакти деканату →</a></aside></div></div></section>
 
-    <section className="faculty-structure-section faculty-governance" id="faculty-council"><div className="wrap"><div className="sec-head"><div><div className="idx">03 / Вчена рада факультету</div><h2>Колегіальний орган факультету</h2></div><p>Розділ призначений саме для матеріалів Вченої ради факультету психології та соціального розвитку.</p></div><div className="faculty-empty-state"><span>Матеріали готуються</span><h3>Інформацію буде додано факультетом</h3><p>Склад, плани роботи, засідання, рішення та протоколи з’являться тут після офіційного погодження.</p></div></div></section>
+    <section className="faculty-structure-section faculty-governance" id="faculty-council"><div className="wrap"><div className="sec-head"><div><div className="idx">03 / Вчена рада факультету</div><h2>Склад вченої ради факультету</h2></div></div><ol className="faculty-council-list">{facultyCouncil.map((member) => <li key={member}>{member}</li>)}</ol></div></section>
 
     <section className="law-faculty-departments festt-departments" id="departments"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Академічна структура</div><h2>Три кафедри — один факультет</h2></div><p>Кожна картка відкриває окрему сторінку кафедри зі складом, освітою, наукою, гуртками, новинами, документами й контактами.</p></div><div className="law-department-grid">{departments.map(([number, title, text, href, code]) => <Link href={href} key={number}><span>{number}</span><small>{code}</small><h3>{title}</h3><p>{text}</p><b>Відкрити кафедру →</b></Link>)}</div></div></section>
 
@@ -84,7 +107,7 @@ export default async function Page() {
 
     <section className="faculty-structure-section faculty-governance" id="faculty-student-government"><div className="wrap"><div className="sec-head"><div><div className="idx">08 / Студентське самоврядування</div><h2>Участь студентів у житті факультету</h2></div><p>Студентська рада, ініціативи, події, представництво й контакти відкриваються окремо.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-gold" href="/students/council"><span>01 / Студенти</span><h3>Студентська рада</h3><p>Команда, проєкти, ініціативи, події та контакти.</p><b>Відкрити студентську раду →</b></Link></div></div></section>
 
-    <section className="faculty-structure-section faculty-repository" id="faculty-discussion"><div className="wrap"><div className="sec-head"><div><div className="idx">09 / Громадське обговорення освітніх програм</div><h2>Долучіться до оновлення програм C4</h2></div><p>Оберіть потрібний рівень і надішліть пропозицію через офіційну форму.</p></div><div className="faculty-link-grid">{discussionProgrammes.map((title, index) => <a className={index === 0 ? "faculty-link-card faculty-link-card-blue" : "faculty-link-card"} href="https://docs.google.com/forms/d/e/1FAIpQLSdy9q5cWFUT5B37z0T-BYHesOkzVPwga7s0HW0a1K5PML2feg/viewform?usp=header" target="_blank" rel="noreferrer" key={title}><span>{String(index + 1).padStart(2, "0")} / C4</span><h3>{title}</h3><p>Пропозиції до змісту й розвитку освітньої програми.</p><b>Відкрити форму ↗</b></a>)}</div></div></section>
+    <section className="faculty-structure-section faculty-repository" id="faculty-discussion"><div className="wrap"><div className="sec-head"><div><div className="idx">09 / Громадське обговорення освітніх програм</div><h2>Обговорення змін до ОП</h2></div><p>Матеріали громадського обговорення чотирьох освітніх програм.</p></div><div className="faculty-link-grid">{discussionProgrammes.map((title, index) => <a className={index === 0 ? "faculty-link-card faculty-link-card-blue" : "faculty-link-card"} href={discussionSheetUrl} target="_blank" rel="noreferrer" key={title}><span>{String(index + 1).padStart(2, "0")} / C4</span><h3>{title}</h3><b>Відкрити таблицю ↗</b></a>)}</div></div></section>
 
     <section className="faculty-structure-section faculty-repository" id="faculty-proposals"><div className="wrap"><div className="sec-head"><div><div className="idx">10 / Проєкти, пропозиції та результати розгляду</div><h2>Від пропозиції — до рішення</h2></div><p>Проєкти освітніх програм, отримані пропозиції стейкголдерів і результати їх розгляду публікуються окремо.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card" href="/programs/psychology#quality"><span>01 / C4</span><h3>Психологія</h3><p>Матеріали обговорення та оновлення освітніх програм.</p><b>Перейти до якості програми →</b></Link><Link className="faculty-link-card" href="/programs/social-work#quality"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Проєкти, пропозиції й результати розгляду.</p><b>Перейти до якості програми →</b></Link></div></div></section>
 
@@ -92,7 +115,7 @@ export default async function Page() {
 
     <section className="faculty-structure-section faculty-repository" id="faculty-repository"><div className="wrap"><div className="sec-head"><div><div className="idx">12 / Репозитарій</div><h2>Кваліфікаційні роботи та наукові матеріали</h2></div><p>Каталог можна переглядати за програмою, роком, автором і науковим керівником.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-blue" href="/research/theses"><span>01 / C4</span><h3>Психологія</h3><p>Бакалаврські, магістерські й дослідницькі роботи.</p><b>Відкрити репозитарій →</b></Link><Link className="faculty-link-card" href="/research/theses"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Кваліфікаційні роботи соціального напряму.</p><b>Відкрити репозитарій →</b></Link></div></div></section>
 
-    <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">13 / Освітні програми</div><h2>Бакалаврські програми факультету</h2></div><p>У цьому розділі представлені лише освітні програми першого (бакалаврського) рівня вищої освіти.</p></div><div className="faculty-programme-grid">{programmes.map(([code, title, description, href], index) => <Link href={href} key={`${code}-${title}`}><span>{String(index + 1).padStart(2, "0")}</span><b>{code}</b><h3>{title}</h3><p>{description}</p><i>→</i></Link>)}</div></div></section>
+    <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">13 / Освітні програми</div><h2>Освітні програми факультету</h2></div></div><div className="faculty-programme-grid">{programmes.map((programme, index) => <article key={programme.title}><span>{String(index + 1).padStart(2, "0")}</span><b>{programme.code} · {programme.level}</b><h3>{programme.title}</h3><div className="faculty-programme-documents">{programme.documents.map((document) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>{document.title} ↗</a>)}{programme.documents.length === 0 && <p>ОПП у PDF буде додано після надання факультетом.</p>}<p>Навчальний план у PDF буде додано після надання факультетом.</p></div></article>)}</div></div></section>
 
     <PsychologyFacultyPractice />
 

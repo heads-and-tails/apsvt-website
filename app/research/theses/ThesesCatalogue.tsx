@@ -71,12 +71,12 @@ export function ThesesCatalogue({ items }: { items: PublicContentItem[] }) {
           <div className="thesis-main">
             <div className="thesis-meta">{payload.demo === "true" && <span className="demo">Демонстраційний приклад</span>}<span>{payload.level}</span><span>{payload.program}</span><span>{payload.year}</span></div>
             <h3>{payload.title}</h3>
-            <p>{payload.abstract}</p>
+            {payload.abstract && <p>{payload.abstract}</p>}
             {payload.keywords && <small>Ключові слова: {payload.keywords}</small>}
           </div>
           <dl className="thesis-people">
             <div><dt>Автор</dt><dd>{payload.student}</dd></div>
-            <div><dt>Науковий керівник</dt><dd>{payload.supervisor}</dd></div>
+            {payload.supervisor && <div><dt>Науковий керівник</dt><dd>{payload.supervisor}</dd></div>}
           </dl>
           {payload.fileUrl
             ? <a className="thesis-open" href={payload.fileUrl} target="_blank" rel="noreferrer"><span>Відкрити роботу</span><b>↗</b></a>

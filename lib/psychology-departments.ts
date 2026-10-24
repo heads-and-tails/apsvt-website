@@ -16,7 +16,7 @@ export const psychologyDepartments: PsychologyDepartment[] = [
     slug: "clinical-psychology",
     title: "Кафедра клінічної психології та психотерапії",
     code: "C4",
-    programmeTitle: "Психологія",
+    programmeTitle: "Клінічна психологія",
     programmeHref: "/programs/psychology",
     summary: "Кафедра об’єднує підготовку з психічного здоров’я, психодіагностики, психологічного консультування, реабілітації та психотерапевтичних підходів.",
     focus: ["клінічна психологія", "психодіагностика", "психотерапія", "психологічна реабілітація"],
