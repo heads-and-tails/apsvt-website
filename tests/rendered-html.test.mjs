@@ -1678,6 +1678,34 @@ test("publishes the psychology and social development faculty as a separate stru
   assert.match(structure,/Факультет психології та соціального розвитку/);
 });
 
+test("publishes Prib's faculty corrections and the supplied psychology theses", async () => {
+  const [faculty, clinical, business, social, journals, theses] = await Promise.all([
+    render("/departments/psychology-social-development-faculty").then((response) => response.text()),
+    render("/departments/psychology-social-development-faculty/clinical-psychology").then((response) => response.text()),
+    render("/departments/psychology-social-development-faculty/business-psychology").then((response) => response.text()),
+    render("/departments/psychology-social-development-faculty/social-work").then((response) => response.text()),
+    render("/research/journals").then((response) => response.text()),
+    render("/research/theses").then((response) => response.text()),
+  ]);
+  assert.match(faculty, /Склад вченої ради факультету/);
+  assert.match(faculty, /Зубченко Катерина/);
+  assert.match(faculty, /Освітні програми факультету/);
+  assert.match(faculty, /ОПП «Клінічна психологія»/);
+  assert.match(faculty, /1LvXqlDlwumX9ySv6mYPD2oMNCP__62YDhhQXANhQBAQ/);
+  assert.doesNotMatch(faculty, /Бакалаврські програми факультету/);
+  for (const department of [clinical, business]) {
+    assert.doesNotMatch(department, /Історія кафедри/);
+    assert.doesNotMatch(department, /id="science-clubs"/);
+  }
+  assert.match(clinical, /ОПП «Клінічна психологія»/);
+  assert.match(business, /ОПП «Психологія бізнесу та управління»/);
+  assert.match(social, /Історія кафедри/);
+  assert.match(journals, /Психодіагностика з основами математичної статистики/);
+  assert.match(theses, /Психолого-соціальні чинники ментального здоров’я молоді/);
+  assert.match(theses, /thesis-18\.pdf/);
+  assert.ok((await readFile(new URL("../public/documents/research/psychology-faculty/theses/2026/thesis-18.pdf", import.meta.url))).length > 100_000);
+});
+
 test("publishes Moodle and the student council across student resources",async()=>{
   const [students,facilities,council]=await Promise.all([
     (await render("/students")).text(),

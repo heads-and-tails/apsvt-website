@@ -29,6 +29,13 @@ const psychologyFacultyMonographs = [
   { year: "2026", title: "Методи діагностики та психологічного супроводу життєдіяльності особистості в умовах стресу", href: monographUrl },
 ] as const;
 
+const psychologyFacultyManuals = [
+  { title: "Психологія бізнесу та управління персоналом", authors: "Катерина Мілютіна", pages: "358 с.", href: "https://inter-sci-guild.org.ua/psykholohiya-biznesu-ta-upravlinnya-personalom-2026" },
+  { title: "Клінічна і патопсихологічна діагностика", authors: "Катерина Мілютіна, Гліб Пріб", pages: "321 с.", href: "https://inter-sci-guild.org.ua/klinichna-i-patopsykholohichna-diahnostyka-2026" },
+  { title: "Психологічне консультування: теорія, методи та практика", authors: "Катерина Мілютіна, Людмила Бегеза", pages: "286 с.", href: "https://inter-sci-guild.org.ua/psykholohichne-konsultuvannya-teoriya-metody-ta-praktyka-2026" },
+  { title: "Психодіагностика з основами математичної статистики", authors: "Катерина Мілютіна", pages: "242 с.", href: "https://inter-sci-guild.org.ua/psykhodiahnostyka-z-osnovamy-matematychnoyi-statystyky-2026" },
+] as const;
+
 export default function Page() {
   return (
     <main id="top">
@@ -151,6 +158,13 @@ export default function Page() {
         <div className="wrap">
           <div className="sec-head"><div><div className="idx">Факультет психології та соціальної роботи</div><h2>Монографії факультету</h2></div><p>Повні тексти видань 2024–2026 років, підготовлених науковцями факультету.</p></div>
           <div className="psychology-publication-grid">{psychologyFacultyMonographs.map((publication, index) => <a href={publication.href} target="_blank" rel="noreferrer" key={publication.href}><span>{String(index + 1).padStart(2, "0")}</span><small>{publication.year} · монографія · PDF</small><h3>{publication.title}</h3><b>Відкрити повний текст ↗</b></a>)}</div>
+        </div>
+      </section>
+
+      <section className="psychology-publications" id="psychology-faculty-manuals">
+        <div className="wrap">
+          <div className="sec-head"><div><div className="idx">Факультет психології та соціального розвитку · 2026</div><h2>Навчальні й навчально-методичні посібники</h2></div><p>Серія «Студії психології: теорія, практика» · ГО «МНГ».</p></div>
+          <div className="psychology-publication-grid">{psychologyFacultyManuals.map((publication, index) => <a href={publication.href} target="_blank" rel="noreferrer" key={publication.href}><span>{String(index + 1).padStart(2, "0")}</span><small>2026 · {publication.pages}</small><h3>{publication.title}</h3><p>{publication.authors}</p><b>Відкрити видання ↗</b></a>)}</div>
         </div>
       </section>
 
