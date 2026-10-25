@@ -8,6 +8,7 @@ export type SectionHubItem = {
   title: string;
   description: string;
   icon: string;
+  hideFromDirectory?: boolean;
   aliases?: readonly string[];
   links?: readonly { href: string; title: string }[];
 };
@@ -118,7 +119,7 @@ export function SectionHub({
       </div>
 
       <div className="admissions-icon-grid">
-        {sections.map((section) => {
+        {sections.filter((section) => !section.hideFromDirectory).map((section) => {
           const isActive = section.id === activeId;
           const panelId = `${activePanelId}-${section.id}`;
           return <button

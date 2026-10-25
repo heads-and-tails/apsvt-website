@@ -9,6 +9,8 @@ export type Program = {
   image: string;
   levels: string;
   duration: string;
+  masterDuration?: string;
+  doctoralDuration?: string;
   price: string;
   partTimePrice: string;
   masterPrice?: string;
@@ -30,7 +32,7 @@ export const programs: Program[] = [
     slug: "psychology", number: "01", code: "C4", title: "Психологія",
     short: "Доказові підходи до психічного здоров’я, консультування та психології організацій.",
     image: "/program-psychology.jpg",
-    levels: "Бакалавр · Магістр · PhD", duration: "Бакалавр — 3 роки 10 місяців · Магістр — 1 рік 6 місяців · PhD — 4 роки", price: "38 600 ₴ / рік", partTimePrice: "30 900 ₴ / рік", masterPrice: "43 500 ₴ / рік", masterPartTimePrice: "34 800 ₴ / рік",
+    levels: "Бакалавр · Магістр · PhD", duration: "3 роки 10 місяців", masterDuration: "1 рік 6 місяців", doctoralDuration: "4 роки", price: "38 600 ₴ / рік", partTimePrice: "30 900 ₴ / рік", masterPrice: "43 500 ₴ / рік", masterPartTimePrice: "34 800 ₴ / рік",
     faculty: "Факультет психології та соціального розвитку", lead: "Людмила Бегеза", leadRole: "докторка психологічних наук, професорка",
     overview: "Програма готує психологів, здатних поєднувати сучасні теорії з прикладними навичками консультування, дослідження та роботи в організаціях. На магістерському рівні доступні траєкторії клінічної психології та психології бізнесу й управління.",
     focus: ["Загальна та соціальна психологія", "Психодіагностика", "Психологічне консультування", "Психологія травмуючих ситуацій"],
