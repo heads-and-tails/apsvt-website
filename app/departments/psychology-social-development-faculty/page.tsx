@@ -12,7 +12,7 @@ import { PsychologyFacultyTeam } from "./PsychologyFacultyTeam";
 import { AcademicProfileCard } from "../../components/AcademicProfileCard";
 import { psychologyFacultyTeam } from "@/lib/psychology-faculty-team";
 import { PsychologyFacultyLaboratory, PsychologyFacultyPractice, PsychologyFacultyScience } from "./PsychologyFacultyDetails";
-import { officialProgrammeFileBase } from "@/lib/programme-documents";
+import { psychologyFacultyProgrammes as programmes } from "@/lib/psychology-faculty-programmes";
 
 export const dynamic = "force-dynamic";
 
@@ -25,13 +25,6 @@ const departments = [
   ["01", "Кафедра клінічної психології та психотерапії", "Психічне здоров’я, психодіагностика, консультування, реабілітація та психотерапевтичні підходи.", "/departments/psychology-social-development-faculty/clinical-psychology", "C4"],
   ["02", "Кафедра психології бізнесу та управління", "Організаційна психологія, професійний розвиток, команди, лідерство та управління змінами.", "/departments/psychology-social-development-faculty/business-psychology", "C4"],
   ["03", "Кафедра соціально-трудових відносин та соціальної роботи", "Соціальна політика, підтримка людей і громад, консультування, кейс-менеджмент та реабілітація.", "/departments/psychology-social-development-faculty/social-work", "I10"],
-] as const;
-
-const programmes = [
-  { code: "C4", title: "ОПП C4 «Психологія»", level: "Бакалавр", documents: [{ title: "Освітньо-професійна програма · PDF", href: `${officialProgrammeFileBase}/c4-psychology-bachelor-2024-2025.pdf` }] },
-  { code: "C4", title: "ОПП «Клінічна психологія»", level: "Магістр", documents: [] },
-  { code: "C4", title: "ОПП «Психологія бізнесу та управління»", level: "Магістр", documents: [{ title: "Освітньо-професійна програма · PDF", href: `${officialProgrammeFileBase}/c4-psychology-business-management-master-2024-2025.pdf` }] },
-  { code: "C4", title: "ОНП C4 «Психологія»", level: "Доктор філософії", documents: [{ title: "Освітньо-наукова програма · PDF", href: "/documents/programmes/phd/2025/c4-psychology.pdf" }] },
 ] as const;
 
 const discussionProgrammes = [
@@ -74,7 +67,7 @@ const facultySections: readonly SectionHubItem[] = [
   { id: "faculty-proposals", index: "10", title: "Проєкти, пропозиції та результати розгляду", description: "Матеріали консультацій зі стейкголдерами й рішення.", icon: "OP" },
   { id: "faculty-accreditation", index: "11", title: "Матеріали акредитаційних справ", description: "Папка матеріалів акредитації спеціальності C4 «Психологія».", icon: "C4" },
   { id: "faculty-repository", index: "12", title: "Репозитарій", description: "Кваліфікаційні роботи та відкриті наукові матеріали.", icon: "REP" },
-  { id: "faculty-programmes", index: "13", title: "Освітні програми", description: "Чотири освітні програми C4 «Психологія» за рівнями вищої освіти.", icon: "C4" },
+  { id: "faculty-programmes", index: "13", title: "Освітні програми", description: "Програми C4 «Психологія» та I10 «Соціальна робота та консультування».", icon: "C4" },
   { id: "faculty-practice", index: "14", title: "Практика й партнери", description: "Професійне середовище, практика та партнерські кейси.", icon: "PR" },
   { id: "department-news", index: "16", title: "Новини факультету", description: "Актуальні матеріали й події кафедр.", icon: "NEWS" },
 ];
@@ -111,7 +104,7 @@ export default async function Page() {
 
     <section className="faculty-structure-section faculty-repository" id="faculty-repository"><div className="wrap"><div className="sec-head"><div><div className="idx">12 / Репозитарій</div><h2>Кваліфікаційні роботи та наукові матеріали</h2></div><p>Каталог можна переглядати за програмою, роком, автором і науковим керівником.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-blue" href="/research/theses"><span>01 / C4</span><h3>Психологія</h3><p>Бакалаврські, магістерські й дослідницькі роботи.</p><b>Відкрити репозитарій →</b></Link><Link className="faculty-link-card" href="/research/theses"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Кваліфікаційні роботи соціального напряму.</p><b>Відкрити репозитарій →</b></Link></div></div></section>
 
-    <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">13 / Освітні програми</div><h2>Освітні програми факультету</h2></div></div><div className="faculty-programme-grid">{programmes.map((programme, index) => <article key={programme.title}><span>{String(index + 1).padStart(2, "0")}</span><b>{programme.code} · {programme.level}</b><h3>{programme.title}</h3><div className="faculty-programme-documents">{programme.documents.map((document) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>{document.title} ↗</a>)}{programme.documents.length === 0 && <p>ОПП у PDF буде додано після надання факультетом.</p>}<p>Навчальний план у PDF буде додано після надання факультетом.</p></div></article>)}</div></div></section>
+    <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">13 / Освітні програми</div><h2>Освітні програми факультету</h2></div></div><div className="faculty-programme-grid">{programmes.map((programme, index) => <article key={programme.title}><span>{String(index + 1).padStart(2, "0")}</span><b>{programme.code} · {programme.level}</b><h3>{programme.title}</h3><div className="faculty-programme-documents">{programme.documents.map((document) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>{document.title} ↗</a>)}{programme.href && <Link href={programme.href}>Інформація про програму →</Link>}</div></article>)}</div></div></section>
 
     <PsychologyFacultyPractice />
 
