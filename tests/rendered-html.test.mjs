@@ -1706,6 +1706,31 @@ test("publishes Prib's faculty corrections and the supplied psychology theses", 
   assert.ok((await readFile(new URL("../public/documents/research/psychology-faculty/theses/2026/thesis-18.pdf", import.meta.url))).length > 100_000);
 });
 
+test("keeps psychology deep links while simplifying its directory and separating degree durations", async () => {
+  const [psychology, english, socialWork] = await Promise.all([
+    render("/programs/psychology").then((response) => response.text()),
+    render("/en/programs/psychology").then((response) => response.text()),
+    render("/programs/social-work").then((response) => response.text()),
+  ]);
+  const directoryButtons = (html) => [...html.matchAll(/<button\b[^>]*class="admissions-icon-card[^"]*"[^>]*>[\s\S]*?<\/button>/g)].map(([button]) => button);
+  const buttons = directoryButtons(psychology);
+  assert.equal(buttons.length, 4);
+  for (const section of ["careers", "quality", "department-news", "international"]) {
+    assert.ok(buttons.some((button) => button.includes(`-${section}"`)));
+  }
+  for (const section of ["overview", "curriculum", "department"]) {
+    assert.ok(!buttons.some((button) => button.includes(`-${section}"`)));
+    assert.match(psychology, new RegExp(`id="[^"]*-${section}"`));
+  }
+  assert.match(psychology, /Тривалість бакалаврату<\/span><b>3 роки 10 місяців/);
+  assert.match(psychology, /Тривалість магістратури<\/span><b>1 рік 6 місяців/);
+  assert.match(psychology, /Тривалість PhD<\/span><b>4 роки/);
+  assert.match(english, /Master duration<\/span><b>1 year 6 months/);
+  assert.match(english, /PhD duration<\/span><b>4 years/);
+  assert.equal(directoryButtons(socialWork).length, 7);
+  assert.doesNotMatch(socialWork, /Тривалість PhD/);
+});
+
 test("publishes Moodle and the student council across student resources",async()=>{
   const [students,facilities,council]=await Promise.all([
     (await render("/students")).text(),
