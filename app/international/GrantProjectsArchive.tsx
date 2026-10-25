@@ -40,6 +40,8 @@ const grantProjects: readonly GrantProject[] = [
       "Базовий онлайн-курс для аспірантів усіх спеціальностей",
       "Безоплатні курси й літня онлайн-школа у межах реалізації 2025 року",
     ],
+    href: "https://economyandsociety.in.ua/index.php/journal/article/view/7017/6957",
+    action: "Публікація за результатами проєкту",
   },
   {
     index: "03",
@@ -126,7 +128,7 @@ export function GrantProjectsArchive() {
         <h4>{project.title}</h4>
         <p>{project.description}</p>
         <ul>{project.results.map((result) => <li key={result}>{result}</li>)}</ul>
-        {project.href ? <a href={project.href}>{project.action ?? "Відкрити матеріали"} <span aria-hidden="true">&#8599;</span></a> : <span className="grant-project-status">Матеріали реалізації збережено в архіві</span>}
+        {project.href ? <a href={project.href} target={project.href.startsWith("https://") ? "_blank" : undefined} rel={project.href.startsWith("https://") ? "noreferrer" : undefined}>{project.action ?? "Відкрити матеріали"} <span aria-hidden="true">&#8599;</span></a> : <span className="grant-project-status">Матеріали реалізації збережено в архіві</span>}
       </article>)}
     </div>
 
