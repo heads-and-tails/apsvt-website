@@ -1714,9 +1714,13 @@ test("keeps psychology deep links while simplifying its directory and separating
   ]);
   const directoryButtons = (html) => [...html.matchAll(/<button\b[^>]*class="admissions-icon-card[^"]*"[^>]*>[\s\S]*?<\/button>/g)].map(([button]) => button);
   const buttons = directoryButtons(psychology);
-  assert.equal(buttons.length, 4);
+  assert.equal(buttons.length, 0);
+  assert.match(psychology, /id="psychology-programme-directory"/);
+  assert.match(psychology, /ОПП «Клінічна психологія»/);
+  assert.match(psychology, /ОНП C4 «Психологія»/);
+  assert.doesNotMatch(psychology, /class="programme-team"|class="programme-practice"|Ольга Зубчик/);
   for (const section of ["careers", "quality", "department-news", "international"]) {
-    assert.ok(buttons.some((button) => button.includes(`-${section}"`)));
+    assert.match(psychology, new RegExp(`id="[^"]*-${section}"`));
   }
   for (const section of ["overview", "curriculum", "department"]) {
     assert.ok(!buttons.some((button) => button.includes(`-${section}"`)));

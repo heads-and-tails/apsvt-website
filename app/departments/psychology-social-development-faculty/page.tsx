@@ -1,3 +1,4 @@
+import { FacultyProgrammeCards } from "@/app/components/FacultyProgrammeCards";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "../../components/SiteHeader";
@@ -89,7 +90,7 @@ export default async function Page() {
 
     <section className="faculty-structure-section faculty-repository" id="faculty-repository"><div className="wrap"><div className="sec-head"><div><div className="idx">12 / Репозитарій</div><h2>Кваліфікаційні роботи та наукові матеріали</h2></div><p>Каталог можна переглядати за програмою, роком, автором і науковим керівником.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-blue" href="/research/theses"><span>01 / C4</span><h3>Психологія</h3><p>Бакалаврські, магістерські й дослідницькі роботи.</p><b>Відкрити репозитарій →</b></Link><Link className="faculty-link-card" href="/research/theses"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Кваліфікаційні роботи соціального напряму.</p><b>Відкрити репозитарій →</b></Link></div></div></section>
 
-    <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">13 / Освітні програми</div><h2>Освітні програми факультету</h2></div></div><div className="faculty-programme-grid">{programmes.map((programme, index) => <article key={programme.id}><span>{String(index + 1).padStart(2, "0")}</span><b>{programme.code} · {programme.level}</b><h3>{programme.title}</h3><div className="faculty-programme-documents">{programme.documents.map((document) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>{document.title} ↗</a>)}{programme.href && <Link href={programme.href}>Інформація про програму →</Link>}</div></article>)}</div></div></section>
+    <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">13 / Освітні програми</div><h2>Освітні програми факультету</h2></div></div><FacultyProgrammeCards programmes={programmes} /></div></section>
 
     <PsychologyFacultyPractice />
 

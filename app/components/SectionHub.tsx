@@ -23,6 +23,7 @@ type SectionHubProps = {
   promptDescription?: string;
   backLabel?: string;
   extraContent?: readonly ReactNode[];
+  directoryContent?: ReactNode;
 };
 
 function readHash() {
@@ -47,6 +48,7 @@ export function SectionHub({
   promptDescription = "Матеріали з’являться тут після натискання.",
   backLabel = "До всіх розділів",
   extraContent,
+  directoryContent,
 }: SectionHubProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const catalogRef = useRef<HTMLDivElement>(null);
@@ -118,7 +120,7 @@ export function SectionHub({
         <p>{description}</p>
       </div>
 
-      <div className="admissions-icon-grid">
+      {directoryContent ?? <div className="admissions-icon-grid">
         {sections.filter((section) => !section.hideFromDirectory).map((section) => {
           const isActive = section.id === activeId;
           const panelId = `${activePanelId}-${section.id}`;
@@ -139,9 +141,9 @@ export function SectionHub({
             <i aria-hidden="true">&#8594;</i>
           </button>;
         })}
-      </div>
+      </div>}
 
-      {!activeSection ? <div className="admissions-hub-prompt" aria-live="polite">
+      {!activeSection && directoryContent == null ? <div className="admissions-hub-prompt" aria-live="polite">
         <span aria-hidden="true">&#8593;</span>
         <p><b>{promptTitle}</b>{promptDescription}</p>
       </div> : null}
