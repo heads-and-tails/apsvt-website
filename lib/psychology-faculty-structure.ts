@@ -9,7 +9,7 @@ export const psychologyFacultyStructure = [
   { id: "faculty-team", index: "06", title: "Науково-педагогічний склад", description: "Профілі викладачів і наукові інтереси факультету.", icon: "NPP" },
   { id: "faculty-science", index: "07", title: "Дослідження факультету та студентські проєкти", description: "Наукова тема, методи, завдання та студентський гурток.", icon: "SCI" },
   { id: "faculty-student-government", index: "08", title: "Студентське самоврядування", description: "Студентська рада, ініціативи, події та контакти.", icon: "STU" },
-  { id: "faculty-proposals", index: "10", title: "Проєкти, пропозиції та результати розгляду", description: "Матеріали консультацій зі стейкголдерами й рішення.", icon: "OP" },
+  { id: "faculty-proposals", aliases: ["faculty-discussion"], index: "10", title: "Проєкти, пропозиції та результати розгляду", description: "Матеріали консультацій зі стейкголдерами й рішення.", icon: "OP" },
   { id: "faculty-accreditation", index: "11", title: "Матеріали акредитаційних справ", description: "Папка матеріалів акредитації спеціальності C4 «Психологія».", icon: "C4" },
   { id: "faculty-repository", index: "12", title: "Репозитарій", description: "Кваліфікаційні роботи та відкриті наукові матеріали.", icon: "REP" },
   { id: "faculty-programmes", index: "13", title: "Освітні програми", description: "Програми C4 «Психологія» та I10 «Соціальна робота та консультування».", icon: "C4" },
