@@ -1731,6 +1731,34 @@ test("keeps psychology deep links while simplifying its directory and separating
   assert.doesNotMatch(socialWork, /Тривалість PhD/);
 });
 
+test("serves the original psychology programmes and plans from the matching faculty and department cards", async () => {
+  const [faculty, clinical, business] = await Promise.all([
+    render("/departments/psychology-social-development-faculty").then((response) => response.text()),
+    render("/departments/psychology-social-development-faculty/clinical-psychology").then((response) => response.text()),
+    render("/departments/psychology-social-development-faculty/business-psychology").then((response) => response.text()),
+  ]);
+  const catalogue = faculty.match(/<section class="faculty-programmes"[\s\S]*?<\/section>/)?.[0]?.replace(/<!--.*?-->/g, "");
+  assert.ok(catalogue);
+  assert.equal([...catalogue.matchAll(/<article\b/g)].length, 6);
+  assert.match(catalogue, /I10 · Бакалавр/);
+  assert.match(catalogue, /I10 · Магістр/);
+  assert.match(catalogue, /\/programs\/social-work#overview/);
+  assert.match(catalogue, /\/programs\/social-work#education-levels/);
+  assert.doesNotMatch(catalogue, /буде додано після/);
+  const pdfLinks = (html) => [...new Set([...html.matchAll(/href="(\/documents\/programmes\/psychology-faculty\/[^\"]+\.pdf)"/g)].map(([, href]) => href))];
+  const files = pdfLinks(catalogue);
+  assert.equal(files.length, 18);
+  assert.equal(pdfLinks(clinical).length, 3);
+  assert.ok(pdfLinks(clinical).every((href) => href.includes("/clinical-psychology-")));
+  assert.equal(pdfLinks(business).length, 6);
+  assert.ok(pdfLinks(business).every((href) => href.includes("/business-psychology-")));
+  for (const href of files) {
+    const pdf = await readFile(new URL(`../public${href}`, import.meta.url));
+    assert.equal(pdf.subarray(0, 4).toString(), "%PDF");
+    assert.ok(pdf.length > 100_000);
+  }
+});
+
 test("publishes Moodle and the student council across student resources",async()=>{
   const [students,facilities,council]=await Promise.all([
     (await render("/students")).text(),

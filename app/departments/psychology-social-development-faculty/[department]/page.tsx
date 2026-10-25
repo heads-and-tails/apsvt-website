@@ -12,7 +12,7 @@ import { SiteHeader } from "@/app/components/SiteHeader";
 import { getDepartmentEntries } from "@/lib/department-content";
 import { getPsychologyDepartment, psychologyDepartments } from "@/lib/psychology-departments";
 import { psychologyFacultyTeam } from "@/lib/psychology-faculty-team";
-import { officialProgrammeFileBase } from "@/lib/programme-documents";
+import { psychologyFacultyProgrammes } from "@/lib/psychology-faculty-programmes";
 import "../../criminal-law/criminal-law.css";
 
 export const dynamic = "force-dynamic";
@@ -59,9 +59,7 @@ export default async function Page({ params }: { params: Promise<{ department: s
   const psychologyOnly = department.slug === "clinical-psychology" || department.slug === "business-psychology";
   const removedPsychologySections = new Set(["department-history", "department-science", "student-science", "science-clubs", "academic-council", "programme-discussion", "quality"]);
   const visibleSections = psychologyOnly ? sections.filter((section) => !removedPsychologySections.has(section.id)) : sections;
-  const programmeDocument = department.slug === "business-psychology"
-    ? `${officialProgrammeFileBase}/c4-psychology-business-management-master-2024-2025.pdf`
-    : undefined;
+  const programme = psychologyFacultyProgrammes.find((programme) => programme.id === department.slug);
 
   return <main id="top" className="criminal-department psychology-department" data-page-materials-server="true"><SiteHeader />
     <section className="criminal-department-hero"><div className="wrap criminal-department-hero-grid">
@@ -78,7 +76,7 @@ export default async function Page({ params }: { params: Promise<{ department: s
 
       <section className="criminal-department-team" id="department-team"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Склад кафедри</div><h2>Науково-педагогічний склад</h2></div><p>Викладачі, науковці та фахівці-практики кафедри.</p></div><div className="academic-profile-grid">{team.filter((person) => person.id !== department.headId).map((person, index) => <AcademicProfileCard key={person.id} index={index} person={{ name: person.name, role: person.id === "olha-yakovenko" ? "лаборантка кафедри" : person.role, summary: person.summary, image: person.image, imageCrop: person.photoHasCaption ? "caption" : undefined, tags: person.interests, links: person.profiles }} />)}</div><DepartmentEditorialContent entries={[...entries.filter((entry) => entry.entryType === "teacher"), ...entriesFor("department-team")]} /></div></section>
 
-      <section className="programme-documents" id="department-education"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">05 / Освітня діяльність</div><h2>{psychologyOnly ? `ОПП «${department.programmeTitle}»` : `${department.code} «${department.programmeTitle}»`}</h2></div></div>{psychologyOnly ? <div className="programme-document-list">{programmeDocument && <a href={programmeDocument} target="_blank" rel="noreferrer"><span>01</span><div><small>Освітньо-професійна програма · PDF</small><h3>ОПП «{department.programmeTitle}»</h3></div><b>↗</b></a>}<p>{programmeDocument ? "Навчальний план" : "ОПП і навчальний план"} у PDF буде додано після надання кафедрою.</p></div> : <div className="programme-document-list"><Link href={department.programmeHref}><span>01</span><div><small>Освітня траєкторія</small><h3>Огляд програми та рівні освіти</h3></div><b>→</b></Link><Link href={`${department.programmeHref}#curriculum`}><span>02</span><div><small>Навчальний план</small><h3>Обов’язкові та вибіркові компоненти</h3></div><b>→</b></Link></div>}<DepartmentEditorialContent entries={entriesFor("department-education")} /></div></section>
+      <section className="programme-documents" id="department-education"><div className="wrap"><div className="programme-documents-head"><div><div className="idx">05 / Освітня діяльність</div><h2>{psychologyOnly ? `ОПП «${department.programmeTitle}»` : `${department.code} «${department.programmeTitle}»`}</h2></div></div>{psychologyOnly ? <div className="programme-document-list">{programme?.documents.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{programme.level}</small><h3>{document.title}</h3></div><b>↗</b></a>)}</div> : <div className="programme-document-list"><Link href={department.programmeHref}><span>01</span><div><small>Освітня траєкторія</small><h3>Огляд програми та рівні освіти</h3></div><b>→</b></Link><Link href={`${department.programmeHref}#curriculum`}><span>02</span><div><small>Навчальний план</small><h3>Обов’язкові та вибіркові компоненти</h3></div><b>→</b></Link></div>}<DepartmentEditorialContent entries={entriesFor("department-education")} /></div></section>
 
       {!psychologyOnly && <section className="criminal-department-research" id="department-science"><div className="wrap"><div className="sec-head"><div><div className="idx">06 / Наукова діяльність</div><h2>Дослідження кафедри</h2></div><p>Публікації, конференції, проєкти та результати наукової роботи.</p></div><div className="criminal-department-themes">{department.focus.map((item, index) => <article key={item}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item}</h3><p>Матеріали напряму доповнюються кафедрою.</p></article>)}</div><DepartmentEditorialContent entries={entriesFor("department-science")} /></div></section>}
 
