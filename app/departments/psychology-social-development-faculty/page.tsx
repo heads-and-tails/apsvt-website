@@ -6,7 +6,6 @@ import { PageDocuments } from "../../components/PageDocuments";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
-import { EducationQualitySection } from "../../components/EducationQualitySection";
 import { AcademicNews } from "../../components/AcademicNews";
 import { psychologyCollectiveMeetingNewsSlug } from "@/lib/data";
 import { PsychologyFacultyTeam } from "./PsychologyFacultyTeam";
@@ -60,7 +59,8 @@ const facultyCouncil = [
   "Єфімчук Максим, здобувач першого курсу другого (магістерського) рівня вищої освіти спеціальності І10 Соціальна робота та консультування",
 ] as const;
 
-const discussionSheetUrl = "https://docs.google.com/spreadsheets/d/1LvXqlDlwumX9ySv6mYPD2oMNCP__62YDhhQXANhQBAQ/edit?usp=sharing";
+const discussionSheetUrl = "https://docs.google.com/spreadsheets/d/1LvXqlDlwumX9ySv6mYPD2oMNCP__62YDhhQXANhQBAQ/edit?gid=357331125#gid=357331125";
+const discussionFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdy9q5cWFUT5B37z0T-BYHesOkzVPwga7s0HW0a1K5PML2feg/viewform?usp=header";
 
 const facultySections: readonly SectionHubItem[] = [
   { id: "faculty-about", index: "01", title: "Про факультет", description: "Місія, напрями підготовки та рівні освіти.", icon: "F" },
@@ -71,13 +71,11 @@ const facultySections: readonly SectionHubItem[] = [
   { id: "faculty-team", index: "06", title: "Науково-педагогічний склад", description: "Профілі викладачів і наукові інтереси факультету.", icon: "NPP" },
   { id: "faculty-science", index: "07", title: "Дослідження факультету та студентські проєкти", description: "Наукова тема, методи, завдання та студентський гурток.", icon: "SCI" },
   { id: "faculty-student-government", index: "08", title: "Студентське самоврядування", description: "Студентська рада, ініціативи, події та контакти.", icon: "STU" },
-  { id: "faculty-discussion", index: "09", title: "Громадське обговорення освітніх програм", description: "Бакалаврат, клінічна психологія та психологія бізнесу.", icon: "DIA" },
   { id: "faculty-proposals", index: "10", title: "Проєкти, пропозиції та результати розгляду", description: "Матеріали консультацій зі стейкголдерами й рішення.", icon: "OP" },
   { id: "faculty-accreditation", index: "11", title: "Матеріали акредитаційних справ", description: "Папка матеріалів акредитації спеціальності C4 «Психологія».", icon: "C4" },
   { id: "faculty-repository", index: "12", title: "Репозитарій", description: "Кваліфікаційні роботи та відкриті наукові матеріали.", icon: "REP" },
   { id: "faculty-programmes", index: "13", title: "Освітні програми", description: "Чотири освітні програми C4 «Психологія» за рівнями вищої освіти.", icon: "C4" },
   { id: "faculty-practice", index: "14", title: "Практика й партнери", description: "Професійне середовище, практика та партнерські кейси.", icon: "PR" },
-  { id: "faculty-quality", index: "15", title: "Якість освіти", description: "Моніторинг, обговорення змін та оцінювання НПП.", icon: "✓" },
   { id: "department-news", index: "16", title: "Новини факультету", description: "Актуальні матеріали й події кафедр.", icon: "NEWS" },
 ];
 
@@ -107,9 +105,7 @@ export default async function Page() {
 
     <section className="faculty-structure-section faculty-governance" id="faculty-student-government"><div className="wrap"><div className="sec-head"><div><div className="idx">08 / Студентське самоврядування</div><h2>Участь студентів у житті факультету</h2></div><p>Студентська рада, ініціативи, події, представництво й контакти відкриваються окремо.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-gold" href="/students/council"><span>01 / Студенти</span><h3>Студентська рада</h3><p>Команда, проєкти, ініціативи, події та контакти.</p><b>Відкрити студентську раду →</b></Link></div></div></section>
 
-    <section className="faculty-structure-section faculty-repository" id="faculty-discussion"><div className="wrap"><div className="sec-head"><div><div className="idx">09 / Громадське обговорення освітніх програм</div><h2>Обговорення змін до ОП</h2></div><p>Матеріали громадського обговорення чотирьох освітніх програм.</p></div><div className="faculty-link-grid">{discussionProgrammes.map((title, index) => <a className={index === 0 ? "faculty-link-card faculty-link-card-blue" : "faculty-link-card"} href={discussionSheetUrl} target="_blank" rel="noreferrer" key={title}><span>{String(index + 1).padStart(2, "0")} / C4</span><h3>{title}</h3><b>Відкрити таблицю ↗</b></a>)}</div></div></section>
-
-    <section className="faculty-structure-section faculty-repository" id="faculty-proposals"><div className="wrap"><div className="sec-head"><div><div className="idx">10 / Проєкти, пропозиції та результати розгляду</div><h2>Від пропозиції — до рішення</h2></div><p>Проєкти освітніх програм, отримані пропозиції стейкголдерів і результати їх розгляду публікуються окремо.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card" href="/programs/psychology#quality"><span>01 / C4</span><h3>Психологія</h3><p>Матеріали обговорення та оновлення освітніх програм.</p><b>Перейти до якості програми →</b></Link><Link className="faculty-link-card" href="/programs/social-work#quality"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Проєкти, пропозиції й результати розгляду.</p><b>Перейти до якості програми →</b></Link></div></div></section>
+    <section className="faculty-structure-section faculty-repository" id="faculty-proposals"><div className="wrap"><div className="sec-head"><div><div className="idx">10 / Проєкти, пропозиції та результати розгляду</div><h2>Від пропозиції — до рішення</h2></div><p>Проєкти освітніх програм, отримані пропозиції стейкголдерів і результати їх розгляду публікуються окремо.</p></div><div id="faculty-discussion"><h3>Психологія · Обговорення змін до ОП</h3><div className="faculty-link-grid">{discussionProgrammes.map((title, index) => <article className={index === 0 ? "faculty-link-card faculty-link-card-blue" : "faculty-link-card"} key={title}><span>{String(index + 1).padStart(2, "0")} / C4</span><h3>{title}</h3><p><a href={discussionFormUrl} target="_blank" rel="noreferrer">Форма для пропозицій ↗</a></p><p><a href={discussionSheetUrl} target="_blank" rel="noreferrer">Таблиця з пропозиціями ↗</a></p></article>)}</div></div><div className="faculty-link-grid"><Link className="faculty-link-card" href="/programs/social-work#quality"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Проєкти, пропозиції й результати розгляду.</p><b>Перейти до якості програми →</b></Link></div></div></section>
 
     <section className="faculty-structure-section faculty-repository" id="faculty-accreditation"><div className="wrap"><div className="sec-head"><div><div className="idx">11 / Матеріали акредитаційних справ</div><h2>Матеріали спеціальності C4 «Психологія»</h2></div><p>Документи зібрано у спільній папці факультету — без окремого архіву.</p></div><div className="faculty-link-grid"><a className="faculty-link-card faculty-link-card-dark" href="https://drive.google.com/drive/folders/11TgK4XqA1qKd2V8dy6A7c9an0oX0A49r?usp=sharing" target="_blank" rel="noreferrer"><span>01 / Google Drive</span><h3>Папка матеріалів акредитаційних справ</h3><p>Перегляд актуальних матеріалів факультету в одному місці.</p><b>Відкрити папку ↗</b></a></div><PageDocuments pagePath={pagePath} /></div></section>
 
@@ -118,8 +114,6 @@ export default async function Page() {
     <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">13 / Освітні програми</div><h2>Освітні програми факультету</h2></div></div><div className="faculty-programme-grid">{programmes.map((programme, index) => <article key={programme.title}><span>{String(index + 1).padStart(2, "0")}</span><b>{programme.code} · {programme.level}</b><h3>{programme.title}</h3><div className="faculty-programme-documents">{programme.documents.map((document) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}>{document.title} ↗</a>)}{programme.documents.length === 0 && <p>ОПП у PDF буде додано після надання факультетом.</p>}<p>Навчальний план у PDF буде додано після надання факультетом.</p></div></article>)}</div></div></section>
 
     <PsychologyFacultyPractice />
-
-    <EducationQualitySection entries={departmentEntries} pagePath="/departments/psychology-social-development-faculty" index="15" id="faculty-quality" discussionEmail="k.psychology22@gmail.com" />
 
     <div id="department-news"><AcademicNews slugs={["psychology", "social-work"]} title="Новини факультету й кафедр" limit={5} prioritySlugs={[psychologyCollectiveMeetingNewsSlug]} /><DepartmentEditorialContent entries={departmentEntries} /></div>
     </SectionHub>
