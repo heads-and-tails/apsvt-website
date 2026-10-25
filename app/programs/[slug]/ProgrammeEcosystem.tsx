@@ -93,7 +93,7 @@ export function ProgrammeEcosystem({ slug, entries = [] }: { slug: string; entri
       })}</div>
     </div></section>
 
-    {slug !== "marketing" && team.length > 0 && <section className="programme-team" id="team"><div className="wrap">
+    {slug !== "marketing" && slug !== "psychology" && team.length > 0 && <section className="programme-team" id="team"><div className="wrap">
       <div className="sec-head programme-team-head"><div><div className="idx">{slug === "finance" ? "02.2 / Склад кафедри" : "06 / Склад кафедри"}</div><h2>Викладачі й практики</h2></div><p>Короткі професійні профілі команди, яка формує зміст навчання, супроводжує практику та студентські дослідження.</p></div>
       <div className={`academic-profile-grid${slug === "finance" ? " finance-academic-profile-grid" : ""}`}>{team.map((person, index) => <AcademicProfileCard
         key={person.name}
@@ -117,11 +117,11 @@ export function ProgrammeEcosystem({ slug, entries = [] }: { slug: string; entri
 
     {slug === "marketing" && <section className="marketing-student-life" id="marketing-student-life"><div className="wrap"><div className="sec-head"><div><div className="idx">06 / Студентське життя</div><h2>MARKETHINK і студентські ініціативи</h2></div><p>Окремий простір для наукового гуртка кафедри, проєктів, самоврядування та професійного розвитку студентів.</p></div><div className="marketing-student-life-grid"><article><span>01 / Науковий гурток</span><h3>MARKETHINK</h3><p>Дослідження ринку, брендів, поведінки споживачів і digital-комунікацій. Студенти готують доповіді, публікації та презентації для конференцій.</p><Link href="/research/conferences">Конференції та збірники →</Link></article><article><span>02 / Самоврядування</span><h3>Студентські ініціативи</h3><p>Участь у студентській раді, організації подій, волонтерських і комунікаційних проєктах Академії.</p><Link href="/students/council">Студентська рада →</Link></article><article><span>03 / Професійний розвиток</span><h3>Кар’єрні проєкти</h3><p>Кейси з роботодавцями, портфоліо, тренінги, практика та перші професійні контакти.</p><a href="#practice">Практика й партнери →</a></article></div></div></section>}
 
-    <section className="programme-practice" id="practice"><div className="wrap">
+    {slug !== "psychology" && <section className="programme-practice" id="practice"><div className="wrap">
       <div className="sec-head programme-practice-head"><div><div className="idx">{slug === "finance" ? "02.4 / Практика і професійне середовище" : "08 / Практика і професійне середовище"}</div><h2>Партнери: де знання стають досвідом</h2></div><div><p>{profile.practiceNote}</p><a href={profile.practiceSourceHref} target={profile.practiceSourceHref.startsWith("/") ? undefined : "_blank"} rel={profile.practiceSourceHref.startsWith("/") ? undefined : "noreferrer"}>{profile.practiceSource} ↗</a></div></div>
       <div className="programme-partners">{partners.map((partner) => <AcademicPartnerCard partner={partner} key={partner.name} />)}</div>
       <p className="programme-practice-disclaimer">Місця практики й стажування залежать від навчального року, наявності договору та індивідуальної траєкторії. Актуальне направлення підтверджує кафедра.</p>
-    </div></section>
+    </div></section>}
 
   </>;
 }
