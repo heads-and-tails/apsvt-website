@@ -2032,3 +2032,16 @@ test("publishes the supplied court lecture report and corrected original poster 
   assert.equal(image.subarray(0,3).toString("hex"),"ffd8ff");
   assert.equal(createHash("sha256").update(image).digest("hex"),"b0d1aa70ccc941552542e2cc031c33fc103ecfd2b07a2f1bfe1b22d2d12cf7f8");
 });
+
+test("keeps the reported grant URLs usable and links ECONOMY4ALL evidence", async () => {
+  for (const [id, target] of [["3199", "grants"], ["3377", "greenfinedu"], ["3172", "grants"]]) {
+    const response = await render(`/node/${id}`);
+    assert.equal(response.status, 308);
+    assert.equal(new URL(response.headers.get("location"), "http://localhost").href, `http://localhost/international#${target}`);
+  }
+  assert.equal((await render("/node/999999999")).status, 404);
+  assert.equal((await render("/node/constructor")).status, 404);
+  const html = await (await render("/international")).text();
+  assert.match(html, /href="https:\/\/economyandsociety\.in\.ua\/index\.php\/journal\/article\/view\/7017\/6957" target="_blank" rel="noreferrer"/);
+  assert.match(html, /Публікація за результатами проєкту/);
+});
