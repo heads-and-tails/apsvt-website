@@ -1768,6 +1768,18 @@ test("includes every psychology faculty section in the shared header menu", asyn
   assert.ok(!links.some((href) => href.endsWith("#quality") || href.endsWith("#faculty-discussion")));
 });
 
+test("places four psychology discussion folders and their supplied links inside faculty proposals", async () => {
+  const html = await (await render("/departments/psychology-social-development-faculty")).text();
+  assert.match(html, /data-discussion-folder="psychology"/);
+  assert.match(html, /data-discussion-folder="discussion"/);
+  assert.equal([...html.matchAll(/data-discussion-programme="[1-4]"/g)].length, 4);
+  assert.equal([...html.matchAll(/href="https:\/\/docs\.google\.com\/forms\/d\/e\/1FAIpQLSdy9q5cWFUT5B37z0T-BYHesOkzVPwga7s0HW0a1K5PML2feg\/viewform\?usp=header"/g)].length, 4);
+  assert.equal([...html.matchAll(/href="https:\/\/docs\.google\.com\/spreadsheets\/d\/1LvXqlDlwumX9ySv6mYPD2oMNCP__62YDhhQXANhQBAQ\/edit\?gid=357331125#gid=357331125"/g)].length, 4);
+  assert.match(html, /Громадське обговорення освітніх програм/);
+  assert.doesNotMatch(html, /Від пропозиції — до рішення/);
+  assert.match(html, /href="\/programs\/social-work#quality"/);
+});
+
 test("publishes Moodle and the student council across student resources",async()=>{
   const [students,facilities,council]=await Promise.all([
     (await render("/students")).text(),
