@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SiteSearch } from "./SiteSearch";
 import { lawFacultyPath, lawFacultyStructure } from "@/lib/law-faculty-structure";
+import { psychologyFacultyPath, psychologyFacultyStructure } from "@/lib/psychology-faculty-structure";
 
 type NavItem = {
   href: string;
@@ -26,18 +27,7 @@ const ukLinks: readonly NavItem[] = [
     { href: "/departments/digital-technologies#programmes", label: "Професійна освіта · 5 програм" },
   ] },
   { href: lawFacultyPath, label: "Юридичний факультет", children: lawFacultyStructure.map((section) => ({ href: `${lawFacultyPath}#${section.id}`, label: section.title })) },
-  { href: "/departments/psychology-social-development-faculty", label: "Факультет психології", children: [
-    { href: "/departments/psychology-social-development-faculty#faculty-about", label: "Про факультет" },
-    { href: "/departments/psychology-social-development-faculty#faculty-leadership", label: "Керівництво та деканат" },
-    { href: "/departments/psychology-social-development-faculty#faculty-council", label: "Вчена рада" },
-    { href: "/departments/psychology-social-development-faculty#departments", label: "Кафедри" },
-    { href: "/departments/psychology-social-development-faculty#faculty-team", label: "Науково-педагогічний склад" },
-    { href: "/departments/psychology-social-development-faculty#faculty-proposals", label: "Проєкти та пропозиції" },
-    { href: "/departments/psychology-social-development-faculty#faculty-accreditation", label: "Акредитаційні матеріали" },
-    { href: "/departments/psychology-social-development-faculty#faculty-repository", label: "Репозитарій" },
-    { href: "/departments/psychology-social-development-faculty#faculty-programmes", label: "Освітні програми" },
-    { href: "/departments/psychology-social-development-faculty#department-news", label: "Новини факультету" },
-  ] },
+  { href: psychologyFacultyPath, label: "Факультет психології", children: psychologyFacultyStructure.map((section) => ({ href: `${psychologyFacultyPath}#${section.id}`, label: section.title })) },
   { href: "/admissions", label: "Вступнику", children: [
     { href: "/admissions#route", label: "Як вступити" }, { href: "/admissions#dates", label: "Ключові дати" },
     { href: "/tuition", label: "Вартість і оплата" }, { href: "/admissions#entrance-exams", label: "Розклад випробувань" },

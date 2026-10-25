@@ -1759,6 +1759,15 @@ test("serves the original psychology programmes and plans from the matching facu
   }
 });
 
+test("includes every psychology faculty section in the shared header menu", async () => {
+  const html = await (await render("/")).text();
+  const path = "/departments/psychology-social-development-faculty";
+  const links = [...new Set([...html.matchAll(/href="(\/departments\/psychology-social-development-faculty#[^\"]+)"/g)].map(([, href]) => href))];
+  const sections = ["faculty-about", "faculty-leadership", "faculty-council", "departments", "faculty-laboratory", "faculty-team", "faculty-science", "faculty-student-government", "faculty-proposals", "faculty-accreditation", "faculty-repository", "faculty-programmes", "faculty-practice", "department-news"];
+  assert.deepEqual(links, sections.map((id) => `${path}#${id}`));
+  assert.ok(!links.some((href) => href.endsWith("#quality") || href.endsWith("#faculty-discussion")));
+});
+
 test("publishes Moodle and the student council across student resources",async()=>{
   const [students,facilities,council]=await Promise.all([
     (await render("/students")).text(),

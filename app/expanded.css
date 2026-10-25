@@ -2952,7 +2952,7 @@ a.programme-partner:hover{transform:translateY(-6px);background:var(--gold)}
 .desktop-mainnav .desktop-nav-link>span{font-size:13px;transition:transform .2s}
 .desktop-nav-item:hover .desktop-nav-link>span,.desktop-nav-item:focus-within .desktop-nav-link>span{transform:rotate(180deg)}
 .desktop-nav-item.active>.desktop-nav-link{color:var(--cobalt)}
-.desktop-dropdown{position:absolute;left:0;top:calc(100% - 1px);width:300px;padding:10px;background:#fff;border:1px solid var(--ink);box-shadow:12px 16px 0 rgba(6,16,39,.14);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px);transition:opacity .18s,transform .18s,visibility 0s .18s}
+.desktop-dropdown{position:absolute;left:0;top:calc(100% - 1px);width:300px;max-height:calc(100dvh - 100px);overflow-y:auto;overscroll-behavior:contain;padding:10px;background:#fff;border:1px solid var(--ink);box-shadow:12px 16px 0 rgba(6,16,39,.14);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px);transition:opacity .18s,transform .18s,visibility 0s .18s}
 .desktop-nav-item:nth-last-child(-n+2) .desktop-dropdown{left:auto;right:0}
 .desktop-nav-item:hover .desktop-dropdown,.desktop-nav-item:focus-within .desktop-dropdown{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .18s,transform .18s}
 .desktop-mainnav .desktop-dropdown a{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:42px;padding:9px 11px;border-bottom:1px solid var(--line);font:600 11px/1.35 var(--body);white-space:normal}
