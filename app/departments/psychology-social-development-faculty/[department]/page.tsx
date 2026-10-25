@@ -57,7 +57,7 @@ export default async function Page({ params }: { params: Promise<{ department: s
   });
   const head = department.headId ? team.find((person) => person.id === department.headId) : undefined;
   const psychologyOnly = department.slug === "clinical-psychology" || department.slug === "business-psychology";
-  const removedPsychologySections = new Set(["department-history", "department-science", "student-science", "science-clubs", "academic-council", "programme-discussion"]);
+  const removedPsychologySections = new Set(["department-history", "department-science", "student-science", "science-clubs", "academic-council", "programme-discussion", "quality"]);
   const visibleSections = psychologyOnly ? sections.filter((section) => !removedPsychologySections.has(section.id)) : sections;
   const programmeDocument = department.slug === "business-psychology"
     ? `${officialProgrammeFileBase}/c4-psychology-business-management-master-2024-2025.pdf`
@@ -98,7 +98,7 @@ export default async function Page({ params }: { params: Promise<{ department: s
 
       <section className="criminal-department-about" id="department-contacts"><div className="wrap criminal-department-about-grid"><div><div className="idx">14 / Контакти</div><h2>Зв’язок із кафедрою</h2></div><div><p className="program-lede">Київ, вул. Кільцева дорога, 3-А. Звернення щодо навчання, науки та матеріалів кафедри можна передати через деканат факультету.</p><a className="academic-inline-link" href="mailto:k.psychology22@gmail.com">k.psychology22@gmail.com ↗</a><DepartmentEditorialContent entries={entriesFor("department-contacts")} /></div></div></section>
 
-      <EducationQualitySection entries={entries} pagePath={pagePath} index="15" discussionEmail="k.psychology22@gmail.com" />
+      {!psychologyOnly && <EducationQualitySection entries={entries} pagePath={pagePath} index="15" discussionEmail="k.psychology22@gmail.com" />}
     </SectionHub>
     <SiteFooter />
   </main>;
