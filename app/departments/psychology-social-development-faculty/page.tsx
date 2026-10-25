@@ -5,7 +5,7 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { PageDocuments } from "../../components/PageDocuments";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
 import { getDepartmentEntries } from "@/lib/department-content";
-import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
+import { SectionHub } from "../../components/SectionHub";
 import { AcademicNews } from "../../components/AcademicNews";
 import { psychologyCollectiveMeetingNewsSlug } from "@/lib/data";
 import { PsychologyFacultyTeam } from "./PsychologyFacultyTeam";
@@ -13,6 +13,7 @@ import { AcademicProfileCard } from "../../components/AcademicProfileCard";
 import { psychologyFacultyTeam } from "@/lib/psychology-faculty-team";
 import { PsychologyFacultyLaboratory, PsychologyFacultyPractice, PsychologyFacultyScience } from "./PsychologyFacultyDetails";
 import { psychologyFacultyProgrammes as programmes } from "@/lib/psychology-faculty-programmes";
+import { psychologyFacultyStructure as facultySections } from "@/lib/psychology-faculty-structure";
 
 export const dynamic = "force-dynamic";
 
@@ -55,22 +56,7 @@ const facultyCouncil = [
 const discussionSheetUrl = "https://docs.google.com/spreadsheets/d/1LvXqlDlwumX9ySv6mYPD2oMNCP__62YDhhQXANhQBAQ/edit?gid=357331125#gid=357331125";
 const discussionFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdy9q5cWFUT5B37z0T-BYHesOkzVPwga7s0HW0a1K5PML2feg/viewform?usp=header";
 
-const facultySections: readonly SectionHubItem[] = [
-  { id: "faculty-about", index: "01", title: "Про факультет", description: "Місія, напрями підготовки та рівні освіти.", icon: "F" },
-  { id: "faculty-leadership", index: "02", title: "Керівництво та деканат", description: "Координація факультету та підтримка студентів і викладачів.", icon: "DEC" },
-  { id: "faculty-council", index: "03", title: "Вчена рада факультету", description: "Склад Вченої ради факультету.", icon: "RAD" },
-  { id: "departments", index: "04", title: "Кафедри", description: "Три окремі кафедри з повною структурою сторінок.", icon: "3" },
-  { id: "faculty-laboratory", index: "05", title: "Навчально-дослідна лабораторія", description: "Дослідницькі методики, інструменти та практична робота.", icon: "LAB" },
-  { id: "faculty-team", index: "06", title: "Науково-педагогічний склад", description: "Профілі викладачів і наукові інтереси факультету.", icon: "NPP" },
-  { id: "faculty-science", index: "07", title: "Дослідження факультету та студентські проєкти", description: "Наукова тема, методи, завдання та студентський гурток.", icon: "SCI" },
-  { id: "faculty-student-government", index: "08", title: "Студентське самоврядування", description: "Студентська рада, ініціативи, події та контакти.", icon: "STU" },
-  { id: "faculty-proposals", index: "10", title: "Проєкти, пропозиції та результати розгляду", description: "Матеріали консультацій зі стейкголдерами й рішення.", icon: "OP" },
-  { id: "faculty-accreditation", index: "11", title: "Матеріали акредитаційних справ", description: "Папка матеріалів акредитації спеціальності C4 «Психологія».", icon: "C4" },
-  { id: "faculty-repository", index: "12", title: "Репозитарій", description: "Кваліфікаційні роботи та відкриті наукові матеріали.", icon: "REP" },
-  { id: "faculty-programmes", index: "13", title: "Освітні програми", description: "Програми C4 «Психологія» та I10 «Соціальна робота та консультування».", icon: "C4" },
-  { id: "faculty-practice", index: "14", title: "Практика й партнери", description: "Професійне середовище, практика та партнерські кейси.", icon: "PR" },
-  { id: "department-news", index: "16", title: "Новини факультету", description: "Актуальні матеріали й події кафедр.", icon: "NEWS" },
-];
+
 
 export default async function Page() {
   const pagePath = "/departments/psychology-social-development-faculty";
