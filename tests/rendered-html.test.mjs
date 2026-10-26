@@ -1132,6 +1132,38 @@ test("separates marketing bachelor and master materials and publishes stakeholde
   }
 });
 
+test("offers original editable Marketing questionnaires under the appropriate discussion levels", async () => {
+  const response = await render("/programs/marketing");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const discussion = html.slice(html.indexOf('id="marketing-quality-discussion"'));
+  const levels = [...discussion.matchAll(/<details class="marketing-quality-level">.*?<\/details>/gs)].slice(0, 2).map((match) => match[0]);
+  assert.equal(levels.length, 2);
+  assert.match(levels[0], /Бакалаврат/);
+  assert.match(levels[1], /Магістратура/);
+  const originals = [
+    ["students-anonymous-2026.docx", "0e67fd8599e34db5a416647455a15880d9b4a65df2a9d47a96172e7e66dcb54f"],
+    ["teaching-staff-2026.docx", "e2dcdc486f4b847e19d353f1deefb90f23e8fca667395627a6eb8d52ed7120a7"],
+    ["employers-stakeholders-2026.docx", "44080fcab39434e793369edaee7eb83b881fe09d284e2a8d5bb129a3b8948e88"],
+    ["master-stakeholders-2026.docx", "7cc6772fe19e4cc1e0cea30f7aab0776b66c86dcfe961c7cafb888d072d8c59d"],
+  ];
+  for (const [index, [file, hash]] of originals.entries()) {
+    const href = `/documents/marketing/surveys/${file}`;
+    assert.ok(levels[1].includes(`href="${href}" download=""`), `Master download missing: ${file}`);
+    assert.equal(levels[0].includes(`href="${href}"`), index < 3, `Incorrect bachelor association: ${file}`);
+    const bytes = await readFile(new URL(`../public${href}`, import.meta.url));
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), hash, `Original questionnaire changed: ${file}`);
+    const document = strFromU8(unzipSync(bytes)["word/document.xml"]);
+    assert.match(document, /Маркетинг/);
+    if (index === 0) assert.match(document, /Опитування є анонімним/);
+  }
+  assert.match(levels[1], /obhovorennia-opp-marketynh-12-bereznia-2026/);
+  assert.match(levels[1], /obhovorennia-opp-marketynh-17-travnia-2026/);
+  assert.doesNotMatch(html, /class="marketing-form-pending"|Посилання буде додано одразу після створення форми/);
+  assert.match(html, /href="mailto:academi\.marketing2023@gmail\.com"/);
+  assert.doesNotMatch(await (await render("/programs/finance")).text(), /documents\/marketing\/surveys/);
+});
+
 test("publishes marketing master programmes and nested methodical document folders",async()=>{
   const marketing=await (await render("/programs/marketing")).text();
   assert.match(marketing,/Освітньо-професійна програма «Маркетинг» 2026 року/);
