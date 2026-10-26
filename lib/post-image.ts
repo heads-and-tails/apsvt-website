@@ -1,8 +1,13 @@
 import type { Post } from "@/lib/data";
 
-type EditorialImage = Pick<Post, "imageUrl" | "imageAlt">;
+type EditorialImage = Pick<Post, "imageUrl" | "imageAlt"> & { imageFit?: "contain" | "cover" };
 
 const editorialImages: Record<string, EditorialImage> = {
+  "empower-east-startova-zustrich-2026": {
+    imageUrl: "/images/news/empower-east-2026/overview.jpg",
+    imageAlt: "Онлайн-зустріч EMPOWER-EAST 16 жовтня 2026 року: огляд проєкту",
+    imageFit: "contain",
+  },
   "open-day-2026": {
     imageUrl: "/apsvt-students-real.jpg",
     imageAlt: "Випускники та викладачі Академії біля навчального корпусу",
