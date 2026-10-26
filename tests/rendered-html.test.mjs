@@ -2077,6 +2077,8 @@ test("publishes the corrected EMPOWER release, all three originals and its grant
   for (const page of ["/", "/news", "/international"]) assert.ok((await (await render(page)).text()).includes(`href="${path}"`), page);
   const grants = await (await render("/international")).text();
   assert.match(grants, /Грантова діяльність/);
+  assert.ok(grants.includes('href="/news/novi-horyzonty-dlya-molodykh-naukovtsiv-apsvt-startuye-v-mizhnarodnomu-proyekti"'));
+  assert.ok(grants.includes(`href="${path}"`));
   for (const original of ["101126681", "101127204", "575275-EPP-1-2016-1-UA-EPPJMO-MODULE", "/materials/conference-06-06-19-eacf33800.html"]) assert.ok(grants.includes(original));
   assert.equal((await render("/en/news")).status, 200);
   assert.equal((await render("/en/international")).status, 200);

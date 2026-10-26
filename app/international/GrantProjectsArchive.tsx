@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { empowerEastKickoffNews } from "@/lib/empower-east-news";
 
 type GrantProject = {
@@ -122,6 +123,12 @@ export function GrantProjectsArchive() {
         <div><small>EMPOWER-EAST · Стартова зустріч</small><h4>{empowerEastKickoffNews.title}</h4><p>{empowerEastKickoffNews.excerpt}</p></div>
         <b>Читати повністю ↗</b>
       </a>
+      <Link href="/news/novi-horyzonty-dlya-molodykh-naukovtsiv-apsvt-startuye-v-mizhnarodnomu-proyekti">
+        <span>02</span>
+        <time dateTime="2026-10-26">2026</time>
+        <div><small>EMPOWER-EAST · Можливості для молодих науковців</small><h4>Нові горизонти для молодих науковців: АПСВТ стартує в міжнародному проєкті Erasmus+ «EMPOWER-EAST»</h4><p>Академія долучилася до 24-місячного міжнародного проєкту Erasmus+ EMPOWER-EAST, спрямованого на підтримку молодих дослідників в Україні.</p></div>
+        <b>Читати повністю ↗</b>
+      </Link>
     </div>
 
     <div className="grant-projects-facts" aria-label="Коротко про грантові проєкти">
