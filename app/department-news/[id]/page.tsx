@@ -48,7 +48,7 @@ export default async function Page({ params }: Props) {
   const returnLabel = isMarketingClubNews ? "← До наукового гуртка" : isMarketingRepositoryNews ? "← До репозитарію" : isMarketingTeacherAchievementNews ? "← До здобутків викладачів" : isMarketingMobilityNews ? "← До академічної мобільності" : isMarketingQualityNews ? "← До обговорення ОПП" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
 
   return <main id="top">
-    <SiteHeader englishHref={isMarketingClubNews || isMarketingRepositoryNews || isMarketingMobilityNews || isMarketingTeacherAchievementNews || studentSection ? "/en/news" : undefined} />
+    <SiteHeader englishHref={entry.pagePath === "/programs/marketing" ? "/en/news" : undefined} />
     <section className="detail-hero">
       <div className="wrap"><div className="detail-kicker mono">{pageTitle}{date ? ` · ${date}` : ""}</div><h1>{entry.title}</h1>{entry.summary && <p className="detail-deck">{entry.summary}</p>}</div>
     </section>

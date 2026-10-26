@@ -2047,3 +2047,15 @@ test("keeps the reported grant URLs usable and links ECONOMY4ALL evidence", asyn
   assert.match(html, /href="https:\/\/economyandsociety\.in\.ua\/index\.php\/journal\/article\/view\/7017\/6957" target="_blank" rel="noreferrer"/);
   assert.match(html, /Публікація за результатами проєкту/);
 });
+
+
+test("Marketing news English controls open the available English news index", async () => {
+  for (const id of ["marketing-discussion-2026-students", "marketing-discussion-2026-employers", "marketing-discussion-2026-seminar"]) {
+    const response = await render(`/department-news/${id}`);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /href="\/en\/news"[^>]*>EN<\/a>/);
+    assert.ok(!html.includes(`/en/department-news/${id}`));
+  }
+  assert.equal((await render("/en/news")).status, 200);
+});
