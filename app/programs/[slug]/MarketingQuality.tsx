@@ -2,12 +2,24 @@ import Link from "next/link";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { departmentPublicationDate } from "@/lib/department-news-date";
 import { DepartmentImages } from "@/app/components/DepartmentMedia";
+import { marketingMasterStakeholderQuestionnaire, marketingQuestionnaires } from "@/lib/marketing-questionnaires";
 import { MarketingMobility } from "./MarketingMobility";
 
 const discussionNews = [
   { date: "12 березня 2026", href: "/news/obhovorennia-opp-marketynh-12-bereznia-2026" },
   { date: "17 травня 2026", href: "/news/obhovorennia-opp-marketynh-17-travnia-2026" },
 ] as const;
+
+function QuestionnaireLinks({ master }: { master: boolean }) {
+  const questionnaires = master ? [...marketingQuestionnaires, marketingMasterStakeholderQuestionnaire] : marketingQuestionnaires;
+  return <div className="marketing-programme-links">
+    {questionnaires.map((questionnaire, index) => <a href={questionnaire.href} download key={questionnaire.href}>
+      <span>{String(index + 1).padStart(2, "0")}</span>
+      <div><small>{questionnaire.label} · DOCX</small><strong>{questionnaire.title}</strong></div>
+      <b aria-hidden="true">↓</b>
+    </a>)}
+  </div>;
+}
 
 function MasterDiscussion() {
   return <>
@@ -16,11 +28,10 @@ function MasterDiscussion() {
       <h3>Шановні стейкхолдери!</h3>
       <p>Кафедра маркетингу Академії праці, соціальних відносин і туризму запрошує роботодавців, представників професійної та академічної спільноти, здобувачів вищої освіти, випускників та інших заінтересованих осіб долучитися до обговорення та удосконалення освітньо-професійної програми «Маркетинг» другого (магістерського) рівня вищої освіти за спеціальністю D5 «Маркетинг».</p>
       <p>Для кафедри важливо враховувати думку стейкхолдерів щодо актуальності змісту освітньої програми, її відповідності сучасним тенденціям розвитку маркетингової науки і практики, потребам ринку праці, цифровим трансформаціям та вимогам до професійних компетентностей сучасного фахівця з маркетингу.</p>
-      <p>Просимо Вас долучитися до опитування одним зі зручних способів: відповісти на запитання Google-форми; або заповнити анкету та надіслати її на електронну адресу кафедри: <a href="mailto:academi.marketing2023@gmail.com">academi.marketing2023@gmail.com</a>. Ваші оцінки, зауваження та пропозиції будуть розглянуті проєктною (робочою) групою ОПП «Маркетинг» та використані під час моніторингу, перегляду й подальшого удосконалення освітньої програми.</p>
+      <p>Просимо Вас долучитися до опитування: <a href={marketingMasterStakeholderQuestionnaire.href} download>завантажити й заповнити анкету</a> та надіслати її на електронну адресу кафедри: <a href="mailto:academi.marketing2023@gmail.com">academi.marketing2023@gmail.com</a>. Ваші оцінки, зауваження та пропозиції будуть розглянуті проєктною (робочою) групою ОПП «Маркетинг» та використані під час моніторингу, перегляду й подальшого удосконалення освітньої програми.</p>
       <p>Особливо цінними для нас є Ваші пропозиції щодо актуальних професійних компетентностей, змісту освітніх компонентів, практичної підготовки здобувачів, використання сучасних цифрових технологій та інструментів, а також перспективних напрямів розвитку маркетингу.</p>
       <p>Щиро дякуємо за співпрацю та внесок у підвищення якості підготовки майбутніх фахівців з маркетингу!</p>
       <footer><strong>Надія Писаренко</strong><span>завідувач кафедри маркетингу · +380 99 961 05 97 · <a href="mailto:nadezda_pisarenko@ukr.net">nadezda_pisarenko@ukr.net</a></span></footer>
-      <div className="marketing-form-pending"><b>Google-форма</b><span>Посилання буде додано одразу після створення форми в акаунті кафедри.</span></div>
     </article>
     <div className="marketing-programme-links">
       {discussionNews.map((item, index) => <Link href={item.href} key={item.href}>
@@ -58,8 +69,8 @@ export function MarketingQuality({ entries }: { entries: DepartmentEntry[] }) {
       <details className="marketing-quality-folder" id="marketing-quality-discussion">
         <summary><span>02</span><strong>Обговорення змін до ОПП</strong><b aria-hidden="true">+</b></summary>
         <div className="marketing-quality-folder-body">
-          <details className="marketing-quality-level"><summary><span>01</span><strong>Бакалаврат</strong><b aria-hidden="true">+</b></summary><p className="marketing-quality-empty">У цьому підрозділі матеріали ще не розміщено.</p></details>
-          <details className="marketing-quality-level"><summary><span>02</span><strong>Магістратура</strong><b aria-hidden="true">+</b></summary><div className="marketing-quality-level-body"><div className="marketing-programme-links">{discussionNews.map((item, index) => <Link href={item.href} key={item.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>Оголошення</small><strong>Обговорення ОПП «Маркетинг» · {item.date}</strong></div><b>→</b></Link>)}</div></div></details>
+          <details className="marketing-quality-level"><summary><span>01</span><strong>Бакалаврат</strong><b aria-hidden="true">+</b></summary><div className="marketing-quality-level-body"><QuestionnaireLinks master={false} /></div></details>
+          <details className="marketing-quality-level"><summary><span>02</span><strong>Магістратура</strong><b aria-hidden="true">+</b></summary><div className="marketing-quality-level-body"><QuestionnaireLinks master /><div className="marketing-programme-links">{discussionNews.map((item, index) => <Link href={item.href} key={item.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>Оголошення</small><strong>Обговорення ОПП «Маркетинг» · {item.date}</strong></div><b>→</b></Link>)}</div></div></details>
           {discussionEntries.length > 0 && <div className="marketing-quality-announcements"><h3>Повідомлення та результати обговорень</h3><div className="marketing-quality-announcement-grid">{discussionEntries.map((entry) => <article key={entry.id}><Link href={`/department-news/${entry.id}`}><DepartmentImages entry={entry} /><div>{departmentPublicationDate(entry) && <time dateTime={departmentPublicationDate(entry)!.dateTime}>{departmentPublicationDate(entry)!.label}</time>}<h4>{entry.title}</h4><span>Читати повністю →</span></div></Link></article>)}</div></div>}
         </div>
       </details>
