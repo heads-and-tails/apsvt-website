@@ -1166,7 +1166,9 @@ test("publishes the two requested marketing programme discussion announcements",
   for(const html of [march,may]){
     assert.match(html,/Meeting ID: 993 238 3465/);
     assert.match(html,/Passcode: 1111/);
-    assert.match(html,/1dcgVBio_3E2kyrMCDS-neHA2SDEBT3pr/);
+    assert.match(html, /href="\/documents\/marketing\/programmes\/project-marketing-master-2026\.pdf"[^>]*>Проєкт ОПП «Маркетинг»<\/a>/);
+    assert.doesNotMatch(html, /1dcgVBio_3E2kyrMCDS-neHA2SDEBT3pr/);
+    assert.ok(html.includes("https://zoom.us/j/9932383465"));
   }
 });
 
