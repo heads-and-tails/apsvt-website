@@ -589,3 +589,53 @@ test("respects successful empty published-news queries and preserves fallback fo
   assert.equal(fallback[0].slug, slug);
   assert.equal(fallback[0].body, posts.seedPosts.find(post => post.slug === slug).body);
 });
+
+test("Academy news includes all public Marketing news and preserves canonical articles and source dates", async () => {
+  const { mergeAcademyNews } = await import(await moduleUrl("../lib/academy-news.ts", {
+    "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }),
+    "./department-news-date": await moduleUrl("../lib/department-news-date.ts"),
+  }));
+  const entry = {
+    id: "march", pagePath: "/programs/marketing", sectionId: "department", entryType: "news", status: "published",
+    title: "Обговорення програми", summary: "Затверджений опис", body: "Повний текст", date: "2026-03-12", hideDate: true,
+    images: [{ url: "/approved-photo.jpg", alt: "Фото зустрічі" }], imageFit: "contain",
+    createdAt: "2026-10-26T00:00:00Z", updatedAt: "2026-10-26T00:00:00Z", authorEmail: "editor@example.test",
+  };
+  const quality = { ...entry, id: "quality", sectionId: "marketing-quality-discussion", date: "2026-05-12" };
+  const posts = [edupro.eduproAnnouncement];
+  const entries = [entry, quality, entry,
+    { ...entry, id: "hidden", hidden: true }, { ...entry, id: "draft", status: "draft" },
+    { ...entry, id: "other", pagePath: "/programs/finance" }, { ...entry, id: "material", entryType: "material" },
+  ];
+  const news = mergeAcademyNews(posts, entries);
+  assert.deepEqual(news.map((item) => item.href), [`/news/${posts[0].slug}`, "/department-news/quality", "/department-news/march"]);
+  assert.equal(news[0].post, posts[0]);
+  assert.deepEqual(news[2].post.title, entry.title);
+  assert.equal(news[2].post.excerpt, entry.summary);
+  assert.equal(news[2].post.body, entry.body);
+  assert.equal(news[2].post.publishedAt, "2026-03-12");
+  assert.equal(news[2].post.hideDate, true);
+  assert.equal(news[2].post.imageUrl, "/approved-photo.jpg");
+  assert.equal(news[2].imageFit, "contain");
+  assert.deepEqual(mergeAcademyNews(posts, []).map((item) => item.post), posts);
+  assert.deepEqual(mergeAcademyNews([], []), []);
+  const longSummary = "Затверджений текст повідомлення. ".repeat(30);
+  const preview = mergeAcademyNews([], [{ ...entry, summary: longSummary }])[0].post;
+  assert.ok(preview.excerpt.length <= 241);
+  assert.ok(preview.excerpt.endsWith("…"));
+  assert.ok(longSummary.startsWith(preview.excerpt.slice(0, -1)));
+  assert.equal(preview.body, entry.body);
+  assert.equal(entry.summary, "Затверджений опис");
+  assert.equal(entries[0], entry);
+  assert.equal(entries.length, 7);
+
+  const link = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export default function Link(props){return createElement("a",props);}`).toString("base64")}`;
+  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": await moduleUrl("../lib/post-image.ts") }));
+  const item = news[2];
+  const html = renderToStaticMarkup(createElement(NewsCard, { post: item.post, href: item.href, imageFit: item.imageFit }));
+  assert.match(html, /href="\/department-news\/march"/);
+  assert.match(html, /src="\/approved-photo.jpg"/);
+  assert.match(html, /alt="Фото зустрічі"/);
+  assert.match(html, /object-fit:contain/);
+  assert.doesNotMatch(html, /class="date"/);
+});
