@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { EnglishFooter } from "@/app/components/EnglishFooter";
 import { EditorialRichText } from "@/app/components/EditorialRichText";
 import { SiteHeader } from "@/app/components/SiteHeader";
 import { getPostBySlug } from "@/lib/data";
 import { englishPosts } from "@/lib/english-content";
+import { empowerEastKickoffNewsSlug } from "@/lib/empower-east-news";
 
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ slug: string }> };
@@ -18,6 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function NewsArticle({ params }: Props) {
   const { slug } = await params;
+  if (slug === empowerEastKickoffNewsSlug) redirect(`/news/${slug}`);
   const post = englishPosts.find((item) => item.slug === slug);
   if (!post) notFound();
   const original = await getPostBySlug(slug);

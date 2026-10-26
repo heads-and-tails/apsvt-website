@@ -53,7 +53,7 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(await (await render("/news")).text(),/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(html,/EDUPRO2026: AI FOR EDUCATORS/);
   assert.match(await (await render("/news")).text(),/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
-  assert.match(html,/Навчання «Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО»/);
+  assert.match(html,/EMPOWER-EAST розпочав роботу/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
@@ -539,7 +539,8 @@ test("publishes the international cooperation AI training with online registrati
     (await render(`/news/${slug}`)).text(),
     (await render(`/events?event=${encodeURIComponent("Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО")}`)).text(),
   ]);
-  for(const html of [homeHtml,newsHtml,articleHtml]) assert.match(html,/Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО/);
+  assert.match(homeHtml, /href="\/news"/);
+  for(const html of [newsHtml,articleHtml]) assert.match(html,/Використання штучного інтелекту для автоматизації міжнародного співробітництва у ЗВО/);
   assert.match(articleHtml,/13 жовтня · 11:30/);
   assert.match(articleHtml,/Науково-педагогічні працівники та здобувачі освіти/);
   assert.match(articleHtml,/href="\/events\?event=.*#registration"/);
@@ -2058,4 +2059,31 @@ test("Marketing news English controls open the available English news index", as
     assert.ok(!html.includes(`/en/department-news/${id}`));
   }
   assert.equal((await render("/en/news")).status, 200);
+});
+
+
+test("publishes the corrected EMPOWER release, all three originals and its grant-activity entry", async () => {
+  const path = "/news/empower-east-startova-zustrich-2026";
+  const response = await render(path);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  for (const fact of ["EMPOWER-EAST розпочав роботу", "15–16 жовтня 2026 року | Онлайн", "1 жовтня 2026 року", "24-місячного", "шість робочих пакетів", "чотирьох українських", "CoARA", "шостого місяця", "в Угорщині та Туреччині"]) assert.ok(html.includes(fact), fact);
+  assert.doesNotMatch(html, /detail-hero-bg/);
+  assert.match(html, /href="\/en\/news"[^>]*>EN<\/a>/);
+  for (const file of ["overview", "management", "priorities"]) {
+    assert.ok(html.includes(`href="/images/news/empower-east-2026/${file}.jpg"`));
+    assert.ok(html.includes(`src="/images/news/empower-east-2026/${file}.jpg"`));
+  }
+  for (const page of ["/", "/news", "/international"]) assert.ok((await (await render(page)).text()).includes(`href="${path}"`), page);
+  const grants = await (await render("/international")).text();
+  assert.match(grants, /Грантова діяльність/);
+  for (const original of ["101126681", "101127204", "575275-EPP-1-2016-1-UA-EPPJMO-MODULE", "/materials/conference-06-06-19-eacf33800.html"]) assert.ok(grants.includes(original));
+  assert.equal((await render("/en/news")).status, 200);
+  assert.equal((await render("/en/international")).status, 200);
+  const englishIndex = await (await render("/en/news")).text();
+  assert.ok(englishIndex.includes(`href="${path}"`));
+  assert.ok(!englishIndex.includes(`href="/en${path}"`));
+  const englishArticle = await render(`/en${path}`);
+  assert.equal(englishArticle.status, 307);
+  assert.equal(new URL(englishArticle.headers.get("location"), "http://localhost").pathname, path);
 });

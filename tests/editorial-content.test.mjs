@@ -558,6 +558,7 @@ test("respects successful empty published-news queries and preserves fallback fo
   const { state } = await import(mockUrl);
   const posts = await import(await moduleUrl("../lib/data.ts", {
     "./edupro-news": eduproUrl,
+    "./empower-east-news": await moduleUrl("../lib/empower-east-news.ts"),
     "./constitutional-court-lecture-news": await moduleUrl("../lib/constitutional-court-lecture-news.ts"),
     "@/lib/supabase/admin": mockUrl,
     "@/lib/supabase/public": mockUrl,
@@ -638,4 +639,37 @@ test("Academy news includes all public Marketing news and preserves canonical ar
   assert.match(html, /alt="Фото зустрічі"/);
   assert.match(html, /object-fit:contain/);
   assert.doesNotMatch(html, /class="date"/);
+});
+
+
+test("EMPOWER photographs preserve the supplied original bytes and use an uncropped cover", async () => {
+  const { empowerEastKickoffNews, empowerEastKickoffImages } = await import(await moduleUrl("../lib/empower-east-news.ts"));
+  const originals = [
+  {
+    "url": "/images/news/empower-east-2026/overview.jpg",
+    "bytes": 109314,
+    "sha256": "a2b7b0ba22661fb43edb453420e635f8113b7a6ad3f647909bf49f8ec013f96f"
+  },
+  {
+    "url": "/images/news/empower-east-2026/management.jpg",
+    "bytes": 130472,
+    "sha256": "1e00051b2ab3ccb25c22a44fa859fd7f1e8172942b8f0ce1cd7725ac03a8bee1"
+  },
+  {
+    "url": "/images/news/empower-east-2026/priorities.jpg",
+    "bytes": 256853,
+    "sha256": "1b00d5b4e509c94c976f4a9d0c23e23d042fc547cd984055767a547ba89334bc"
+  }
+];
+  assert.deepEqual(empowerEastKickoffImages.map((image) => image.url), originals.map((image) => image.url));
+  for (const original of originals) {
+    const bytes = await readFile(new URL(`../public${original.url}`, import.meta.url));
+    assert.equal(bytes.length, original.bytes);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), original.sha256);
+  }
+  const link = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export default function Link(props){return createElement("a",props);}`).toString("base64")}`;
+  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": await moduleUrl("../lib/post-image.ts") }));
+  const html = renderToStaticMarkup(createElement(NewsCard, { post: empowerEastKickoffNews }));
+  assert.ok(html.includes(`src="${empowerEastKickoffImages[0].url}"`));
+  assert.match(html, /object-fit:contain/);
 });

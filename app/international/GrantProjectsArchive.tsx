@@ -1,3 +1,5 @@
+import { empowerEastKickoffNews } from "@/lib/empower-east-news";
+
 type GrantProject = {
   index: string;
   acronym: string;
@@ -104,13 +106,22 @@ export function GrantProjectsArchive() {
   return <section className="grant-projects-archive" id="grants"><div className="wrap">
     <div className="grant-projects-head">
       <div>
-        <div className="idx">02.1 / Erasmus+ · архів проєктів</div>
+        <div className="idx">02.1 / Грантова діяльність</div>
         <h2>Гранти та<br />результати</h2>
       </div>
       <div>
-        <p>Інформацію відновлено зі старої версії сайту Академії та впорядковано за проєктами. Тут зібрано мету грантів, етапи реалізації, освітні результати, дослідження й звітні матеріали.</p>
-        <span>Архів охоплює 2016–2026 роки</span>
+        <p>Поточні міжнародні проєкти Академії та архівні матеріали: мета грантів, етапи реалізації, освітні результати, дослідження й звіти.</p>
+        <span>Поточні проєкти та архів 2016–2026 років</span>
       </div>
+    </div>
+
+    <div className="grant-results-list">
+      <a href={`/news/${empowerEastKickoffNews.slug}`}>
+        <span>01</span>
+        <time dateTime="2026-10-15">2026</time>
+        <div><small>EMPOWER-EAST · Стартова зустріч</small><h4>{empowerEastKickoffNews.title}</h4><p>{empowerEastKickoffNews.excerpt}</p></div>
+        <b>Читати повністю ↗</b>
+      </a>
     </div>
 
     <div className="grant-projects-facts" aria-label="Коротко про грантові проєкти">

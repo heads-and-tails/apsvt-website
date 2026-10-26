@@ -13,6 +13,8 @@ import { EditorialRichText } from "../../components/EditorialRichText";
 import { academicCompetitionDocument, academicCompetitionNewsSlug, deanCompetitionDocument, deanCompetitionNewsSlug } from "@/lib/academic-competition";
 import { eduproNewsSlug } from "@/lib/edupro-news";
 import { constitutionalCourtLectureNewsSlug, constitutionalCourtLecturePoster } from "@/lib/constitutional-court-lecture-news";
+import { empowerEastKickoffImages, empowerEastKickoffNewsSlug } from "@/lib/empower-east-news";
+import { DepartmentImages } from "@/app/components/DepartmentMedia";
 
 export const dynamic = "force-dynamic";
 
@@ -71,11 +73,13 @@ export default async function Page({ params }: Props) {
   const isInternationalAiTrainingNews = post.slug === internationalAiTrainingNewsSlug;
   const articleBody = isMentalHealthConferenceNews ? replaceConferenceOrganizers(post.body) : post.body;
   const isAiTrainingNews = post.slug === aiTrainingNewsSlug;
+  const isEmpowerNews = post.slug === empowerEastKickoffNewsSlug;
+  const showHeroImage = Boolean(heroImage.imageUrl) && !isEmpowerNews;
 
   return <main id="top">
-    <SiteHeader englishHref={post.slug === eduproNewsSlug ? "/en/news" : undefined} />
-    <section className={heroImage.imageUrl ? "detail-hero image" : "detail-hero"}>
-      {heroImage.imageUrl && <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} style={post.slug === volodymyrLipkanArticleNewsSlug ? { objectPosition: "center 12%" } : undefined} /></div>}
+    <SiteHeader englishHref={post.slug === eduproNewsSlug || isEmpowerNews ? "/en/news" : undefined} />
+    <section className={showHeroImage ? "detail-hero image" : "detail-hero"}>
+      {showHeroImage && <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} style={post.slug === volodymyrLipkanArticleNewsSlug ? { objectPosition: "center 12%" } : undefined} /></div>}
       <div className="wrap"><div className="detail-kicker mono">{post.category}{post.hideDate ? "" : ` · ${date}`}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div>
     </section>
     <div className="phero-rule" />
@@ -83,6 +87,9 @@ export default async function Page({ params }: Props) {
       <article className="detail-copy">
         <p className="lede">{post.excerpt}</p>
         <EditorialRichText text={articleBody} />
+        {isEmpowerNews && empowerEastKickoffImages.map((photo) => <a href={photo.url} target="_blank" rel="noreferrer" key={photo.url}>
+          <DepartmentImages entry={{ images: [photo] }} />
+        </a>)}
         {isConstitutionalCourtLectureNews && <figure className="lecture-news-poster">
           <a href={constitutionalCourtLecturePoster.src} target="_blank" rel="noreferrer"><Image src={constitutionalCourtLecturePoster.src} alt={constitutionalCourtLecturePoster.alt} width={constitutionalCourtLecturePoster.width} height={constitutionalCourtLecturePoster.height} unoptimized /></a>
           <figcaption>{constitutionalCourtLecturePoster.caption}</figcaption>

@@ -188,7 +188,7 @@ const faq = [
 const internationalSections: readonly SectionHubItem[] = [
   { id: "partners", index: "01", title: "Міжнародні партнери", description: "Європейські заклади-партнери та академічні угоди Академії.", icon: "EU" },
   { id: "greenfinedu", index: "02", title: "GreenFinEDU", description: "Міжнародний освітній проєкт, матеріали та результати співпраці.", icon: "GF" },
-  { id: "grants", index: "02.1", title: "Гранти та звіти", description: "Архів Erasmus+, результати проєктів, дослідження та звітні матеріали.", icon: "EU" },
+  { id: "grants", index: "02.1", title: "Гранти та звіти", description: "Поточні проєкти, архів Erasmus+, дослідження та звітні матеріали.", icon: "EU" },
   { id: "project-lab", index: "02.2", title: "Project Lab", description: "Дві презентації про підготовку заявок Erasmus+ із використанням ШІ.", icon: "AI" },
   { id: "partnerships-in-action", index: "03", title: "Партнерство в дії", description: "Новини, зустрічі, підписані угоди та фотоматеріали.", icon: "NEWS" },
   { id: "cooperation", index: "04", title: "Напрями співпраці", description: "Мобільність, дослідження, публікації, конференції та обмін досвідом.", icon: "↔" },
