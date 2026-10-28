@@ -11,6 +11,7 @@ import { editorialAccessOptions } from "@/lib/editorial-access";
 import { marketingStudentSections } from "@/lib/marketing-student-sections";
 import { marketingMobilitySection } from "@/lib/marketing-mobility";
 import { marketingTeacherAchievementsSection } from "@/lib/marketing-teacher-achievements";
+import { isMarketingNonformalSection } from "@/lib/marketing-nonformal";
 
 export const dynamic = "force-dynamic";
 
@@ -43,9 +44,10 @@ export default async function Page({ params }: Props) {
   const isMarketingQualityNews = entry.pagePath === "/programs/marketing" && ["quality", "marketing-quality-discussion"].includes(entry.sectionId);
   const isMarketingMobilityNews = entry.pagePath === "/programs/marketing" && entry.sectionId === marketingMobilitySection.id;
   const isMarketingTeacherAchievementNews = entry.pagePath === "/programs/marketing" && entry.sectionId === marketingTeacherAchievementsSection.id;
+  const isMarketingNonformalNews = entry.pagePath === "/programs/marketing" && isMarketingNonformalSection(entry.sectionId);
   const studentSection = entry.pagePath === "/programs/marketing" ? marketingStudentSections.find((section) => section.id === entry.sectionId) : undefined;
-  const returnSection = isMarketingClubNews ? "science-club" : isMarketingRepositoryNews ? "marketing-repository" : isMarketingTeacherAchievementNews ? marketingTeacherAchievementsSection.id : isMarketingMobilityNews ? marketingMobilitySection.id : isMarketingQualityNews ? "quality" : studentSection?.id || "department-news";
-  const returnLabel = isMarketingClubNews ? "← До наукового гуртка" : isMarketingRepositoryNews ? "← До репозитарію" : isMarketingTeacherAchievementNews ? "← До здобутків викладачів" : isMarketingMobilityNews ? "← До академічної мобільності" : isMarketingQualityNews ? "← До обговорення ОПП" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
+  const returnSection = isMarketingNonformalNews ? entry.sectionId : isMarketingClubNews ? "science-club" : isMarketingRepositoryNews ? "marketing-repository" : isMarketingTeacherAchievementNews ? marketingTeacherAchievementsSection.id : isMarketingMobilityNews ? marketingMobilitySection.id : isMarketingQualityNews ? "quality" : studentSection?.id || "department-news";
+  const returnLabel = isMarketingNonformalNews ? "← До неформальної та інформальної освіти" : isMarketingClubNews ? "← До наукового гуртка" : isMarketingRepositoryNews ? "← До репозитарію" : isMarketingTeacherAchievementNews ? "← До здобутків викладачів" : isMarketingMobilityNews ? "← До академічної мобільності" : isMarketingQualityNews ? "← До обговорення ОПП" : studentSection ? `← ${studentSection.title}` : "← До новин підрозділу";
 
   return <main id="top">
     <SiteHeader englishHref={entry.pagePath === "/programs/marketing" ? "/en/news" : undefined} />

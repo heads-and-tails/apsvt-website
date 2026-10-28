@@ -4,6 +4,7 @@ import { departmentPublicationDate } from "@/lib/department-news-date";
 import { DepartmentImages } from "@/app/components/DepartmentMedia";
 import { marketingMasterStakeholderQuestionnaire, marketingQuestionnaires } from "@/lib/marketing-questionnaires";
 import { MarketingMobility } from "./MarketingMobility";
+import { MarketingNonformal } from "./MarketingNonformal";
 
 const discussionNews = [
   { date: "12 березня 2026", href: "/news/obhovorennia-opp-marketynh-12-bereznia-2026" },
@@ -75,6 +76,7 @@ export function MarketingQuality({ entries }: { entries: DepartmentEntry[] }) {
         </div>
       </details>
       <MarketingMobility entries={entries} />
+      <MarketingNonformal entries={entries} />
     </div>
   </div></section>;
 }

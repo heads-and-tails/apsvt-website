@@ -326,7 +326,64 @@ const mobilityUrl = await moduleUrl("../lib/marketing-mobility.ts");
 const mobility = await import(mobilityUrl);
 const teacherAchievementsUrl = await moduleUrl("../lib/marketing-teacher-achievements.ts");
 const teacherAchievements = await import(teacherAchievementsUrl);
-const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl, "./marketing-teacher-achievements": teacherAchievementsUrl }));
+const nonformalUrl = await moduleUrl("../lib/marketing-nonformal.ts");
+const nonformal = await import(nonformalUrl);
+const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl, "./marketing-teacher-achievements": teacherAchievementsUrl, "./marketing-nonformal": nonformalUrl }));
+
+test("nonformal education has eight scoped editorial rubrics and excludes drafts and hidden or unrelated materials", () => {
+  const targets = sections.editorialSectionsForPage("/programs/marketing").filter(item => nonformal.isMarketingNonformalSection(item.id));
+  assert.equal(targets.length, 8);
+  assert.equal(new Set(targets.map(item => item.id)).size, 8);
+  assert.equal(sections.editorialSectionsForPage("/programs/finance").filter(item => nonformal.isMarketingNonformalSection(item.id)).length, 0);
+  const sectionId = "marketing-nonformal-master-achievements";
+  const base = { id: "visible", pagePath: "/programs/marketing", sectionId, entryType: "article", status: "published" };
+  const entries = [base, { ...base, id: "draft", status: "draft" }, { ...base, id: "hidden", hidden: true }, { ...base, id: "other-page", pagePath: "/programs/finance" }, { ...base, id: "other-rubric", sectionId: "marketing-nonformal-master-regulations" }, { ...base, id: "override", entryType: "override" }];
+  assert.deepEqual(nonformal.marketingNonformalEntries(entries, sectionId).map(item => item.id), ["visible"]);
+  assert.deepEqual(nonformal.marketingNonformalEntries([], sectionId), []);
+});
+
+test("nonformal editorial changes and removals survive repeat seeding without overwriting the saved content", async () => {
+  const jsonModule = `data:text/javascript;base64,${Buffer.from(`export default ${await readFile(new URL("../lib/marketing-nonformal-content.json", import.meta.url), "utf8")}`).toString("base64")}`;
+  const seedUrl = await moduleUrl("../lib/marketing-nonformal-seeds.ts", { "./marketing-nonformal-content.json": jsonModule });
+  const qualitySeedsUrl = await moduleUrl("../lib/marketing-quality-seeds.ts", { "./marketing-nonformal-seeds": seedUrl });
+  const rows = new Map();
+  const client = { from() {
+    const query = (patch = null) => {
+      const filters = [];
+      const run = () => {
+        const values = [...rows.values()].filter(row => filters.every(([key, value]) => row[key] === value));
+        return values.map(row => {
+          if (patch) { row = { ...row, ...structuredClone(patch) }; rows.set(row.id, row); }
+          return structuredClone(row);
+        });
+      };
+      return { select() { return this; }, eq(key, value) { filters.push([key, value]); return this; }, order() { return this; }, then(resolve) { return Promise.resolve({ data: run(), error: null }).then(resolve); }, async maybeSingle() { return { data: run()[0] || null, error: null }; } };
+    };
+    return { select: () => query(), update: patch => query(patch), delete() { throw new Error("Seeded content must be hidden rather than hard-deleted"); }, async upsert(items, options) { assert.equal(options.ignoreDuplicates, true); for (const row of items) if (!rows.has(row.id)) rows.set(row.id, structuredClone(row)); return { error: null }; } };
+  } };
+  const fixtureKey = "__apsvtNonformalPersistenceFixture";
+  globalThis[fixtureKey] = client;
+  try {
+    const connection = `data:text/javascript;base64,${Buffer.from(`export const isSupabaseConfigured=()=>true;export const createSupabaseAdmin=()=>globalThis[${JSON.stringify(fixtureKey)}];export const createSupabasePublicClient=createSupabaseAdmin;`).toString("base64")}`;
+    const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl });
+    const accessUrl = await moduleUrl("../lib/editorial-access.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl });
+    const department = await import(await moduleUrl("../lib/department-content.ts", { "@/lib/content": contentUrl, "./department-news-date": await moduleUrl("../lib/department-news-date.ts"), "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }), "./editorial-text": textUrl, "@/lib/editorial-access": accessUrl, "@/lib/education-quality": await moduleUrl("../lib/education-quality.ts"), "./marketing-mobility": mobilityUrl }));
+    const original = await department.getDepartmentEntryById("marketing-nonformal-master-regulations-text");
+    assert.ok(original);
+    await department.updateDepartmentEntry(original.id, { ...original, body: "Збережена редактором зміна", sortOrder: 75 }, "editor@example.test");
+    const coldContent = await import(contentUrl + "#repeat-seed");
+    await coldContent.getAllContent();
+    const edited = await department.getDepartmentEntryById(original.id);
+    assert.equal(edited.body, "Збережена редактором зміна");
+    assert.equal(edited.sortOrder, 75);
+    await department.deleteDepartmentEntry(original.id, "editor@example.test");
+    await (await import(contentUrl + "#after-removal")).getAllContent();
+    const hidden = await department.getDepartmentEntryById(original.id);
+    assert.equal(hidden.hidden, true);
+    assert.equal(hidden.body, "Збережена редактором зміна");
+    assert.deepEqual(nonformal.marketingNonformalEntries([hidden], hidden.sectionId), []);
+  } finally { delete globalThis[fixtureKey]; }
+});
 
 test("teacher achievements has a separate editorial target and renders published posts, photos and PDFs only", async () => {
   const section = teacherAchievements.marketingTeacherAchievementsSection;
