@@ -33,6 +33,7 @@ import { MarketingPartners } from "./MarketingPartners";
 import { MarketingQuality } from "./MarketingQuality";
 import { MarketingMethodicalFolders } from "./MarketingMethodicalFolders";
 import { marketingMobilitySection } from "@/lib/marketing-mobility";
+import { isMarketingNonformalSection, marketingNonformalEditorialSections, marketingNonformalSection } from "@/lib/marketing-nonformal";
 import { marketingTeacherAchievementsSection } from "@/lib/marketing-teacher-achievements";
 import { marketingMethodicalSectionIds } from "@/lib/marketing-methodical";
 import { marketingInteractiveSection } from "@/lib/marketing-interactive-resources";
@@ -64,7 +65,7 @@ const marketingSections: readonly SectionHubItem[] = [
   { id: "department", index: "01", title: "Про кафедру", description: "Місія, напрями роботи та освітнє середовище кафедри маркетингу.", icon: "D5" },
   { id: "department-team", index: "02", title: "Науково-педагогічний склад", description: "Викладачі, освіта, наукові інтереси та професійні профілі.", icon: "NPP", aliases: [marketingTeacherAchievementsSection.id] },
   { id: "curriculum", index: "03", title: "Освітні програми", description: "Рівні освіти, навчальні плани, обов’язкові й вибіркові компоненти.", icon: "OP", aliases: ["overview", "education-levels", "electives", "course-annotations"] },
-  { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг якості освіти та обговорення змін до ОПП за рівнями.", icon: "✓", aliases: ["marketing-quality-discussion", "marketing-stakeholder-call", marketingMobilitySection.id] },
+  { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг якості освіти та обговорення змін до ОПП за рівнями.", icon: "✓", aliases: ["marketing-quality-discussion", "marketing-stakeholder-call", marketingMobilitySection.id, marketingNonformalSection.id, ...marketingNonformalEditorialSections.map((section) => section.id), "marketing-nonformal-bachelor", "marketing-nonformal-master"] },
   { id: "science", index: "05", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI", aliases: ["science-club"] },
   { id: "programme-documents", index: "06", title: "Навчально-методичне забезпечення", description: "Офіційні програми, плани, дисципліни й матеріали кафедри.", icon: "PDF" },
   { id: "marketing-student-life", index: "07", title: "Студентське життя та самоврядування", description: "Гурток MARKETHINK, студентські ініціативи й участь у житті Академії.", icon: "M", aliases: marketingStudentSections.map((section) => section.id) },
@@ -154,7 +155,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
     <MarketingStudentLife entries={departmentEntries} key="marketing-student-life" />,
     <MarketingCareers key="marketing-careers" />,
     <MarketingPartners entries={departmentEntries} key="marketing-partners" />,
-    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !["science", "science-club", "quality", "marketing-quality-discussion", marketingMobilitySection.id, marketingTeacherAchievementsSection.id, "marketing-repository", "curriculum", "marketing-partner-agreements", "marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", ...marketingMethodicalSectionIds, ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
+    <div id="department-news" key="marketing-news"><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !["hero", "teacher", "partner"].includes(entry.entryType) && !isMarketingNonformalSection(entry.sectionId) && !["science", "science-club", "quality", "marketing-quality-discussion", marketingMobilitySection.id, marketingTeacherAchievementsSection.id, "marketing-repository", "curriculum", "marketing-partner-agreements", "marketing-bachelor-programmes", "marketing-bachelor-plans", "marketing-master-programmes", "marketing-master-plans", ...marketingMethodicalSectionIds, ...marketingStudentSections.map((section) => section.id)].includes(entry.sectionId))} /></div>,
     <MarketingRepository entries={departmentEntries} key="marketing-repository" />,
     <MarketingInteractiveResources key={marketingInteractiveSection.id} />,
   ] : null;

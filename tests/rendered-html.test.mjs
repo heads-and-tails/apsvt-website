@@ -1164,6 +1164,50 @@ test("offers original editable Marketing questionnaires under the appropriate di
   assert.doesNotMatch(await (await render("/programs/finance")).text(), /documents\/marketing\/surveys/);
 });
 
+test("publishes editable nonformal education rubrics and all six students' original certificate pairs", async () => {
+  const html = await (await render("/programs/marketing")).text();
+  assert.match(html, /id="marketing-nonformal"/);
+  assert.match(html, /Неформальна та інформальна освіта/);
+  for (const level of ["bachelor", "master"]) for (const rubric of ["regulations", "opportunities", "achievements", "recognition"]) assert.ok(html.includes(`id="marketing-nonformal-${level}-${rubric}"`));
+  const source = JSON.parse(await readFile(new URL("../lib/marketing-nonformal-content.json", import.meta.url), "utf8"));
+  const certificates = source.filter(item => item.entryType === "article");
+  assert.equal(certificates.length, 6);
+  const certificatePaths = new Set();
+  for (const item of certificates) {
+    assert.ok(html.includes(item.title));
+    const images = JSON.parse(item.images);
+    assert.equal(images.length, 2);
+    assert.equal(JSON.parse(item.attachments).length, 2);
+    for (const image of images) {
+      certificatePaths.add(image.url);
+      assert.equal(image.fit, "contain");
+      assert.ok(html.includes(`src="${image.url}"`));
+      assert.ok(html.includes(`href="${image.url}"`));
+      const file = await readFile(new URL(`../public${image.url}`, import.meta.url));
+      assert.deepEqual([...file.subarray(0, 3)], [255, 216, 255]);
+    }
+  }
+  assert.equal(certificatePaths.size, 12);
+  for (const url of ["https://zakon.rada.gov.ua/laws/show/2145-19", "https://zakon.rada.gov.ua/laws/show/z0328-22", "https://www.socosvita.kiev.ua/documents/regulations/educational-process-2026.pdf", "https://prometheus.org.ua/", "https://skillshop.withgoogle.com/", "https://academy.hubspot.com/", "https://www.coursera.org/", "https://osvita.diia.gov.ua/", "https://erasmusplus.org.ua/"]) assert.ok(html.includes(`href="${url}"`));
+  assert.match(html, /Зарахування стосується окремих результатів навчання/);
+  assert.doesNotMatch(html, /Після цього тексту адміністратор|Додатково можна розмістити сертифікати Віталія/);
+  const newsStart = html.indexOf('id="department-news"');
+  const newsSection = html.slice(newsStart, html.indexOf('id="marketing-repository"', newsStart));
+  assert.doesNotMatch(newsSection, /recognition-collage-2026|liudmyla-moroka-greenfinedu-2026/);
+  assert.doesNotMatch(await (await render("/programs/finance")).text(), /id="marketing-nonformal"/);
+  const canonical = "/department-news/marketing-nonformal-master-recognition-text";
+  const academy = await (await render("/news")).text();
+  assert.equal(academy.split(`href="${canonical}"`).length - 1, 1, "One Academy news card for the shared article");
+  const article = await render(canonical);
+  assert.equal(article.status, 200);
+  const body = await article.text();
+  assert.match(body, /Зарахування стосується окремих результатів навчання/);
+  assert.match(body, /recognition-collage-2026\.jpg/);
+  assert.match(body, /href="\/programs\/marketing#marketing-nonformal-master-recognition"/);
+  assert.match(body, /href="\/en\/news"/);
+  assert.equal((await render("/en/news")).status, 200, "Existing English catalogue remains available");
+});
+
 test("publishes marketing master programmes and nested methodical document folders",async()=>{
   const marketing=await (await render("/programs/marketing")).text();
   assert.match(marketing,/Освітньо-професійна програма «Маркетинг» 2026 року/);

@@ -1,0 +1,22 @@
+.marketing-nonformal-rubric>summary{grid-template-columns:minmax(0,1fr) 24px}
+.marketing-nonformal-rubric>summary strong{font-size:clamp(17px,2.3vw,25px);overflow-wrap:anywhere}
+.marketing-nonformal-content{padding:20px;border-top:1px solid var(--line)}
+.marketing-nonformal-content .department-public-section{padding:0;border:0;background:transparent}
+.marketing-nonformal-content .department-public-section+.department-public-section{margin-top:24px}
+.marketing-nonformal-content .department-public-section>.wrap{width:100%;padding:0}
+.marketing-nonformal-content .department-section-grid{display:block;border:0;background:transparent}
+.marketing-nonformal-content .department-section-grid>article{display:block;background:transparent}
+.marketing-nonformal-content .department-section-grid article>div{padding:0}
+.marketing-nonformal-content .department-section-grid article>div>span{display:none}
+.marketing-nonformal-content .department-section-grid h3{margin:0 0 24px;font-size:clamp(24px,3.3vw,36px);line-height:1.12}
+.marketing-nonformal-content .editorial-richtext{overflow-wrap:anywhere}
+.marketing-nonformal-content .editorial-richtext p{max-width:none}
+.marketing-nonformal-content .department-article-list summary{grid-template-columns:40px minmax(0,1fr) 24px;gap:12px}
+.marketing-nonformal-content .department-article-list h3{font-size:clamp(22px,3vw,32px);overflow-wrap:anywhere}
+.marketing-nonformal-content .department-article-body{padding:16px 0 24px}
+.marketing-nonformal-content .department-authored-images img{width:100%;height:auto;min-height:0;max-height:none;aspect-ratio:auto;object-fit:contain;margin:0}
+.marketing-nonformal-content .department-authored-files{overflow-wrap:anywhere}
+@media(max-width:760px){.marketing-nonformal-content{padding:16px 10px}.marketing-nonformal .marketing-quality-level-body{padding-inline:10px}}
+.marketing-nonformal{min-width:0;scroll-margin-top:100px}
+.marketing-nonformal .marketing-quality-folder-body{grid-template-columns:minmax(0,1fr)}
+.marketing-nonformal .marketing-quality-level{min-width:0;scroll-margin-top:100px}

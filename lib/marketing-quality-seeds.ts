@@ -1,7 +1,9 @@
 import type { ContentItem } from "./content";
+import { marketingNonformalSeedContent } from "./marketing-nonformal-seeds";
 
 // Verbatim publication text supplied by the marketing department on 20 October 2026.
 export const marketingQualitySeedContent: ContentItem[] = [
+  ...marketingNonformalSeedContent,
   {
     id: "marketing-discussion-2026-students",
     kind: "research_resource",
