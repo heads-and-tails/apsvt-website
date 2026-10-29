@@ -617,6 +617,7 @@ test("respects successful empty published-news queries and preserves fallback fo
     "./edupro-news": eduproUrl,
     "./empower-east-news": await moduleUrl("../lib/empower-east-news.ts"),
     "./constitutional-court-lecture-news": await moduleUrl("../lib/constitutional-court-lecture-news.ts"),
+    "./constitutional-court-meeting-news": await moduleUrl("../lib/constitutional-court-meeting-news.ts"),
     "@/lib/supabase/admin": mockUrl,
     "@/lib/supabase/public": mockUrl,
     "@/lib/supabase/config": mockUrl,
