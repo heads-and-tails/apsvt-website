@@ -12,6 +12,7 @@ import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
 import { lawFacultyPath, lawFacultyStructure, lawFacultyLegacySections } from "@/lib/law-faculty-structure";
 import { AcademicNews } from "../../components/AcademicNews";
 import { constitutionalCourtLectureNewsSlug } from "@/lib/constitutional-court-lecture-news";
+import { constitutionalCourtMeetingNewsSlug } from "@/lib/constitutional-court-meeting-news";
 import { teachersForSection } from "../../components/LawDepartmentFiveSections";
 import { AcademicProfileCard } from "../../components/AcademicProfileCard";
 import { FacultyCouncilContent } from "../../components/FacultyCouncilContent";
@@ -122,7 +123,7 @@ export default async function Page() {
 
       <section className="faculty-structure-section" id="faculty-documents"><div className="wrap"><div className="idx">14 / Документи</div><h2>Нормативні документи</h2></div><PageDocuments pagePath="/departments/law-faculty" /></section>
 
-      <div id="department-news"><AcademicNews slugs={["law", "public-administration"]} title="Новини юридичного факультету" prioritySlugs={[constitutionalCourtLectureNewsSlug]} /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !entry.sectionId && !["hero", "override", "teacher", "partner", "quality"].includes(entry.entryType))} /></div>
+      <div id="department-news"><AcademicNews slugs={["law", "public-administration"]} title="Новини юридичного факультету" prioritySlugs={[constitutionalCourtMeetingNewsSlug, constitutionalCourtLectureNewsSlug]} /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !entry.sectionId && !["hero", "override", "teacher", "partner", "quality"].includes(entry.entryType))} /></div>
     </SectionHub>
     <SiteFooter />
   </main>;

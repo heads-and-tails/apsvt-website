@@ -48,7 +48,7 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/<title>АПСВТ — освіта з людським виміром<\/title>/i);
   assert.match(html,/href="\/en"[^>]*>EN<\/a>/i);
   assert.match(html,/Освітні траєкторії/);
-  assert.match(html,/mental-health-conference-science-2026\.jpg/);
+  assert.match(await (await render("/news")).text(),/mental-health-conference-science-2026\.jpg/);
   assert.match(html,/Запрошуємо стати частиною Erasmus\+ Days 2026!/);
   assert.match(await (await render("/news")).text(),/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(html,/EDUPRO2026: AI FOR EDUCATORS/);
@@ -2164,4 +2164,28 @@ test("publishes the corrected EMPOWER release, all three originals and its grant
   const englishArticle = await render(`/en${path}`);
   assert.equal(englishArticle.status, 307);
   assert.equal(new URL(englishArticle.headers.get("location"), "http://localhost").pathname, path);
+});
+
+test("publishes the 29 October court meeting announcement with original poster and usable access details", async () => {
+  const { constitutionalCourtMeetingNews: post, constitutionalCourtMeetingPoster: poster } = await import("../lib/constitutional-court-meeting-news.ts");
+  const path = `/news/${post.slug}`;
+  const response = await render(path);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  for (const text of ["До відома здобувачів юридичного факультету!", "Забезпечення права на ознайомлення з матеріалами кримінального провадження", "15 липня 2025 року", "Сергій Васильович Різник", "Галина Володимирівна Юровська", "Час: 29 жовтня 2026 року, 13:00.", "Ідентифікатор конференції: 945 4706 9371", "Код доступу: 852845"]) assert.ok(html.includes(text), text);
+  assert.ok(html.includes('href="https://zoom.us/j/94547069371?pwd=7JyZO2eCVGt2y7paa0q09qVVNCyYFa.1"'));
+  assert.ok(html.includes(`href="${poster.src}" target="_blank"`));
+  assert.ok(html.includes(`src="${poster.src}"`));
+  assert.match(html, /class="lecture-news-poster"/);
+  assert.ok(html.includes(poster.caption));
+  assert.match(html, /href="\/en\/news"/);
+  for (const route of ["/news", "/departments/law-faculty", "/"]) {
+    const listing = await render(route);
+    assert.equal(listing.status, 200);
+    assert.equal((await listing.text()).split(`href="${path}"`).length - 1, 1, `${route} links the canonical announcement once`);
+  }
+  const bytes = await readFile(new URL(`../public${poster.src}`, import.meta.url));
+  assert.equal(bytes.length, 541207);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), "509fffcde3af6c6a184dd7e83e4198da170256f0dd07c942d76e79194a93f037");
+  assert.equal((await render("/en/news")).status, 200);
 });

@@ -3,6 +3,11 @@ import type { Post } from "@/lib/data";
 type EditorialImage = Pick<Post, "imageUrl" | "imageAlt"> & { imageFit?: "contain" | "cover" };
 
 const editorialImages: Record<string, EditorialImage> = {
+  "vidkryta-zustrich-suddiv-konstytutsiinoho-sudu-2026-10-29": {
+    imageUrl: "/images/news/constitutional-court-meeting-2026-10-29.jpg",
+    imageAlt: "Афіша відкритої зустрічі із суддями Конституційного Суду України 29 жовтня 2026 року",
+    imageFit: "contain",
+  },
   "empower-east-startova-zustrich-2026": {
     imageUrl: "/images/news/empower-east-2026/overview.jpg",
     imageAlt: "Онлайн-зустріч EMPOWER-EAST 16 жовтня 2026 року: огляд проєкту",
