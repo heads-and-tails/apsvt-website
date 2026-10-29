@@ -29,6 +29,10 @@ export default async function Page({ params }: Props) {
   const page = findPage(section, subsection);
   if (!page) notFound();
   const [entries, documents] = await Promise.all([getDepartmentEntries(page.path), getPublicDocuments(page.path)]);
+  const isAccreditationPage = section === "faculty-documents" && subsection === "accreditation";
+  const accreditationDocuments = isAccreditationPage
+    ? (await getPublicDocuments(`${lawFacultyPath}/faculty-programmes/d8-law-master`)).filter((document) => document.title === "Відомості про самооцінювання ОПП «Право» (магістр, D8)")
+    : [];
   const visibleEntries = entries.filter((entry) => !["hero", "override"].includes(entry.entryType));
   const siblings = lawFacultyStructure.find((item) => item.id === section)!.children;
   const programme = subsection === "law" ? "law" : "public-administration";
@@ -44,11 +48,12 @@ export default async function Page({ params }: Props) {
     <section className="faculty-subpage-content" id="content">
       {section === "faculty-programmes" && programmePage ? <LawFacultyProgramme programme={programmePage} publication={publication} entries={visibleEntries} documents={documents} /> : <>
       <div className="wrap"><h2>{page.title}</h2>
-      {!visibleEntries.length && !documents.length && !["faculty-programmes", "faculty-repository"].includes(section) && <p>Матеріали ще не оприлюднено.</p>}
+      {isAccreditationPage && <p>Матеріали акредитації освітніх програм юридичного факультету. Наразі оприлюднено відомості про самооцінювання програми D8 «Право» другого (магістерського) рівня. <Link href={`${lawFacultyPath}/faculty-programmes/d8-law-master`}>Сторінка програми →</Link></p>}
+      {!visibleEntries.length && !documents.length && !accreditationDocuments.length && !["faculty-programmes", "faculty-repository"].includes(section) && <p>Матеріали ще не оприлюднено.</p>}
     </div>{section === "faculty-council"
       ? <div className="wrap"><DepartmentEditorialContent inline entries={visibleEntries} /></div>
       : <DepartmentEditorialContent entries={visibleEntries} />}
-      <PageDocuments pagePath={page.path} />
+      <PageDocuments pagePath={page.path} documents={isAccreditationPage ? [...documents, ...accreditationDocuments] : undefined} title={isAccreditationPage ? "Документи з акредитації" : undefined} />
       </>}
     </section>
     {section === "faculty-repository" && <ThesesCatalogue items={theses} />}

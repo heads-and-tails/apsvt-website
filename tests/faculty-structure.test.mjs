@@ -57,6 +57,14 @@ test('every supplied subsection has a unique editable URL', () => {
     assert.equal(registry.editorialSectionsForPage(page.path)[0].label, page.title);
   }
 });
+test('law faculty accreditation has a public route and links to the published self-assessment', () => {
+  const accreditation = structure.lawFacultySubpages.find((page) => page.path === '/departments/law-faculty/faculty-documents/accreditation');
+  assert.equal(accreditation?.title, 'Акредитація освітніх програм');
+  const landing = fs.readFileSync(path.join(root, 'app/departments/law-faculty/page.tsx'), 'utf8');
+  const subsection = fs.readFileSync(path.join(root, 'app/departments/law-faculty/[section]/[subsection]/page.tsx'), 'utf8');
+  assert.ok(landing.includes('faculty-documents/accreditation'));
+  assert.ok(subsection.includes('Відомості про самооцінювання ОПП «Право» (магістр, D8)'));
+});
 test('faculty editors can manage faculty subsections and constituent departments only', () => {
   const faculty = { role: 'editor', accessScopes: [structure.lawFacultyPath] };
   for (const page of structure.lawFacultySubpages) assert.ok(access.canEditPage(faculty, page.path));
