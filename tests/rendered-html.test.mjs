@@ -738,6 +738,19 @@ test("publishes international partnerships and the foreign applicant guide",asyn
   assert.match(html,/inz@socosvita\.kiev\.ua/);
 });
 
+test("links the D8 law master's self-evaluation from accreditation and faculty pages",async()=>{
+  const pdfUrl="https://srbnlvcmkorjvaptbbiu.supabase.co/storage/v1/object/public/editorial-documents/documents/2026-10-29/5fa83cf9-43dc-4dd9-b12f-b3a5015458f1.pdf";
+  const accreditation=await (await render("/about/licenses")).text();
+  const expertResults=accreditation.match(/id="expert-results"[\s\S]*?(?=<section|<footer)/)?.[0] || "";
+  assert.match(expertResults,/D8 · Право/);
+  assert.ok(expertResults.includes(`href="${pdfUrl}"`));
+
+  const faculty=await (await render("/departments/law-faculty")).text();
+  const programmes=faculty.match(/<section class="faculty-programmes"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.match(programmes,/Право · магістр: самооцінювання/);
+  assert.ok(programmes.includes(`href="${pdfUrl}"`));
+});
+
 test("publishes the Academy licence, accreditation scans and verification links",async()=>{
   const html=await (await render("/about/licenses")).text();
   assert.match(html,/Ліцензії\.<br\/>Акредитація\./);
