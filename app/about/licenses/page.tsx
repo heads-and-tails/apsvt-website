@@ -44,6 +44,14 @@ const currentCertificates: CurrentCertificate[] = [
 const expertDocuments: ExpertDocument[] = [
   {
     title: "Відомості про самооцінювання освітньої програми",
+    programme: "Право",
+    level: "Магістр",
+    specialty: "D8 · Право",
+    kind: "Відомості про самооцінювання",
+    href: "https://srbnlvcmkorjvaptbbiu.supabase.co/storage/v1/object/public/editorial-documents/documents/2026-10-29/5fa83cf9-43dc-4dd9-b12f-b3a5015458f1.pdf",
+  },
+  {
+    title: "Відомості про самооцінювання освітньої програми",
     programme: "Психологія бізнесу та управління",
     level: "Магістр",
     specialty: "053 · Психологія",
