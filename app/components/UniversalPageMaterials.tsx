@@ -7,6 +7,8 @@ import { departmentImages } from "@/lib/department-media";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { isEditorialPagePath } from "@/lib/editorial-access";
 import { DepartmentEditorialContent } from "./DepartmentEditorialContent";
+import { CustomEditorialSections } from "./CustomEditorialSections";
+import { isCustomSectionId } from "@/lib/editorial-custom-sections";
 
 const ignoredPrefixes = ["/panel", "/student", "/api", "/auth", "/en"];
 
@@ -22,7 +24,7 @@ function restoreAttribute(element: Element, name: string, value: string | null) 
 export function UniversalPageMaterials() {
   const pathname = usePathname();
   const [result, setResult] = useState<{ path: string; entries: DepartmentEntry[] }>({ path: "", entries: [] });
-  const [portal, setPortal] = useState<{ path: string; target: HTMLElement } | null>(null);
+  const [portal, setPortal] = useState<{ path: string; target: HTMLElement; renderDefault: boolean } | null>(null);
   const entries = useMemo(
     () => result.path === pathname ? result.entries : [],
     [pathname, result],
@@ -134,7 +136,10 @@ export function UniversalPageMaterials() {
   }, [entries, pathname]);
 
   useEffect(() => {
-    if (!entries.some((entry) => entry.entryType !== "hero" && entry.entryType !== "override") || document.querySelector("[data-editorial-rendered='true'], [data-page-materials-server='true']")) {
+    const hasCustomSections = entries.some((entry) => isCustomSectionId(entry.sectionId));
+    const hasDefaultContent = entries.some((entry) => !isCustomSectionId(entry.sectionId) && entry.entryType !== "hero" && entry.entryType !== "override");
+    const renderDefault = !document.querySelector("[data-editorial-rendered='true'], [data-page-materials-server='true']");
+    if (!hasCustomSections && (!hasDefaultContent || !renderDefault)) {
       return;
     }
     const target = document.createElement("div");
@@ -143,7 +148,7 @@ export function UniversalPageMaterials() {
     const host = footer?.parentElement || document.querySelector("main") || document.body;
     if (footer?.parentElement) footer.parentElement.insertBefore(target, footer);
     else host.appendChild(target);
-    const frame = requestAnimationFrame(() => setPortal({ path: pathname, target }));
+    const frame = requestAnimationFrame(() => setPortal({ path: pathname, target, renderDefault }));
     return () => {
       cancelAnimationFrame(frame);
       target.remove();
@@ -157,5 +162,8 @@ export function UniversalPageMaterials() {
     || !portal.target.isConnected
     || !visibleEntries.length
   ) return null;
-  return createPortal(<DepartmentEditorialContent entries={visibleEntries} />, portal.target);
+  return createPortal(<>
+    {portal.renderDefault && <DepartmentEditorialContent entries={visibleEntries} />}
+    <CustomEditorialSections entries={visibleEntries} />
+  </>, portal.target);
 }

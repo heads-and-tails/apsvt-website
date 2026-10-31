@@ -11,6 +11,7 @@ import { isDepartmentImage, isDepartmentAttachment, parseDepartmentMedia, type D
 import { editorialTextIsValid, editorialLink } from "./editorial-text";
 import { isEditorialPagePath } from "@/lib/editorial-access";
 import { educationQualityRubrics } from "@/lib/education-quality";
+import { customSectionRootRole, isCustomSectionId, isCustomSectionRoot } from "./editorial-custom-sections";
 import { marketingMobilitySectionId } from "./marketing-mobility";
 
 export const departmentEntryTypes = ["override", "hero", "section", "news", "article", "material", "photo", "teacher", "partner", "quality"] as const;
@@ -63,7 +64,7 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
   if (!value || typeof value !== "object") return false;
   const entry = value as Record<string, unknown>;
   const validBase = isEditorialPagePath(entry.pagePath)
-    && typeof entry.sectionId === "string"
+    && typeof entry.sectionId === "string" && entry.sectionId.length <= 100
     && isDepartmentEntryType(entry.entryType)
     && typeof entry.title === "string" && Boolean(entry.title.trim())
     && typeof entry.summary === "string"
@@ -89,6 +90,9 @@ export function isDepartmentEntryInput(value: unknown): value is DepartmentEntry
     && (entry.status === "draft" || entry.status === "published")
     && typeof entry.sortOrder === "number" && Number.isFinite(entry.sortOrder);
   if (!validBase) return false;
+  if (entry.role === customSectionRootRole && !isCustomSectionRoot(entry as { entryType: string; sectionId: string; role: string })) return false;
+  const sectionId = entry.sectionId as string;
+  if (sectionId.startsWith("editorial-section-") && !isCustomSectionId(sectionId)) return false;
   if (entry.entryType === "override") {
     return typeof entry.body === "string"
       && entry.body.startsWith("main > ")
@@ -177,6 +181,21 @@ function toContentPayload(input: DepartmentEntryInput): Record<string, string> {
 
 export async function getAllDepartmentEntries(): Promise<DepartmentEntry[]> {
   return (await getAllContent()).filter(isDepartmentContentItem).map(fromContentItem);
+}
+
+export async function customSectionInputError(input: DepartmentEntryInput, existingId?: string): Promise<string | null> {
+  if (!isCustomSectionId(input.sectionId)) return null;
+  const entries = await getAllDepartmentEntries();
+  const root = entries.find((entry) => entry.pagePath === input.pagePath && entry.sectionId === input.sectionId && isCustomSectionRoot(entry));
+  if (isCustomSectionRoot(input)) {
+    if (root && root.id !== existingId) return "Розділ із таким ідентифікатором уже існує";
+    const publishedChildren = entries.some((entry) => entry.id !== existingId && entry.pagePath === input.pagePath && entry.sectionId === input.sectionId && entry.status === "published" && !entry.hidden);
+    if (publishedChildren && (input.status !== "published" || input.hidden)) return "Спочатку зніміть з публікації матеріали цього розділу";
+    return null;
+  }
+  if (!root || root.id === existingId) return "Спочатку створіть розділ на цій сторінці";
+  if (input.status === "published" && (root.status !== "published" || root.hidden)) return "Спочатку опублікуйте розділ";
+  return null;
 }
 
 export async function getDepartmentEntries(pagePath: string): Promise<DepartmentEntry[]> {

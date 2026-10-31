@@ -19,6 +19,7 @@ import { TeacherResumeEditor } from "./TeacherResumeEditor";
 import { RichTextEditor } from "./RichTextEditor";
 import { DepartmentImageEditor, DepartmentAttachmentEditor } from "./DepartmentMediaEditor";
 import { departmentImages, departmentAttachments, type DepartmentImage } from "@/lib/department-media";
+import { customSectionPrefix, customSectionRootRole, isCustomSectionRoot } from "@/lib/editorial-custom-sections";
 
 const typeLabels: Record<DepartmentEntryType, { label: string; singular: string; hint: string }> = {
   override: { label: "Увесь вміст", singular: "зміну існуючого елемента", hint: "Усі тексти, фото й посилання, які вже розміщені на сторінці" },
@@ -329,7 +330,7 @@ function CategorizedContentList({
     {!loading && !error && total === 0 && <p className="department-empty">На сторінці ще немає матеріалів цього типу. Додайте перший запис у формі поруч.</p>}
     {!loading && !error && total > 0 && visibleTotal === 0 && <p className="department-empty">За цим пошуком нічого не знайдено. Спробуйте коротший запит або очистіть поле.</p>}
     {visibleNativeGroups.length > 0 && <section className="categorized-existing-section"><header><div><small>Вже опубліковано на сайті</small><h4>{typeLabels[type].label}</h4></div><b>{visibleNativeGroups.length}</b></header><p>Ці картки взяті безпосередньо з поточної сторінки. Розкрийте картку, щоб змінити фото, заголовок або текст.</p>{type === "teacher" ? <div className="teacher-native-list">{visibleNativeGroups.map((group) => <button type="button" disabled={busy} key={group.selector} onClick={() => onEditTeacherGroup(group)}>{group.imageUrl ? <img src={group.imageUrl} alt="" /> : <span className="teacher-native-initials">{(group.profile?.name || group.label).split(" ").filter(Boolean).map((part) => part[0]).slice(0, 2).join("")}</span>}<span><strong>{group.profile?.name || group.label}</strong><small>{group.profile?.role || ""}</small></span><b>Редагувати профіль →</b></button>)}</div> : <ExistingGroupCards groups={visibleNativeGroups} overrides={overrides} busy={busy} onEdit={onEditNative} onRestore={onRestore} />}</section>}
-    {visibleManagedEntries.length > 0 && <section className="categorized-managed-section"><header><div><small>Додано через редакційну панель</small><h4>Нові записи</h4></div><b>{visibleManagedEntries.length}</b></header>{visibleManagedEntries.map((entry, index) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.hidden ? "Приховано" : entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => onEditManaged(entry)}>Редагувати</button><button type="button" disabled={busy || index === 0} onClick={() => onMoveManaged(entry, -1)}>↑ Вище</button><button type="button" disabled={busy || index === visibleManagedEntries.length - 1} onClick={() => onMoveManaged(entry, 1)}>↓ Нижче</button><button className="danger" disabled={busy} type="button" onClick={() => onRemoveManaged(entry)}>Видалити</button></div></article>)}</section>}
+    {visibleManagedEntries.length > 0 && <section className="categorized-managed-section"><header><div><small>Додано через редакційну панель</small><h4>Нові записи</h4></div><b>{visibleManagedEntries.length}</b></header>{visibleManagedEntries.map((entry, index) => <article key={entry.id}>{entry.imageUrl && <img src={entry.imageUrl} alt="" />}<div><small>{entry.hidden ? "Приховано" : entry.status === "published" ? "Опубліковано" : "Чернетка"}{entry.date ? ` · ${entry.date}` : ""}</small><h4>{entry.title}</h4><p>{isCustomSectionRoot(entry) ? entry.summary || "Самостійний розділ сторінки" : entry.role || entry.summary || entry.fileName}</p></div><div><button type="button" onClick={() => onEditManaged(entry)}>Редагувати</button><button type="button" disabled={busy || index === 0} onClick={() => onMoveManaged(entry, -1)}>↑ Вище</button><button type="button" disabled={busy || index === visibleManagedEntries.length - 1} onClick={() => onMoveManaged(entry, 1)}>↓ Нижче</button><button className="danger" disabled={busy} type="button" onClick={() => onRemoveManaged(entry)}>Видалити</button></div></article>)}</section>}
   </div>;
 }
 
@@ -477,6 +478,9 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       if (existing) existing.nativeCount += 1;
       else sections.set(group.sectionId, { id: group.sectionId, label: group.sectionLabel, nativeCount: 1, managedCount: 0 });
     });
+    entries.filter((entry) => entry.pagePath === pagePath && entry.sectionId && isCustomSectionRoot(entry)).forEach((entry) => {
+      sections.set(entry.sectionId, { id: entry.sectionId, label: entry.title || "Новий розділ", nativeCount: 0, managedCount: 0 });
+    });
     entries.filter((entry) => entry.pagePath === pagePath && entry.sectionId).forEach((entry) => {
       const sectionId = pagePath === lawFacultyPath ? lawFacultyLegacySections[entry.sectionId] || entry.sectionId : entry.sectionId;
       const existing = sections.get(sectionId);
@@ -515,6 +519,17 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
 
   function change<K extends keyof DepartmentEntryInput>(key: K, value: DepartmentEntryInput[K]) {
     setForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function addNewSection() {
+    const sectionId = `${customSectionPrefix}${crypto.randomUUID()}`;
+    setActiveSection("all");
+    setEntryType("section");
+    setEditorSession((current) => current + 1);
+    setEditing(null);
+    setForm({ ...emptyEntry(pagePath, "section", sectionId), role: customSectionRootRole, status: "draft" });
+    setMessage("Назвіть розділ і збережіть чернетку. Після публікації до нього можна додавати матеріали.");
+    document.querySelector("#department-entry-editor")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function choosePage(value: string) {
@@ -697,6 +712,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
         return;
       }
       setEntries((current) => editing ? current.map((entry) => entry.id === editing ? result : entry) : [...current, result]);
+      if (isCustomSectionRoot(result)) setActiveSection(result.sectionId);
       if (result.status === "published") {
         const verification = await fetch(`/api/page-materials?path=${encodeURIComponent(pagePath)}&verify=${Date.now()}`, { cache: "no-store" });
         const published = verification.ok ? await verification.json() as DepartmentEntry[] : [];
@@ -724,7 +740,10 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
     try {
       const sourceBound = entry.entryType === "teacher" && Boolean(entry.teacherSourceName);
       const response = await fetch(`/api/department-content/${entry.id}`, sourceBound ? { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...entry, hidden: true }) } : { method: "DELETE" });
-      if (!response.ok) throw new Error("Не вдалося видалити запис");
+      if (!response.ok) {
+        const result = await response.json().catch(() => null) as { error?: string } | null;
+        throw new Error(result?.error || "Не вдалося видалити запис");
+      }
       if (sourceBound) { const hidden = await response.json() as DepartmentEntry; setEntries((current) => current.map((item) => item.id === hidden.id ? hidden : item)); }
       else setEntries((current) => current.filter((item) => item.id !== entry.id));
       if (editing === entry.id) {
@@ -775,6 +794,7 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
   return <section className="department-manager" id="departments-editor">
     <div className="materials-head department-manager-head"><div><span>Увесь контент сайту</span><h2>Сторінки та матеріали</h2><p>Керуйте вже розміщеними текстами, фото й посиланнями, а також додавайте обкладинки, людей, партнерів, новини та файли.</p></div><a href={pagePath} target="_blank">Перевірити сторінку ↗</a></div>
     <div className="department-page-picker"><label>Сторінка<select value={pagePath} onChange={(event) => choosePage(event.target.value)}>{pagePickerGroups.map((group) => <optgroup label={group.label} key={group.label}>{group.options.map((option) => <option value={option.value} key={option.value}>{option.parentPath ? `↳ ${option.label}` : option.value === digitalDepartmentPath ? "Кафедра · головна сторінка" : option.label}</option>)}</optgroup>)}</select></label><div><b>{pageLabel(pagePath)}</b><span>{inventoryLoading ? "Зчитуємо вміст сторінки…" : `${inventoryGroups.length} блоків вже на сайті · ${entries.filter((entry) => entry.pagePath === pagePath).length} додано через панель`}</span></div></div>
+    <div className="department-create-section"><div><b>Потрібен новий розділ?</b><p>Створіть його на вибраній сторінці, опублікуйте, а потім додавайте до нього текст, фото та файли. Редактори працюють лише зі своїми дозволеними сторінками.</p></div><button type="button" onClick={addNewSection}>+ Додати новий розділ</button></div>
     {(pagePath === digitalDepartmentPath || allowedPages.some((option) => option.value === pagePath && option.parentPath === digitalDepartmentPath)) && <nav className="editorial-department-tree" aria-label="Кафедра та її освітні програми">
       {allowedPages.some((option) => option.value === digitalDepartmentPath) && <button type="button" aria-current={pagePath === digitalDepartmentPath ? "page" : undefined} onClick={() => choosePage(digitalDepartmentPath)}>{digitalDepartmentTitle}</button>}
       <ul>{allowedPages.filter((option) => option.parentPath === digitalDepartmentPath).map((option) => <li key={option.value}><button type="button" aria-current={pagePath === option.value ? "page" : undefined} onClick={() => choosePage(option.value)}>{option.label}</button></li>)}</ul>
@@ -788,7 +808,8 @@ export function DepartmentManager({ initialEntries, publisher }: { initialEntrie
       <form className="operations-form" id="department-entry-editor" onSubmit={save}>
         <div className="operations-form-head"><div><small>{typeLabels[editorType].hint}</small><h3>{isOverride && !form.body ? "Оберіть елемент праворуч" : (editing || isTeacher && form.teacherSourceName) ? `Редагувати ${typeLabels[editorType].singular}` : `Додати ${typeLabels[editorType].singular}`}</h3></div>{(editing || (isOverride && form.body)) && <button type="button" onClick={reset}>Скасувати</button>}</div>
         {isOverride && !form.body ? <div className="existing-content-prompt"><b>Вміст сторінки впорядковано</b><p>Праворуч показані цілі розділи, картки людей, партнерів і матеріалів. Розкрийте блок та оберіть поле, яке потрібно змінити.</p></div> : <div className="operations-fields">
-          {!isOverride && pageSections.length > 0 && <label className="wide">Розділ сторінки<select required value={form.sectionId} onChange={(event) => change("sectionId", event.target.value)}><option value="">Оберіть розділ</option>{pageSections.map((section) => <option value={section.id} key={section.id}>{section.label}</option>)}</select></label>}
+          {!isOverride && pageSections.length > 0 && <label className="wide">Розділ сторінки<select required value={form.sectionId} disabled={isCustomSectionRoot(form)} onChange={(event) => change("sectionId", event.target.value)}><option value="">Оберіть розділ</option>{isCustomSectionRoot(form) && !pageSections.some((section) => section.id === form.sectionId) && <option value={form.sectionId}>Новий розділ</option>}{pageSections.map((section) => <option value={section.id} key={section.id}>{section.label}</option>)}</select></label>}
+          {isCustomSectionRoot(form) && <p className="wide department-section-help">Це новий самостійний розділ на сторінці. Його назва стане заголовком, а текст і файли з’являться під ним після публікації.</p>}
           {pagePath === "/programs/marketing" && editorType === "news" && form.sectionId === "marketing-quality-discussion" && <p className="wide">Повідомлення з цього розділу з’явиться у вкладці «Якість освіти → Обговорення змін до ОПП». Фото можна додати нижче; після публікації перевірте картку на сторінці кафедри.</p>}
           <label className="wide">{isOverride ? "Елемент сторінки" : isTeacher ? "Ім’я та прізвище" : isPartner ? "Назва партнера / компанії" : isHero ? "Головний заголовок сторінки" : "Заголовок"}<input required readOnly={isOverride} value={form.title} onChange={(event) => change("title", event.target.value)} placeholder={isTeacher ? "ПІБ викладача" : isPartner ? "Назва організації" : "Зрозумілий заголовок"} /></label>
           {(editorType === "news" || editorType === "article" || isQuality) && <label>Дата<input type="date" value={form.date} onChange={(event) => change("date", event.target.value)} /></label>}

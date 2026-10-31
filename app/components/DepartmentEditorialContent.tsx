@@ -5,6 +5,7 @@ import { EditorialRichText } from "./EditorialRichText";
 import { DepartmentImages, DepartmentAttachments, departmentImageStyle } from "./DepartmentMedia";
 import { departmentImages } from "@/lib/department-media";
 import { departmentPublicationDate } from "@/lib/department-news-date";
+import { isCustomSectionId, isCustomSectionRoot } from "@/lib/editorial-custom-sections";
 
 const groups: Array<{ type: DepartmentEntryType; eyebrow: string; title: string }> = [
   { type: "section", eyebrow: "Про підрозділ", title: "Актуальна інформація" },
@@ -13,14 +14,16 @@ const groups: Array<{ type: DepartmentEntryType; eyebrow: string; title: string 
   { type: "teacher", eyebrow: "Академічна команда", title: "Викладачі" },
   { type: "partner", eyebrow: "Співпраця", title: "Партнери та компанії" },
   { type: "material", eyebrow: "Для навчання й роботи", title: "Матеріали" },
+  { type: "quality", eyebrow: "Якість освіти", title: "Матеріали з якості освіти" },
   { type: "photo", eyebrow: "Події та середовище", title: "Фотогалерея" },
 ];
 
-export function DepartmentEditorialContent({ entries, inline = false }: { entries: DepartmentEntry[]; inline?: boolean }) {
-  if (!entries.length) return null;
+export function DepartmentEditorialContent({ entries, inline = false, customSectionId }: { entries: DepartmentEntry[]; inline?: boolean; customSectionId?: string }) {
+  const visibleEntries = entries.filter((entry) => !isCustomSectionRoot(entry) && (customSectionId ? entry.sectionId === customSectionId : !isCustomSectionId(entry.sectionId)));
+  if (!visibleEntries.length) return null;
   return <div className={`department-public-content${inline ? " department-public-content--inline" : ""}`} data-editorial-rendered="true">
     {groups.map((group, groupIndex) => {
-      const items = entries.filter((entry) => entry.entryType === group.type && !entry.hidden).sort((a, b) => {
+      const items = visibleEntries.filter((entry) => entry.entryType === group.type && !entry.hidden).sort((a, b) => {
         if (group.type !== "news") return a.sortOrder - b.sortOrder;
         const aDate = a.date || a.publishedAt || a.createdAt;
         const bDate = b.date || b.publishedAt || b.createdAt;
@@ -36,6 +39,7 @@ export function DepartmentEditorialContent({ entries, inline = false }: { entrie
           {group.type === "teacher" && <div className="academic-profile-grid">{items.map((entry) => <AcademicProfileCard key={entry.id} person={departmentTeacherProfile(entry)} />)}</div>}
           {group.type === "partner" && <div className="department-partner-grid">{items.map((entry) => <article key={entry.id}>{entry.imageUrl ? <div className="department-partner-logo"><img src={entry.imageUrl} alt={entry.imageAlt || `Логотип ${entry.title}`} style={departmentImageStyle(departmentImages(entry)[0])} /></div> : <div className="department-partner-logo department-partner-placeholder">{entry.title.slice(0, 2)}</div>}<div><small>{entry.role || "Партнер Академії"}</small><h3>{entry.title}</h3><p>{entry.summary}</p>{entry.profileUrl && <a href={entry.profileUrl} target="_blank" rel="noreferrer">Відкрити сайт ↗</a>}</div></article>)}</div>}
           {group.type === "material" && <div className="department-material-list">{items.map((entry, index) => <a href={entry.fileUrl} target="_blank" rel="noreferrer" key={entry.id}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{entry.fileName || "Матеріал"}</small><h3>{entry.title}</h3><p>{entry.summary}</p></div><b>↗</b></a>)}</div>}
+          {group.type === "quality" && <div className="department-section-grid">{items.map((entry, index) => <article key={entry.id}><DepartmentImages entry={entry} /><div><span>{String(index + 1).padStart(2, "0")}</span><h3>{entry.title}</h3>{entry.summary && <p className="lead">{entry.summary}</p>}<EditorialRichText text={entry.body} /><DepartmentAttachments entry={entry} />{entry.fileUrl && <p><a href={entry.fileUrl} target="_blank" rel="noreferrer">{entry.fileName || "Відкрити документ"} ↗</a></p>}</div></article>)}</div>}
           {group.type === "photo" && <div className="department-photo-grid">{items.map((entry) => <figure key={entry.id}><DepartmentImages entry={entry} /><figcaption><b>{entry.title}</b>{entry.summary && <span>{entry.summary}</span>}</figcaption></figure>)}</div>}
         </div>
       </section>;
