@@ -260,6 +260,33 @@ test("records first publication rather than draft creation and keeps hidden date
 });
 
 const lawStructureUrl = await moduleUrl("../lib/law-faculty-structure.ts");
+const accreditation = await import(await moduleUrl("../lib/law-faculty-accreditation.ts", { "./law-faculty-structure": lawStructureUrl }));
+
+test("accreditation shares only the published self-assessment record and follows CMS edits", () => {
+  const document = { id: accreditation.lawMasterSelfAssessmentDocumentId, pagePath: accreditation.lawMasterProgrammePath, title: "Renamed by the editor", fileUrl: "/replacement.pdf", status: "published", sortOrder: 10, createdAt: "2026-10-29" };
+  const own = { ...document, id: "future-upload", pagePath: accreditation.lawFacultyAccreditationPath, sortOrder: 0 };
+  const global = { ...own, id: "global", pagePath: "*", sortOrder: 20 };
+  const result = accreditation.lawFacultyAccreditationDocuments([own, global, { ...own, id: "draft", status: "draft" }, { ...own, id: "wrong-page", pagePath: "/unrelated" }], [document, global, { ...document, id: "unrelated-master-document" }, { ...document, pagePath: "/unrelated" }]);
+  assert.deepEqual(result.map(item => item.id), [own.id, document.id, global.id]);
+  assert.equal(result[1].title, "Renamed by the editor");
+  assert.equal(result[1].fileUrl, "/replacement.pdf");
+  assert.deepEqual(accreditation.lawFacultyAccreditationDocuments([], [{ ...document, status: "draft" }]), []);
+  assert.deepEqual(accreditation.lawFacultyAccreditationDocuments([], []), [], "Deleted records must not be recreated");
+});
+
+test("shared document cards render supplied publications and preserve filtering and empty states", async () => {
+  const documentsUrl = `data:text/javascript;base64,${Buffer.from('export async function getPublicDocuments(){throw new Error("Unexpected document fetch")}').toString("base64")}`;
+  const { PageDocuments } = await import(await moduleUrl("../app/components/PageDocuments.tsx", { "@/lib/documents": documentsUrl }));
+  const document = { id: "published", title: "Самооцінювання", fileUrl: "/original.pdf", fileName: "original.pdf", fileSize: 522182, category: "Акредитація", status: "published" };
+  const html = renderToStaticMarkup(await PageDocuments({ pagePath: accreditation.lawFacultyAccreditationPath, documents: [document, { ...document, id: "draft", title: "Draft", status: "draft" }] }));
+  assert.match(html, /href="\/original.pdf"/);
+  assert.match(html, /Самооцінювання/);
+  assert.match(html, /510 КБ/);
+  assert.doesNotMatch(html, /Draft/);
+  assert.equal(await PageDocuments({ pagePath: "/", documents: [document], excludeCategoryPrefixes: ["Акред"] }), null);
+  const empty = renderToStaticMarkup(await PageDocuments({ pagePath: "/", documents: [], emptyMessage: "Матеріали ще не оприлюднено." }));
+  assert.match(empty, /Матеріали ще не оприлюднено/);
+});
 const programmeDocumentsUrl = await moduleUrl("../lib/programme-documents.ts");
 const lawProgrammesUrl = await moduleUrl("../lib/law-faculty-programmes.ts", { "./law-faculty-structure": lawStructureUrl, "./programme-documents": programmeDocumentsUrl });
 const lawProgrammes = await import(lawProgrammesUrl);

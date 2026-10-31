@@ -26,6 +26,22 @@ test("offers a saved course view and batch publication without widening editor a
 });
 
 let workerPromise;
+test("serves the faculty accreditation page with document navigation and an honest empty state", async () => {
+  const path = "/departments/law-faculty/faculty-documents/accreditation";
+  const response = await render(path);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<h1>Акредитація освітніх програм<\/h1>/);
+  assert.match(html, /href="\/departments\/law-faculty#faculty-documents"/);
+  assert.match(html, /href="\/departments\/law-faculty\/faculty-programmes\/d8-law-master"/);
+  assert.match(html, /href="\/en\/programs\/law"/);
+  assert.match(html, /Матеріали ще не оприлюднено/);
+  assert.doesNotMatch(html, /class="page-document-grid"/);
+  const faculty = await (await render("/departments/law-faculty")).text();
+  assert.ok(faculty.includes(`href="${path}"`));
+  assert.equal((await render("/en/programs/law")).status, 200);
+  assert.equal((await render("/departments/law-faculty/faculty-documents/unknown")).status, 404);
+});
 async function worker(){
   if(!workerPromise){
     const workerUrl=new URL("../dist/server/index.js",import.meta.url);

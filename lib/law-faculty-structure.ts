@@ -32,7 +32,7 @@ export const lawFacultyStructure: readonly FacultySection[] = [
     ["d4-public-administration-phd", "D4 Публічне управління · доктор філософії"],
   ] },
   { id: "faculty-repository", title: "Репозитарій", children: [["law", "D8 «Право»"], ["public-administration", "D4 «Публічне управління та адміністрування»"]] },
-  { id: "faculty-documents", title: "Нормативні документи", children: [] },
+  { id: "faculty-documents", title: "Нормативні документи", children: [["accreditation", "Акредитація освітніх програм"]] },
   { id: "department-news", title: "Новини факультету", children: [] },
 ];
 

@@ -1,4 +1,4 @@
-import { getPublicDocuments } from "@/lib/documents";
+import { getPublicDocuments, type PageDocument } from "@/lib/documents";
 
 function fileSize(value: number): string {
   if (!value) return "";
@@ -8,6 +8,7 @@ function fileSize(value: number): string {
 
 type PageDocumentsProps = {
   pagePath: string;
+  documents?: PageDocument[];
   emptyMessage?: string;
   includeCategoryPrefixes?: string[];
   excludeCategoryPrefixes?: string[];
@@ -16,10 +17,10 @@ type PageDocumentsProps = {
   showEmptyTitle?: boolean;
 };
 
-export async function PageDocuments({ pagePath, emptyMessage, includeCategoryPrefixes = [], excludeCategoryPrefixes = [], title = "Файли та офіційні матеріали", description = "Актуальні документи, додані редакцією Академії.", showEmptyTitle = false }: PageDocumentsProps) {
+export async function PageDocuments({ pagePath, documents: suppliedDocuments, emptyMessage, includeCategoryPrefixes = [], excludeCategoryPrefixes = [], title = "Файли та офіційні матеріали", description = "Актуальні документи, додані редакцією Академії.", showEmptyTitle = false }: PageDocumentsProps) {
   const matchesPrefix = (category: string, prefixes: string[]) => prefixes.some((prefix) => category.toLocaleLowerCase("uk-UA").startsWith(prefix.toLocaleLowerCase("uk-UA")));
-  const documents = (await getPublicDocuments(pagePath)).filter((document) =>
-    (!includeCategoryPrefixes.length || matchesPrefix(document.category, includeCategoryPrefixes))
+  const documents = (suppliedDocuments ?? await getPublicDocuments(pagePath)).filter((document) =>
+    document.status === "published" && (!includeCategoryPrefixes.length || matchesPrefix(document.category, includeCategoryPrefixes))
       && (!excludeCategoryPrefixes.length || !matchesPrefix(document.category, excludeCategoryPrefixes)),
   );
   if (!documents.length) return emptyMessage ? <section className="page-documents"><div className="wrap">{showEmptyTitle && <div className="sec-head"><h2>{title}</h2></div>}<p className="academic-empty-state">{emptyMessage}</p></div></section> : null;
