@@ -30,6 +30,7 @@ export default async function Page({ params }: Props) {
   const page = findPage(section, subsection);
   if (!page) notFound();
   const isAccreditationPage = page.path === lawFacultyAccreditationPath;
+  const ParentLink = isAccreditationPage ? "a" : Link;
   const [entries, documents, programmeDocuments] = await Promise.all([
     getDepartmentEntries(page.path), getPublicDocuments(page.path),
     isAccreditationPage ? getPublicDocuments(lawMasterProgrammePath) : Promise.resolve([]),
@@ -43,8 +44,8 @@ export default async function Page({ params }: Props) {
   const theses = section === "faculty-repository" ? (await getPublicContent("student_thesis")).filter(({ payload }) => programme === "law" ? /(?:D8|081|право)/i.test(payload.program || "") : /(?:D4|281|публічн)/i.test(payload.program || "")) : [];
   return <main id="top" data-page-materials-server="true"><SiteHeader englishHref={isAccreditationPage ? "/en/programs/law" : section === "faculty-programmes" ? "/en/programs/law#education-levels" : undefined} />
     <section className="faculty-subpage-hero"><div className="wrap">
-      <nav aria-label="Навігаційний ланцюжок"><Link href={lawFacultyPath}>Юридичний факультет</Link><span> / </span><Link href={`${lawFacultyPath}#${section}`}>{page.parentTitle}</Link><span> / {page.title}</span></nav>
-      <h1>{page.title}</h1><Link href={`${lawFacultyPath}#${section}`}>← {page.parentTitle}</Link>
+      <nav aria-label="Навігаційний ланцюжок"><Link href={lawFacultyPath}>Юридичний факультет</Link><span> / </span><ParentLink href={`${lawFacultyPath}#${section}`}>{page.parentTitle}</ParentLink><span> / {page.title}</span></nav>
+      <h1>{page.title}</h1><ParentLink href={`${lawFacultyPath}#${section}`}>← {page.parentTitle}</ParentLink>
     </div></section>
     <details className="wrap faculty-sibling-nav"><summary>Інші підрозділи · {page.parentTitle}</summary><nav className="faculty-subpage-links" aria-label={page.parentTitle}>{siblings.map(([id, title]) => <Link href={`${lawFacultyPath}/${section}/${id}`} aria-current={id === subsection ? "page" : undefined} key={id}>{title}</Link>)}</nav></details>
     <section className="faculty-subpage-content" id="content">
