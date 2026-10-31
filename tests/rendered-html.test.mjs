@@ -1161,7 +1161,7 @@ test("separates marketing bachelor and master materials and publishes stakeholde
   }
 });
 
-test("offers original editable Marketing questionnaires under the appropriate discussion levels", async () => {
+test("opens three Marketing questionnaires online while retaining the separate master DOCX", async () => {
   const response = await render("/programs/marketing");
   assert.equal(response.status, 200);
   const html = await response.text();
@@ -1170,6 +1170,19 @@ test("offers original editable Marketing questionnaires under the appropriate di
   assert.equal(levels.length, 2);
   assert.match(levels[0], /Бакалаврат/);
   assert.match(levels[1], /Магістратура/);
+  const forms = [
+    "https://docs.google.com/forms/d/e/1FAIpQLSd4kIs0uhyP3NFeSq2yw6EBng-2U1Wu_TNsiP6I4ASRIFc_3Q/viewform?usp=header",
+    "https://docs.google.com/forms/d/e/1FAIpQLSfGbj9iNOTSNB6E4vmS1udjEegpQLzDwuLr2LzwN8RNA2Ckhw/viewform?usp=header",
+    "https://docs.google.com/forms/d/e/1FAIpQLSeAzyuGbjdSyB2TvQp-mkZsCRJubXnc197ph4CoD2H_5OWTvQ/viewform?usp=header",
+  ];
+  for (const href of forms) {
+    for (const level of levels) {
+      assert.ok(level.includes(`href="${href}" target="_blank" rel="noopener noreferrer"`), `Online form missing: ${href}`);
+      assert.ok(!level.includes(`href="${href}" download`), `Online form downloads instead of opening: ${href}`);
+    }
+  }
+  assert.equal((levels[0].match(/Google Forms/g) || []).length, 3);
+  assert.equal((levels[1].match(/Google Forms/g) || []).length, 3);
   const originals = [
     ["students-anonymous-2026.docx", "0e67fd8599e34db5a416647455a15880d9b4a65df2a9d47a96172e7e66dcb54f"],
     ["teaching-staff-2026.docx", "e2dcdc486f4b847e19d353f1deefb90f23e8fca667395627a6eb8d52ed7120a7"],
@@ -1178,8 +1191,8 @@ test("offers original editable Marketing questionnaires under the appropriate di
   ];
   for (const [index, [file, hash]] of originals.entries()) {
     const href = `/documents/marketing/surveys/${file}`;
-    assert.ok(levels[1].includes(`href="${href}" download=""`), `Master download missing: ${file}`);
-    assert.equal(levels[0].includes(`href="${href}"`), index < 3, `Incorrect bachelor association: ${file}`);
+    assert.equal(levels[1].includes(`href="${href}" download=""`), index === 3, `Only the master DOCX remains linked: ${file}`);
+    assert.ok(!levels[0].includes(`href="${href}"`), `Bachelor still links DOCX: ${file}`);
     const bytes = await readFile(new URL(`../public${href}`, import.meta.url));
     assert.equal(createHash("sha256").update(bytes).digest("hex"), hash, `Original questionnaire changed: ${file}`);
     const document = strFromU8(unzipSync(bytes)["word/document.xml"]);
