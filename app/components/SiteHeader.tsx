@@ -173,7 +173,7 @@ export function SiteHeader({ englishHref }: { englishHref?: string } = {}) {
     return () => window.removeEventListener("keydown", openSearch);
   }, []);
 
-  return (
+  return (<>
     <header className={`legacy-header ${open ? "menu-open" : ""}`}>
       <div className="wrap topbar">
         <Link className="brand" href={english ? "/en" : "/"} onClick={closeMenu}>
@@ -243,7 +243,7 @@ export function SiteHeader({ englishHref }: { englishHref?: string } = {}) {
 
         <div className="hdr-right">
           <button className="header-search-button" type="button" onClick={() => { closeMenu(); setSearchOpen(true); }} aria-label={english ? "Search the site" : "Пошук по сайту"} aria-haspopup="dialog">
-            <span aria-hidden="true">⌕</span><b>{english ? "Search" : "Пошук"}</b>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7" /><path d="m15 15 6 6" /></svg><b>{english ? "Search" : "Пошук"}</b>
           </button>
           <Link className="lang-toggle" href={english ? ukPath : enPath} aria-label={english ? "Українська версія" : "English version"} onClick={closeMenu}>
             {english ? "UA" : "EN"}
@@ -266,7 +266,7 @@ export function SiteHeader({ englishHref }: { englishHref?: string } = {}) {
           </button>
         </div>
       </div>
-      <SiteSearch open={searchOpen} onClose={() => setSearchOpen(false)} english={english} />
     </header>
-  );
+    <SiteSearch open={searchOpen} onClose={() => setSearchOpen(false)} english={english} />
+  </>);
 }
