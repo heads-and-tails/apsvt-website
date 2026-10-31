@@ -25,6 +25,28 @@ const eduproUrl = await moduleUrl("../lib/edupro-news.ts");
 const edupro = await import(eduproUrl);
 const interactiveUrl = await moduleUrl("../lib/marketing-interactive-resources.ts");
 const interactive = await import(interactiveUrl);
+const customSectionsUrl = await moduleUrl("../lib/editorial-custom-sections.ts");
+const customSections = await import(customSectionsUrl);
+
+test("custom editorial sections require a dedicated UUID and root marker", async () => {
+  const sectionId = "editorial-section-123e4567-e89b-42d3-a456-426614174000";
+  assert.equal(customSections.isCustomSectionId(sectionId), true);
+  assert.equal(customSections.isCustomSectionId("editorial-section-../../news"), false);
+  assert.equal(customSections.isCustomSectionRoot({ entryType: "section", sectionId, role: customSections.customSectionRootRole }), true);
+  assert.equal(customSections.isCustomSectionRoot({ entryType: "section", sectionId, role: "" }), false);
+  assert.equal(customSections.isCustomSectionRoot({ entryType: "material", sectionId, role: customSections.customSectionRootRole }), false);
+
+  const mediaUrl = `data:text/javascript;base64,${Buffer.from('export function DepartmentImages(){return null} export function DepartmentAttachments(){return null}').toString("base64")}`;
+  const richUrl = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))}; export function EditorialRichText({text}){return createElement("p",null,text)}`).toString("base64")}`;
+  const contentUrl = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))}; export function DepartmentEditorialContent({entries,customSectionId}){return createElement("div",null,entries.filter(x=>x.sectionId===customSectionId).map(x=>createElement("span",{key:x.id},x.title)))}`).toString("base64")}`;
+  const { CustomEditorialSections } = await import(await moduleUrl("../app/components/CustomEditorialSections.tsx", { "@/lib/editorial-custom-sections": customSectionsUrl, "./DepartmentMedia": mediaUrl, "./EditorialRichText": richUrl, "./DepartmentEditorialContent": contentUrl }));
+  const root = { id: "root", sectionId, entryType: "section", role: customSections.customSectionRootRole, status: "published", title: "Новий розділ", summary: "Короткий опис", body: "Повний текст", sortOrder: 10 };
+  const html = renderToStaticMarkup(createElement(CustomEditorialSections, { entries: [root, { ...root, id: "draft", status: "draft", title: "Чернетка" }, { ...root, id: "hidden", hidden: true, title: "Приховано" }, { ...root, id: "material", entryType: "material", role: "", title: "Матеріал" }, { ...root, id: "other", sectionId: "editorial-section-123e4567-e89b-42d3-a456-426614174001", entryType: "material", role: "", title: "Чужий матеріал" }] }));
+  assert.match(html, /id="editorial-section-123e4567-e89b-42d3-a456-426614174000"/);
+  assert.match(html, /Новий розділ/);
+  assert.match(html, /Матеріал/);
+  assert.doesNotMatch(html, /Чернетка|Приховано|Чужий матеріал/);
+});
 
 test("marketing interactive resources preserve the supplied introduction and all 98 source links", async () => {
   const { marketingInteractiveGroups: groups, marketingInteractiveIntroduction: intro } = interactive;
@@ -394,7 +416,7 @@ test("nonformal editorial changes and removals survive repeat seeding without ov
     const connection = `data:text/javascript;base64,${Buffer.from(`export const isSupabaseConfigured=()=>true;export const createSupabaseAdmin=()=>globalThis[${JSON.stringify(fixtureKey)}];export const createSupabasePublicClient=createSupabaseAdmin;`).toString("base64")}`;
     const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl });
     const accessUrl = await moduleUrl("../lib/editorial-access.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl });
-    const department = await import(await moduleUrl("../lib/department-content.ts", { "@/lib/content": contentUrl, "./department-news-date": await moduleUrl("../lib/department-news-date.ts"), "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }), "./editorial-text": textUrl, "@/lib/editorial-access": accessUrl, "@/lib/education-quality": await moduleUrl("../lib/education-quality.ts"), "./marketing-mobility": mobilityUrl }));
+    const department = await import(await moduleUrl("../lib/department-content.ts", { "@/lib/content": contentUrl, "./department-news-date": await moduleUrl("../lib/department-news-date.ts"), "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }), "./editorial-text": textUrl, "@/lib/editorial-access": accessUrl, "@/lib/education-quality": await moduleUrl("../lib/education-quality.ts"), "./marketing-mobility": mobilityUrl, "./editorial-custom-sections": await moduleUrl("../lib/editorial-custom-sections.ts") }));
     const original = await department.getDepartmentEntryById("marketing-nonformal-master-regulations-text");
     assert.ok(original);
     await department.updateDepartmentEntry(original.id, { ...original, body: "Збережена редактором зміна", sortOrder: 75 }, "editor@example.test");
