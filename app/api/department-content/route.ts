@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import {
   createDepartmentEntry,
+  customSectionInputError,
   getAllDepartmentEntries,
   isDepartmentEntryInput,
 } from "@/lib/department-content";
@@ -28,6 +29,8 @@ export async function POST(request: Request) {
     const body: unknown = await request.json();
     if (!isDepartmentEntryInput(body)) return NextResponse.json({ error: "Заповніть обов’язкові поля" }, { status: 400 });
     const publisher = await requirePagePublisher(body.pagePath);
+    const sectionError = await customSectionInputError(body);
+    if (sectionError) return NextResponse.json({ error: sectionError }, { status: 409 });
     if (body.role === programmeFolderRole && !isProgrammeFolder(body)) return NextResponse.json({ error: "Оберіть розділ робочих програм або анотацій відповідної освітньої програми" }, { status: 400 });
     const entry = await createDepartmentEntry(body, publisher.email);
     revalidatePath(body.pagePath);
