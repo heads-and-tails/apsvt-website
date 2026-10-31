@@ -14,10 +14,10 @@ const discussionNews = [
 function QuestionnaireLinks({ master }: { master: boolean }) {
   const questionnaires = master ? [...marketingQuestionnaires, marketingMasterStakeholderQuestionnaire] : marketingQuestionnaires;
   return <div className="marketing-programme-links">
-    {questionnaires.map((questionnaire, index) => <a href={questionnaire.href} download key={questionnaire.href}>
+    {questionnaires.map((questionnaire, index) => <a href={questionnaire.href} {...(questionnaire.format === "DOCX" ? { download: true } : { target: "_blank", rel: "noopener noreferrer" })} key={questionnaire.href}>
       <span>{String(index + 1).padStart(2, "0")}</span>
-      <div><small>{questionnaire.label} · DOCX</small><strong>{questionnaire.title}</strong></div>
-      <b aria-hidden="true">↓</b>
+      <div><small>{questionnaire.label} · {questionnaire.format}</small><strong>{questionnaire.title}</strong></div>
+      <b aria-hidden="true">{questionnaire.format === "DOCX" ? "↓" : "↗"}</b>
     </a>)}
   </div>;
 }
