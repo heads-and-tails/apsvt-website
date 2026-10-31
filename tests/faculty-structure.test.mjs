@@ -20,6 +20,15 @@ const access = load('lib/editorial-access.ts');
 const registry = load('lib/editorial-sections.ts');
 const digital = load('lib/professional-education.ts');
 
+test('accreditation is a dedicated editable faculty document page', () => {
+  const page = '/departments/law-faculty/faculty-documents/accreditation';
+  assert.equal(structure.lawFacultySubpages.find(item => item.path === page).title, 'Акредитація освітніх програм');
+  assert.ok(access.isEditorialPagePath(page));
+  assert.ok(access.canEditPage({ role: 'editor', accessScopes: [structure.lawFacultyPath] }, page));
+  assert.equal(access.canEditPage({ role: 'editor', accessScopes: ['/programs/marketing'] }, page), false);
+  assert.equal(registry.editorialSectionsForPage(page)[0].label, 'Акредитація освітніх програм');
+});
+
 test('digital department owns five separately editable programmes in the requested order', () => {
   assert.deepEqual(digital.professionalEducationProgrammes.map(p => p.slug), ['digital-bachelor', 'digital-master', 'information-security-bachelor', 'information-security-master', 'phd']);
   const editor = { role: 'editor', accessScopes: [digital.digitalDepartmentPath] };
