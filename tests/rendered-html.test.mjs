@@ -1275,6 +1275,30 @@ test("publishes marketing master programmes and nested methodical document folde
   }
 });
 
+test("publishes the supplied marketing electronic resources without losing links or editor expansion", async () => {
+  const catalogue = JSON.parse(await readFile(new URL("../lib/marketing-electronic-resources.json", import.meta.url), "utf8"));
+  assert.deepEqual(catalogue.groups.map((group) => group.items.length), [20, 15, 18, 18, 18, 11]);
+  const links = catalogue.groups.flatMap((group) => group.items).filter((item) => item.href);
+  assert.equal(links.length, 99);
+  assert.ok(links.every((item) => new URL(item.href).protocol === "https:"));
+  const response = await render("/programs/marketing");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.equal((html.match(/class="marketing-electronic-group"/g) || []).length, 6);
+  assert.equal((html.match(/class="marketing-electronic-link"/g) || []).length, 99);
+  for (const group of catalogue.groups) {
+    assert.ok(html.includes(group.title), group.title);
+    assert.ok(html.includes(group.description.replaceAll("'", "&#x27;")), group.title);
+  }
+  for (const item of links) assert.ok(html.includes(`href="${item.href.replaceAll("&", "&amp;")}"`), item.href);
+  assert.match(html, /id="marketing-methodical-resources"/);
+  assert.match(html, /Runway — https:\/\/runwayml.com\//);
+  const resourceStart = html.indexOf('id="marketing-methodical-resources"');
+  assert.ok(resourceStart > 0);
+  assert.doesNotMatch(html.slice(resourceStart, html.indexOf("Runway —", resourceStart)), /Матеріали цього підрозділу поки не опубліковано/);
+  assert.equal((await render("/en/programs/marketing")).status, 200);
+});
+
 test("publishes the two requested marketing programme discussion announcements",async()=>{
   const [march,may]=await Promise.all([
     (await render("/news/obhovorennia-opp-marketynh-12-bereznia-2026")).text(),

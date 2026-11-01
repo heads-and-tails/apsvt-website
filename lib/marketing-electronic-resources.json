@@ -1,0 +1,447 @@
+{
+  "intro": [
+    "ЕЛЕКТРОННІ ОСВІТНІ РЕСУРСИ",
+    "Кафедра маркетингу Академії праці, соціальних відносин і туризму",
+    "Спеціальність D5 «Маркетинг»",
+    "Електронні освітні ресурси спрямовані на забезпечення інформаційної підтримки освітнього процесу, розвиток професійних і цифрових компетентностей здобувачів вищої освіти, формування навичок маркетингової аналітики, проведення досліджень, розроблення маркетингових стратегій та використання сучасних цифрових технологій.",
+    "Представлені ресурси рекомендовані для використання під час аудиторних занять, виконання практичних та індивідуальних завдань, самостійної роботи, підготовки курсових і кваліфікаційних робіт, наукових досліджень та здобуття неформальної освіти."
+  ],
+  "groups": [
+    {
+      "title": "1. Електронні бібліотеки та науково-освітні інформаційні ресурси",
+      "description": "Ресурси забезпечують пошук наукової літератури, монографій, підручників, дисертацій, фахових публікацій та результатів досліджень у сфері маркетингу, менеджменту, економіки й підприємництва.",
+      "items": [
+        {
+          "text": "Національна бібліотека України імені В. І. Вернадського — https://www.nbuv.gov.ua/",
+          "href": "https://www.nbuv.gov.ua/"
+        },
+        {
+          "text": "Національна бібліотека України імені Ярослава Мудрого — https://nlu.org.ua/",
+          "href": "https://nlu.org.ua/"
+        },
+        {
+          "text": "Національний репозитарій академічних текстів — https://nrat.ukrintei.ua/",
+          "href": "https://nrat.ukrintei.ua/"
+        },
+        {
+          "text": "Google Scholar — https://scholar.google.com/",
+          "href": "https://scholar.google.com/"
+        },
+        {
+          "text": "Directory of Open Access Journals (DOAJ) — https://doaj.org/",
+          "href": "https://doaj.org/"
+        },
+        {
+          "text": "Directory of Open Access Books (DOAB) — https://www.doabooks.org/",
+          "href": "https://www.doabooks.org/"
+        },
+        {
+          "text": "OAPEN Library — https://www.oapen.org/",
+          "href": "https://www.oapen.org/"
+        },
+        {
+          "text": "CORE — https://core.ac.uk/",
+          "href": "https://core.ac.uk/"
+        },
+        {
+          "text": "OpenAlex — https://openalex.org/",
+          "href": "https://openalex.org/"
+        },
+        {
+          "text": "EconBiz — https://www.econbiz.de/",
+          "href": "https://www.econbiz.de/"
+        },
+        {
+          "text": "IDEAS/RePEc — https://ideas.repec.org/",
+          "href": "https://ideas.repec.org/"
+        },
+        {
+          "text": "SSRN — https://www.ssrn.com/",
+          "href": "https://www.ssrn.com/"
+        },
+        {
+          "text": "JSTOR — https://www.jstor.org/",
+          "href": "https://www.jstor.org/"
+        },
+        {
+          "text": "ScienceDirect — https://www.sciencedirect.com/",
+          "href": "https://www.sciencedirect.com/"
+        },
+        {
+          "text": "SpringerLink — https://link.springer.com/",
+          "href": "https://link.springer.com/"
+        },
+        {
+          "text": "Wiley Online Library — https://onlinelibrary.wiley.com/",
+          "href": "https://onlinelibrary.wiley.com/"
+        },
+        {
+          "text": "OpenStax — https://openstax.org/",
+          "href": "https://openstax.org/"
+        },
+        {
+          "text": "Zenodo — https://zenodo.org/",
+          "href": "https://zenodo.org/"
+        },
+        {
+          "text": "ResearchGate — https://www.researchgate.net/",
+          "href": "https://www.researchgate.net/"
+        },
+        {
+          "text": "Europeana — https://www.europeana.eu/",
+          "href": "https://www.europeana.eu/"
+        }
+      ]
+    },
+    {
+      "title": "2. Цифрові інструменти маркетингової аналітики",
+      "description": "Платформи використовуються для аналізу ринкових тенденцій, поведінки споживачів, цифрового трафіку, конкурентного середовища та результативності маркетингових комунікацій.",
+      "items": [
+        {
+          "text": "Google Trends — дослідження пошукових трендів і сезонності попиту. https://trends.google.com/trends/",
+          "href": "https://trends.google.com/trends/"
+        },
+        {
+          "text": "Google Analytics — аналіз відвідуваності вебсайтів. https://analytics.google.com/",
+          "href": "https://analytics.google.com/"
+        },
+        {
+          "text": "Google Looker Studio — створення інтерактивних аналітичних звітів. https://lookerstudio.google.com/",
+          "href": "https://lookerstudio.google.com/"
+        },
+        {
+          "text": "Google Search Console — аналіз видимості вебсайтів у пошуковій системі. https://search.google.com/search-console/",
+          "href": "https://search.google.com/search-console/"
+        },
+        {
+          "text": "Google Keyword Planner — дослідження ключових слів у середовищі Google Ads. https://ads.google.com/",
+          "href": "https://ads.google.com/"
+        },
+        {
+          "text": "Similarweb — конкурентний аналіз вебресурсів. https://www.similarweb.com/",
+          "href": "https://www.similarweb.com/"
+        },
+        {
+          "text": "Semrush — SEO-аналітика та дослідження конкурентів. https://www.semrush.com/",
+          "href": "https://www.semrush.com/"
+        },
+        {
+          "text": "Ahrefs — аналіз пошукового трафіку та зворотних посилань. https://ahrefs.com/",
+          "href": "https://ahrefs.com/"
+        },
+        {
+          "text": "Microsoft Clarity — аналіз поведінки користувачів. https://clarity.microsoft.com/",
+          "href": "https://clarity.microsoft.com/"
+        },
+        {
+          "text": "Google Forms — проведення маркетингових опитувань. https://www.google.com/forms/about/",
+          "href": "https://www.google.com/forms/about/"
+        },
+        {
+          "text": "Microsoft Power BI — візуалізація маркетингових даних. https://www.microsoft.com/en-us/power-platform/products/power-bi",
+          "href": "https://www.microsoft.com/en-us/power-platform/products/power-bi"
+        },
+        {
+          "text": "Tableau — бізнес-аналітика та інтерактивна візуалізація. https://www.tableau.com/",
+          "href": "https://www.tableau.com/"
+        },
+        {
+          "text": "Datawrapper — створення діаграм та інфографіки. https://www.datawrapper.de/",
+          "href": "https://www.datawrapper.de/"
+        },
+        {
+          "text": "Microsoft Excel — статистична обробка та аналіз даних. https://www.microsoft.com/microsoft-365/excel",
+          "href": "https://www.microsoft.com/microsoft-365/excel"
+        },
+        {
+          "text": "Google Sheets — спільна робота з маркетинговими даними. https://www.google.com/sheets/about/",
+          "href": "https://www.google.com/sheets/about/"
+        }
+      ]
+    },
+    {
+      "title": "3. Цифровий маркетинг, реклама та брендинг",
+      "description": "Ресурси сприяють формуванню практичних навичок управління рекламними кампаніями, цифровими комунікаціями, брендами, соціальними мережами та створення маркетингового контенту.",
+      "items": [
+        {
+          "text": "Google Ads — https://ads.google.com/",
+          "href": "https://ads.google.com/"
+        },
+        {
+          "text": "Meta Ads Manager — https://www.facebook.com/adsmanager/",
+          "href": "https://www.facebook.com/adsmanager/"
+        },
+        {
+          "text": "Meta Ads Library — https://www.facebook.com/ads/library/",
+          "href": "https://www.facebook.com/ads/library/"
+        },
+        {
+          "text": "TikTok Creative Center — https://ads.tiktok.com/business/creativecenter/",
+          "href": "https://ads.tiktok.com/business/creativecenter/"
+        },
+        {
+          "text": "LinkedIn Marketing Solutions — https://business.linkedin.com/marketing-solutions",
+          "href": "https://business.linkedin.com/marketing-solutions"
+        },
+        {
+          "text": "YouTube Studio — https://studio.youtube.com/",
+          "href": "https://studio.youtube.com/"
+        },
+        {
+          "text": "Canva — https://www.canva.com/",
+          "href": "https://www.canva.com/"
+        },
+        {
+          "text": "Figma — https://www.figma.com/",
+          "href": "https://www.figma.com/"
+        },
+        {
+          "text": "Adobe Express — https://www.adobe.com/express/",
+          "href": "https://www.adobe.com/express/"
+        },
+        {
+          "text": "Mailchimp — https://mailchimp.com/",
+          "href": "https://mailchimp.com/"
+        },
+        {
+          "text": "SendPulse — https://sendpulse.ua/",
+          "href": "https://sendpulse.ua/"
+        },
+        {
+          "text": "HubSpot CRM — https://www.hubspot.com/products/crm",
+          "href": "https://www.hubspot.com/products/crm"
+        },
+        {
+          "text": "Hootsuite — https://www.hootsuite.com/",
+          "href": "https://www.hootsuite.com/"
+        },
+        {
+          "text": "Buffer — https://buffer.com/",
+          "href": "https://buffer.com/"
+        },
+        {
+          "text": "Google Merchant Center — https://merchants.google.com/",
+          "href": "https://merchants.google.com/"
+        },
+        {
+          "text": "Shopify — https://www.shopify.com/",
+          "href": "https://www.shopify.com/"
+        },
+        {
+          "text": "WordPress — https://wordpress.org/",
+          "href": "https://wordpress.org/"
+        },
+        {
+          "text": "CapCut — https://www.capcut.com/",
+          "href": "https://www.capcut.com/"
+        }
+      ]
+    },
+    {
+      "title": "4. Маркетингові дослідження та аналіз ринку",
+      "description": "Інформаційні ресурси призначені для дослідження ринкової кон'юнктури, міжнародних ринків, споживчих тенденцій, соціально-економічного середовища та обґрунтування маркетингових рішень.",
+      "items": [
+        {
+          "text": "Державна служба статистики України — https://ukrstat.gov.ua/",
+          "href": "https://ukrstat.gov.ua/"
+        },
+        {
+          "text": "Національний банк України — https://bank.gov.ua/",
+          "href": "https://bank.gov.ua/"
+        },
+        {
+          "text": "Міністерство економіки України — https://me.gov.ua/",
+          "href": "https://me.gov.ua/"
+        },
+        {
+          "text": "Портал відкритих даних України — https://data.gov.ua/",
+          "href": "https://data.gov.ua/"
+        },
+        {
+          "text": "Prozorro — https://prozorro.gov.ua/",
+          "href": "https://prozorro.gov.ua/"
+        },
+        {
+          "text": "World Bank Open Data — https://data.worldbank.org/",
+          "href": "https://data.worldbank.org/"
+        },
+        {
+          "text": "Eurostat — https://ec.europa.eu/eurostat",
+          "href": "https://ec.europa.eu/eurostat"
+        },
+        {
+          "text": "OECD Data — https://www.oecd.org/en/data.html",
+          "href": "https://www.oecd.org/en/data.html"
+        },
+        {
+          "text": "UNCTADstat — https://unctadstat.unctad.org/",
+          "href": "https://unctadstat.unctad.org/"
+        },
+        {
+          "text": "UN Comtrade — https://comtradeplus.un.org/",
+          "href": "https://comtradeplus.un.org/"
+        },
+        {
+          "text": "International Trade Centre — Trade Map — https://www.trademap.org/",
+          "href": "https://www.trademap.org/"
+        },
+        {
+          "text": "International Monetary Fund Data — https://www.imf.org/en/Data",
+          "href": "https://www.imf.org/en/Data"
+        },
+        {
+          "text": "Our World in Data — https://ourworldindata.org/",
+          "href": "https://ourworldindata.org/"
+        },
+        {
+          "text": "Google Trends — https://trends.google.com/trends/",
+          "href": "https://trends.google.com/trends/"
+        },
+        {
+          "text": "Statista — https://www.statista.com/",
+          "href": "https://www.statista.com/"
+        },
+        {
+          "text": "Pew Research Center — https://www.pewresearch.org/",
+          "href": "https://www.pewresearch.org/"
+        },
+        {
+          "text": "European Commission — Eurobarometer — https://europa.eu/eurobarometer/",
+          "href": "https://europa.eu/eurobarometer/"
+        },
+        {
+          "text": "World Economic Forum — https://www.weforum.org/",
+          "href": "https://www.weforum.org/"
+        }
+      ]
+    },
+    {
+      "title": "5. Онлайн-курси та професійна сертифікація",
+      "description": "Освітні платформи надають можливості для поглиблення знань із маркетингу, цифрової реклами, брендингу, маркетингових комунікацій, аналітики та управління бізнесом, а також для здобуття результатів неформальної освіти.",
+      "items": [
+        {
+          "text": "Google Skillshop — https://skillshop.withgoogle.com/",
+          "href": "https://skillshop.withgoogle.com/"
+        },
+        {
+          "text": "Grow with Google — https://grow.google/intl/europe/courses-and-tools/",
+          "href": "https://grow.google/intl/europe/courses-and-tools/"
+        },
+        {
+          "text": "Meta Blueprint — https://www.facebookblueprint.com/",
+          "href": "https://www.facebookblueprint.com/"
+        },
+        {
+          "text": "HubSpot Academy — https://academy.hubspot.com/",
+          "href": "https://academy.hubspot.com/"
+        },
+        {
+          "text": "HubSpot Academy — Marketing Courses — https://academy.hubspot.com/courses/marketing",
+          "href": "https://academy.hubspot.com/courses/marketing"
+        },
+        {
+          "text": "Semrush Academy — https://www.semrush.com/academy/",
+          "href": "https://www.semrush.com/academy/"
+        },
+        {
+          "text": "Ahrefs Academy — https://ahrefs.com/academy",
+          "href": "https://ahrefs.com/academy"
+        },
+        {
+          "text": "Prometheus — https://prometheus.org.ua/",
+          "href": "https://prometheus.org.ua/"
+        },
+        {
+          "text": "Дія.Освіта — https://osvita.diia.gov.ua/",
+          "href": "https://osvita.diia.gov.ua/"
+        },
+        {
+          "text": "Coursera — https://www.coursera.org/",
+          "href": "https://www.coursera.org/"
+        },
+        {
+          "text": "edX — https://www.edx.org/",
+          "href": "https://www.edx.org/"
+        },
+        {
+          "text": "Udemy — https://www.udemy.com/",
+          "href": "https://www.udemy.com/"
+        },
+        {
+          "text": "Alison — https://alison.com/",
+          "href": "https://alison.com/"
+        },
+        {
+          "text": "LinkedIn Learning — https://www.linkedin.com/learning/",
+          "href": "https://www.linkedin.com/learning/"
+        },
+        {
+          "text": "OpenLearn — https://www.open.edu/openlearn/",
+          "href": "https://www.open.edu/openlearn/"
+        },
+        {
+          "text": "SendPulse Academy — https://academy.sendpulse.com/",
+          "href": "https://academy.sendpulse.com/"
+        },
+        {
+          "text": "Cisco Networking Academy — https://www.netacad.com/",
+          "href": "https://www.netacad.com/"
+        },
+        {
+          "text": "Microsoft Learn — https://learn.microsoft.com/training/",
+          "href": "https://learn.microsoft.com/training/"
+        }
+      ]
+    },
+    {
+      "title": "6. Штучний інтелект та інтерактивні технології в маркетингу",
+      "description": "Цифрові інструменти застосовуються для аналізу маркетингової інформації, створення рекламного контенту, розроблення стратегій, візуалізації ідей, моделювання ринкових ситуацій та організації інтерактивного навчання.",
+      "items": [
+        {
+          "text": "Інструменти штучного інтелекту",
+          "href": null
+        },
+        {
+          "text": "ChatGPT — https://chatgpt.com/",
+          "href": "https://chatgpt.com/"
+        },
+        {
+          "text": "Google Gemini — https://gemini.google.com/",
+          "href": "https://gemini.google.com/"
+        },
+        {
+          "text": "Microsoft Copilot — https://copilot.microsoft.com/",
+          "href": "https://copilot.microsoft.com/"
+        },
+        {
+          "text": "Perplexity — https://www.perplexity.ai/",
+          "href": "https://www.perplexity.ai/"
+        },
+        {
+          "text": "Claude — https://claude.ai/",
+          "href": "https://claude.ai/"
+        },
+        {
+          "text": "NotebookLM — https://notebooklm.google.com/",
+          "href": "https://notebooklm.google.com/"
+        },
+        {
+          "text": "Canva AI — https://www.canva.com/",
+          "href": "https://www.canva.com/"
+        },
+        {
+          "text": "Adobe Firefly — https://firefly.adobe.com/",
+          "href": "https://firefly.adobe.com/"
+        },
+        {
+          "text": "Gamma — https://gamma.app/",
+          "href": "https://gamma.app/"
+        },
+        {
+          "text": "Runway — https://runwayml.com/",
+          "href": "https://runwayml.com/"
+        }
+      ]
+    }
+  ]
+}
