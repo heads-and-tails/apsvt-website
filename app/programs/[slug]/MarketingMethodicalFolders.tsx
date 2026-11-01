@@ -1,6 +1,7 @@
 import type { DepartmentEntry } from "@/lib/department-content";
 import { marketingMethodicalGroups } from "@/lib/marketing-methodical";
 import { DepartmentEditorialContent } from "@/app/components/DepartmentEditorialContent";
+import { MarketingElectronicResources } from "./MarketingElectronicResources";
 
 const retainedMaterials: Record<string, { year: string; href: string; title: string }[]> = {
   "marketing-methodical-master-qualification": [
@@ -36,6 +37,7 @@ export function MarketingMethodicalFolders({ entries }: { entries: DepartmentEnt
           return <details className="marketing-methodical-subfolder" id={section.id} key={section.id}>
             <summary><span>{group.title}</span><strong>{section.title}</strong><b aria-hidden="true">+</b></summary>
             {text.length > 0 && <DepartmentEditorialContent entries={text} inline />}
+            {section.id === "marketing-methodical-resources" && <MarketingElectronicResources />}
             {years.map((year) => <div className="marketing-methodical-year" key={year}>
               <h4>{year === "Рік не зазначено" ? year : `${year} навчальний рік`}</h4>
               <div className="marketing-methodical-file-list">{files.filter((entry) => academicYear(entry) === year).map((entry) => <a href={entry.fileUrl} target="_blank" rel="noreferrer" key={entry.id}><span>{year}</span><strong>{entry.title}</strong><b>{entry.fileUrl.toLowerCase().split("?")[0].endsWith(".pdf") ? "PDF ↗" : "↗"}</b></a>)}</div>
@@ -54,7 +56,7 @@ export function MarketingMethodicalFolders({ entries }: { entries: DepartmentEnt
                 </div>
               </details>;
             })}
-            {!sectionEntries.length && !retained.length && !section.children?.length && <p className="marketing-methodical-empty">Матеріали цього підрозділу поки не опубліковано.</p>}
+            {!sectionEntries.length && !retained.length && !section.children?.length && section.id !== "marketing-methodical-resources" && <p className="marketing-methodical-empty">Матеріали цього підрозділу поки не опубліковано.</p>}
           </details>;
         })}
       </div>
