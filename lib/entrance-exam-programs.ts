@@ -7,6 +7,7 @@ export type EntranceExamProgram = {
 };
 
 const bachelorBase = "/documents/admissions/exam-programs/2026/bachelor";
+const masterBase = "/documents/admissions/exam-programs/2026/master";
 const phdBase = "/documents/admissions/exam-programs/2026/phd";
 
 export const bachelorEntranceExamPrograms: EntranceExamProgram[] = [
@@ -28,6 +29,19 @@ export const bachelorSupplementalProgram: EntranceExamProgram = {
   href: `${bachelorBase}/ukrainian-as-foreign-language.pdf`,
   pages: 14,
 };
+
+export const masterEntranceExamPrograms: EntranceExamProgram[] = [
+  { title: "Іноземна мова (англійська)", meta: "Програма співбесіди замість ЄВІ", href: `${masterBase}/foreign-language-english.pdf`, pages: 9 },
+  { title: "Іноземна мова (німецька)", meta: "Програма співбесіди замість ЄВІ", href: `${masterBase}/foreign-language-german.pdf`, pages: 8 },
+  { title: "A5 Професійна освіта. Цифрові технології", meta: "Фахове вступне випробування", href: `${masterBase}/professional-education.pdf`, pages: 15 },
+  { title: "C4 Психологія", meta: "Фахове вступне випробування", href: `${masterBase}/psychology.pdf`, pages: 40 },
+  { title: "D2 Фінанси, банківська справа, страхування та фондовий ринок", meta: "Фахове вступне випробування", href: `${masterBase}/finance.pdf`, pages: 24 },
+  { title: "D3 Менеджмент", meta: "Фахове вступне випробування", href: `${masterBase}/management-marketing.pdf`, pages: 37 },
+  { title: "D4 Публічне управління та адміністрування", meta: "Фахове вступне випробування", href: `${masterBase}/public-administration.pdf`, pages: 38 },
+  { title: "D5 Маркетинг", meta: "Фахове вступне випробування", href: `${masterBase}/management-marketing.pdf`, pages: 37 },
+  { title: "D8 Право", meta: "Фахове вступне випробування", href: `${masterBase}/law.pdf`, pages: 25 },
+  { title: "I10 Соціальна робота та консультування", meta: "Фахове вступне випробування", href: `${masterBase}/social-work.pdf`, pages: 16 },
+];
 
 export const phdEntranceExamPrograms: EntranceExamProgram[] = [
   { title: "A5 Професійна освіта (за спеціалізаціями)", meta: "Фахове вступне випробування", href: `${phdBase}/professional-education.pdf`, pages: 24 },

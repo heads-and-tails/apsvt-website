@@ -1549,6 +1549,35 @@ test("publishes entrance-examination programmes and duplicates doctoral files on
   }
 });
 
+test("publishes all supplied master entrance programmes with unchanged original PDFs", async () => {
+  const response = await render("/admissions");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const master = html.split('id="programs-master"')[1].split("</article>")[0];
+  assert.equal((master.match(/<a href=/g) ?? []).length, 10);
+  assert.doesNotMatch(master, /Документи готуються до публікації/);
+  for (const title of ["Іноземна мова (англійська)", "Іноземна мова (німецька)", "A5 Професійна освіта. Цифрові технології", "C4 Психологія", "D2 Фінанси, банківська справа, страхування та фондовий ринок", "D3 Менеджмент", "D4 Публічне управління та адміністрування", "D5 Маркетинг", "D8 Право", "I10 Соціальна робота та консультування"]) assert.ok(master.includes(title), title);
+  assert.equal((master.match(/management-marketing\.pdf/g) ?? []).length, 2);
+  const originals = [
+    ["foreign-language-english.pdf", 1578848, "7f29d08b340770e0cc102aae4e1b000d185251c098f8c65350c89ab27a047f4b"],
+    ["foreign-language-german.pdf", 1422655, "e35f4995fd5e0908feda7910021d6e455e7ad25e91b0b702c75f53840c2053c1"],
+    ["professional-education.pdf", 6261260, "747e8d2789c2ec2d69ae5eb5a8ce2d2c39713ea53b72333dac6d9f235b0c0640"],
+    ["psychology.pdf", 24331609, "84c6415b2493e09e50d001b15d94281f3bb9d72724ab5d1588942c099d9fa360"],
+    ["finance.pdf", 856018, "46b173f379d127cf9afaf40adbfc787006fbeced178f0c7504ba364272da5a25"],
+    ["management-marketing.pdf", 19396760, "760120caa3ffff6567b54cae7e1a9af5c9dd0ce0f0d7b478e763be713e8636f5"],
+    ["public-administration.pdf", 25338142, "099edfec6b3809b990c61109ec5096752fc468fae90bf20506dbd5dc86a95780"],
+    ["law.pdf", 22980758, "90f53b901cea8852c5855943a41acfacd6597f3e8fbb42e2528e96dd5486e0f9"],
+    ["social-work.pdf", 28411503, "531cc368d67f105988826ea95a55be96f9f5c691f5800c0f19d218107213a994"],
+  ];
+  for (const [name, size, sha256] of originals) {
+    const href = `/documents/admissions/exam-programs/2026/master/${name}`;
+    assert.ok(master.includes(`href="${href}" target="_blank" rel="noreferrer"`));
+    const bytes = await readFile(new URL(`../public${href}`, import.meta.url));
+    assert.equal(bytes.length, size, name);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), sha256, name);
+  }
+});
+
 test("publishes official 2026 tuition, secure bank details and local contracts",async()=>{
   const html=await (await render("/tuition")).text();
   assert.match(html,/Вартість<br\/>навчання/);
