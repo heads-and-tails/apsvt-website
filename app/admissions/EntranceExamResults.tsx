@@ -1,6 +1,7 @@
 import {
   bachelorEntranceResults,
   bachelorEntranceResultsJuly31,
+  bachelorEntranceResultsOctober8,
   bachelorEntranceResultsSeptember9,
   bachelorEntranceResultsSeptember9Nrk6Nrk7,
   bachelorEntranceResultsSeptember11,
@@ -115,6 +116,7 @@ export function EntranceExamResults() {
 
     <article className="entrance-results-level" id="results-bachelor">
       <header><span>01 / Бакалаврат</span><h3>Офіційні відомості за датами проведення</h3><p>Нові записи розміщено першими; попередні результати залишаються доступними в архіві сторінки.</p></header>
+      <ResultBatch date="8 жовтня" documents={bachelorEntranceResultsOctober8} />
       <September11Results />
       <SeptemberResults />
       <ResultBatch date="31 липня" documents={bachelorEntranceResultsJuly31} />

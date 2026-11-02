@@ -6,6 +6,13 @@ export type EntranceResultDocument = {
 
 export const entranceResultsNewsSlug = "rezultaty-vstupnykh-vyprobuvan-29-lypnia-2026";
 
+export const bachelorEntranceResultsOctober8: EntranceResultDocument[] = [
+  { title: "Співбесіда з української мови", href: "/documents/admissions/results/2026-10-08/bachelor/ukrainian-language.pdf", pages: 2 },
+  { title: "Співбесіда з української літератури", href: "/documents/admissions/results/2026-10-08/bachelor/ukrainian-literature.pdf", pages: 2 },
+  { title: "Співбесіда з математики", href: "/documents/admissions/results/2026-10-08/bachelor/mathematics.pdf", pages: 2 },
+  { title: "Співбесіда з історії України", href: "/documents/admissions/results/2026-10-08/bachelor/history-of-ukraine.pdf", pages: 2 },
+];
+
 export const bachelorEntranceResultsSeptember9: EntranceResultDocument[] = [
   { title: "Співбесіда з англійської мови", href: "/documents/admissions/results/2026-09-09/first-year/english-language.pdf", pages: 1 },
   { title: "Співбесіда з історії України", href: "/documents/admissions/results/2026-09-09/first-year/history-of-ukraine.pdf", pages: 1 },
