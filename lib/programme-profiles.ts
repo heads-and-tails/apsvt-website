@@ -175,6 +175,8 @@ export const programmeProfiles: Record<string, ProgrammeProfile> = {
       { name: "Сергій Шолудченко", role: "кандидат економічних наук, доцент", summary: "Поєднує управлінську освіту з системами якості, моделлю EFQM і стратегічним розвитком підприємств.", interests: ["управління якістю", "EFQM", "стратегічний розвиток"], image: "/people/marketing/serhii-sholudchenko.webp" },
     ],
     documents: [
+      { title: "Проєкт ОПП «Менеджмент» · магістр · 2026", meta: "DOCX · для обговорення", href: "/documents/management/project-management-master-2026.docx" },
+      { title: "Обговорення проєкту ОПП «Менеджмент»", meta: "Матеріали оголошення · травень 2026", href: "/news/obhovorennia-proiektu-opp-menedzhment-2026" },
       { title: "Програма вступного випробування D3 «Менеджмент»", meta: "Офіційний матеріал · 2025", href: "https://www.socosvita.kiev.ua/sites/default/files/4_%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%B0_%D0%9C%D0%B5%D0%BD%D0%B5%D0%B4%D0%B6%D0%BC%D0%B5%D0%BD%D1%82_%D0%BC_%D1%84%D0%B0%D1%85_%D0%B7%D0%B0%D0%BC%D1%96%D1%81%D1%82%D1%8C%20%D0%84%D0%A4%D0%92%D0%92%202025.pdf" },
       { title: "Кафедра економіки підприємства та менеджменту", meta: "Програми, практика й дослідження", href: "/materials/econpidpr-department-d4b13ae23.html" },
       ...sharedQualityDocuments,

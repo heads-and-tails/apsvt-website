@@ -26,6 +26,27 @@ test("offers a saved course view and batch publication without widening editor a
 });
 
 let workerPromise;
+test("publishes the Management discussion with its original draft and truthful publication date", async () => {
+  const slug = "obhovorennia-proiektu-opp-menedzhment-2026";
+  const document = "/documents/management/project-management-master-2026.docx";
+  const article = await render(`/news/${slug}`);
+  assert.equal(article.status, 200);
+  const html = await article.text();
+  for (const text of ["травень 2026", "16 червня 2026", "14:00", "аудиторія 307", "Василець Неля", "Охріменко Ігор"]) assert.ok(html.includes(text));
+  for (const href of [document, "mailto:vasilets1306@gmail.com", "mailto:iv.okhrim@gmail.com"]) assert.ok(html.includes(`href="${href}"`));
+  assert.match(html, /02 листопада 2026/);
+  const programme = await (await render("/programs/management")).text();
+  for (const href of [document, `/news/${slug}`]) assert.ok(programme.includes(`href="${href}"`));
+  const quality = programme.slice(programme.indexOf('class="education-quality"'));
+  assert.ok(quality.includes(`href="${document}"`));
+  assert.match(quality, /Проєкт ОПП · DOCX/);
+  assert.ok((await (await render("/news")).text()).includes(`/news/${slug}`));
+  const bytes = await readFile(new URL(`../public${document}`, import.meta.url));
+  assert.equal(bytes.byteLength, 65912);
+  const content = strFromU8(unzipSync(bytes)["word/document.xml"]);
+  for (const text of ["Менеджмент", "D3", "магістр"]) assert.ok(content.includes(text));
+  assert.doesNotMatch(await (await render("/programs/finance")).text(), /project-management-master-2026/);
+});
 test("serves the faculty accreditation page with document navigation and an honest empty state", async () => {
   const path = "/departments/law-faculty/faculty-documents/accreditation";
   const response = await render(path);
