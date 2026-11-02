@@ -1549,6 +1549,32 @@ test("publishes entrance-examination programmes and duplicates doctoral files on
   }
 });
 
+test("publishes the four original 8 October bachelor result PDFs before earlier batches", async () => {
+  const html = await (await render("/admissions")).text();
+  const bachelor = html.split('id="results-bachelor"')[1].split("</article>")[0];
+  const folder = bachelor.split('<details class="entrance-session-folder entrance-result-batch">')[1].split("</details>")[0].replace(/<!--[\s\S]*?-->/g, "");
+  assert.ok(folder.includes("Результати вступних випробувань від 8 жовтня 2026 року"));
+  assert.ok(folder.includes("Бакалаврат · 8 жовтня 2026"));
+  assert.equal((folder.match(/<a href=/g) ?? []).length, 4);
+  assert.equal((folder.match(/PDF · 2 сторінки/g) ?? []).length, 4);
+  assert.ok(bachelor.indexOf("8 жовтня") < bachelor.indexOf("11 вересня"));
+  const originals = [
+    ["ukrainian-language.pdf", 92223, "702e4e0c7246cad9eab64a5884732675989c1fa07c4500ef2727b6fdb2535d3c"],
+    ["ukrainian-literature.pdf", 92630, "8e1bf9d3e4506dfba3c883606850075669de9a739343095c6f09e747a500cebf"],
+    ["mathematics.pdf", 91229, "a9cec1bfe56e735602efa45adfd758dec332192b298ef4adb51bafe566852e36"],
+    ["history-of-ukraine.pdf", 92202, "83c61e7e646b5857e0bd5f00bfc57c55556ca3ed30714a3142cee14cb3b50d0c"],
+  ];
+  for (const [name, size, sha256] of originals) {
+    const href = `/documents/admissions/results/2026-10-08/bachelor/${name}`;
+    assert.ok(folder.includes(`href="${href}" target="_blank" rel="noreferrer"`));
+    const bytes = await readFile(new URL(`../public${href}`, import.meta.url));
+    assert.equal(bytes.length, size, name);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), sha256, name);
+  }
+  assert.ok(html.includes("/documents/admissions/results/2026-10-08/english-language-interview-master.pdf"));
+  assert.ok(bachelor.includes("results-september-11-2026"));
+});
+
 test("publishes all supplied master entrance programmes with unchanged original PDFs", async () => {
   const response = await render("/admissions");
   assert.equal(response.status, 200);
