@@ -780,3 +780,69 @@ test("EMPOWER photographs preserve the supplied original bytes and use an uncrop
   assert.ok(html.includes(`src="${empowerEastKickoffImages[0].url}"`));
   assert.match(html, /object-fit:contain/);
 });
+
+const scheduleDocumentModule = await moduleUrl("../lib/schedule-documents.ts");
+const calendarModule = await moduleUrl("../lib/academic-calendar.ts", { "./schedule-documents": scheduleDocumentModule });
+const calendar = await import(calendarModule);
+
+test("academic calendars keep study-form and semester placement separate from course timetables", () => {
+  for (const formId of ["full-time", "part-time"]) for (const semesterId of ["semester-1", "semester-2"]) {
+    assert.deepEqual(calendar.parseCalendarDocumentCategory(calendar.buildCalendarDocumentCategory({ formId, semesterId })), { formId, semesterId });
+  }
+  for (const category of ["", "Графік навчального процесу", "Розклад занять · Денна форма · І семестр · 1 курс", "Графік навчального процесу · Невідома форма · І семестр", "Графік навчального процесу · Денна форма · ІІІ семестр", "Графік навчального процесу · Денна форма · І семестр · 1 курс"]) assert.equal(calendar.parseCalendarDocumentCategory(category), null);
+});
+
+test("calendar folders preserve distinct published materials with matching names and exclude drafts", () => {
+  const base = { pagePath: "/academic-calendar", status: "published", category: "Графік навчального процесу · Денна форма · І семестр", title: "Графік", fileName: "calendar.doc", createdAt: "2026-10-01", updatedAt: "2026-10-01" };
+  const records = [{ ...base, id: "older" }, { ...base, id: "latest", updatedAt: "2026-11-01" }, { ...base, id: "other-title", title: "Інший графік" }, { ...base, id: "other-file", fileName: "other.doc" }, { ...base, id: "other-semester", category: "Графік навчального процесу · Денна форма · ІІ семестр" }, { ...base, id: "draft", status: "draft", updatedAt: "2027-01-01" }, { ...base, id: "timetable", pagePath: "/schedule" }];
+  const before = JSON.stringify(records);
+  assert.deepEqual(new Set(calendar.publishedCalendarDocuments(records).map((document) => document.id)), new Set(["older", "latest", "other-title", "other-file", "other-semester"]));
+  assert.equal(JSON.stringify(records), before);
+});
+
+test("bulk publication authorizes the actual calendar or timetable destination and rejects mixed batches", async () => {
+  const asModule = (code) => `data:text/javascript;base64,${Buffer.from(code).toString("base64")}`;
+  const jsonModule = asModule("export const NextResponse = { json: (body, init) => Response.json(body, init) };");
+  async function handler(allowed) {
+    const auth = asModule(`export async function requirePagePublisher(path) { if (!${JSON.stringify(allowed)}.includes(path)) throw new Error("FORBIDDEN_SCOPE"); return { email: "fixture@example.test" }; }`);
+    const documents = asModule("export async function createDocuments(inputs) { return inputs.map((input, index) => ({...input, id: String(index)})); }");
+    return import(await moduleUrl("../app/api/documents/bulk/route.ts", { "next/server": jsonModule, "@/lib/documents": documents, "@/lib/auth": auth, "@/lib/academic-calendar": calendarModule }));
+  }
+  const payload = { title: "Графік", description: "", category: calendar.buildCalendarDocumentCategory({ formId: "full-time", semesterId: "semester-1" }), pagePath: "/academic-calendar", fileUrl: "/fixture.doc", fileName: "fixture.doc", mimeType: "application/msword", fileSize: 10, status: "published", sortOrder: 1 };
+  const request = (documents) => new Request("https://example.test/api/documents/bulk", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ documents }) });
+  const editor = await handler(["/academic-calendar"]);
+  const created = await editor.POST(request([payload]));
+  assert.equal(created.status, 201);
+  assert.equal((await created.json()).documents[0].pagePath, "/academic-calendar");
+  assert.equal((await editor.POST(request([{ ...payload, pagePath: "/schedule" }]))).status, 403);
+  assert.equal((await editor.POST(request([{ ...payload, pagePath: "/news" }]))).status, 400);
+  assert.equal((await editor.POST(request([{ ...payload, category: "Розклад занять" }]))).status, 400);
+  assert.equal((await editor.POST(request([payload, { ...payload, pagePath: "/schedule" }]))).status, 400);
+  const scheduleEditor = await handler(["/schedule"]);
+  assert.equal((await scheduleEditor.POST(request([{ ...payload, pagePath: "/schedule", category: "Розклад занять · Денна форма · І семестр · 1 курс" }]))).status, 201);
+  assert.equal((await scheduleEditor.POST(request([payload]))).status, 403);
+});
+
+test("legacy Telegram calendar actions open the calendar panel and cannot publish into timetables", async () => {
+  const source = await readFile(new URL("../lib/telegram-editorial.ts", import.meta.url), "utf8");
+  const tree = ts.createSourceFile("telegram.ts", source, ts.ScriptTarget.Latest, true);
+  const names = ["beginScheduleUpload", "handleScheduleDocument", "handleEditorialCallback"];
+  const functions = tree.statements.filter((node) => ts.isFunctionDeclaration(node) && names.includes(node.name?.text)).map((node) => `export ${node.getText(tree)}`).join("\n");
+  const stub = `export const calls=[]; export const academicCalendarPath="/academic-calendar"; export const canEditPage=(p,path)=>p.accessScopes.includes(path); export const currentScheduleSelection=()=>({collectionId:"class-schedule"}); export const setTelegramEditorialState=async(...args)=>calls.push(["state",...args]); export const clearTelegramEditorialState=async(...args)=>calls.push(["clear",...args]); export const sendTelegramMessage=async(...args)=>calls.push(["message",...args]); export const answerTelegramCallback=async(...args)=>calls.push(["answer",...args]); export const getTelegramEditorialState=async()=>({stage:"schedule-setup",data:{selection:{collectionId:"class-schedule"}}});`;
+  const stubUrl = `data:text/javascript;base64,${Buffer.from(stub).toString("base64")}`;
+  const code = ts.transpileModule(`import { academicCalendarPath, canEditPage, currentScheduleSelection, setTelegramEditorialState, clearTelegramEditorialState, sendTelegramMessage, answerTelegramCallback, getTelegramEditorialState } from "${stubUrl}";\n${functions}`, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
+  const api = await import(`data:text/javascript;base64,${Buffer.from(code).toString("base64")}`);
+  const { calls } = await import(stubUrl);
+  const publisher = { accessScopes: ["/schedule", "/academic-calendar"] };
+  await api.beginScheduleUpload("fixture", "https://example.test", publisher);
+  const menu = calls.find((call) => call[0] === "message")[3].flat();
+  assert.ok(menu.some((button) => button.url === "https://example.test/panel?view=calendar"));
+  assert.ok(!menu.some((button) => button.callback_data === "ed:sch:mode:g:f"));
+  calls.length = 0;
+  await api.handleEditorialCallback({ id: "fixture", data: "ed:sch:mode:g:f", message: { chat: { id: "fixture" } } }, publisher, "https://example.test");
+  assert.ok(calls.some((call) => call[0] === "clear"));
+  assert.ok(calls.some((call) => call[0] === "message" && call[3].flat().some((button) => button.url === "https://example.test/panel?view=calendar")));
+  assert.ok(!calls.some((call) => call[0] === "state"));
+  await assert.rejects(api.handleScheduleDocument({ chat: { id: "fixture" } }, publisher, { selection: { collectionId: "education-process" } }), /редакційній панелі/);
+  await assert.rejects(api.handleEditorialCallback({ id: "fixture", data: "ed:sch:mode:g:f", message: { chat: { id: "fixture" } } }, { accessScopes: ["/schedule"] }, "https://example.test"), /немає доступу/);
+});

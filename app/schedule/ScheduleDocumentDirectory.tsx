@@ -9,20 +9,14 @@ import {
 
 const collections = [
   {
-    id: "education-process",
-    index: "01",
-    title: "Графік навчального процесу",
-    description: "Періоди навчання, практики, сесій і канікул для конкретного курсу.",
-  },
-  {
     id: "class-schedule",
-    index: "02",
+    index: "01",
     title: "Розклад занять",
     description: "Word- і PDF-файли за спеціальністю, курсом, формою та семестром.",
   },
   {
     id: "exam-session",
-    index: "03",
+    index: "02",
     title: "Розклад заліків та іспитів",
     description: "Дати консультацій, заліків та іспитів за курсами й формами навчання.",
   },

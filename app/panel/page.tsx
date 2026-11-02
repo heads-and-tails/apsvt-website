@@ -34,7 +34,7 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
   }
   if (publisher.mustChangePassword) redirect("/panel/reset-password?initial=1");
   const requestedView = (await searchParams).view;
-  const initialView = requestedView === "schedule" && canEditPage(publisher, "/schedule") ? "schedule" as const : "overview" as const;
+  const initialView = requestedView === "calendar" && canEditPage(publisher, "/academic-calendar") ? "calendar" as const : requestedView === "schedule" && canEditPage(publisher, "/schedule") ? "schedule" as const : "overview" as const;
 
   const [allPosts, allContent, allDocuments, departmentEntries, profiles, studentFinance] = await Promise.all([
     getPosts({ includeDrafts: true, limit: 100 }),

@@ -1,3 +1,4 @@
+import { academicCalendarPath } from "./academic-calendar";
 import type { Publisher } from "@/lib/auth";
 import { getPublisherByUserId } from "@/lib/auth";
 import { createContentItem } from "@/lib/content";
@@ -358,14 +359,14 @@ async function sendScheduleMenu(chatId: string, publisher: Publisher, siteUrl: s
   );
 }
 
-async function beginScheduleUpload(chatId: string) {
+async function beginScheduleUpload(chatId: string, siteUrl: string, publisher: Publisher) {
   await setTelegramEditorialState<ScheduleUploadState>(chatId, "schedule-setup", { selection: currentScheduleSelection() }, 180);
   await sendTelegramMessage(chatId,
     "<b>Крок 1 із 2 · тип розкладу</b>\nОберіть, що завантажуєте. Після цього бот запитає курс.",
     [
       [{ text: "Заняття · денна", callback_data: "ed:sch:mode:c:f" }, { text: "Заняття · заочна", callback_data: "ed:sch:mode:c:p" }],
       [{ text: "Сесія · денна", callback_data: "ed:sch:mode:e:f" }, { text: "Сесія · заочна", callback_data: "ed:sch:mode:e:p" }],
-      [{ text: "Навчальний процес", callback_data: "ed:sch:mode:g:f" }],
+      ...(canEditPage(publisher, academicCalendarPath) ? [[{ text: "Графік навчального процесу", url: `${siteUrl}/panel?view=calendar` }]] : []),
       [{ text: "Скасувати", callback_data: "ed:cancel" }],
     ],
   );
@@ -396,6 +397,10 @@ async function listScheduleDocuments(chatId: string, publisher: Publisher) {
 async function handleScheduleDocument(message: TelegramMessage, publisher: Publisher, state: ScheduleUploadState) {
   const chatId = String(message.chat.id);
   if (!canEditPage(publisher, "/schedule")) throw new Error("Ваш акаунт не має доступу до розкладу");
+  if (!state.replaceId && state.selection.collectionId === "education-process") {
+    await clearTelegramEditorialState(chatId);
+    throw new Error("Графіки навчального процесу додавайте в редакційній панелі, у розділі «Графік навчального процесу». Файли розкладу не змінено.");
+  }
   if (!message.document) throw new Error("Надішліть документ PDF, Word, Excel або PowerPoint");
   if ((message.document.file_size || 0) > 20 * 1024 * 1024) throw new Error("Документ має бути менше 20 МБ");
   const fileName = message.document.file_name || "schedule-document";
@@ -702,7 +707,7 @@ async function handleEditorialCallback(callback: TelegramCallbackQuery, publishe
   } else if (data === "ed:sch:add") {
     if (!canEditPage(publisher, "/schedule")) throw new Error("У вас немає доступу до розкладу");
     await answerTelegramCallback(callback.id, "Створюємо комплект");
-    await beginScheduleUpload(chatId);
+    await beginScheduleUpload(chatId, siteUrl, publisher);
   } else if (data === "ed:sch:list") {
     await answerTelegramCallback(callback.id, "Відкриваю файли");
     await listScheduleDocuments(chatId, publisher);
@@ -710,7 +715,14 @@ async function handleEditorialCallback(callback: TelegramCallbackQuery, publishe
     const state = await getTelegramEditorialState<ScheduleUploadState>(chatId);
     if (!state || state.stage !== "schedule-setup") throw new Error("Налаштування застаріло. Почніть комплект ще раз");
     const [, , , collectionAlias, formAlias] = data.split(":");
-    const collectionId = collectionAlias === "e" ? "exam-session" : collectionAlias === "g" ? "education-process" : "class-schedule";
+    if (collectionAlias === "g") {
+      if (!canEditPage(publisher, academicCalendarPath)) throw new Error("У вас немає доступу до графіка навчального процесу");
+      await clearTelegramEditorialState(chatId);
+      await answerTelegramCallback(callback.id, "Графіки доступні в редакційній панелі");
+      await sendTelegramMessage(chatId, "Додайте графік за формою навчання та семестром у редакційній панелі.", [[{ text: "Графік навчального процесу", url: `${siteUrl}/panel?view=calendar` }]]);
+      return;
+    }
+    const collectionId = collectionAlias === "e" ? "exam-session" : "class-schedule";
     const formId = formAlias === "p" ? "part-time" : "full-time";
     const next = { ...state.data, selection: { ...state.data.selection, collectionId, formId } } satisfies ScheduleUploadState;
     await setTelegramEditorialState(chatId, "schedule-setup", next, 180);

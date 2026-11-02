@@ -19,7 +19,7 @@ import { requestJson } from "@/lib/client-request";
 import { isProgrammeFolder } from "@/lib/programme-folders";
 
 type FormState = { title: string; excerpt: string; body: string; category: string; imageUrl: string; imageAlt: string; status: "draft" | "published"; featured: boolean; hideDate: boolean; publishedAt: string | null; slug?: string };
-type PanelView = "overview" | "assistant" | "news-editor" | "materials" | "departments" | "operations" | "schedule" | "documents" | "finance" | "access";
+type PanelView = "overview" | "assistant" | "news-editor" | "materials" | "departments" | "operations" | "schedule" | "calendar" | "documents" | "finance" | "access";
 type NavItem = { id: PanelView; label: string; icon: string; hint: string };
 
 const empty: FormState = { title: "", excerpt: "", body: "", category: "Новини", imageUrl: "", imageAlt: "", status: "draft", featured: false, hideDate: false, publishedAt: null };
@@ -32,6 +32,7 @@ const viewTitles: Record<PanelView, { eyebrow: string; title: string; descriptio
   departments: { eyebrow: "Увесь сайт", title: "Сторінки та матеріали", description: "Обкладинки, тексти, люди, викладачі, партнери, фото й матеріали всіх сторінок." },
   operations: { eyebrow: "Дані сайту", title: "Керування розділами", description: "Події, вступ, вакансії, бібліотека, розклад, наука та кваліфікаційні роботи." },
   schedule: { eyebrow: "Навчальний процес", title: "Керування розкладом", description: "Завантажуйте комплекти файлів, швидко замінюйте актуальну версію або видаляйте застарілу." },
+  calendar: { eyebrow: "Навчальний процес", title: "Графік навчального процесу", description: "Публікація та заміна офіційних графіків за формою навчання і семестром." },
   documents: { eyebrow: "Файли", title: "Документи сторінок", description: "Завантаження, опис, розподіл за сторінками та контроль публікації." },
   finance: { eyebrow: "Особисті кабінети", title: "Студенти та оплата", description: "Договори, нарахування, платежі, прострочення та повідомлення." },
   access: { eyebrow: "Адміністрування", title: "Користувачі та доступ", description: "Акаунти редакторів, ролі, кафедри та дозволені сторінки." },
@@ -79,6 +80,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
   const allowedKinds = Object.entries(contentKindPagePath).filter(([, path]) => canEditPage(publisher, path)).map(([kind]) => kind) as ContentKind[];
   const canManageDepartment = editorialAccessOptions.some((option) => option.group !== "all" && canEditPage(publisher, option.value));
   const canManageSchedule = canEditPage(publisher, "/schedule");
+  const canManageCalendar = canEditPage(publisher, "/academic-calendar");
   const scopeLabel = accessScopeLabel(publisher.accessScopes);
   const isAdmin = publisher.role === "admin";
   const activeTitle = viewTitles[activeView];
@@ -92,6 +94,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
     ...(canManageDepartment ? [{ id: "departments" as const, label: "Сторінки", icon: "WEB", hint: "Увесь контент сайту" }] : []),
     ...(allowedKinds.length ? [{ id: "operations" as const, label: "Розділи сайту", icon: "Р", hint: "Події, вступ, розклад" }] : []),
     ...(canManageSchedule ? [{ id: "schedule" as const, label: "Розклад", icon: "📅", hint: "Комплекти й заміна" }] : []),
+    ...(canManageCalendar ? [{ id: "calendar" as const, label: "Графік навчального процесу", icon: "CAL", hint: "Форма й семестр" }] : []),
     { id: "documents", label: "Документи", icon: "D", hint: `${documents.length} файлів` },
   ];
   const adminNav: NavItem[] = [
@@ -204,6 +207,7 @@ export function PanelEditor({ initialPosts, initialContent, initialDocuments, in
       {activeView === "departments" && canManageDepartment && <DepartmentManager initialEntries={departmentEntries} publisher={publisher} />}
       {activeView === "operations" && allowedKinds.length > 0 && <OperationsEditor initialContent={initialContent} allowedKinds={allowedKinds} />}
       {activeView === "schedule" && canManageSchedule && <ScheduleDocumentManager initialDocuments={initialDocuments} />}
+      {activeView === "calendar" && canManageCalendar && <ScheduleDocumentManager initialDocuments={initialDocuments} pagePath="/academic-calendar" />}
       {activeView === "documents" && <DocumentManager documents={documents} setDocuments={setDocuments} folders={programmeFolders} setFolders={setProgrammeFolders} publisher={publisher} />}
       {activeView === "finance" && isAdmin && <StudentFinanceManager initialData={initialStudentFinance} />}
       {activeView === "access" && isAdmin && <AccessManager initialProfiles={initialProfiles} currentUserId={publisher.id} />}

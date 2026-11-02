@@ -12,7 +12,7 @@ type Props={params:Promise<{slug:string[]}>};
 const specialPaths=["programs"];
 
 export function generateStaticParams(){return [
-  ...translatedPublicPaths.filter(path=>path!=="news").map(path=>({slug:path.split("/")})),
+  ...translatedPublicPaths.filter(path=>path!=="news" && path!=="academic-calendar").map(path=>({slug:path.split("/")})),
   ...specialPaths.map(path=>({slug:[path]})),
   ...englishPrograms.map(program=>({slug:["programs",program.slug]})),
 ];}

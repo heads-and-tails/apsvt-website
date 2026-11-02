@@ -48,7 +48,7 @@ const preapprovedDepartmentEditors = new Map<string, { displayName: string; acce
   }],
   ["educ_dep2@socosvita.kiev.ua", {
     displayName: "Навчально-методичний відділ",
-    accessScopes: ["/schedule", "/exam-schedule"],
+    accessScopes: ["/schedule", "/exam-schedule", "/academic-calendar"],
   }],
   ["tsabenok26@ukr.net", {
     displayName: "Лебідь Тетяна Ігорівна",
