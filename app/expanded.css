@@ -3788,3 +3788,10 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
 .custom-editorial-section-head p{margin:18px 0 0;color:#586273;font:17px/1.6 var(--body)}
 .custom-editorial-section .department-public-content--inline{max-width:1120px;margin:32px auto 0;padding:0 24px}
 @media(max-width:760px){.department-create-section{display:grid;padding:15px}.department-create-section button{width:100%}.custom-editorial-section{padding:48px 0}.custom-editorial-section .department-public-content--inline{padding:0 18px}.custom-editorial-section-head h2{font-size:32px}}
+
+/* Official calendar files retain readable labels within semester folders. */
+.academic-calendar-directory .schedule-course-files{padding:0 12px 12px}
+.academic-calendar-directory .schedule-course-files a{grid-template-columns:minmax(0,1fr);gap:8px;padding:16px}
+.academic-calendar-directory .schedule-course-files b{font:600 15px/1.4 var(--sans);letter-spacing:0;text-transform:none;overflow-wrap:anywhere}
+.academic-calendar-directory .schedule-course-files small{font-size:11px;overflow-wrap:anywhere}
+.academic-calendar-directory .schedule-course-files i{grid-column:1;grid-row:auto;font-size:10px;color:var(--cobalt)}

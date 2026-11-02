@@ -2163,7 +2163,8 @@ test("supports bulk schedule files in the panel and the Telegram bot",async()=>{
   assert.match(panel,/ScheduleDocumentManager/);
   assert.match(panel,/panel\?view=schedule|initialView/);
   assert.match(manager,/type="file" multiple/);
-  assert.match(manager,/uploadEditorialFile\(file, "document", "\/schedule"\)/);
+  assert.match(manager,/pagePath = "\/schedule"/);
+  assert.match(manager,/uploadEditorialFile\(file, "document", pagePath\)/);
   assert.match(manager,/\/api\/documents\/bulk/);
   assert.match(manager,/Замінити файл/);
   assert.match(bulkRoute,/documents\.length > 20/);
@@ -2324,4 +2325,20 @@ test("publishes the 29 October court meeting announcement with original poster a
   assert.equal(bytes.length, 541207);
   assert.equal(createHash("sha256").update(bytes).digest("hex"), "509fffcde3af6c6a184dd7e83e4198da170256f0dd07c942d76e79194a93f037");
   assert.equal((await render("/en/news")).status, 200);
+});
+
+test("offers official academic-calendar folders in both languages without provisional dates", async () => {
+  for (const path of ["/academic-calendar", "/en/academic-calendar"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    for (const form of ["full-time", "part-time"]) for (const semester of ["semester-1", "semester-2"]) assert.ok(html.includes(`id="calendar-${form}-${semester}"`));
+    assert.doesNotMatch(html, /Проєктний календар|Перший модульний контроль|12–24 жовтня|Spring semester|September–December 2026/);
+    assert.match(html, /2026 \/ 27/);
+  }
+  const schedule = await (await render("/schedule")).text();
+  assert.doesNotMatch(schedule, /id="education-process"/);
+  assert.match(schedule, /id="class-schedule"/);
+  assert.match(schedule, /id="exam-session"/);
+  assert.ok(schedule.includes('href="/academic-calendar"'));
 });
