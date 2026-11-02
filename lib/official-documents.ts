@@ -304,6 +304,17 @@ export const officialDocuments: OfficialDocument[] = [
     status: "current",
   },
   {
+    id: "student-practice-2023",
+    category: "education",
+    title: "Положення про організацію та проведення практики здобувачів вищої освіти",
+    description: "Положення, ухвалене Вченою радою Академії 27 квітня 2023 року, протокол № 9.",
+    href: "/documents/regulations/student-practice-2023.pdf",
+    format: "PDF",
+    pages: 14,
+    updated: "2023",
+    status: "current",
+  },
+  {
     id: "student-practice-2020",
     category: "education",
     title: "Положення про практику здобувачів вищої освіти",
@@ -312,7 +323,7 @@ export const officialDocuments: OfficialDocument[] = [
     format: "PDF",
     pages: 14,
     updated: "2020",
-    status: "current",
+    status: "reference",
   },
   {
     id: "state-examination-commission",
