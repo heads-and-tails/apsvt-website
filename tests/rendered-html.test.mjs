@@ -26,6 +26,34 @@ test("offers a saved course view and batch publication without widening editor a
 });
 
 let workerPromise;
+test("lists the new languages department under the economics faculty without changing existing units", async () => {
+  const title = "Кафедра української та іноземних мов і гуманітарних наук";
+  const id = "ukrainian-foreign-languages-humanities";
+  const href = `/departments#${id}`;
+  const [faculty, directory, about, existing] = await Promise.all([
+    render("/departments/economics-social-tourism-faculty").then((r) => r.text()),
+    render("/departments").then((r) => r.text()),
+    render("/about").then((r) => r.text()),
+    render("/departments/languages-humanities"),
+  ]);
+  const facultyList = faculty.split('id="departments"')[1].split("</section>")[0];
+  assert.equal((facultyList.match(/<a /g) || []).length, 5);
+  for (const path of ["/programs/finance", "/programs/management", "/programs/marketing", "/departments/digital-technologies", href]) assert.ok(facultyList.includes(`href="${path}"`));
+  assert.match(faculty, /<b>5<\/b><span>кафедр і напрямів<\/span>/);
+  const groups = [...directory.matchAll(/<section class="department-faculty">([\s\S]*?)<\/section>/g)];
+  assert.ok(groups[0][1].includes(`id="${id}"`));
+  const record = directory.match(new RegExp(`<article id="${id}"[\\s\\S]*?<\\/article>`))[0];
+  assert.ok(record.includes(title));
+  assert.match(record, /Факультет економіки, соціальних технологій і туризму/);
+  assert.doesNotMatch(record, /<nav/);
+  assert.equal((directory.match(/<article id=/g) || []).length, 13);
+  assert.match(groups[3][1], /id="languages"/);
+  assert.equal(existing.status, 200);
+  const firstFaculty = about.split('class="structure-faculties"')[1].split("</details>")[0];
+  assert.ok(firstFaculty.includes(title) && firstFaculty.includes(`href="${href}"`));
+  const { siteSearchItems } = await import("../lib/site-search.ts");
+  assert.equal(siteSearchItems.find((item) => item.href === href)?.title, title);
+});
 test("publishes the Management discussion with its original draft and truthful publication date", async () => {
   const slug = "obhovorennia-proiektu-opp-menedzhment-2026";
   const document = "/documents/management/project-management-master-2026.docx";
@@ -1863,7 +1891,7 @@ test("renders verified partner marks, the official emblem and designed faculty p
   assert.match(about,/brand\/apsvt-official-logo\.png/);
   assert.match(lawFaculty,/першого набору студентів у 1994 році/);
   assert.match(lawFaculty,/Юридична клініка/);
-  assert.match(economicFaculty,/Чотири напрями — один факультет/);
+  assert.match(economicFaculty,/Кафедри факультету/);
   assert.match(economicFaculty,/Спеціальності й освітні програми/);
   assert.match(economicFaculty,/Освітні траєкторії/);
   assert.match(psychologyFaculty,/Факультет психології та соціального розвитку/);

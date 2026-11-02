@@ -21,6 +21,7 @@ const departments = [
   ["02", "Економіка і менеджмент", "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", "/programs/management", "D3 · D7"],
   ["03", "Маркетинг", "Ринкова аналітика, бренди, digital-комунікації та поведінка споживачів.", "/programs/marketing", "D5"],
   ["04", "Цифрові технології", "Інтелектуальні системи, цифрова освіта та управління інформаційною безпекою.", "/departments/digital-technologies", "A5"],
+  ["05", "Кафедра української та іноземних мов і гуманітарних наук", "Українська та іноземні мови, гуманітарні науки.", "/departments#ukrainian-foreign-languages-humanities", "МОВИ"],
 ];
 
 const programmes = [
@@ -33,7 +34,7 @@ const programmes = [
 
 const facultySections: readonly SectionHubItem[] = [
   { id: "faculty-about", index: "01", title: "Про факультет", description: "Місія, напрями підготовки та рівні освіти.", icon: "F" },
-  { id: "departments", index: "02", title: "Кафедри й напрями", description: "Чотири академічні напрями факультету.", icon: "4" },
+  { id: "departments", index: "02", title: "Кафедри й напрями", description: "Кафедри факультету та їхні освітні напрями.", icon: String(departments.length) },
   { id: "faculty-programmes", index: "03", title: "Освітні програми", description: "Спеціальності та переходи до навчальних планів.", icon: "OP" },
   { id: "faculty-organization", index: "04", title: "Організація факультету", description: "Деканат, вчена рада і студентське представництво.", icon: "ORG" },
   { id: "faculty-science", index: "05", title: "Наукова діяльність", description: "Дослідження, студентські гуртки та проєкти.", icon: "SCI" },
@@ -45,13 +46,13 @@ const facultySections: readonly SectionHubItem[] = [
 export default async function Page() {
   const departmentEntries = await getDepartmentEntries("/departments/economics-social-tourism-faculty");
   return <main id="top"><SiteHeader />
-    <section className="law-faculty-hero festt-hero"><div className="law-faculty-hero-image"><img src="/apsvt-students-real.jpg" alt="Студенти Академії під час навчання" /></div><div className="wrap law-faculty-hero-copy"><Link href="/departments">← Усі кафедри</Link><span>ФЕСТТ · міждисциплінарний факультет</span><h1>Економіка.<br /><em>Технології. Розвиток.</em></h1><p>Факультет поєднує бізнес, фінанси, маркетинг і цифрові технології — від фундаментальної підготовки до практики з роботодавцями.</p><div><b>4</b><span>кафедри й напрями</span><b>5</b><span>освітніх траєкторій</span></div></div></section><div className="hero-rule" />
+    <section className="law-faculty-hero festt-hero"><div className="law-faculty-hero-image"><img src="/apsvt-students-real.jpg" alt="Студенти Академії під час навчання" /></div><div className="wrap law-faculty-hero-copy"><Link href="/departments">← Усі кафедри</Link><span>ФЕСТТ · міждисциплінарний факультет</span><h1>Економіка.<br /><em>Технології. Розвиток.</em></h1><p>Факультет поєднує бізнес, фінанси, маркетинг і цифрові технології — від фундаментальної підготовки до практики з роботодавцями.</p><div><b>{departments.length}</b><span>кафедр і напрямів</span><b>5</b><span>освітніх траєкторій</span></div></div></section><div className="hero-rule" />
 
     <SectionHub sections={facultySections} eyebrow="Навігатор факультету" description="Оберіть кафедри, програми, практику, документи або новини — відкриється тільки потрібний розділ.">
 
-    <section className="law-faculty-intro festt-intro" id="faculty-about"><div className="wrap law-faculty-intro-grid"><div><div className="idx">01 / Про факультет</div><h2>Освіта на перетині економіки й технологій</h2></div><div><p className="program-lede">Факультет готує фахівців для бізнесу, державних і громадських організацій, фінансового сектору та цифрової освіти.</p><p>Освітні програми поєднують аналітичну підготовку, роботу з реальними кейсами, дослідження та практику. Студент може будувати індивідуальну траєкторію між суміжними професійними сферами.</p><div className="law-faculty-milestones"><span><b>4</b>предметні напрями</span><span><b>3</b>рівні вищої освіти</span><span><b>1</b>спільна професійна екосистема</span></div></div></div></section>
+    <section className="law-faculty-intro festt-intro" id="faculty-about"><div className="wrap law-faculty-intro-grid"><div><div className="idx">01 / Про факультет</div><h2>Освіта на перетині економіки й технологій</h2></div><div><p className="program-lede">Факультет готує фахівців для бізнесу, державних і громадських організацій, фінансового сектору та цифрової освіти.</p><p>Освітні програми поєднують аналітичну підготовку, роботу з реальними кейсами, дослідження та практику. Студент може будувати індивідуальну траєкторію між суміжними професійними сферами.</p><div className="law-faculty-milestones"><span><b>{departments.length}</b>кафедр і напрямів</span><span><b>3</b>рівні вищої освіти</span><span><b>1</b>спільна професійна екосистема</span></div></div></div></section>
 
-    <section className="law-faculty-departments festt-departments" id="departments"><div className="wrap"><div className="sec-head"><div><div className="idx">02 / Академічна структура</div><h2>Чотири напрями — один факультет</h2></div><p>Оберіть кафедру або напрям, щоб відкрити програму, команду викладачів, партнерів практики та актуальні документи.</p></div><div className="law-department-grid festt-department-grid">{departments.map(([number, title, text, href, code]) => <Link href={href} key={number}><span>{number}</span><small>{code}</small><h3>{title}</h3><p>{text}</p><b>Відкрити напрям →</b></Link>)}</div></div></section>
+    <section className="law-faculty-departments festt-departments" id="departments"><div className="wrap"><div className="sec-head"><div><div className="idx">02 / Академічна структура</div><h2>Кафедри факультету</h2></div><p>Оберіть кафедру або напрям, щоб переглянути відомості чи пов’язані освітні програми.</p></div><div className="law-department-grid festt-department-grid">{departments.map(([number, title, text, href, code]) => <Link href={href} key={number}><span>{number}</span><small>{code}</small><h3>{title}</h3><p>{text}</p><b>Відкрити напрям →</b></Link>)}</div></div></section>
 
     <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">03 / Освітні траєкторії</div><h2>Спеціальності й освітні програми</h2></div><p>У кожній програмі однаково розташовані рівні освіти, навчальні плани, вибіркові дисципліни, склад кафедри, наука, партнери та якість.</p></div><div className="faculty-programme-grid">{programmes.map(([code, title, href], index) => <Link href={href} key={code}><span>{String(index + 1).padStart(2, "0")}</span><b>{code}</b><h3>{title}</h3><i>→</i></Link>)}</div></div></section>
 

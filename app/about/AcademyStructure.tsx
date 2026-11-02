@@ -21,6 +21,7 @@ const faculties: FacultyGroup[] = [
       { title: "Кафедра економіки підприємства та менеджменту", description: "Управління організаціями, підприємництво, торгівля й бізнес-аналітика.", href: "/departments#economics-management", programmes: [{ code: "D3", name: "Менеджмент", href: "/programs/management" }, { code: "D7", name: "Торгівля", href: "/programs/trade" }] },
       { title: "Кафедра маркетингу", description: "Ринкова аналітика, бренди, комунікації та digital.", href: "/departments#marketing", programmes: [{ code: "D5", name: "Маркетинг", href: "/programs/marketing" }] },
       { title: "Кафедра інтелектуальних систем та цифрових технологій", description: "Інформаційні системи та цифрові освітні технології.", href: "/departments#digital-technologies", programmes: [{ code: "A5", name: "Професійна освіта · PhD", href: "/programs#doctoral-programmes" }] },
+      { title: "Кафедра української та іноземних мов і гуманітарних наук", description: "Факультет економіки, соціальних технологій і туризму.", href: "/departments#ukrainian-foreign-languages-humanities", programmes: [] },
     ],
   },
   {
@@ -109,7 +110,7 @@ export function AcademyStructure() {
             {faculty.departments.map((department, departmentIndex) => <article key={department.title}>
               <span>{String(departmentIndex + 1).padStart(2, "0")}</span>
               <div><small>Кафедра</small><h4><Link href={department.href}>{department.title}</Link></h4><p>{department.description}</p>
-                <nav aria-label={`Програми: ${department.title}`}>{department.programmes.map((programme) => <Link href={programme.href} key={`${department.title}-${programme.code}`}><b>{programme.code}</b><span>{programme.name}</span><i>↗</i></Link>)}</nav>
+                {department.programmes.length > 0 && <nav aria-label={`Програми: ${department.title}`}>{department.programmes.map((programme) => <Link href={programme.href} key={`${department.title}-${programme.code}`}><b>{programme.code}</b><span>{programme.name}</span><i>↗</i></Link>)}</nav>}
               </div>
             </article>)}
           </div>
