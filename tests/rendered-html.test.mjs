@@ -675,6 +675,21 @@ test("lists the 2026 academic staff vacancy competition regulation with its orig
   assert.equal(bytes.subarray(0,4).toString(),"%PDF");
 });
 
+test("publishes the supplied 2023 practice regulation in both catalogues and preserves the older file", async () => {
+  for (const route of ["/documents/regulations", "/documents"]) {
+    const response = await render(route);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /Положення про організацію та проведення практики здобувачів вищої освіти/);
+    assert.match(html, /27 квітня 2023 року, протокол № 9/);
+    for (const year of [2023, 2020]) assert.ok(html.includes(`href="/documents/regulations/student-practice-${year}.pdf"`));
+    assert.match(html, /educational-process-2026\.pdf/);
+  }
+  const bytes = await readFile(new URL("../public/documents/regulations/student-practice-2023.pdf", import.meta.url));
+  assert.equal(bytes.length, 683562);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), "428fac231975740619a70054f2503b82f534a4d4f299d268b235b9fc9b38720d");
+});
+
 test("replaces the outdated bullying measures plan with the 2026–2027 signed PDF",async()=>{
   const [regulationsHtml,documentsHtml]=await Promise.all([
     (await render("/documents/regulations")).text(),
