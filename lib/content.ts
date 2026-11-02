@@ -37,6 +37,9 @@ import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { marketingQualitySeedContent } from "@/lib/marketing-quality-seeds";
+import { managementDiscussionQualitySeed } from "./management-discussion-news";
+
+const departmentQualitySeeds = [...marketingQualitySeedContent, managementDiscussionQualitySeed];
 
 const SEED_AUTHOR = "editorial@apsvt.local";
 const SEED_DATE = "2026-07-18T00:00:00.000Z";
@@ -46,7 +49,7 @@ function seed(id: string, kind: ContentKind, payload: ContentPayload, sortOrder:
 }
 
 export const seedContent: ContentItem[] = [
-  ...marketingQualitySeedContent,
+  ...departmentQualitySeeds,
   seed("lesson-01", "lesson", { date: "07.09", day: "Понеділок", time: "09:00–10:20", course: "Іноземна мова", type: "Практичне", group: "1 курс", faculty: "Економіка і туризм", teacher: "О. Мельник", room: "214" }, 10),
   seed("lesson-02", "lesson", { date: "07.09", day: "Понеділок", time: "10:35–11:55", course: "Основи менеджменту", type: "Лекція", group: "1 курс", faculty: "Економіка і туризм", teacher: "Н. Василець", room: "305" }, 20),
   seed("lesson-03", "lesson", { date: "07.09", day: "Понеділок", time: "12:20–13:40", course: "Теорія держави і права", type: "Лекція", group: "1 курс", faculty: "Право", teacher: "Я. Журавель", room: "118" }, 30),
@@ -236,7 +239,7 @@ let marketingQualitySeedsEnsured = false;
 async function ensureMarketingQualitySeeds(): Promise<void> {
   if (marketingQualitySeedsEnsured || !isSupabaseConfigured()) return;
   const { error } = await createSupabaseAdmin().from("editorial_content_items").upsert(
-    marketingQualitySeedContent.map(toSupabaseRow),
+    departmentQualitySeeds.map(toSupabaseRow),
     { onConflict: "id", ignoreDuplicates: true },
   );
   if (error) throw error;

@@ -414,7 +414,7 @@ test("nonformal editorial changes and removals survive repeat seeding without ov
   globalThis[fixtureKey] = client;
   try {
     const connection = `data:text/javascript;base64,${Buffer.from(`export const isSupabaseConfigured=()=>true;export const createSupabaseAdmin=()=>globalThis[${JSON.stringify(fixtureKey)}];export const createSupabasePublicClient=createSupabaseAdmin;`).toString("base64")}`;
-    const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl });
+    const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl, "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts") });
     const accessUrl = await moduleUrl("../lib/editorial-access.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl });
     const department = await import(await moduleUrl("../lib/department-content.ts", { "@/lib/content": contentUrl, "./department-news-date": await moduleUrl("../lib/department-news-date.ts"), "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }), "./editorial-text": textUrl, "@/lib/editorial-access": accessUrl, "@/lib/education-quality": await moduleUrl("../lib/education-quality.ts"), "./marketing-mobility": mobilityUrl, "./editorial-custom-sections": await moduleUrl("../lib/editorial-custom-sections.ts") }));
     const original = await department.getDepartmentEntryById("marketing-nonformal-master-regulations-text");
@@ -665,6 +665,7 @@ test("respects successful empty published-news queries and preserves fallback fo
   const posts = await import(await moduleUrl("../lib/data.ts", {
     "./edupro-news": eduproUrl,
     "./empower-east-news": await moduleUrl("../lib/empower-east-news.ts"),
+    "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts"),
     "./constitutional-court-lecture-news": await moduleUrl("../lib/constitutional-court-lecture-news.ts"),
     "./constitutional-court-meeting-news": await moduleUrl("../lib/constitutional-court-meeting-news.ts"),
     "@/lib/supabase/admin": mockUrl,
