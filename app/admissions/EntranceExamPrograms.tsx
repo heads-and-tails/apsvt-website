@@ -35,7 +35,7 @@ export function EntranceExamPrograms() {
     </nav>
 
     <article className="exam-program-level" id="programs-bachelor">
-      <header><span>01 / Бакалаврат</span><div><h3>Предметні програми для вступників</h3><p>Оберіть предмет і відкрийте затверджену програму співбесіди у форматі PDF.</p></div></header>
+      <header><span>01 / Бакалаврат</span><div><h3>Програми вступних випробувань</h3><p>Оберіть предмет і відкрийте затверджену програму співбесіди у форматі PDF.</p></div></header>
       <div className="exam-program-documents">
         {bachelorEntranceExamPrograms.map((document, index) => <ProgramDocument document={document} index={index} key={document.title} />)}
       </div>
@@ -53,7 +53,7 @@ export function EntranceExamPrograms() {
     </article>
 
     <article className="exam-program-level" id="programs-phd">
-      <header><span>03 / Доктор філософії</span><div><h3>Фахові випробування, мови та методологія</h3><p>Програми за спеціальностями, мовні співбесіди й методологія наукових досліджень для вступу до аспірантури.</p></div></header>
+      <header><span>03 / Доктор філософії</span><div><h3>Програми вступних випробувань</h3><p>Програми за спеціальностями, мовні співбесіди й методологія наукових досліджень для вступу до аспірантури.</p></div></header>
       <div className="exam-program-documents phd">
         {phdEntranceExamPrograms.map((document, index) => <ProgramDocument document={document} index={index} key={document.title} />)}
       </div>
