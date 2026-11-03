@@ -26,6 +26,32 @@ test("offers a saved course view and batch publication without widening editor a
 });
 
 let workerPromise;
+test("publishes the November DAAD opportunities with every deadline, event and direct registration link", async () => {
+  const slug = "daad-stypendii-mozhlyvosti-lystopad-2026";
+  const [news, article, international, english] = await Promise.all([
+    render("/news").then((r) => r.text()),
+    render(`/news/${slug}`).then((r) => r.text()),
+    render("/international").then((r) => r.text()),
+    render(`/en/news/${slug}`).then((r) => r.text()),
+  ]);
+  assert.ok(news.includes(`href="/news/${slug}"`));
+  const body = article.split('class="detail-copy"')[1].split("</article>")[0];
+  for (const text of ["Магістерські стипендії", "Cotutelle", "постдоків", "мистецтва та архітектури", "колишніх стипендіатів", "Zukunft Ukraine", "Study Guide", "Caritas Ukraine", "Goethe-Institut", "студентське самоврядування", "практики інтернаціоналізації", "16 листопада 2026", "10 грудня 2026", "1 травня 2027", "31 січня 2028", "17:00 до 18:30", "15:00 до 16:30", "14:00", "2 листопада 2026"]) assert.ok(body.includes(text), text);
+  for (const url of [
+    "https://www.daad-ukraine.org/uk/poshuk-stipendij/stipendialna-baza-danih/?detail_to_show=50026200",
+    "https://www.daad-ukraine.org/uk/poshuk-stipendij/stipendialna-baza-danih/",
+    "https://www.daad-ukraine.org/uk/2026/09/01/zukunft-ukraine-2027/",
+    "https://www.study-guide.com/en/",
+    "https://docs.google.com/forms/d/e/1FAIpQLSfcMF6o9nZFJzCmryMRULp6bQpZvBA1Z6XYgo_ooxizbxvpSA/viewform",
+    "https://www.daad.de/surveys/875413?lang=uk",
+    "https://us06web.zoom.us/meeting/register/FZKokJeVRqqQCbgKidWrQg",
+    "https://us06web.zoom.us/meeting/register/JvRlKzRuSFKrP82fA1cBfw",
+  ]) assert.ok(body.includes(`href="${url}"`), url);
+  assert.doesNotMatch(body, /inxmail|fbclid|Відписатися|inzsoc45@gmail/);
+  assert.match(article, /03 листопада 2026/);
+  assert.ok(international.split('id="international-opportunities"')[1].includes(`href="/news/${slug}"`));
+  assert.ok(english.includes("Zukunft Ukraine") && english.includes("Goethe-Institut"));
+});
 test("lists the new languages department under the economics faculty without changing existing units", async () => {
   const title = "Кафедра української та іноземних мов і гуманітарних наук";
   const id = "ukrainian-foreign-languages-humanities";

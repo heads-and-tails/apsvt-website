@@ -1770,6 +1770,7 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 .vacancy-role strong{font-size:13px}
 .vacancy-role>span{font:9px var(--mono);text-transform:uppercase;text-align:right}
 .vacancy-role>span>b{margin-right:5px;color:var(--cobalt);font:700 26px/1 var(--disp)}
+.international-opportunities-link{display:inline-flex;align-items:center;min-height:44px;margin-bottom:24px;color:var(--cobalt);font-size:15px;line-height:1.5;text-decoration:underline;text-underline-offset:4px}
 .vacancy-announcement-link{display:inline-flex;align-items:center;min-height:44px;justify-self:start;color:var(--cobalt);font-size:13px;text-decoration:underline;text-underline-offset:4px}
 .vacancy-announcement-link:hover{color:var(--ink)}
 .vacancy-archive{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:35px;align-items:end;margin-top:80px;padding:32px;background:var(--navy);color:#fff}

@@ -7,6 +7,7 @@ import { GreenFinEduResources } from "./GreenFinEduResources";
 import { GrantProjectsArchive } from "./GrantProjectsArchive";
 import { UkrainiansAbroadAdmission } from "../components/UkrainiansAbroadAdmission";
 import { SectionHub, type SectionHubItem } from "../components/SectionHub";
+import { daadOpportunitiesNewsSlug } from "@/lib/daad-opportunities-news";
 
 export const metadata: Metadata = {
   title: "Міжнародне співробітництво та вступ іноземців",
@@ -330,6 +331,7 @@ export default function Page() {
         <div><div className="idx">05 / Стипендії та мобільність</div><h2>Міжнародні<br />можливості</h2></div>
         <div><p>Актуальні програми для навчання за кордоном, розвитку лідерства й міжнародного професійного досвіду.</p><span>Перевірено 29 вересня 2026 року</span></div>
       </div>
+      <p className="international-opportunities-note"><Link className="international-opportunities-link" href={`/news/${daadOpportunitiesNewsSlug}`}>DAAD · листопад 2026: стипендії, дослідження та зустрічі →</Link></p>
       <div className="international-opportunities-grid">{internationalOpportunities.map((opportunity) => <article key={opportunity.number}>
         <div className="international-opportunity-top"><span>{opportunity.number}</span><small>{opportunity.provider}</small></div>
         <h3>{opportunity.title}</h3>
