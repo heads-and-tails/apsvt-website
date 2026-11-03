@@ -569,6 +569,9 @@ test("publishes the dean competition and retains prior competitions as archives"
   assert.match(articleHtml,/href="\/vacancies#competition-dean-2026"/);
   assert.match(articleHtml,/konkurs-3-dekan-fpsr-2026\.docx/);
   assert.match(vacanciesHtml,/Подання заяв завершилося 16 вересня 2026 року/);
+  const deanVacancy=vacanciesHtml.split('id="competition-dean-2026"')[1].match(/<article class="vacancy-department">[\s\S]*?<\/article>/)[0];
+  assert.match(deanVacancy,/<h4>Декан факультету<\/h4>/);
+  assert.match(deanVacancy,/<a[^>]*href="\/documents\/vacancies\/konkurs-3-dekan-fpsr-2026\.docx"[^>]*download[^>]*>Завантажити оголошення \(\.DOCX\) ↗<\/a>/);
   const document=await readFile(new URL("../public/documents/vacancies/konkurs-3-dekan-fpsr-2026.docx",import.meta.url));
   assert.equal(document.subarray(0,2).toString(),"PK");
 });
