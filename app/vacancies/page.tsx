@@ -133,7 +133,7 @@ export default async function VacanciesPage() {
             <div className="vacancy-departments">
               <article className="vacancy-department">
                 <div className="vacancy-department-title"><span>01</span><h4>Декан факультету</h4></div>
-                <div className="vacancy-roles"><div className="vacancy-role"><strong>Декан факультету</strong><span><b>1</b> посада</span></div></div>
+                <div className="vacancy-roles"><div className="vacancy-role"><strong>Декан факультету</strong><span><b>1</b> посада</span></div><a className="vacancy-announcement-link" href={deanCompetitionDocument} download>Завантажити оголошення (.DOCX) ↗</a></div>
               </article>
             </div>
           </section>
