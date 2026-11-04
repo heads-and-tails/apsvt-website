@@ -377,7 +377,7 @@ const teacherAchievementsUrl = await moduleUrl("../lib/marketing-teacher-achieve
 const teacherAchievements = await import(teacherAchievementsUrl);
 const nonformalUrl = await moduleUrl("../lib/marketing-nonformal.ts");
 const nonformal = await import(nonformalUrl);
-const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl, "./marketing-teacher-achievements": teacherAchievementsUrl, "./marketing-nonformal": nonformalUrl, "./student-council": await moduleUrl("../lib/student-council.ts") }));
+const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl, "./marketing-teacher-achievements": teacherAchievementsUrl, "./marketing-nonformal": nonformalUrl, "./student-council": await moduleUrl("../lib/student-council.ts"), "./marketing-monitoring": await moduleUrl("../lib/marketing-monitoring.ts") }));
 
 test("council sections retain root-page permissions and exclude unpublished, hidden and unrelated materials", async () => {
   const council = await import(await moduleUrl("../lib/student-council.ts"));
@@ -387,6 +387,19 @@ test("council sections retain root-page permissions and exclude unpublished, hid
   const entries = [base,{...base,id:"draft",status:"draft"},{...base,id:"hidden",hidden:true},{...base,id:"other",pagePath:"/programs/finance"},{...base,id:"about",sectionId:"about"},{...base,id:"override",entryType:"override"}];
   assert.deepEqual(council.studentCouncilEntries(entries,"representation").map(entry=>entry.id),["visible"]);
   assert.deepEqual(council.studentCouncilEntries([],"representation"),[]);
+});
+
+test("monitoring routes general, bachelor and master materials without leaking drafts or other-page content", async () => {
+  const monitoring = await import(await moduleUrl("../lib/marketing-monitoring.ts"));
+  assert.deepEqual(sections.editorialSectionsForPage("/programs/marketing").filter(x=>monitoring.isMarketingMonitoringSection(x.id)),[...monitoring.marketingMonitoringSections]);
+  assert.equal(sections.editorialSectionsForPage("/programs/finance").filter(x=>monitoring.isMarketingMonitoringSection(x.id)).length,0);
+  const base = {id:"text",pagePath:"/programs/marketing",sectionId:"marketing-monitoring-bachelor",entryType:"section",status:"published",sortOrder:10};
+  const entries = [base,{...base,id:"pdf",entryType:"material",fileUrl:"/approved.pdf"},{...base,id:"photo",entryType:"photo",imageUrl:"/approved.png"},{...base,id:"draft",status:"draft"},{...base,id:"hidden",hidden:true},{...base,id:"other",pagePath:"/programs/finance"},{...base,id:"master",sectionId:"marketing-monitoring-master"},{...base,id:"discussion",sectionId:"marketing-quality-discussion"},{...base,id:"legacy",sectionId:"quality",entryType:"quality",role:"monitoring"},{...base,id:"hero",entryType:"hero"}];
+  assert.deepEqual(monitoring.marketingMonitoringEntries(entries,"marketing-monitoring-bachelor").map(x=>x.id),["text","pdf","photo"]);
+  assert.deepEqual(monitoring.marketingMonitoringEntries(entries,"marketing-monitoring-master").map(x=>x.id),["master"]);
+  assert.deepEqual(monitoring.marketingMonitoringEntries(entries,"marketing-quality-monitoring").map(x=>x.id),["legacy"]);
+  assert.deepEqual(monitoring.marketingMonitoringEntries(entries,"marketing-quality-discussion"),[]);
+  assert.deepEqual(monitoring.marketingMonitoringEntries([],"marketing-monitoring-bachelor"),[]);
 });
 
 test("nonformal education has eight scoped editorial rubrics and excludes drafts and hidden or unrelated materials", () => {
@@ -425,7 +438,7 @@ test("nonformal editorial changes and removals survive repeat seeding without ov
   globalThis[fixtureKey] = client;
   try {
     const connection = `data:text/javascript;base64,${Buffer.from(`export const isSupabaseConfigured=()=>true;export const createSupabaseAdmin=()=>globalThis[${JSON.stringify(fixtureKey)}];export const createSupabasePublicClient=createSupabaseAdmin;`).toString("base64")}`;
-    const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl, "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts"), "./student-council-seeds": await moduleUrl("../lib/student-council-seeds.ts") });
+    const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl, "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts"), "./student-council-seeds": await moduleUrl("../lib/student-council-seeds.ts"), "./marketing-monitoring-seeds": await moduleUrl("../lib/marketing-monitoring-seeds.ts") });
     const accessUrl = await moduleUrl("../lib/editorial-access.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl });
     const department = await import(await moduleUrl("../lib/department-content.ts", { "@/lib/content": contentUrl, "./department-news-date": await moduleUrl("../lib/department-news-date.ts"), "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }), "./editorial-text": textUrl, "@/lib/editorial-access": accessUrl, "@/lib/education-quality": await moduleUrl("../lib/education-quality.ts"), "./marketing-mobility": mobilityUrl, "./editorial-custom-sections": await moduleUrl("../lib/editorial-custom-sections.ts") }));
     const original = await department.getDepartmentEntryById("marketing-nonformal-master-regulations-text");
@@ -455,6 +468,20 @@ test("nonformal editorial changes and removals survive repeat seeding without ov
     await (await import(contentUrl + "#council-after-delete")).getAllContent();
     assert.equal(await department.getDepartmentEntryById(councilOriginal.id),null);
     assert.equal((await department.getDepartmentEntries("/students/council")).length,4);
+
+    const { marketingMonitoringSeedContent } = await import(await moduleUrl("../lib/marketing-monitoring-seeds.ts"));
+    for (const item of marketingMonitoringSeedContent) rows.set(item.id,{id:item.id,kind:item.kind,payload:structuredClone(item.payload),sort_order:item.sortOrder,created_at:item.createdAt,updated_at:item.updatedAt,author_email:item.authorEmail});
+    const monitoringOriginal = await department.getDepartmentEntryById("marketing-monitoring-master-stakeholder-call");
+    await department.updateDepartmentEntry(monitoringOriginal.id,{...monitoringOriginal,body:"Оновлені результати моніторингу",imageUrl:"/saved-monitoring-photo.png",fileUrl:"/saved-monitoring.pdf",fileName:"Результати"},"editor@example.test");
+    await (await import(contentUrl+"#monitoring-repeat-read")).getAllContent();
+    const monitoringEdited = await department.getDepartmentEntryById(monitoringOriginal.id);
+    assert.equal(monitoringEdited.body,"Оновлені результати моніторингу");
+    assert.equal(monitoringEdited.fileUrl,"/saved-monitoring.pdf");
+    assert.equal(monitoringEdited.imageUrl,"/saved-monitoring-photo.png");
+    await department.deleteDepartmentEntry(monitoringOriginal.id,"editor@example.test");
+    await (await import(contentUrl+"#monitoring-after-delete")).getAllContent();
+    assert.equal(await department.getDepartmentEntryById(monitoringOriginal.id),null);
+    assert.equal((await department.getDepartmentEntries("/programs/marketing")).filter(x=>x.sectionId==="marketing-monitoring-master").length,4);
 
   } finally { delete globalThis[fixtureKey]; }
 });

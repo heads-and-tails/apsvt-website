@@ -1,0 +1,5 @@
+.marketing-stakeholder-call .editorial-richtext { margin: 0; border: 0; max-width: none; }
+.marketing-stakeholder-call .editorial-richtext p { max-width: 80ch; margin: 0 0 17px; }
+.marketing-stakeholder-call .editorial-richtext > blockquote { margin: 28px 0 0; padding: 22px 0 0; border: 0; border-top: 1px solid var(--line); }
+.marketing-stakeholder-call .editorial-richtext > blockquote p { margin: 0; font-size: 13px; color: #596374; }
+.marketing-stakeholder-call .editorial-richtext > blockquote p:first-child { font: 700 20px var(--disp); text-transform: uppercase; }

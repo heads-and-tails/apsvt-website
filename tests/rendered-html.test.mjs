@@ -1241,6 +1241,8 @@ test("separates marketing bachelor and master materials and publishes stakeholde
   assert.doesNotMatch(programmeBody,/marketing-stakeholder-call|anketa-stakeholderiv-mahistr-2026|propozytsii-stakeholderiv-mahistr-2026/);
   const qualityBody=marketing.slice(marketing.indexOf('class="marketing-quality"'),marketing.indexOf('class="marketing-science-clean"'));
   assert.equal((qualityBody.match(/id="marketing-stakeholder-call"/g)||[]).length,1,"Stakeholder call is not duplicated");
+  for (const id of ["marketing-quality-monitoring","marketing-monitoring-bachelor","marketing-monitoring-master"]) assert.ok(qualityBody.includes(`id="${id}"`));
+  assert.equal((marketing.match(/id="marketing-stakeholder-call"/g)||[]).length,1,"Managed monitoring content stays out of the generic news section");
   assert.doesNotMatch(qualityBody,/розміщено нижче в розділі/);
   for (const id of ["marketing-discussion-2026-students", "marketing-discussion-2026-employers", "marketing-discussion-2026-seminar"]) assert.match(qualityBody, new RegExp(`/department-news/${id}`));
   for(const slug of ["obhovorennia-opp-marketynh-12-bereznia-2026","obhovorennia-opp-marketynh-17-travnia-2026"]){
