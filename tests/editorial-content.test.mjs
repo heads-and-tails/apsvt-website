@@ -377,7 +377,17 @@ const teacherAchievementsUrl = await moduleUrl("../lib/marketing-teacher-achieve
 const teacherAchievements = await import(teacherAchievementsUrl);
 const nonformalUrl = await moduleUrl("../lib/marketing-nonformal.ts");
 const nonformal = await import(nonformalUrl);
-const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl, "./marketing-teacher-achievements": teacherAchievementsUrl, "./marketing-nonformal": nonformalUrl }));
+const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl, "./marketing-teacher-achievements": teacherAchievementsUrl, "./marketing-nonformal": nonformalUrl, "./student-council": await moduleUrl("../lib/student-council.ts") }));
+
+test("council sections retain root-page permissions and exclude unpublished, hidden and unrelated materials", async () => {
+  const council = await import(await moduleUrl("../lib/student-council.ts"));
+  assert.deepEqual(sections.editorialSectionsForPage(council.studentCouncilPath), [...council.studentCouncilSections]);
+  assert.equal(sections.editorialSectionsForPage(council.studentCouncilPath).length,6);
+  const base = { id: "visible", pagePath: council.studentCouncilPath, sectionId: "representation", entryType: "section", status: "published" };
+  const entries = [base,{...base,id:"draft",status:"draft"},{...base,id:"hidden",hidden:true},{...base,id:"other",pagePath:"/programs/finance"},{...base,id:"about",sectionId:"about"},{...base,id:"override",entryType:"override"}];
+  assert.deepEqual(council.studentCouncilEntries(entries,"representation").map(entry=>entry.id),["visible"]);
+  assert.deepEqual(council.studentCouncilEntries([],"representation"),[]);
+});
 
 test("nonformal education has eight scoped editorial rubrics and excludes drafts and hidden or unrelated materials", () => {
   const targets = sections.editorialSectionsForPage("/programs/marketing").filter(item => nonformal.isMarketingNonformalSection(item.id));
@@ -397,24 +407,25 @@ test("nonformal editorial changes and removals survive repeat seeding without ov
   const qualitySeedsUrl = await moduleUrl("../lib/marketing-quality-seeds.ts", { "./marketing-nonformal-seeds": seedUrl });
   const rows = new Map();
   const client = { from() {
-    const query = (patch = null) => {
+    const query = (patch = null, remove = false) => {
       const filters = [];
       const run = () => {
         const values = [...rows.values()].filter(row => filters.every(([key, value]) => row[key] === value));
         return values.map(row => {
           if (patch) { row = { ...row, ...structuredClone(patch) }; rows.set(row.id, row); }
+          if (remove) rows.delete(row.id);
           return structuredClone(row);
         });
       };
       return { select() { return this; }, eq(key, value) { filters.push([key, value]); return this; }, order() { return this; }, then(resolve) { return Promise.resolve({ data: run(), error: null }).then(resolve); }, async maybeSingle() { return { data: run()[0] || null, error: null }; } };
     };
-    return { select: () => query(), update: patch => query(patch), delete() { throw new Error("Seeded content must be hidden rather than hard-deleted"); }, async upsert(items, options) { assert.equal(options.ignoreDuplicates, true); for (const row of items) if (!rows.has(row.id)) rows.set(row.id, structuredClone(row)); return { error: null }; } };
+    return { select: () => query(), update: patch => query(patch), delete: () => query(null, true), async upsert(items, options) { assert.equal(options.ignoreDuplicates, true); for (const row of items) if (!rows.has(row.id)) rows.set(row.id, structuredClone(row)); return { error: null }; } };
   } };
   const fixtureKey = "__apsvtNonformalPersistenceFixture";
   globalThis[fixtureKey] = client;
   try {
     const connection = `data:text/javascript;base64,${Buffer.from(`export const isSupabaseConfigured=()=>true;export const createSupabaseAdmin=()=>globalThis[${JSON.stringify(fixtureKey)}];export const createSupabasePublicClient=createSupabaseAdmin;`).toString("base64")}`;
-    const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl, "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts") });
+    const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl, "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts"), "./student-council-seeds": await moduleUrl("../lib/student-council-seeds.ts") });
     const accessUrl = await moduleUrl("../lib/editorial-access.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl });
     const department = await import(await moduleUrl("../lib/department-content.ts", { "@/lib/content": contentUrl, "./department-news-date": await moduleUrl("../lib/department-news-date.ts"), "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }), "./editorial-text": textUrl, "@/lib/editorial-access": accessUrl, "@/lib/education-quality": await moduleUrl("../lib/education-quality.ts"), "./marketing-mobility": mobilityUrl, "./editorial-custom-sections": await moduleUrl("../lib/editorial-custom-sections.ts") }));
     const original = await department.getDepartmentEntryById("marketing-nonformal-master-regulations-text");
@@ -431,6 +442,20 @@ test("nonformal editorial changes and removals survive repeat seeding without ov
     assert.equal(hidden.hidden, true);
     assert.equal(hidden.body, "Збережена редактором зміна");
     assert.deepEqual(nonformal.marketingNonformalEntries([hidden], hidden.sectionId), []);
+    const { studentCouncilSeedContent } = await import(await moduleUrl("../lib/student-council-seeds.ts"));
+    for (const item of studentCouncilSeedContent) rows.set(item.id, { id:item.id,kind:item.kind,payload:structuredClone(item.payload),sort_order:item.sortOrder,created_at:item.createdAt,updated_at:item.updatedAt,author_email:item.authorEmail });
+    const councilOriginal = await department.getDepartmentEntryById("student-council-pinchuk");
+    assert.ok(councilOriginal);
+    const councilEdited = { ...councilOriginal, body:"Відредагований текст", imageUrl:"/saved-photo.png", fileUrl:"/saved-document.pdf", fileName:"Документ" };
+    await department.updateDepartmentEntry(councilOriginal.id,councilEdited,"editor@example.test");
+    await (await import(contentUrl + "#council-repeat-read")).getAllContent();
+    const savedCouncil = await department.getDepartmentEntryById(councilOriginal.id);
+    for (const key of ["body","imageUrl","fileUrl","fileName"]) assert.equal(savedCouncil[key],councilEdited[key]);
+    await department.deleteDepartmentEntry(councilOriginal.id,"editor@example.test");
+    await (await import(contentUrl + "#council-after-delete")).getAllContent();
+    assert.equal(await department.getDepartmentEntryById(councilOriginal.id),null);
+    assert.equal((await department.getDepartmentEntries("/students/council")).length,4);
+
   } finally { delete globalThis[fixtureKey]; }
 });
 

@@ -2086,9 +2086,29 @@ test("publishes Moodle and the student council across student resources",async()
   assert.match(students,/https:\/\/moodle\.socosvita\.kiev\.ua\//);
   assert.match(students,/Студентська рада/);
   assert.match(facilities,/href="\/students\/council"/);
-  assert.match(council,/Ваш голос/);
-  assert.match(council,/Положення про самоврядування/);
-  assert.match(council,/info@socosvita\.kiev\.ua/);
+  assert.match(council,/src="\/student-council\/banner.png"/);
+  assert.doesNotMatch(council,/Ваш голос|Написати Студентській раді|Положення про самоврядування/);
+  for (const section of ["about", "representation", "regulations", "news", "initiatives", "feedback"]) assert.match(council,new RegExp(`href="/students/council/${section}"`));
+});
+
+test("publishes the six approved council sections and source portraits with working contact links",async()=>{
+  const about = await (await render("/students/council/about")).text();
+  assert.match(about,/гарантоване законодавством право/);
+  assert.match(about,/Особистісний та професійний розвиток/);
+  const representatives = await (await render("/students/council/representation")).text();
+  for (const name of ["Віола ПІНЧУК", "Ольга КОСТЮЧЕНКО", "Валентин МАНДЗЮК"]) assert.ok(representatives.includes(name));
+  for (const image of ["pinchuk", "kostiuchenko", "mandziuk"]) assert.ok(representatives.includes(`/student-council/${image}.png`));
+  assert.match(representatives,/href="tel:\+380950296355"/);
+  assert.match(representatives,/href="https:\/\/me-l.co\/yhk3stxh"/);
+  assert.doesNotMatch(representatives,/гарантоване законодавством право/);
+  for (const section of ["regulations", "news", "initiatives"]) {
+    const response = await render(`/students/council/${section}`);
+    assert.equal(response.status,200);
+    assert.match(await response.text(),/Матеріали ще не оприлюднено/);
+  }
+  const feedback = await (await render("/students/council/feedback")).text();
+  assert.match(feedback,/href="mailto:viola.pinchuk2513@gmail.com"/);
+  assert.equal((await render("/students/council/nonexistent")).status,404);
 });
 
 test("publishes source-based law course annotations and the updated faculty team",async()=>{
