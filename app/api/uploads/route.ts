@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requirePagePublisher, requirePublisher } from "@/lib/auth";
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { isDepartmentPagePath } from "@/lib/editorial-access";
+import { isEditorialPagePath } from "@/lib/editorial-access";
 
 const imageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 const documentTypes = new Set([
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const data = multipart ? await request.formData() : new URL(request.url).searchParams;
     const purpose = data.get("purpose") === "document" ? "document" : "image";
     const requestedPagePath = data.get("pagePath");
-    const pagePath = typeof requestedPagePath === "string" && isDepartmentPagePath(requestedPagePath) ? requestedPagePath : null;
+    const pagePath = isEditorialPagePath(requestedPagePath) ? requestedPagePath : null;
     const publisher = pagePath
       ? await requirePagePublisher(pagePath)
       : purpose === "document"

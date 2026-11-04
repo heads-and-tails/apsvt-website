@@ -901,3 +901,38 @@ test("legacy Telegram calendar actions open the calendar panel and cannot publis
   await assert.rejects(api.handleScheduleDocument({ chat: { id: "fixture" } }, publisher, { selection: { collectionId: "education-process" } }), /редакційній панелі/);
   await assert.rejects(api.handleEditorialCallback({ id: "fixture", data: "ed:sch:mode:g:f", message: { chat: { id: "fixture" } } }, { accessScopes: ["/schedule"] }, "https://example.test"), /немає доступу/);
 });
+
+test("image uploads use the student council page scope for signed and direct uploads", async () => {
+  const asModule = (code) => `data:text/javascript;base64,${Buffer.from(code).toString("base64")}`;
+  const response = asModule("export const NextResponse = { json: (body, init) => Response.json(body, init) };");
+  const auth = asModule(`export async function requirePagePublisher(path) {
+    if (path !== "/students/council") throw new Error("FORBIDDEN_SCOPE");
+    return { email: "council-editor@example.test" };
+  }
+  export async function requirePublisher() { throw new Error("UNEXPECTED_UNSCOPED_ACCESS"); }`);
+  const access = asModule(`export function isEditorialPagePath(path) {
+    return path === "/students/council" || path === "/news";
+  }`);
+  const config = asModule("export function isSupabaseConfigured() { return true; }");
+  const admin = asModule(`export function createSupabaseAdmin() { return { storage: {
+    from() { return {
+      createSignedUploadUrl: async () => ({ data: { token: "test-token" }, error: null }),
+      upload: async () => ({ error: null }),
+      getPublicUrl: () => ({ data: { publicUrl: "https://example.test/photo.png" } }),
+    }; },
+  } }; }`);
+  const imports = { "next/server": response, "@/lib/auth": auth, "@/lib/editorial-access": access, "@/lib/supabase/config": config, "@/lib/supabase/admin": admin };
+  const signed = await import(await moduleUrl("../app/api/uploads/sign/route.ts", imports));
+  const direct = await import(await moduleUrl("../app/api/uploads/route.ts", imports));
+  const ticket = (pagePath) => new Request("https://example.test/api/uploads/sign", {
+    method: "POST", headers: { "content-type": "application/json" },
+    body: JSON.stringify({ fileName: "photo.png", contentType: "image/png", fileSize: 4, purpose: "image", pagePath }),
+  });
+  assert.equal((await signed.POST(ticket("/students/council"))).status, 200);
+  assert.equal((await signed.POST(ticket("/news"))).status, 403);
+  const upload = (pagePath) => new Request(`https://example.test/api/uploads?${new URLSearchParams({ fileName: "photo.png", purpose: "image", pagePath })}`, {
+    method: "POST", headers: { "content-type": "image/png" }, body: new Uint8Array([1, 2, 3, 4]),
+  });
+  assert.equal((await direct.POST(upload("/students/council"))).status, 200);
+  assert.equal((await direct.POST(upload("/news"))).status, 403);
+});
