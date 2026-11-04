@@ -26,6 +26,27 @@ test("offers a saved course view and batch publication without widening editor a
 });
 
 let workerPromise;
+test("publishes the supplied Bilous open lecture with its date, speaker and exact Zoom target", async () => {
+  const slug = "vidkryta-lektsiia-volodymyra-bilousa-9-lystopada-2026";
+  const zoom = "https://us02web.zoom.us/j/87040876569?pwd=sonAciICHl4RNUzVRSUbeQ3YmrFj0l.1";
+  const [home, news, englishNews, article, englishArticle] = await Promise.all([
+    render("/").then((response) => response.text()),
+    render("/news").then((response) => response.text()),
+    render("/en/news").then((response) => response.text()),
+    render(`/news/${slug}`).then((response) => response.text()),
+    render(`/en/news/${slug}`).then((response) => response.text()),
+  ]);
+  for (const html of [home, news]) assert.ok(html.includes(`href="/news/${slug}"`));
+  assert.ok(englishNews.includes(`href="/en/news/${slug}"`));
+  for (const html of [article, englishArticle]) {
+    const body = html.split('class="detail-copy"')[1].split("</article>")[0];
+    for (const text of ["Шановні колеги та здобувачі!", "09.11.2026 року о 09:00", "Анатомія та еволюція нервової системи", "Анатомія головного та спинного мозку", "завідувач кафедри клінічної психології та психотерапії", "кандидат медичних наук Володимир Сергійович Білоус", "09:00 за Києвом", "870 4087 6569"]) assert.ok(body.includes(text), text);
+    assert.ok(body.includes(`href="${zoom}"`));
+    assert.doesNotMatch(body, /icsToken|Every week|mynotes|One tap mobile/);
+  }
+  assert.match(article, /04 листопада 2026/);
+});
+
 test("publishes the November DAAD opportunities with every deadline, event and direct registration link", async () => {
   const slug = "daad-stypendii-mozhlyvosti-lystopad-2026";
   const [news, article, international, english] = await Promise.all([
@@ -140,7 +161,7 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/href="\/en"[^>]*>EN<\/a>/i);
   assert.match(html,/Освітні траєкторії/);
   assert.match(await (await render("/news")).text(),/mental-health-conference-science-2026\.jpg/);
-  assert.match(html,/Запрошуємо стати частиною Erasmus\+ Days 2026!/);
+  assert.match(html,/Відкрита лекція Володимира Білоуса/);
   assert.match(await (await render("/news")).text(),/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(html,/EDUPRO2026: AI FOR EDUCATORS/);
   assert.match(await (await render("/news")).text(),/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
