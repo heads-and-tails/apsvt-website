@@ -5,6 +5,7 @@ import { marketingMethodicalGroups } from "./marketing-methodical";
 import { marketingMobilitySection } from "./marketing-mobility";
 import { marketingTeacherAchievementsSection } from "./marketing-teacher-achievements";
 import { marketingNonformalEditorialSections } from "./marketing-nonformal";
+import { studentCouncilPath, studentCouncilSections } from "./student-council";
 
 export const financeProjectSections = [
   { id: "greenfinedu", label: "Jean Monnet GreenFinEDU" },
@@ -14,6 +15,7 @@ export const financeProjectSections = [
 ] as const;
 
 export function editorialSectionsForPage(path: string): { id: string; label: string }[] {
+  if (path === studentCouncilPath) return [...studentCouncilSections];
   if (path === "/programs/marketing") return [
     { id: "department", label: "Про кафедру" },
     { id: "department-team", label: "Науково-педагогічний склад" },

@@ -38,6 +38,7 @@ import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { marketingQualitySeedContent } from "@/lib/marketing-quality-seeds";
 import { managementDiscussionQualitySeed } from "./management-discussion-news";
+import { studentCouncilSeedContent } from "./student-council-seeds";
 
 const departmentQualitySeeds = [...marketingQualitySeedContent, managementDiscussionQualitySeed];
 
@@ -49,6 +50,7 @@ function seed(id: string, kind: ContentKind, payload: ContentPayload, sortOrder:
 }
 
 export const seedContent: ContentItem[] = [
+  ...studentCouncilSeedContent,
   ...departmentQualitySeeds,
   seed("lesson-01", "lesson", { date: "07.09", day: "Понеділок", time: "09:00–10:20", course: "Іноземна мова", type: "Практичне", group: "1 курс", faculty: "Економіка і туризм", teacher: "О. Мельник", room: "214" }, 10),
   seed("lesson-02", "lesson", { date: "07.09", day: "Понеділок", time: "10:35–11:55", course: "Основи менеджменту", type: "Лекція", group: "1 курс", faculty: "Економіка і туризм", teacher: "Н. Василець", room: "305" }, 20),
