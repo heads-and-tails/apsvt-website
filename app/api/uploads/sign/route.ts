@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requirePagePublisher, requirePublisher } from "@/lib/auth";
-import { isDepartmentPagePath } from "@/lib/editorial-access";
+import { isEditorialPagePath } from "@/lib/editorial-access";
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     const fileName = typeof body.fileName === "string" ? body.fileName.trim() : "";
     const contentType = typeof body.contentType === "string" ? body.contentType : "";
     const fileSize = typeof body.fileSize === "number" && Number.isFinite(body.fileSize) ? body.fileSize : 0;
-    const pagePath = isDepartmentPagePath(body.pagePath) ? body.pagePath : null;
+    const pagePath = isEditorialPagePath(body.pagePath) ? body.pagePath : null;
 
     if (!purpose || !fileName || fileSize <= 0) {
       return NextResponse.json({ error: "Оберіть файл для завантаження" }, { status: 400 });
