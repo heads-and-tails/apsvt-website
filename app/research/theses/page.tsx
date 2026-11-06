@@ -18,7 +18,7 @@ export default async function Page() {
   const theses = [...psychologyTheses, ...marketingTheses, ...editorialTheses];
 
   return <main id="top">
-    <SiteHeader />
+    <SiteHeader englishHref="/en/research" />
     <section className="theses-hero">
       <div className="wrap">
         <div className="crumb">Головна / Наука / Кваліфікаційні роботи</div>
