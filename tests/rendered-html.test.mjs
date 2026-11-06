@@ -873,7 +873,7 @@ test("links the D8 law master's self-evaluation from accreditation and faculty p
   const accreditation=await (await render("/about/licenses")).text();
   const expertResults=accreditation.match(/id="expert-results"[\s\S]*?(?=<section|<footer)/)?.[0] || "";
   assert.match(expertResults,/D8 · Право/);
-  assert.ok(expertResults.includes(`href="${pdfUrl}"`));
+  assert.ok(expertResults.includes(`href="/documents/accreditation/expert-results/2026/law-master-self-evaluation-2026-11.pdf"`));
 
   const faculty=await (await render("/departments/law-faculty")).text();
   const programmes=faculty.match(/<section class="faculty-programmes"[\s\S]*?<\/section>/)?.[0] || "";
@@ -2462,4 +2462,39 @@ test("offers official academic-calendar folders in both languages without provis
   assert.match(schedule, /id="class-schedule"/);
   assert.match(schedule, /id="exam-session"/);
   assert.ok(schedule.includes('href="/academic-calendar"'));
+});
+
+test("publishes four current master self-assessments as unchanged original PDFs", async () => {
+  const html = await (await render("/about/licenses")).text();
+  const section = html.match(/id="expert-results"[\s\S]*?(?=<section|<footer)/)?.[0] || "";
+  const files = [
+  {
+    "href": "/documents/accreditation/expert-results/2026/professional-education-information-security-master-self-evaluation-2026-11.pdf",
+    "bytes": 1411689,
+    "sha256": "3307c71cb66cbaef01406afaa3e56ab7052aa767963782d9cbe3fed687c09d97"
+  },
+  {
+    "href": "/documents/accreditation/expert-results/2026/law-master-self-evaluation-2026-11.pdf",
+    "bytes": 522036,
+    "sha256": "740ea05028cb2a682276f35e447e5ae0dd0d61dd4bab02aaf9fc9cb77c560424"
+  },
+  {
+    "href": "/documents/accreditation/expert-results/2026/management-master-self-evaluation-2026-11.pdf",
+    "bytes": 724406,
+    "sha256": "d5a9164c5258cd7973ee8fa3edc9eb941da0cc2402ea4a53c3b581f4feb63705"
+  },
+  {
+    "href": "/documents/accreditation/expert-results/2026/marketing-master-self-evaluation-2026-11.pdf",
+    "bytes": 734589,
+    "sha256": "9e42e18162a6b436b70f5f5ed08267fab0d56326abd4a2f17c4616e16ebc52cb"
+  }
+];
+  for (const file of files) {
+    assert.ok(section.includes(`href="${file.href}"`));
+    const pdf = await readFile(new URL(`../public${file.href}`, import.meta.url));
+    assert.equal(pdf.length, file.bytes);
+    assert.equal(createHash("sha256").update(pdf).digest("hex"), file.sha256);
+  }
+  for (const label of ["A5 · Професійна освіта", "D3 · Менеджмент", "D5 · Маркетинг", "D8 · Право", "015 · Професійна освіта"]) assert.ok(section.includes(label), label);
+  assert.equal((section.match(/class="expert-document-card"/g) || []).length, 11);
 });
