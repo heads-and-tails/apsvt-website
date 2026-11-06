@@ -2644,3 +2644,13 @@ test("publishes all 25 Marketing theses in both repositories with unchanged orig
   assert.ok(central.includes("Бирзул Анна Олександрівна"));
   assert.ok(central.includes("Цифрові інструменти просування освітніх послуг"));
 });
+
+test("the thesis catalogue language switch opens the available English research page", async () => {
+  const html = await (await render("/research/theses")).text();
+  const control = html.match(/<a\b[^>]*class="lang-toggle"[^>]*>/)?.[0] || "";
+  assert.match(control, /href="\/en\/research"/);
+  assert.doesNotMatch(control, /href="\/en\/research\/theses"/);
+  const english = await render("/en/research");
+  assert.equal(english.status, 200);
+  assert.match(await english.text(), /Research and publications/);
+});
