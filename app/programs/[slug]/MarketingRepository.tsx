@@ -1,3 +1,5 @@
+import { marketingTheses } from "@/lib/marketing-theses";
+import { ThesesCatalogue } from "@/app/research/theses/ThesesCatalogue";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { DepartmentEditorialContent } from "@/app/components/DepartmentEditorialContent";
 
@@ -14,5 +16,6 @@ export function MarketingRepository({ entries }: { entries: DepartmentEntry[] })
       <h2 id="marketing-repository-title">РЕПОЗИТАРІЙ</h2>
       <DepartmentEditorialContent entries={materials} inline />
     </div>
+    <ThesesCatalogue items={marketingTheses} />
   </section>;
 }
