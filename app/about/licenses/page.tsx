@@ -44,11 +44,35 @@ const currentCertificates: CurrentCertificate[] = [
 const expertDocuments: ExpertDocument[] = [
   {
     title: "Відомості про самооцінювання освітньої програми",
+    programme: "Професійна освіта. Управління інформаційною безпекою",
+    level: "Магістр",
+    specialty: "A5 · Професійна освіта",
+    kind: "Відомості про самооцінювання",
+    href: "/documents/accreditation/expert-results/2026/professional-education-information-security-master-self-evaluation-2026-11.pdf",
+  },
+  {
+    title: "Відомості про самооцінювання освітньої програми",
+    programme: "Менеджмент",
+    level: "Магістр",
+    specialty: "D3 · Менеджмент",
+    kind: "Відомості про самооцінювання",
+    href: "/documents/accreditation/expert-results/2026/management-master-self-evaluation-2026-11.pdf",
+  },
+  {
+    title: "Відомості про самооцінювання освітньої програми",
+    programme: "Маркетинг",
+    level: "Магістр",
+    specialty: "D5 · Маркетинг",
+    kind: "Відомості про самооцінювання",
+    href: "/documents/accreditation/expert-results/2026/marketing-master-self-evaluation-2026-11.pdf",
+  },
+  {
+    title: "Відомості про самооцінювання освітньої програми",
     programme: "Право",
     level: "Магістр",
     specialty: "D8 · Право",
     kind: "Відомості про самооцінювання",
-    href: "https://srbnlvcmkorjvaptbbiu.supabase.co/storage/v1/object/public/editorial-documents/documents/2026-10-29/5fa83cf9-43dc-4dd9-b12f-b3a5015458f1.pdf",
+    href: "/documents/accreditation/expert-results/2026/law-master-self-evaluation-2026-11.pdf",
   },
   {
     title: "Відомості про самооцінювання освітньої програми",
