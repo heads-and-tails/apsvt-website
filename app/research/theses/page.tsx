@@ -3,6 +3,7 @@ import { getPublicContent } from "@/lib/content";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SiteHeader } from "../../components/SiteHeader";
 import { ThesesCatalogue } from "./ThesesCatalogue";
+import { marketingTheses } from "@/lib/marketing-theses";
 import { psychologyTheses } from "@/lib/psychology-theses";
 
 export const metadata: Metadata = {
@@ -14,7 +15,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const editorialTheses = await getPublicContent("student_thesis");
-  const theses = [...psychologyTheses, ...editorialTheses];
+  const theses = [...psychologyTheses, ...marketingTheses, ...editorialTheses];
 
   return <main id="top">
     <SiteHeader />

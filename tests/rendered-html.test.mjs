@@ -1234,7 +1234,8 @@ test("publishes an independent marketing repository without demonstration materi
   assert.match(html,/id="marketing-repository" aria-labelledby="marketing-repository-title"/);
   assert.match(html,/id="marketing-repository-title">РЕПОЗИТАРІЙ/);
   const repository=html.slice(html.indexOf('<section class="marketing-repository"'),html.indexOf('</section>',html.indexOf('<section class="marketing-repository"')));
-  assert.doesNotMatch(repository,/Демонстраційний|documents\/examples|thesis-marketing-demo|placeholder/);
+  assert.doesNotMatch(repository,/Демонстраційний|documents\/examples|thesis-marketing-demo/);
+  assert.doesNotMatch(repository,/(?:href|src)="[^"]*placeholder|>\s*placeholder\s*</i);
   assert.match(html,/id="marketing-student-experience"/);
   assert.match(html,/id="marketing-student-science"/);
   assert.doesNotMatch(await(await render("/programs/finance")).text(),/id="marketing-repository"/);
@@ -2497,4 +2498,149 @@ test("publishes four current master self-assessments as unchanged original PDFs"
   }
   for (const label of ["A5 · Професійна освіта", "D3 · Менеджмент", "D5 · Маркетинг", "D8 · Право", "015 · Професійна освіта"]) assert.ok(section.includes(label), label);
   assert.equal((section.match(/class="expert-document-card"/g) || []).length, 11);
+});
+
+test("publishes all 25 Marketing theses in both repositories with unchanged originals", async () => {
+  const files = [
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-01.pdf",
+    "bytes": 1494783,
+    "sha256": "0968eb59b68c498455599c41f4f5ade2a7e059892e6a30c0b0718eefd3e32599"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-02.pdf",
+    "bytes": 1768311,
+    "sha256": "e89bf2c99df796a8ffbcaf06d67d49bd3ae937c1103f78f773f1dc4f286e5054"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-03.pdf",
+    "bytes": 1585002,
+    "sha256": "d767b5fade64c0eedbee0a34625d13ca4278f570d5316c535ae5c83284eab60d"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-04.pdf",
+    "bytes": 1324101,
+    "sha256": "da65e401503ec811a12685b5bbb6f3a8d6b97ea45b128df8817b9df009bab640"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-05.pdf",
+    "bytes": 1372311,
+    "sha256": "bc8806b740cd679f12f0d04900546877457fe711c18161c62d5f11203f107045"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-06.pdf",
+    "bytes": 1373949,
+    "sha256": "a260963738239e575616699af5723fc7c3eba19fbd0972c5bed068ae0fa882b0"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-07.pdf",
+    "bytes": 1932255,
+    "sha256": "c712822cd9814f965c90a0c89cebcd5631cd6baa11e3b7a1e6586be3c40381d8"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-08.pdf",
+    "bytes": 2287523,
+    "sha256": "07de257bf766fa8ca4d26bdeb13895dd77eb499f81562bc6514b4cf3428d1aab"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-09.pdf",
+    "bytes": 1810071,
+    "sha256": "d9e695cd75b410a38e8326329ba351038e01705f367bceb663938cde3d96259b"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-10.pdf",
+    "bytes": 1215537,
+    "sha256": "ab312ef55ed82afd69798a4ed8c6a2555d700052718fd09456d34ee302665188"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-11.pdf",
+    "bytes": 1231425,
+    "sha256": "149e870c42d861dceecdb4403eade741f264af15025a9d7bcdfe96ca59490d8b"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-12.pdf",
+    "bytes": 2042893,
+    "sha256": "ec172cf7cb401f04ef69d85cd9554f9a8d9f40b453d0965e39b7ea94198d560c"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-13.pdf",
+    "bytes": 1833963,
+    "sha256": "e164e8326b467d6b51b28d8711016a7ae8233f0a0b5921345251ea343e715032"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-14.pdf",
+    "bytes": 1439071,
+    "sha256": "d85014de67cce959911dfe1f3680a96b9ac744f5ce683da7567b26807ed1c8d4"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-15.pdf",
+    "bytes": 1380655,
+    "sha256": "d53ea9682beb26612ed0d282e36783f1a80198a05b7c2d328756a6d0214646be"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-16.pdf",
+    "bytes": 1566571,
+    "sha256": "a25eaa6e06cbc9c622b3bb295fb0b19e120db8c5d2f5a3105a043b34166d8b91"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-17.pdf",
+    "bytes": 1285509,
+    "sha256": "c4e60e1410b3a4b6b7186bd7eedc04addd92c676af0217489fe51194c83edad7"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-18.pdf",
+    "bytes": 2670113,
+    "sha256": "811c177fa3738881a5fee8238ef660cfc4496197a786cfb3ec910c8f2e34050a"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-19.pdf",
+    "bytes": 1295639,
+    "sha256": "a87223abb7b37ec93c7c3a1a193ef32188161279854dc62f87f8108a6986b7a6"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-20.pdf",
+    "bytes": 1617773,
+    "sha256": "53d15a1468e8309d4cbba9bc6009b5b74753bc1d1c7bcfb39d5232ea1d53961e"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-21.pdf",
+    "bytes": 1888646,
+    "sha256": "6c6752f10a4813032a149d648f1eb87a948bb6020abb9991c0ce83ec43b9a64e"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-22.pdf",
+    "bytes": 1602788,
+    "sha256": "c6c66db09679cf8f303481239be2f85dd32f337f2dd2a9f30168612c55e4dddc"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-23.pdf",
+    "bytes": 1484429,
+    "sha256": "2fc8b323c6eafb898e402e050a799945be253859e7e212414494435c1cd56e44"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-24.pdf",
+    "bytes": 1546210,
+    "sha256": "9a3b086ad5572eb7f73bb52e83f3a8ba65b0e51b5e627c571c5a2a06f83e00c8"
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-25.pdf",
+    "bytes": 3654500,
+    "sha256": "fb4fba3b9f274eec0e8aef7d93217f90aa211404919c8f932680757b1af7b353"
+  }
+];
+  for (const path of ["/research/theses", "/programs/marketing"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    for (const file of files) assert.equal(html.split(`href="${file.href}"`).length - 1, 1, `${path}: ${file.href}`);
+    for (const author of ["Леонтьєва Т. В.", "Білов Є. М.", "Остапець О. О.", "Пінчук М. Л."]) assert.ok(html.includes(author));
+  }
+  for (const file of files) {
+    const pdf = await readFile(new URL(`../public${file.href}`, import.meta.url));
+    assert.equal(pdf.length, file.bytes);
+    assert.equal(createHash("sha256").update(pdf).digest("hex"), file.sha256);
+  }
+  const central = await (await render("/research/theses")).text();
+  assert.ok(central.includes("Бирзул Анна Олександрівна"));
+  assert.ok(central.includes("Цифрові інструменти просування освітніх послуг"));
 });
