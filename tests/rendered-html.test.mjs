@@ -2696,3 +2696,39 @@ test("publishes four additional Marketing masters theses in both repositories", 
     assert.equal(createHash("sha256").update(pdf).digest("hex"), file.sha256);
   }
 });
+
+test("publishes three further Marketing masters theses in both repositories", async () => {
+  const files = [
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-30.pdf",
+    "bytes": 1687445,
+    "sha256": "8dc7b4ea625fbe8b24564f52c95f6fd76dac0340718144723a59aab5cb83fbe6",
+    "author": "Марцинківський Я. О."
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-31.pdf",
+    "bytes": 1350932,
+    "sha256": "c375a920cde48821635e088f315ace8fc6a1f7254f9253bafab09eaed899e951",
+    "author": "Гук Є. В."
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-32.pdf",
+    "bytes": 2191610,
+    "sha256": "efde112ae61f84ee7189ab5d575657baad960eb7bd485218d2b0cf9b0eb594b0",
+    "author": "Вітковський Д. А."
+  }
+];
+  for (const path of ["/programs/marketing", "/research/theses"]) {
+    const html = await (await render(path)).text();
+    for (const file of files) {
+      assert.equal(html.split(`href="${file.href}"`).length - 1, 1, path + file.href);
+      assert.ok(html.includes(file.author));
+    }
+    assert.ok(html.includes("Кисарець В. І."));
+  }
+  for (const file of files) {
+    const pdf = await readFile(new URL(`../public${file.href}`, import.meta.url));
+    assert.equal(pdf.length, file.bytes);
+    assert.equal(createHash("sha256").update(pdf).digest("hex"), file.sha256);
+  }
+});
