@@ -1,3 +1,4 @@
+import { applicantRankingsNewsSlug } from "./admissions-rankings";
 import type { Post } from "./data";
 import type { DepartmentEntry } from "./department-content";
 import { departmentImages } from "./department-media";
@@ -16,7 +17,7 @@ function newsPreview(summary: string): string {
 
 export function mergeAcademyNews(posts: Post[], entries: DepartmentEntry[]): AcademyNewsItem[] {
   const items: AcademyNewsItem[] = posts
-    .filter((post) => post.status === "published" && !post.category.startsWith("__"))
+    .filter((post) => post.status === "published" && !post.category.startsWith("__") && post.slug !== applicantRankingsNewsSlug)
     .map((post) => ({ post, href: `/news/${post.slug}` }));
 
   for (const entry of entries) {
