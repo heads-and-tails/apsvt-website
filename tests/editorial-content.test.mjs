@@ -755,6 +755,7 @@ test("respects successful empty published-news queries and preserves fallback fo
 
 test("Academy news includes all public Marketing news and preserves canonical articles and source dates", async () => {
   const { mergeAcademyNews } = await import(await moduleUrl("../lib/academy-news.ts", {
+    "./admissions-rankings": await moduleUrl("../lib/admissions-rankings.ts"),
     "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }),
     "./department-news-date": await moduleUrl("../lib/department-news-date.ts"),
   }));
@@ -935,4 +936,18 @@ test("image uploads use the student council page scope for signed and direct upl
   });
   assert.equal((await direct.POST(upload("/students/council"))).status, 200);
   assert.equal((await direct.POST(upload("/news"))).status, 403);
+});
+
+test("general Academy news excludes only the retired applicant rankings announcement", async () => {
+  const rankingsUrl = await moduleUrl("../lib/admissions-rankings.ts");
+  const { applicantRankingsNewsSlug } = await import(rankingsUrl);
+  const { mergeAcademyNews } = await import(await moduleUrl("../lib/academy-news.ts", {
+    "./admissions-rankings": rankingsUrl,
+    "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }),
+    "./department-news-date": await moduleUrl("../lib/department-news-date.ts"),
+  }));
+  const retained = { ...edupro.eduproAnnouncement, slug: "another-admissions-announcement", title: "Оприлюднено рейтингові списки", featured: false };
+  const retired = { ...retained, slug: applicantRankingsNewsSlug };
+  assert.deepEqual(mergeAcademyNews([retired, retained], []).map(item => item.post), [retained]);
+  assert.equal(retired.status, "published");
 });

@@ -1587,10 +1587,9 @@ test("announces and duplicates the published entrance results in news",async()=>
   assert.match(august6ArticleHtml,/Відеозапис співбесіди/);
 });
 
-test("publishes the applicant rankings announcement in news",async()=>{
+test("keeps the applicant rankings announcement out of general news and preserves its originals",async()=>{
   const listing=await (await render("/news")).text();
-  assert.match(listing,/Оприлюднено рейтингові списки вступників на бакалаврат/);
-  assert.match(listing,/25 офіційних рейтингових списків/);
+  assert.doesNotMatch(listing,/href="\/news\/reitynhovi-spysky-vstupnykiv-bakalavrat-2026"/);
 
   const article=await (await render("/news/reitynhovi-spysky-vstupnykiv-bakalavrat-2026")).text();
   assert.match(article,/25 рейтингових списків за програмами/);
