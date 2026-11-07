@@ -15,6 +15,13 @@ function newsPreview(summary: string): string {
   return text.length > 240 ? `${text.slice(0, 240).replace(/\s+\S*$/, "").trimEnd()}…` : text;
 }
 
+function publicationTime(post: Post): number {
+  const published = post.publishedAt ? Date.parse(post.publishedAt) : NaN;
+  if (Number.isFinite(published)) return published;
+  const created = Date.parse(post.createdAt);
+  return Number.isFinite(created) ? created : 0;
+}
+
 export function mergeAcademyNews(posts: Post[], entries: DepartmentEntry[]): AcademyNewsItem[] {
   const items: AcademyNewsItem[] = posts
     .filter((post) => post.status === "published" && !post.category.startsWith("__") && post.slug !== applicantRankingsNewsSlug)
@@ -47,7 +54,6 @@ export function mergeAcademyNews(posts: Post[], entries: DepartmentEntry[]): Aca
   }
 
   return [...new Map(items.map((item) => [item.href, item])).values()].sort((a, b) =>
-    Number(b.post.featured) - Number(a.post.featured)
-    || new Date(b.post.publishedAt || b.post.createdAt).getTime() - new Date(a.post.publishedAt || a.post.createdAt).getTime(),
+    publicationTime(b.post) - publicationTime(a.post),
   );
 }

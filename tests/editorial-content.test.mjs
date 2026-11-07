@@ -951,3 +951,29 @@ test("general Academy news excludes only the retired applicant rankings announce
   assert.deepEqual(mergeAcademyNews([retired, retained], []).map(item => item.post), [retained]);
   assert.equal(retired.status, "published");
 });
+
+test("Academy news orders every source by publication date rather than featured status", async () => {
+  const { mergeAcademyNews } = await import(await moduleUrl("../lib/academy-news.ts", {
+    "./admissions-rankings": await moduleUrl("../lib/admissions-rankings.ts"),
+    "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }),
+    "./department-news-date": await moduleUrl("../lib/department-news-date.ts"),
+  }));
+  const post = (slug, publishedAt, createdAt, featured = false) => ({ ...edupro.eduproAnnouncement, slug, publishedAt, createdAt, featured });
+  const olderFeatured = post("older-featured", "2026-04-24T12:00:00Z", "2026-11-07T12:00:00Z", true);
+  const missing = post("missing-publication", null, "2026-11-03T12:00:00Z");
+  const tied = post("tied", "2026-11-04T12:00:00Z", "2026-11-07T12:00:00Z");
+  const recent = post("recent", "2026-11-04T12:00:00Z", "2026-11-04T12:00:00Z");
+  const invalid = post("invalid-publication", "invalid", "2026-11-02T12:00:00Z");
+  const undated = post("undated", "invalid", "invalid", true);
+  const entry = { id: "latest-marketing", pagePath: "/programs/marketing", sectionId: "department", entryType: "news", status: "published", title: "Нова публікація", summary: "Опис", body: "Текст", date: "2026-11-05", hideDate: false, images: [], createdAt: "2026-11-07T12:00:00Z", updatedAt: "2026-11-07T12:00:00Z", authorEmail: "editor@example.test" };
+  const hiddenDate = { ...entry, id: "hidden-date", date: "2026-10-31", hideDate: true };
+  const posts = [olderFeatured, missing, tied, recent, invalid, undated];
+  const news = mergeAcademyNews(posts, [entry, hiddenDate]);
+  assert.deepEqual(news.map(item => item.href), ["/department-news/latest-marketing", "/news/tied", "/news/recent", "/news/missing-publication", "/news/invalid-publication", "/department-news/hidden-date", "/news/older-featured", "/news/undated"]);
+  assert.equal(news[1].post, tied);
+  assert.equal(news[5].post.publishedAt, "2026-10-31");
+  assert.equal(news[5].post.hideDate, true);
+  assert.equal(olderFeatured.featured, true);
+  assert.equal(olderFeatured.publishedAt, "2026-04-24T12:00:00Z");
+  assert.equal(posts[0], olderFeatured);
+});

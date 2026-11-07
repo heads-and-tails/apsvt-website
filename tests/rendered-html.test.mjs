@@ -2731,3 +2731,10 @@ test("publishes three further Marketing masters theses in both repositories", as
     assert.equal(createHash("sha256").update(pdf).digest("hex"), file.sha256);
   }
 });
+
+test("the general news page renders visible publication dates newest first", async () => {
+  const html = await (await render("/news")).text();
+  const dates = [...html.matchAll(/class="date">(\d{2})\.(\d{2})\.(\d{4})/g)].map(([, day, month, year]) => Date.UTC(Number(year), Number(month) - 1, Number(day)));
+  assert.ok(dates.length > 1);
+  for (let i = 1; i < dates.length; i++) assert.ok(dates[i - 1] >= dates[i], "A newer article must precede an older article");
+});
