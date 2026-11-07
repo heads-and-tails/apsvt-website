@@ -2654,3 +2654,45 @@ test("the thesis catalogue language switch opens the available English research 
   assert.equal(english.status, 200);
   assert.match(await english.text(), /Research and publications/);
 });
+
+test("publishes four additional Marketing masters theses in both repositories", async () => {
+  const files = [
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-26.pdf",
+    "bytes": 1910482,
+    "sha256": "6ff9b8b8ccf227f1f4ff74a7a79e113bfedd7221715408ac0172a677ffc5ddcc",
+    "author": "Кисарець В. І."
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-27.pdf",
+    "bytes": 1741456,
+    "sha256": "6cee27f400d29a43a2d59d443d533e4adf030adecf777b9f287ed564feedc785",
+    "author": "Голинський В. Б."
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-28.pdf",
+    "bytes": 7159623,
+    "sha256": "513ab0d14c0da606efaad5c8279c04b8daf2df41e3f000a9499568e0886afb5a",
+    "author": "Безгинська В. Р."
+  },
+  {
+    "href": "/documents/research/marketing/theses/2026/thesis-29.pdf",
+    "bytes": 1745244,
+    "sha256": "2dd99f4920ce218177b629705dbfd4ada50026acae5769daa474e4e5ee23460f",
+    "author": "Гоцул В. Є."
+  }
+];
+  for (const path of ["/programs/marketing", "/research/theses"]) {
+    const html = await (await render(path)).text();
+    for (const file of files) {
+      assert.equal(html.split(`href="${file.href}"`).length - 1, 1, path + file.href);
+      assert.ok(html.includes(file.author));
+    }
+    assert.ok(html.includes("Леонтьєва Т. В."));
+  }
+  for (const file of files) {
+    const pdf = await readFile(new URL(`../public${file.href}`, import.meta.url));
+    assert.equal(pdf.length, file.bytes);
+    assert.equal(createHash("sha256").update(pdf).digest("hex"), file.sha256);
+  }
+});
