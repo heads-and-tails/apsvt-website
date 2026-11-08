@@ -2124,14 +2124,30 @@ test("publishes the six approved council sections and source portraits with work
   assert.match(representatives,/href="tel:\+380950296355"/);
   assert.match(representatives,/href="https:\/\/me-l.co\/yhk3stxh"/);
   assert.doesNotMatch(representatives,/гарантоване законодавством право/);
-  for (const section of ["regulations", "news", "initiatives"]) {
+  for (const section of ["news", "initiatives"]) {
     const response = await render(`/students/council/${section}`);
     assert.equal(response.status,200);
     assert.match(await response.text(),/Матеріали ще не оприлюднено/);
   }
+  const regulations = await (await render("/students/council/regulations")).text();
+  assert.match(regulations,/архівний примірник 2020 року/);
+  assert.match(regulations,/19\.12\.2019/);
+  assert.match(regulations,/href="\/documents\/regulations\/student-self-government-2019-archive\.pdf"/);
+  assert.doesNotMatch(regulations,/Матеріали ще не оприлюднено/);
   const feedback = await (await render("/students/council/feedback")).text();
   assert.match(feedback,/href="mailto:viola.pinchuk2513@gmail.com"/);
   assert.equal((await render("/students/council/nonexistent")).status,404);
+});
+
+test("lists the 2020 archive separately from the published 2024 student-government regulation",async()=>{
+  const html=await (await render("/documents")).text();
+  assert.match(html,/href="\/documents\/regulations\/student-self-government-2019-archive\.pdf"/);
+  assert.match(html,/архівний примірник 2020 року/);
+  assert.match(html,/архів \/ довідково/);
+  assert.match(html,/href="https:\/\/srbnlvcmkorjvaptbbiu\.supabase\.co\/storage\/v1\/object\/public\/editorial-documents\/documents\/2026-11-06\/f66cf385-e88b-4b30-9ef1-666643ef1bb5\.pdf"/);
+  const pdf=await readFile(new URL("../public/documents/regulations/student-self-government-2019-archive.pdf",import.meta.url));
+  assert.ok(pdf.length>100000);
+  assert.equal(pdf.subarray(0,4).toString(),"%PDF");
 });
 
 test("publishes source-based law course annotations and the updated faculty team",async()=>{

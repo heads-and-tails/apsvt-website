@@ -9,6 +9,7 @@
 .council-entry h2 { font-size: clamp(24px, 3vw, 36px); margin-bottom: 20px; }
 .council-entry p { line-height: 1.7; }
 .council-entry a { overflow-wrap: anywhere; }
+.council-archive { max-width: 920px; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--line); }
 .council-entry .editorial-richtext h3 { font-size: 24px; margin-top: 28px; }
 .council-representatives { display: grid; gap: 36px; }
 .council-representatives .council-entry { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 28px; padding-bottom: 36px; border-bottom: 1px solid var(--line); }
