@@ -26,6 +26,116 @@ test("offers a saved course view and batch publication without widening editor a
 });
 
 let workerPromise;
+test("publishes the approved 2026 Management master package with unchanged originals and keeps other programmes separate", async () => {
+  const files = [
+    {
+      "href": "/documents/management/master-2026/programme.pdf",
+      "bytes": 943453,
+      "sha256": "c15e6f728cbfe6e8db25e0d681dffb823900a8bc6d23820d6c1649dfa9c89977"
+    },
+    {
+      "href": "/documents/management/master-2026/study-plan-part-time.pdf",
+      "bytes": 573575,
+      "sha256": "37a304e4d0e1351b3b1e2acf44e1552578f09e86777b82e4079aacb94d358da7"
+    },
+    {
+      "href": "/documents/management/master-2026/foreign-professional-language.pdf",
+      "bytes": 1105551,
+      "sha256": "85ecb0d1545e28feac72205edad6c6de90c10ebe0b502cb8760b8ece453e031e"
+    },
+    {
+      "href": "/documents/management/master-2026/research-methodology.pdf",
+      "bytes": 1014287,
+      "sha256": "ad44d6077aa71eec8e5b44c58c2136ebec3ab9acdc445d91f8fa18f9c727dcd9"
+    },
+    {
+      "href": "/documents/management/master-2026/sustainable-development.pdf",
+      "bytes": 461937,
+      "sha256": "f6bc521b3d7e6aedafed0e5bcffef7beaf0ffa4886ed28a12f26722ca52a5b9e"
+    },
+    {
+      "href": "/documents/management/master-2026/brand-management.pdf",
+      "bytes": 985480,
+      "sha256": "ccbe649960d5bf02dcb6af4938710fa6b63e570a4a96e922048d2eb964c58f8f"
+    },
+    {
+      "href": "/documents/management/master-2026/financial-management.pdf",
+      "bytes": 876907,
+      "sha256": "3e598d73cf9155dc32b0c6bdb0f6c82fb74b039a03975453e3c6b07b38edebdb"
+    },
+    {
+      "href": "/documents/management/master-2026/information-systems.pdf",
+      "bytes": 760023,
+      "sha256": "757535fbe6d0288e64d4470169021c51ca89e68c3f2a8184137d87b73462eaa9"
+    },
+    {
+      "href": "/documents/management/master-2026/crisis-management.pdf",
+      "bytes": 804815,
+      "sha256": "984f1796a66ad98dfab9cc87d1e3816852f60cdd40a946ea0a904aa61770c82b"
+    },
+    {
+      "href": "/documents/management/master-2026/management-psychology.pdf",
+      "bytes": 528010,
+      "sha256": "b57f7b1ac49e2acddd9da58535873ad82afcaf6684c29f66eb5dc7d696473e65"
+    },
+    {
+      "href": "/documents/management/master-2026/strategic-management.pdf",
+      "bytes": 917489,
+      "sha256": "e28d7e131cf1d1ed8ce789194465bbdeb61999186bd5e72da8569ee21de01e97"
+    },
+    {
+      "href": "/documents/management/master-2026/project-management.pdf",
+      "bytes": 702126,
+      "sha256": "2806bc763cc2ab844c95a28e47d21c63aed56a049f118e24121224b84baa87c4"
+    },
+    {
+      "href": "/documents/management/master-2026/human-resources-management.pdf",
+      "bytes": 660151,
+      "sha256": "5eb143db3a36c2cc63e4516f08916f146ec451a2a2100bef75958e29ecd309a2"
+    },
+    {
+      "href": "/documents/management/master-2026/business-diagnostics.pdf",
+      "bytes": 1034530,
+      "sha256": "89be1a9ecaed9ee27039c8f624691c801604b8c19a46cc56aa2f432e15319507"
+    },
+    {
+      "href": "/documents/management/master-2026/teaching-practice.pdf",
+      "bytes": 530993,
+      "sha256": "7b017a1800096bfec8968c484f06ad25662975ef2969f6eee7da04f02c0de7b3"
+    },
+    {
+      "href": "/documents/management/master-2026/pre-diploma-practice.pdf",
+      "bytes": 539505,
+      "sha256": "1165ffb810a5e3eca901e82eeb3c2ad3695fd463309b656ea83874d46550891e"
+    },
+    {
+      "href": "/documents/management/master-2026/qualification-work-guidelines.pdf",
+      "bytes": 694495,
+      "sha256": "e71a3319554d1381d1bb012e64dee6e49d7ff51dd18c15749cd3a52be9b4ee14"
+    }
+  ];
+  const html = await (await render("/programs/management")).text();
+  const resources = html.split('id="management-master-documents"')[1].split("</section>")[0];
+  assert.ok(resources.includes("Документи магістратури"));
+  assert.equal((resources.match(/<details>/g) || []).length, 2);
+  for (const file of files) {
+    assert.equal(resources.split(`href="${file.href}"`).length - 1, 1, file.href);
+    const original = await readFile(new URL(`../public${file.href}`, import.meta.url));
+    assert.equal(original.byteLength, file.bytes, file.href);
+    assert.equal(createHash("sha256").update(original).digest("hex"), file.sha256, file.href);
+  }
+  const department = html.split('id="programme-documents"')[1].split("</section>")[0];
+  assert.ok(department.includes(`href="${files[0].href}"`));
+  assert.ok(department.includes("d3-management-bachelor.pdf"));
+  assert.ok(html.includes("management-master-documents"));
+  const catalogue = await (await render("/documents")).text();
+  assert.ok(catalogue.includes(`href="${files[0].href}"`));
+  assert.doesNotMatch(catalogue, /d3-management-master\.pdf/);
+  assert.doesNotMatch(await (await render("/programs/finance")).text(), /documents\/management\/master-2026/);
+  assert.equal((await render("/en/programs/management")).status, 200);
+});
+
+
 test("publishes the supplied Bilous open lecture with its date, speaker and exact Zoom target", async () => {
   const slug = "vidkryta-lektsiia-volodymyra-bilousa-9-lystopada-2026";
   const zoom = "https://us02web.zoom.us/j/87040876569?pwd=sonAciICHl4RNUzVRSUbeQ3YmrFj0l.1";
