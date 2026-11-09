@@ -24,6 +24,8 @@ The user's standing instruction for all uploads is **not made for kids**: always
 
 Check upload history before retrying an interrupted upload to avoid duplicates. Verify the returned privacy status and that YouTube has finished processing and permits playback and embedding before publishing the page. After deploying the website change, verify the video link or player on the live page at desktop and mobile sizes. Uploading a video alone does not authorize unrelated website changes.
 
+After YouTube confirms a successful upload and completed processing, verify the hosted video's identity against the upload record, then delete the local source video and temporary download or conversion copies to reclaim disk space. Retain the YouTube URL, metadata, and verification record, and continue the playback and website checks above. Keep the hosted YouTube video. Failed, incomplete, or unverified uploads retain their local files until successful hosting and processing are confirmed.
+
 ## Supabase setup
 
 1. Run `supabase/migrations/202607220001_editorial_panel.sql` in the Supabase SQL editor.

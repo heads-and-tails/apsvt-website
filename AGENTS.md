@@ -72,6 +72,13 @@ npm ci
 - Check upload history before retrying to avoid duplicates. Verify YouTube
   processing, playback, and embedding before publishing, then verify the video on
   the deployed page at desktop and mobile sizes.
+- After YouTube confirms a successful upload and completed processing, delete the
+  local source video and temporary download or conversion copies to save disk
+  space. Verify the hosted video's identity against the upload record before
+  deletion. Keep the YouTube URL, metadata, and verification record, and continue
+  the playback and website checks above. Never delete the YouTube-hosted video.
+  Retain local files for failed, incomplete, or unverified uploads until successful
+  hosting and processing are confirmed.
 
 ## Validation strategy before implementation
 
