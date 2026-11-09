@@ -138,6 +138,20 @@ test("serves the faculty accreditation page with document navigation and an hone
   assert.equal((await render("/en/programs/law")).status, 200);
   assert.equal((await render("/departments/law-faculty/faculty-documents/unknown")).status, 404);
 });
+test("publishes an editable law-faculty information resources subsection", async () => {
+  const path = "/departments/law-faculty/faculty-information-resources/general";
+  const [facultyResponse, subpageResponse] = await Promise.all([
+    render("/departments/law-faculty"),
+    render(path),
+  ]);
+  assert.equal(facultyResponse.status, 200);
+  assert.equal(subpageResponse.status, 200);
+  const [faculty, subpage] = await Promise.all([facultyResponse.text(), subpageResponse.text()]);
+  assert.match(faculty, /Інформаційні ресурси/);
+  assert.ok(faculty.includes(`href="${path}"`));
+  assert.match(subpage, /Ресурси факультету/);
+  assert.match(subpage, /Матеріали ще не оприлюднено/);
+});
 async function worker(){
   if(!workerPromise){
     const workerUrl=new URL("../dist/server/index.js",import.meta.url);
