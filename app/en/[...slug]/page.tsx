@@ -1,3 +1,4 @@
+import { ApplicationIdGuide } from "@/app/components/ApplicationIdGuide";
 import type { Metadata } from "next";
 import { LawProgrammeNavigation } from "@/app/components/LawProgrammeNavigation";
 import Link from "next/link";
@@ -25,6 +26,7 @@ function GenericPage({page,path}:{page:EnglishPage;path:string}){const interacti
   <section className={page.image?"phero img":"phero"}>{page.image&&<div className="bgi"><img src={page.image} alt=""/></div>}<div className="wrap"><div className="crumb">Home / {page.eyebrow}</div><h1>{page.title}</h1><p className="lead">{page.lead}</p></div></section><div className="phero-rule"/>
   <section className="deep-content"><div className="wrap"><div className="deep-intro"><h2>{page.introTitle}</h2><p>{page.intro}</p></div><div className="deep-grid">{page.highlights.map((item,index)=><article className="deep-card" data-n={String(index+1).padStart(2,"0")} key={item.title}><span className="mono">{String(index+1).padStart(2,"0")}</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></div></section>
   {page.sections.map((section,index)=><section className={index%2?"soft":""} key={section.title}><div className="wrap detail-layout"><div className="detail-copy"><div className="idx">{section.kicker}</div><h2>{section.title}</h2><p className="lede">{section.body}</p></div>{section.items&&<aside className="detail-aside"><div className="rows">{section.items.map((item,itemIndex)=><div className="row" key={item}><span className="rnum">{String(itemIndex+1).padStart(2,"0")}</span><div><h3>{item}</h3></div></div>)}</div></aside>}</div></section>)}
+  {(path === "international" || path === "faq") && <section><div className="wrap faq-list"><ApplicationIdGuide english /></div></section>}
   {interactive}
   {page.cta&&<section className="bigcta"><div className="wrap"><span className="mono">Next step</span><h2>{page.cta.title}</h2><p>{page.cta.text}</p><Link className="cta" href={page.cta.href}><span>{page.cta.label}</span></Link></div></section>}
   <EnglishFooter/></main>}
