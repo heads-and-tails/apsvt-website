@@ -37,6 +37,7 @@ import { isMarketingMonitoringSection, marketingMonitoringSections } from "@/lib
 import { isMarketingNonformalSection, marketingNonformalEditorialSections, marketingNonformalSection } from "@/lib/marketing-nonformal";
 import { marketingTeacherAchievementsSection } from "@/lib/marketing-teacher-achievements";
 import { marketingMethodicalSectionIds } from "@/lib/marketing-methodical";
+import { marketingRegulationsSectionId } from "@/lib/marketing-regulations";
 import { marketingInteractiveSection } from "@/lib/marketing-interactive-resources";
 import { MarketingInteractiveResources } from "./MarketingInteractiveResources";
 import "./marketing-interactive-resources.css";
@@ -67,7 +68,7 @@ const marketingSections: readonly SectionHubItem[] = [
   { id: "department", index: "01", title: "Про кафедру", description: "Місія, напрями роботи та освітнє середовище кафедри маркетингу.", icon: "D5" },
   { id: "department-team", index: "02", title: "Науково-педагогічний склад", description: "Викладачі, освіта, наукові інтереси та професійні профілі.", icon: "NPP", aliases: [marketingTeacherAchievementsSection.id] },
   { id: "curriculum", index: "03", title: "Освітні програми", description: "Рівні освіти, навчальні плани, обов’язкові й вибіркові компоненти.", icon: "OP", aliases: ["overview", "education-levels", "electives", "course-annotations"] },
-  { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг якості освіти та обговорення змін до ОПП за рівнями.", icon: "✓", aliases: [...marketingMonitoringSections.map((section) => section.id), "marketing-quality-discussion", "marketing-stakeholder-call", marketingMobilitySection.id, marketingNonformalSection.id, ...marketingNonformalEditorialSections.map((section) => section.id), "marketing-nonformal-bachelor", "marketing-nonformal-master"] },
+  { id: "quality", index: "04", title: "Якість освіти", description: "Моніторинг якості освіти та обговорення змін до ОПП за рівнями.", icon: "✓", aliases: [...marketingMonitoringSections.map((section) => section.id), "marketing-quality-discussion", "marketing-stakeholder-call", marketingMobilitySection.id, marketingNonformalSection.id, ...marketingNonformalEditorialSections.map((section) => section.id), "marketing-nonformal-bachelor", "marketing-nonformal-master", marketingRegulationsSectionId] },
   { id: "science", index: "05", title: "Наукова діяльність", description: "Дослідження, видання, конференції та наукові профілі викладачів.", icon: "SCI", aliases: ["science-club"] },
   { id: "programme-documents", index: "06", title: "Навчально-методичне забезпечення", description: "Офіційні програми, плани, дисципліни й матеріали кафедри.", icon: "PDF" },
   { id: "marketing-student-life", index: "07", title: "Студентське життя та самоврядування", description: "Гурток MARKETHINK, студентські ініціативи й участь у житті Академії.", icon: "M", aliases: marketingStudentSections.map((section) => section.id) },
