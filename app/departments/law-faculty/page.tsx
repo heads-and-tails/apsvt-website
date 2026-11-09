@@ -47,7 +47,8 @@ const facultySections: readonly SectionHubItem[] = [
   { id: "faculty-programmes", index: "12", title: "Освітні програми", description: "D8 «Право», D4 «Публічне управління» та PhD.", icon: "OP", aliases: ["law-levels"] },
   { id: "faculty-repository", index: "13", title: "Репозитарій", description: "Кваліфікаційні роботи D8 і D4 з пошуком.", icon: "REP" },
   { id: "faculty-documents", index: "14", title: "Нормативні документи", description: "Офіційні документи факультету.", icon: "PDF", aliases: ["faculty-quality"] },
-  { id: "department-news", index: "15", title: "Новини факультету", description: "Події, публікації та матеріали кафедр.", icon: "NEWS" },
+  { id: "faculty-information-resources", index: "15", title: "Інформаційні ресурси", description: "Матеріали та посилання юридичного факультету.", icon: "WEB" },
+  { id: "department-news", index: "16", title: "Новини факультету", description: "Події, публікації та матеріали кафедр.", icon: "NEWS" },
 ];
 
 const practiceProgrammes = [
@@ -123,6 +124,8 @@ export default async function Page() {
       <section className="faculty-structure-section faculty-repository" id="faculty-repository"><div className="wrap"><div className="sec-head"><div><div className="idx">13 / Репозитарій</div><h2>Кваліфікаційні роботи факультету</h2></div><p>Роботи можна фільтрувати за програмою, роком, автором і науковим керівником.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-dark" href="/research/theses"><span>01 / D8 «Право»</span><h3>Бакалаврські й магістерські роботи</h3><p>Пошук за автором, роком, програмою та науковим керівником.</p><b>Відкрити каталог →</b></Link><Link className="faculty-link-card faculty-link-card-blue" href="/research/theses"><span>02 / D4</span><h3>Публічне управління та адміністрування</h3><p>Дослідження з публічної політики, врядування, управління та розвитку громад.</p><b>Відкрити каталог →</b></Link></div></div></section>
 
       <section className="faculty-structure-section" id="faculty-documents"><div className="wrap"><div className="idx">14 / Документи</div><h2>Нормативні документи</h2><p><Link href={lawFacultyAccreditationPath}>Акредитація освітніх програм →</Link></p></div><PageDocuments pagePath="/departments/law-faculty" /></section>
+
+      <section className="faculty-structure-section" id="faculty-information-resources"><div className="wrap"><div className="idx">15 / Інформаційні ресурси</div><h2>Інформаційні ресурси</h2><p>Матеріали та посилання юридичного факультету зібрано на окремій сторінці.</p><p><Link href={`${lawFacultyPath}/faculty-information-resources/general`}>Відкрити ресурси факультету →</Link></p></div></section>
 
       <div id="department-news"><AcademicNews slugs={["law", "public-administration"]} title="Новини юридичного факультету" prioritySlugs={[constitutionalCourtMeetingNewsSlug, constitutionalCourtLectureNewsSlug]} /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !entry.sectionId && !["hero", "override", "teacher", "partner", "quality"].includes(entry.entryType))} /></div>
     </SectionHub>
