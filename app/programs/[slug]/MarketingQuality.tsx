@@ -3,6 +3,7 @@ import type { DepartmentEntry } from "@/lib/department-content";
 import { departmentPublicationDate } from "@/lib/department-news-date";
 import { DepartmentImages } from "@/app/components/DepartmentMedia";
 import { marketingMasterStakeholderQuestionnaire, marketingQuestionnaires } from "@/lib/marketing-questionnaires";
+import { marketingRegulations, marketingRegulationsSectionId } from "@/lib/marketing-regulations";
 import { MarketingMobility } from "./MarketingMobility";
 import { MarketingNonformal } from "./MarketingNonformal";
 import { MarketingMonitoring } from "./MarketingMonitoring";
@@ -40,6 +41,18 @@ export function MarketingQuality({ entries }: { entries: DepartmentEntry[] }) {
       </details>
       <MarketingMobility entries={entries} />
       <MarketingNonformal entries={entries} />
+      <details className="marketing-quality-folder" id={marketingRegulationsSectionId}>
+        <summary><span>05</span><strong>Нормативне забезпечення освітнього процесу та якості освіти</strong><b aria-hidden="true">+</b></summary>
+        <div className="marketing-quality-folder-body">
+          <div className="marketing-programme-links">
+            {marketingRegulations.map((document, index) => <a href={document.href} target="_blank" rel="noopener noreferrer" key={document.href}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <div><small>{document.label}</small><strong>{document.title}</strong></div>
+              <b aria-hidden="true">↗</b>
+            </a>)}
+          </div>
+        </div>
+      </details>
     </div>
   </div></section>;
 }

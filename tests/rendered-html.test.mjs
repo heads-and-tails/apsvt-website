@@ -26,6 +26,72 @@ test("offers a saved course view and batch publication without widening editor a
 });
 
 let workerPromise;
+test("publishes all nine supplied Marketing regulations in one accessible Quality folder", async () => {
+  const html = await (await render("/programs/marketing")).text();
+  const folder = html.split('id="marketing-quality-regulations"')[1].split("</details>")[0];
+  assert.ok(folder.includes("Нормативне забезпечення освітнього процесу та якості освіти"));
+  assert.equal((folder.match(/<a /g) || []).length, 9);
+  const files = [
+    {
+      "href": "/documents/regulations/student-practice-2023.pdf",
+      "bytes": 683562,
+      "sha256": "428fac231975740619a70054f2503b82f534a4d4f299d268b235b9fc9b38720d"
+    },
+    {
+      "href": "/documents/regulations/individual-study-plan-current.pdf",
+      "bytes": 578143,
+      "sha256": "b401ec182a6eba2654b92df674361ff8f68084cad000089b4a3e55073f3c6fab"
+    },
+    {
+      "href": "/documents/academy/internal-rules.pdf",
+      "bytes": 1963117,
+      "sha256": "07bf963dbbe6182d03120fd8779ff0593fc015d606592cfde4fb35a1db12edce"
+    },
+    {
+      "href": "/documents/regulations/educational-process-2026.pdf",
+      "bytes": 3662125,
+      "sha256": "08ff5226ae61cadd7e87c11fd1dc987f8e651d01ff09b4c75300b3726fa12156"
+    },
+    {
+      "href": "/documents/regulations/appeal-control-procedures-results.pdf",
+      "bytes": 2985515,
+      "sha256": "20e0d7f1b672352ae76f29e5ee546646fcfb9e4bdbb48f51f0031a7be4faf91a"
+    },
+    {
+      "href": "/documents/regulations/academic-integrity-2026.pdf",
+      "bytes": 473228,
+      "sha256": "e800bee41b26a9cceb4d3a111e455dceafc2f9d1808d8061bee9d60b885c375e"
+    },
+    {
+      "href": "/documents/regulations/unplanned-termination-educational-activity.pdf",
+      "bytes": 279076,
+      "sha256": "fb0a5d5da59aa0f40894e23b5295fae30b0b38f5656264c081ba02985aa1c778"
+    },
+    {
+      "href": "/documents/academy/strategy-development-to-2026.pdf",
+      "bytes": 789478,
+      "sha256": "bc80933c58814b8515d2dbf6b8a118ee5573d163a4ebc62a88c38b66b0d5ccde"
+    },
+    {
+      "href": "/documents/archive/old-site/internal-quality-system.pdf",
+      "bytes": 754725,
+      "sha256": "1e08610fb1e10c6794ac7e5ef190224555d19e4049f4a9450f49b54006c01ac0"
+    }
+  ];
+  for (const file of files) {
+    assert.ok(folder.includes(`href="${file.href}" target="_blank" rel="noopener noreferrer"`), file.href);
+    const bytes = await readFile(new URL(`../public${file.href}`, import.meta.url));
+    assert.equal(bytes.length, file.bytes);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), file.sha256);
+  }
+  assert.match(folder, /PDF · 2013/);
+  assert.match(folder, /PDF · 2023/);
+  for (const id of ["marketing-quality-discussion", "marketing-nonformal"]) assert.ok(html.includes(`id="${id}"`));
+  assert.doesNotMatch(await (await render("/programs/finance")).text(), /id="marketing-quality-regulations"/);
+  assert.equal((await render("/en/programs/marketing")).status, 200);
+});
+
+
 test("publishes the approved 2026 Management master package with unchanged originals and keeps other programmes separate", async () => {
   const files = [
     {
