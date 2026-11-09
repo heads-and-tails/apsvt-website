@@ -3568,9 +3568,9 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
 .marketing-principles article>span{font:700 10px var(--mono);color:var(--cobalt)}
 .marketing-principles h4{font-size:17px;text-transform:uppercase}
 .marketing-principles article p{max-width:65ch;margin-top:7px;font-size:13px;line-height:1.6;color:#59616d}
-.marketing-about-research{margin-inline:calc(50% - 50vw);padding-inline:max(24px,calc((100vw - var(--wrap))/2));background:var(--navy);color:#fff;border:0}
+.marketing-about-research{margin-inline:calc(50% - 50vw);padding-inline:max(32px,calc((100vw - 1240px)/2 + 32px));background:var(--navy);color:#fff;border:0}
 .marketing-about-research .marketing-rich-copy p{color:#cbd4e5}
-.marketing-about-outcome{margin-inline:calc(50% - 50vw);padding:82px max(24px,calc((100vw - var(--wrap))/2));background:var(--gold)}
+.marketing-about-outcome{margin-inline:calc(50% - 50vw);padding:82px max(32px,calc((100vw - 1240px)/2 + 32px));background:var(--gold)}
 .marketing-about-outcome h3{max-width:14ch;margin:18px 0 28px;font-size:clamp(40px,6vw,84px);line-height:.9}
 .marketing-about-outcome p{max-width:76ch;margin:16px 0;font-size:15px;line-height:1.65}
 .marketing-about-outcome strong{display:block;max-width:18ch;margin:34px 0;font-size:clamp(28px,4vw,52px);line-height:1}
