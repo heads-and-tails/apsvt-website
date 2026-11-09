@@ -1,4 +1,5 @@
 import { officialProgrammeFileBase } from "@/lib/programme-documents";
+import { managementMasterProgramme } from "@/lib/management-master-documents";
 
 export const documentCategories = [
   {
@@ -165,11 +166,11 @@ export const officialDocuments: OfficialDocument[] = [
     href: `${officialProgrammeFileBase}/d3-management-bachelor.pdf`, format: "PDF", pages: 22, updated: "2025", status: "current",
   },
   {
-    id: "programme-management-master-2025",
+    id: "programme-management-master-2026",
     category: "education",
     title: "ОПП D3 «Менеджмент» — магістр",
     description: "Офіційна освітньо-професійна програма другого рівня вищої освіти.",
-    href: `${officialProgrammeFileBase}/d3-management-master.pdf`, format: "PDF", pages: 13, updated: "2025", status: "current",
+    href: managementMasterProgramme.href, format: "PDF", pages: 17, updated: "2026", status: "current",
   },
   {
     id: "programme-marketing-bachelor-2025", category: "education", title: "ОПП D5 «Маркетинг» — бакалавр",

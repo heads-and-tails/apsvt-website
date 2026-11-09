@@ -1,4 +1,5 @@
 import { officialProgrammeFileBase } from "@/lib/programme-documents";
+import { managementMasterProgramme } from "@/lib/management-master-documents";
 
 export type Program = {
   slug: string;
@@ -82,7 +83,7 @@ export const programs: Program[] = [
     ],
     careers:["Проєктний менеджер","Операційний менеджер","HR-менеджер","Бізнес-аналітик","Підприємець"],
     international:["Подвійний диплом","Практика в міжнародних компаніях","Erasmus+ освітні модулі"],
-    materials:[{label:"ОПП D3 «Менеджмент» · бакалавр",href:`${officialProgrammeFileBase}/d3-management-bachelor.pdf`},{label:"ОПП D3 «Менеджмент» · магістр",href:`${officialProgrammeFileBase}/d3-management-master.pdf`},{label:"Кафедра менеджменту",href:"/materials/econpidpr-department-d4b13ae23.html"}],
+    materials:[{label:"ОПП D3 «Менеджмент» · бакалавр",href:`${officialProgrammeFileBase}/d3-management-bachelor.pdf`},{label:"ОПП D3 «Менеджмент» · магістр",href:managementMasterProgramme.href},{label:"Кафедра менеджменту",href:"/materials/econpidpr-department-d4b13ae23.html"}],
     tags:["лідерство","команди","проєкти","бізнес"],
   },
   {
