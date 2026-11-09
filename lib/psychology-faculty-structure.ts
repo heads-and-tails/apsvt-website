@@ -14,5 +14,5 @@ export const psychologyFacultyStructure = [
   { id: "faculty-repository", index: "12", title: "Репозитарій", description: "Кваліфікаційні роботи та відкриті наукові матеріали.", icon: "REP" },
   { id: "faculty-programmes", index: "13", title: "Освітні програми", description: "Програми C4 «Психологія» та I10 «Соціальна робота та консультування».", icon: "C4" },
   { id: "faculty-practice", index: "14", title: "Практика й партнери", description: "Професійне середовище, практика та партнерські кейси.", icon: "PR" },
-  { id: "department-news", index: "16", title: "Новини факультету", description: "Актуальні матеріали й події кафедр.", icon: "NEWS" },
+  { id: "department-news", aliases: ["faculty-news"], index: "16", title: "Новини факультету", description: "Актуальні матеріали й події кафедр.", icon: "NEWS" },
 ];
