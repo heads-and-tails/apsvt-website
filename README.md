@@ -18,7 +18,9 @@ The existing uploader runs on the development VM (`ubuntu-16gb-hel1-1`) at `/hom
 
 Verify that the connected channel is **Ivan Kucha**, ID `UCvwT_0FbrKT88xUl4gojecA`. Read the private operational handoff at `/home/ivank/Code/apsvt-website/YOUTUBE_UPLOAD_PROMPT.txt` (also copied to `/home/ivank/Code/topology/YOUTUBE_UPLOAD_PROMPT.txt`) for upload, dry-run, and authorization renewal instructions. The handoff is kept outside version control. Never commit or print credential files or tokens.
 
-For videos requested for publication on the public website, use **unlisted** visibility unless the request specifies public visibility. A private video may be used for staging but cannot satisfy public website publication. For uploads without website publication, retain the handoff's private default. Obtain the user's explicit **made for kids: yes/no** choice; do not infer it from student authorship. Use supplied titles, descriptions, and attribution, and ask only for essential missing information.
+For videos requested for publication on the public website, use **unlisted** visibility unless the request specifies public visibility. A private video may be used for staging but cannot satisfy public website publication. For uploads without website publication, retain the handoff's private default.
+
+The user's standing instruction for all uploads is **not made for kids**: always pass `--made-for-kids no`. Do not ask for this setting again unless the user changes that instruction. Use supplied titles, descriptions, and attribution, and ask only for essential missing information.
 
 Check upload history before retrying an interrupted upload to avoid duplicates. Verify the returned privacy status and that YouTube has finished processing and permits playback and embedding before publishing the page. After deploying the website change, verify the video link or player on the live page at desktop and mobile sizes. Uploading a video alone does not authorize unrelated website changes.
 
