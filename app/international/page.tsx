@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ApplicationIdGuide } from "../components/ApplicationIdGuide";
 import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
@@ -398,7 +399,7 @@ export default function Page() {
 
     <section id="international-faq"><div className="wrap">
       <div className="sec-head"><div><div className="idx">08 / FAQ</div><h2>Запитання й відповіді</h2></div><p>Короткі пояснення перед поданням документів. У складній ситуації зверніться до міжнародного відділу.</p></div>
-      <div className="faq-list international-faq-list">{faq.map(({ question, answer }, index) => <details key={question}><summary><span>{String(index + 1).padStart(2, "0")}</span>{question}<b>+</b></summary><p>{answer}</p>{index === 1 && <a href="https://apply.studyinukraine.gov.ua/home" target="_blank" rel="noreferrer">Перейти до офіційного кабінету ↗</a>}</details>)}</div>
+      <div className="faq-list international-faq-list">{faq.map(({ question, answer }, index) => <details key={question}><summary><span>{String(index + 1).padStart(2, "0")}</span>{question}<b>+</b></summary><p>{answer}</p>{index === 1 && <a href="https://apply.studyinukraine.gov.ua/home" target="_blank" rel="noreferrer">Перейти до офіційного кабінету ↗</a>}</details>)}<ApplicationIdGuide number="09" /></div>
     </div></section>
 
     <section className="international-contact" id="international-contact"><div className="wrap international-contact-card">

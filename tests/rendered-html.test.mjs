@@ -26,6 +26,25 @@ test("offers a saved course view and batch publication without widening editor a
 });
 
 let workerPromise;
+test("publishes the four Application ID steps in Ukrainian and English applicant help", async () => {
+  for (const path of ["/international", "/faq", "/en/international", "/en/faq"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200, path);
+    const html = await response.text();
+    const guide = html.split('id="application-id"')[1]?.split("</details>")[0];
+    assert.ok(guide, path);
+    assert.equal((guide.match(/<li>/g) || []).length, 4, path);
+    assert.match(guide, /My Applications/);
+    assert.match(guide, /APSVT \/ Academy Kyiv/);
+    assert.match(guide, /Application ID/);
+    assert.match(guide, /href="https:\/\/apply\.studyinukraine\.gov\.ua\/home" target="_blank"/);
+    assert.match(guide, /href="mailto:inz@socosvita\.kiev\.ua"/);
+    assert.doesNotMatch(guide, /державного зразка|state-issued certificate/);
+  }
+  const unrelated = await (await render("/en/contacts")).text();
+  assert.ok(!unrelated.includes('id="application-id"'));
+});
+
 test("publishes all nine supplied Marketing regulations in one accessible Quality folder", async () => {
   const html = await (await render("/programs/marketing")).text();
   const folder = html.split('id="marketing-quality-regulations"')[1].split("</details>")[0];

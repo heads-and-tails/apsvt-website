@@ -1,0 +1,30 @@
+.guide .body {
+  max-width: 800px;
+  padding: 0 50px 28px 96px;
+  color: rgba(9, 14, 24, .68);
+}
+
+.guide .body p {
+  padding: 0;
+  margin: 0 0 16px;
+  color: inherit;
+}
+
+.guide ol {
+  list-style: decimal;
+  padding-left: 1.5em;
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.guide a {
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+  .guide .body {
+    padding: 0 12px 24px 46px;
+  }
+}
