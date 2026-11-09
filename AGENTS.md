@@ -53,6 +53,26 @@ npm ci
 - Add new database migrations; never rewrite an applied migration.
 - Do not alter auth, authorization, CI, deployment, or security as a side effect.
 
+## Website videos and YouTube uploads
+
+- Upload videos requested for the APSVT website to the configured YouTube channel,
+  host them there, and embed or link their YouTube URLs on the requested pages.
+  Do not store video binaries in this repository or the website's file storage.
+  This also applies to website requests received by email.
+- Follow the **Website videos** section in `README.md` for the configured uploader,
+  channel verification, visibility settings, and playback checks. Read
+  `/home/ivank/Code/apsvt-website/YOUTUBE_UPLOAD_PROMPT.txt` for the detailed upload,
+  dry-run, and authorization renewal commands. That private handoff stays outside
+  version control; never commit credentials or tokens.
+- Reuse the saved YouTube authorization on the development VM. Use unlisted
+  visibility for public website videos unless public visibility is requested;
+  private uploads do not satisfy public website publication.
+- The user's standing audience instruction is **not made for kids**: pass
+  `--made-for-kids no` without asking again unless the user changes it.
+- Check upload history before retrying to avoid duplicates. Verify YouTube
+  processing, playback, and embedding before publishing, then verify the video on
+  the deployed page at desktop and mobile sizes.
+
 ## Validation strategy before implementation
 
 - Before editing, write a task-specific validation strategy in the task update or
