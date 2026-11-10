@@ -240,7 +240,7 @@ export async function updateDepartmentEntry(id: string, input: DepartmentEntryIn
 
 export async function deleteDepartmentEntry(id: string, authorEmail?: string): Promise<void> {
   const entry = await getDepartmentEntryById(id);
-  if (entry && (entry.entryType === "teacher" && entry.teacherSourceName || id.startsWith("marketing-discussion-2026-") || id.startsWith("marketing-nonformal-"))) {
+  if (entry && (entry.entryType === "teacher" && entry.teacherSourceName || id.startsWith("marketing-discussion-2026-") || id.startsWith("marketing-nonformal-") || ["marketing-bachelor-guarantor-text", "marketing-master-guarantor-text"].includes(id))) {
     await updateDepartmentEntry(id, { ...entry, hidden: true }, authorEmail || entry.authorEmail);
     return;
   }

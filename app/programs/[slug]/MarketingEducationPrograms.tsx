@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { marketingGuarantorEntries } from "@/lib/marketing-guarantors";
 import type { DepartmentEntry } from "@/lib/department-content";
 import { DepartmentEditorialContent } from "@/app/components/DepartmentEditorialContent";
 
@@ -26,6 +27,7 @@ export function MarketingEducationPrograms({ entries }: { entries: DepartmentEnt
         {levels.map((level) => <details key={level.id}>
           <summary><span>{level.number}</span><div><small>{level.detail}</small><strong>{level.label}</strong></div><b aria-hidden="true">+</b></summary>
           <div className="marketing-programme-body">
+            <div id={`marketing-${level.id}-guarantor`}><DepartmentEditorialContent entries={marketingGuarantorEntries(entries, level.id)} inline /></div>
             <div className="marketing-programme-tabs" role="tablist" aria-label={`Матеріали рівня ${level.label}`}>
               {(["programmes", "plans"] as const).map((kind) => <button type="button" role="tab" id={`marketing-${level.id}-${kind}-tab`} aria-selected={activeTabs[level.id] === kind} aria-controls={`marketing-${level.id}-${kind}`} onClick={() => setActiveTabs((current) => ({ ...current, [level.id]: kind }))} key={kind}>{kind === "programmes" ? "Освітні програми" : "Навчальні плани"}</button>)}
             </div>

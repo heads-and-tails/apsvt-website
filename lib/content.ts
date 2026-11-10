@@ -40,8 +40,9 @@ import { marketingQualitySeedContent } from "@/lib/marketing-quality-seeds";
 import { managementDiscussionQualitySeed } from "./management-discussion-news";
 import { studentCouncilSeedContent } from "./student-council-seeds";
 import { marketingMonitoringSeedContent } from "./marketing-monitoring-seeds";
+import { marketingGuarantorSeedContent } from "./marketing-guarantors";
 
-const departmentQualitySeeds = [...marketingQualitySeedContent, managementDiscussionQualitySeed];
+const departmentQualitySeeds = [...marketingQualitySeedContent, managementDiscussionQualitySeed, ...marketingGuarantorSeedContent];
 
 const SEED_AUTHOR = "editorial@apsvt.local";
 const SEED_DATE = "2026-07-18T00:00:00.000Z";

@@ -7,6 +7,7 @@ import { marketingTeacherAchievementsSection } from "./marketing-teacher-achieve
 import { marketingNonformalEditorialSections } from "./marketing-nonformal";
 import { studentCouncilPath, studentCouncilSections } from "./student-council";
 import { marketingMonitoringSections } from "./marketing-monitoring";
+import { marketingGuarantorSections } from "./marketing-guarantors";
 
 export const financeProjectSections = [
   { id: "greenfinedu", label: "Jean Monnet GreenFinEDU" },
@@ -22,6 +23,7 @@ export function editorialSectionsForPage(path: string): { id: string; label: str
     { id: "department-team", label: "Науково-педагогічний склад" },
     { id: marketingTeacherAchievementsSection.id, label: marketingTeacherAchievementsSection.label },
     { id: "curriculum", label: "Освітні програми" },
+    ...marketingGuarantorSections,
     { id: "marketing-bachelor-programmes", label: "Бакалаврат · Освітні програми" },
     { id: "marketing-bachelor-plans", label: "Бакалаврат · Навчальні плани" },
     { id: "marketing-master-programmes", label: "Магістратура · Освітні програми" },
