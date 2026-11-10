@@ -377,7 +377,7 @@ const teacherAchievementsUrl = await moduleUrl("../lib/marketing-teacher-achieve
 const teacherAchievements = await import(teacherAchievementsUrl);
 const nonformalUrl = await moduleUrl("../lib/marketing-nonformal.ts");
 const nonformal = await import(nonformalUrl);
-const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl, "./marketing-teacher-achievements": teacherAchievementsUrl, "./marketing-nonformal": nonformalUrl, "./student-council": await moduleUrl("../lib/student-council.ts"), "./marketing-monitoring": await moduleUrl("../lib/marketing-monitoring.ts") }));
+const sections = await import(await moduleUrl("../lib/editorial-sections.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl, "./marketing-student-sections": studentSectionsUrl, "./marketing-methodical": methodicalSectionsUrl, "./marketing-mobility": mobilityUrl, "./marketing-teacher-achievements": teacherAchievementsUrl, "./marketing-nonformal": nonformalUrl, "./student-council": await moduleUrl("../lib/student-council.ts"), "./marketing-monitoring": await moduleUrl("../lib/marketing-monitoring.ts"), "./marketing-guarantors": await moduleUrl("../lib/marketing-guarantors.ts") }));
 
 test("council sections retain root-page permissions and exclude unpublished, hidden and unrelated materials", async () => {
   const council = await import(await moduleUrl("../lib/student-council.ts"));
@@ -438,9 +438,26 @@ test("nonformal editorial changes and removals survive repeat seeding without ov
   globalThis[fixtureKey] = client;
   try {
     const connection = `data:text/javascript;base64,${Buffer.from(`export const isSupabaseConfigured=()=>true;export const createSupabaseAdmin=()=>globalThis[${JSON.stringify(fixtureKey)}];export const createSupabasePublicClient=createSupabaseAdmin;`).toString("base64")}`;
-    const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl, "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts"), "./student-council-seeds": await moduleUrl("../lib/student-council-seeds.ts"), "./marketing-monitoring-seeds": await moduleUrl("../lib/marketing-monitoring-seeds.ts") });
+    const contentUrl = await moduleUrl("../lib/content.ts", { "@/lib/supabase/admin": connection, "@/lib/supabase/public": connection, "@/lib/supabase/config": connection, "@/lib/marketing-quality-seeds": qualitySeedsUrl, "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts"), "./student-council-seeds": await moduleUrl("../lib/student-council-seeds.ts"), "./marketing-monitoring-seeds": await moduleUrl("../lib/marketing-monitoring-seeds.ts"), "./marketing-guarantors": await moduleUrl("../lib/marketing-guarantors.ts") });
     const accessUrl = await moduleUrl("../lib/editorial-access.ts", { "./law-faculty-structure": lawStructureUrl, "./professional-education": professionalUrl });
     const department = await import(await moduleUrl("../lib/department-content.ts", { "@/lib/content": contentUrl, "./department-news-date": await moduleUrl("../lib/department-news-date.ts"), "./department-media": await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl }), "./editorial-text": textUrl, "@/lib/editorial-access": accessUrl, "@/lib/education-quality": await moduleUrl("../lib/education-quality.ts"), "./marketing-mobility": mobilityUrl, "./editorial-custom-sections": await moduleUrl("../lib/editorial-custom-sections.ts") }));
+    const guarantors = await import(await moduleUrl("../lib/marketing-guarantors.ts"));
+    for (const level of ["bachelor", "master"]) {
+      const id = `marketing-${level}-guarantor-text`;
+      const originalGuarantor = await department.getDepartmentEntryById(id);
+      assert.ok(originalGuarantor);
+      await department.updateDepartmentEntry(id, { ...originalGuarantor, body: "Збережена редакторська зміна", status: "draft" }, "editor@example.test");
+      await (await import(contentUrl + `#guarantor-${level}-edit`)).getAllContent();
+      const editedGuarantor = await department.getDepartmentEntryById(id);
+      assert.equal(editedGuarantor.body, "Збережена редакторська зміна");
+      assert.equal(editedGuarantor.status, "draft");
+      assert.deepEqual(guarantors.marketingGuarantorEntries([editedGuarantor], level), []);
+      await department.deleteDepartmentEntry(id, "editor@example.test");
+      await (await import(contentUrl + `#guarantor-${level}-hide`)).getAllContent();
+      const removedGuarantor = await department.getDepartmentEntryById(id);
+      assert.equal(removedGuarantor.hidden, true);
+      assert.equal(removedGuarantor.body, "Збережена редакторська зміна");
+    }
     const original = await department.getDepartmentEntryById("marketing-nonformal-master-regulations-text");
     assert.ok(original);
     await department.updateDepartmentEntry(original.id, { ...original, body: "Збережена редактором зміна", sortOrder: 75 }, "editor@example.test");
@@ -976,4 +993,40 @@ test("Academy news orders every source by publication date rather than featured 
   assert.equal(olderFeatured.featured, true);
   assert.equal(olderFeatured.publishedAt, "2026-04-24T12:00:00Z");
   assert.equal(posts[0], olderFeatured);
+});
+
+
+test("Marketing guarantors have separate editorial destinations and exclude unpublished or misplaced content", async () => {
+  const g = await import(await moduleUrl("../lib/marketing-guarantors.ts"));
+  for (const section of g.marketingGuarantorSections) {
+    assert.ok(sections.editorialSectionsForPage("/programs/marketing").some(item => item.id === section.id && item.label === section.label));
+    assert.equal(sections.editorialSectionsForPage("/programs/finance").some(item => item.id === section.id), false);
+  }
+  for (const level of ["bachelor", "master"]) {
+    const base = { id: "visible", pagePath: "/programs/marketing", sectionId: `marketing-${level}-guarantor`, entryType: "section", status: "published" };
+    const entries = [base, { ...base, id: "draft", status: "draft" }, { ...base, id: "hidden", hidden: true }, { ...base, id: "other", pagePath: "/programs/finance" }, { ...base, id: "material", entryType: "material" }, { ...base, id: "wrong-section", sectionId: "department-news" }];
+    assert.deepEqual(g.marketingGuarantorEntries(entries, level).map(item => item.id), ["visible"]);
+    assert.deepEqual(g.marketingGuarantorEntries([], level), []);
+  }
+});
+
+test("Marketing guarantors render before both programme document tabs at their own degree", async () => {
+  const gUrl = await moduleUrl("../lib/marketing-guarantors.ts");
+  const g = await import(gUrl);
+  const renderer = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export function DepartmentEditorialContent({entries}){return entries.map(entry=>createElement("article",{key:entry.id},entry.summary));}`).toString("base64")}`;
+  const { MarketingEducationPrograms } = await import(await moduleUrl("../app/programs/[slug]/MarketingEducationPrograms.tsx", { "@/lib/marketing-guarantors": gUrl, "@/app/components/DepartmentEditorialContent": renderer }));
+  const entries = g.marketingGuarantorSeedContent.map(item => ({ ...item.payload, id: item.id }));
+  for (const entry of entries) {
+    assert.ok(text.editorialTextIsValid(entry.body));
+    assert.ok(!text.editorialTextPlain(entry.body).includes('{"type"'));
+    assert.match(text.editorialTextPlain(entry.body), /Контактна інформація:/);
+  }
+  const html = renderToStaticMarkup(createElement(MarketingEducationPrograms, { entries }));
+  for (const level of ["bachelor", "master"]) {
+    const start = html.indexOf(`id="marketing-${level}-guarantor"`);
+    assert.ok(start > 0);
+    assert.ok(start < html.indexOf(`id="marketing-${level}-programmes-tab"`));
+    assert.ok(start < html.indexOf(`id="marketing-${level}-plans-tab"`));
+    assert.equal(html.split(entries.find(x => x.sectionId === `marketing-${level}-guarantor`).summary).length - 1, 1);
+  }
 });
