@@ -4,6 +4,21 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("publishes the Academy's archived honorary professors and doctors", async () => {
+  const [response, aboutResponse] = await Promise.all([render("/about/honorary"), render("/about")]);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const about = await aboutResponse.text();
+  assert.match(html, /Почесні професори Академії/);
+  assert.match(html, /Почесні доктори Академії/);
+  assert.match(html, /РозМарі Перетц-Фостер/);
+  assert.match(html, /Яцунь Олександр Михайлович/);
+  assert.match(html, /архівної сторінки Академії/);
+  assert.match(html, /href="\/en\/about"/);
+  assert.equal((html.match(/class="row"/g) || []).length, 22);
+  assert.match(about, /href="\/about\/honorary"/);
+});
+
 test("offers a saved course view and batch publication without widening editor access",async()=>{
   const [scheduleResponse,studentSource,documentsSource,panelSource]=await Promise.all([
     render("/schedule"),

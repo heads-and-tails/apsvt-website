@@ -53,6 +53,7 @@ export default function Page() {
       { title: "Освітньо-наукові програми", description: "Підготовка докторів філософії за спеціальностями A5, C1, C4 і D4.", href: "/programs#doctoral-programmes" },
     ]} />
     <PageDocuments pagePath="/about" />
+    <section className="soft"><div className="wrap"><Link className="icard" href="/about/honorary"><b>Почесні професори та доктори Академії</b><span>Історичний перелік відзначених осіб →</span></Link></div></section>
     <section className="bigcta"><div className="wrap"><div className="mono">Наступний крок</div><h2>Станьте частиною<br />спільноти АПСВТ.</h2><Link className="cta" href="/admissions"><span>Дізнатися про вступ</span></Link></div></section>
     <SiteFooter />
   </main>;
