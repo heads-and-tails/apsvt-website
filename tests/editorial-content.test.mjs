@@ -79,7 +79,7 @@ test("preserves the complete supplied EduPro announcement without email history 
 
 test("news cards support an announcement without a supplied image and preserve existing photo cards", async () => {
   const link = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export default function Link(props){return createElement("a",props);}`).toString("base64")}`;
-  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": await moduleUrl("../lib/post-image.ts") }));
+  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": await moduleUrl("../lib/post-image.ts", { "./finance-finland-news": await moduleUrl("../lib/finance-finland-news.ts") }) }));
   const html = renderToStaticMarkup(createElement(NewsCard, { post: edupro.eduproAnnouncement }));
   assert.ok(html.includes(`/news/${edupro.eduproNewsSlug}`));
   assert.match(html, /EDUPRO2026/);
@@ -737,6 +737,7 @@ test("respects successful empty published-news queries and preserves fallback fo
     "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts"),
     "./daad-opportunities-news": await moduleUrl("../lib/daad-opportunities-news.ts"),
     "./bilous-open-lecture-news": await moduleUrl("../lib/bilous-open-lecture-news.ts"),
+    "./finance-finland-news": await moduleUrl("../lib/finance-finland-news.ts"),
     "./strategy-discussion-news": await moduleUrl("../lib/strategy-discussion-news.ts"),
     "./law-accreditation-news": await moduleUrl("../lib/law-accreditation-news.ts"),
     "./constitutional-court-lecture-news": await moduleUrl("../lib/constitutional-court-lecture-news.ts"),
@@ -813,7 +814,7 @@ test("Academy news includes all public Marketing news and preserves canonical ar
   assert.equal(entries.length, 7);
 
   const link = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export default function Link(props){return createElement("a",props);}`).toString("base64")}`;
-  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": await moduleUrl("../lib/post-image.ts") }));
+  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": await moduleUrl("../lib/post-image.ts", { "./finance-finland-news": await moduleUrl("../lib/finance-finland-news.ts") }) }));
   const item = news[2];
   const html = renderToStaticMarkup(createElement(NewsCard, { post: item.post, href: item.href, imageFit: item.imageFit }));
   assert.match(html, /href="\/department-news\/march"/);
@@ -850,7 +851,7 @@ test("EMPOWER photographs preserve the supplied original bytes and use an uncrop
     assert.equal(createHash("sha256").update(bytes).digest("hex"), original.sha256);
   }
   const link = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export default function Link(props){return createElement("a",props);}`).toString("base64")}`;
-  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": await moduleUrl("../lib/post-image.ts") }));
+  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": await moduleUrl("../lib/post-image.ts", { "./finance-finland-news": await moduleUrl("../lib/finance-finland-news.ts") }) }));
   const html = renderToStaticMarkup(createElement(NewsCard, { post: empowerEastKickoffNews }));
   assert.ok(html.includes(`src="${empowerEastKickoffImages[0].url}"`));
   assert.match(html, /object-fit:contain/);

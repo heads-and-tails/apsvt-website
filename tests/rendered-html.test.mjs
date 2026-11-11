@@ -3129,3 +3129,46 @@ test("publishes the Academy strategy discussion invitation with a working feedba
   assert.ok(html.includes('href="/en/news"'));
   assert.ok((await (await render("/news")).text()).includes(`href="/news/${slug}"`));
 });
+
+
+test("publishes the corrected Finland internship news with four unchanged photos and first Finance placement", async () => {
+  const slug = "mizhnarodne-stazhuvannia-finansy-finliandiia-2026";
+  const response = await render(`/news/${slug}`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const article = html.split('<article class="detail-copy">')[1].split("</article>")[0];
+  for (const fact of ["Ткаченко Яніна Станіславівна", "Камінська Тетяна Григорівна", "з 3 по 11 жовтня 2026 року", "OPPI SIPPOLA", "Товариства українців у Фінляндії", "Посольства України у Фінляндії", "особливостях грантової діяльності"]) assert.ok(article.includes(fact), fact);
+  assert.match(html, /10 листопада 2026/);
+  assert.ok(html.includes('href="/en/news"'));
+  assert.doesNotMatch(article, /ДАЛІ РОЗМІЩУЄМО|Новина 3 \(1\)/);
+  const photos = ["/images/news/finance-finland-2026/photo-1.png", "/images/news/finance-finland-2026/photo-2.png", "/images/news/finance-finland-2026/photo-3.jpg", "/images/news/finance-finland-2026/photo-4.jpg"];
+  assert.equal((article.match(/<img /g) || []).length, 4);
+  assert.equal((article.match(/object-fit:contain/g) || []).length, 4);
+  let previous = -1;
+  for (const photo of photos) {
+    const index = article.indexOf(`src="${photo}"`);
+    assert.ok(index > previous, photo);
+    previous = index;
+  }
+  assert.ok(article.indexOf("Автор: Ткаченко Яніна Станіславівна") > previous);
+  const finance = await (await render("/programs/finance")).text();
+  const news = finance.split('class="academic-news-section"')[1].split("</section>")[0];
+  const cards = [...news.matchAll(/<a\b(?=[^>]*class="news")(?=[^>]*href="([^"]+)")[^>]*>/g)].map(match => match[1]);
+  assert.equal(cards.length, 3);
+  assert.equal(cards[0], `/news/${slug}`);
+  assert.ok(news.includes('src="/images/news/finance-finland-2026/card.png"'));
+  assert.ok(news.includes("object-fit:contain"));
+  assert.ok((await (await render("/news")).text()).includes(`href="/news/${slug}"`));
+  const originals = [
+    ["/images/news/finance-finland-2026/card.png", 895288, "cb793490dcf94570a98db51e1af7945473e1660dcd3e4f3e8ffc37c24e1298c5"],
+    ["/images/news/finance-finland-2026/photo-1.png", 1130496, "8338a7bc4bb85373ac27bc87593073cf659d0368e020b839b7e16d2cdcb2a70a"],
+    ["/images/news/finance-finland-2026/photo-2.png", 870400, "9e4d4c00a0959a6ed4d1e6ce39b575aa8ea7a0e590348cfeac1a9c29d21e073f"],
+    ["/images/news/finance-finland-2026/photo-3.jpg", 175726, "501bdf0ad00c7b9755ae58009efab18bd7bf08234109315d7ec845f8156349bb"],
+    ["/images/news/finance-finland-2026/photo-4.jpg", 174042, "d28116804987b449866301cdc5822eb32b66ca56410a804c330ecf0bbe4410e1"],
+  ];
+  for (const [href, size, digest] of originals) {
+    const bytes = await readFile(new URL(`../public${href}`, import.meta.url));
+    assert.equal(bytes.length, size);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), digest);
+  }
+});
