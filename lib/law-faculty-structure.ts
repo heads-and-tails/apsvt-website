@@ -36,6 +36,8 @@ export const lawFacultyStructure: readonly FacultySection[] = [
   { id: "faculty-information-resources", title: "Інформаційні ресурси", children: [["general", "Ресурси факультету"]] },
   { id: "department-news", title: "Новини факультету", children: [] },
   { id: "faculty-discussion", title: "Обговорення", children: [["law", "Право"], ["public-administration", "Публічне управління та адміністрування"]] },
+  { id: "faculty-rating", title: "Рейтинг", children: [["general", "Рейтинг"]] },
+  { id: "faculty-alumni", title: "Випускники", children: [["general", "Випускники"]] },
 ];
 
 export const lawFacultySubpages = lawFacultyStructure.flatMap((section) => section.children.map(([id, title]) => ({

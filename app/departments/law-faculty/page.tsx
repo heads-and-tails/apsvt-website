@@ -50,6 +50,8 @@ const facultySections: readonly SectionHubItem[] = [
   { id: "faculty-information-resources", index: "15", title: "Інформаційні ресурси", description: "Матеріали та посилання юридичного факультету.", icon: "WEB" },
   { id: "department-news", index: "16", title: "Новини факультету", description: "Події, публікації та матеріали кафедр.", icon: "NEWS" },
   { id: "faculty-discussion", index: "17", title: "Обговорення", description: "Право та публічне управління: папки й документи.", icon: "OP" },
+  { id: "faculty-rating", index: "18", title: "Рейтинг", description: "Рейтингові матеріали факультету.", icon: "R" },
+  { id: "faculty-alumni", index: "19", title: "Випускники", description: "Матеріали про випускників факультету.", icon: "AL" },
 ];
 
 const practiceProgrammes = [
@@ -130,6 +132,8 @@ export default async function Page() {
 
       <div id="department-news"><AcademicNews slugs={["law", "public-administration"]} title="Новини юридичного факультету" prioritySlugs={[constitutionalCourtMeetingNewsSlug, constitutionalCourtLectureNewsSlug]} /><DepartmentEditorialContent entries={departmentEntries.filter((entry) => !entry.sectionId && !["hero", "override", "teacher", "partner", "quality"].includes(entry.entryType))} /></div>
       <section className="faculty-structure-section" id="faculty-discussion"><div className="wrap"><p>Оберіть спеціальність для перегляду матеріалів обговорення.</p></div></section>
+      <section className="faculty-structure-section" id="faculty-rating"><div className="wrap"><p><Link href={`${lawFacultyPath}/faculty-rating/general`}>Переглянути рейтингові матеріали →</Link></p></div></section>
+      <section className="faculty-structure-section" id="faculty-alumni"><div className="wrap"><p><Link href={`${lawFacultyPath}/faculty-alumni/general`}>Переглянути матеріали про випускників →</Link></p></div></section>
     </SectionHub>
     <SiteFooter />
   </main>;
