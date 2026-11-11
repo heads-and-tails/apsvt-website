@@ -2983,6 +2983,29 @@ test("the general news page renders visible publication dates newest first", asy
 });
 
 
+test("publishes all three original 7 October master results in chronological position", async () => {
+  const html = await (await render("/admissions")).text();
+  const master = html.split('id="results-master"')[1].split("</article>")[0].replaceAll("<!-- -->", "");
+  assert.ok(master.indexOf("8 жовтня") < master.indexOf("7 жовтня"));
+  assert.ok(master.indexOf("7 жовтня") < master.indexOf("17 вересня"));
+  const folder = master.split("Результати вступних випробувань від 7 жовтня 2026 року")[1].split("</details>")[0];
+  assert.equal((folder.match(/<a href=/g) ?? []).length, 3);
+  assert.equal((folder.match(/PDF · 1 сторінка/g) ?? []).length, 3);
+  const files = [
+    ["psychology", 126864, "d849d66a685279aacd4a01b8f970ae7a496c50dd2ca7da225a06484f6380b75f"],
+    ["public-administration", 116501, "5fa35858953a999a16412f4812cc5f85235b58c6132e227c8f779f56656f3421"],
+    ["social-work-counselling", 109744, "0bca6fb840ff0e0258467dde4a9b4b247b97427a1600f05ff1436f1d136c27f2"],
+  ];
+  for (const [name, size, sha256] of files) {
+    const href = `/documents/admissions/results/2026-10-07/${name}.pdf`;
+    assert.ok(folder.includes(`href="${href}"`));
+    assert.ok(!html.split('id="results-master"')[0].includes(href));
+    const bytes = await readFile(new URL(`../public${href}`, import.meta.url));
+    assert.equal(bytes.length, size);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), sha256);
+  }
+});
+
 test("groups published entrance-exam recordings by date using YouTube without changing result PDFs", async () => {
   const response = await render("/admissions");
   assert.equal(response.status, 200);
