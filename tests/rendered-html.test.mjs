@@ -3060,3 +3060,22 @@ test("links all Economics faculty sections beside the other faculties in both Uk
   const english = await (await render("/en/about")).text();
   assert.doesNotMatch(english.match(/<nav class="desktop-mainnav"[\s\S]*?<\/nav>/)?.[0] ?? "", /Факультет економіки/);
 });
+
+test("publishes the final Law master's accreditation meeting schedule and exact Zoom links", async () => {
+  const slug = "zustrichi-ekspertnoi-hrupy-pravo-mahistr-2026-11";
+  const html = (await (await render(`/news/${slug}`)).text()).replace(/\u00a0/g, " ");
+  assert.match(html, /Зустрічі з експертною групою Національного агентства/);
+  const article = html.match(/<article class="detail-copy">([\s\S]*?)<\/article>/)?.[1] || "";
+  assert.match(article, /09:10/);
+  assert.doesNotMatch(article, /09:00/);
+  assert.match(article, /16 листопада 2026/);
+  assert.match(article, /17 листопада 2026/);
+  assert.equal((article.match(/Ідентифікатор конференції:/g) || []).length, 12);
+  for (const target of [
+    "https://us05web.zoom.us/j/83725590323?pwd=Dpbt8cEj4ZdiWmOG4hfLmr49lL81bd.1",
+    "https://us04web.zoom.us/j/74512718298?pwd=H2utLIOu2dIQzobcTXx2YOgakyaLwZ.1",
+    "https://us05web.zoom.us/j/81166963796?pwd=36pb396VVBqgEwslXosxguQGY4ymBk.1",
+  ]) assert.ok(article.includes(`href="${target}"`), target);
+  assert.match(html, /Фінальна зустріч-брифінг/);
+  assert.ok((await (await render("/news")).text()).includes(`href="/news/${slug}"`));
+});
