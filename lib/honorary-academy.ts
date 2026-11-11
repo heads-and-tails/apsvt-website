@@ -1,5 +1,4 @@
-// Historical descriptions are reproduced from the Academy's legacy page.
-// They are not statements about the people's current positions.
+// Legacy descriptions retain the positions recorded in the Academy's archive.
 export const honoraryProfessors = [
   { name: "Степан Галябарда", description: "Заслужений діяч мистецтв України, поет-пісняр." },
   { name: "В. М. Пинзеник", description: "Український політик." },
@@ -12,6 +11,7 @@ export const honoraryProfessors = [
   { name: "Наталія Благополучна", description: "Президент Всеукраїнської асоціації виноробів та сомельє, засновниця й директорка Школи сомельє «Майстер-клас»." },
   { name: "Наталія Бурлаченко", description: "Викладачка кафедри енотехнологій та сервісу в готельно-ресторанному сегменті, генеральна директорка компанії «Big wine — Bir art», дипломована сомельє, представниця України в OIV." },
   { name: "Микола Григорович Маломуж", description: "Український військовик, колишній голова Служби зовнішньої розвідки України, генерал армії України, радник Президента України." },
+  { name: "Гуляєва Людмила Петрівна", description: "Доцент кафедри фінансів Академії праці, соціальних відносин і туризму." },
 ] as const;
 
 export const honoraryDoctors = [
@@ -26,4 +26,5 @@ export const honoraryDoctors = [
   { name: "Пастушенко Сергій Григорович", description: "Кандидат технічних наук, доцент кафедри соціології та суспільних наук." },
   { name: "Тітов Микола Микитович", description: "Кандидат юридичних наук." },
   { name: "Яцунь Олександр Михайлович", description: "Голова Київської міської організації профспілки працівників освіти і науки України, Заслужений працівник освіти України, кандидат економічних наук, доцент." },
+  { name: "Йенс-Райнхольд Губерт", description: "Керівник і викладач Hubert Kommunal Consulting (HKC) та освітнього інституту POLIS®-Seminare." },
 ] as const;

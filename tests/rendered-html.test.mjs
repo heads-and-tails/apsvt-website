@@ -15,7 +15,9 @@ test("publishes the Academy's archived honorary professors and doctors", async (
   assert.match(html, /Яцунь Олександр Михайлович/);
   assert.match(html, /архівної сторінки Академії/);
   assert.match(html, /href="\/en\/about"/);
-  assert.equal((html.match(/class="row"/g) || []).length, 22);
+  assert.match(html, /Гуляєва Людмила Петрівна/);
+  assert.match(html, /Йенс-Райнхольд Губерт/);
+  assert.equal((html.match(/class="row"/g) || []).length, 24);
   assert.match(about, /href="\/about\/honorary"/);
 });
 
