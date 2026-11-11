@@ -6,7 +6,7 @@ import { honoraryDoctors, honoraryProfessors } from "@/lib/honorary-academy";
 
 export const metadata: Metadata = {
   title: "Почесні професори та доктори Академії",
-  description: "Архівний перелік почесних професорів і почесних докторів Академії праці, соціальних відносин і туризму.",
+  description: "Почесні професори і почесні доктори Академії праці, соціальних відносин і туризму.",
 };
 
 function HonoraryList({ people }: { people: readonly { name: string; description?: string }[] }) {
@@ -28,7 +28,7 @@ export default function HonoraryAcademyPage() {
     <section className="deep-content"><div className="wrap">
       <div className="deep-intro"><h2>Історія відзнаки</h2><div>
         <p>У жовтні 2002 року вчена рада Академії затвердила положення про Інститут почесних професорів.</p>
-        <p>Наведений нижче перелік та описи перенесено з архівної сторінки Академії. Посади й звання в описах відображають час її публікації, а не обов’язково нинішній стан.</p>
+        <p>Перелік містить відомості з архівної сторінки Академії. Посади й звання в архівних описах відображають час її публікації, а не обов’язково нинішній стан.</p>
         <a className="back-link" href="https://www.socosvita.kiev.ua/en/node/51" target="_blank" rel="noopener noreferrer">Архівне джерело ↗</a>
       </div></div>
     </div></section>
