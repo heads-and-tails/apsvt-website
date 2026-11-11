@@ -207,7 +207,7 @@ export function SiteHeader({ englishHref }: { englishHref?: string } = {}) {
           {links.map((item) => {
             const active = activeTopLevelHref === item.href;
             return <div className={`desktop-nav-item ${active ? "active" : ""}`} key={item.href}>
-              <Link className="desktop-nav-link" href={item.href} aria-haspopup="menu">{item.label}<span aria-hidden="true">⌄</span></Link>
+              {item.nativeNavigation ? <a className="desktop-nav-link" href={item.href} aria-haspopup="menu">{item.label}<span aria-hidden="true">⌄</span></a> : <Link className="desktop-nav-link" href={item.href} aria-haspopup="menu">{item.label}<span aria-hidden="true">⌄</span></Link>}
               <div className="desktop-dropdown" aria-label={`${item.label}: підрозділи`}>
                 <div className="desktop-dropdown-heading"><small>{english ? "Explore section" : "Підрозділи"}</small><b>{item.label}</b></div>
                 {item.children.map((child, childIndex) => item.nativeNavigation ? <a href={child.href} key={child.href}><i>{String(childIndex + 1).padStart(2, "0")}</i><b>{child.label}</b><span aria-hidden="true">↗</span></a> : <Link href={child.href} key={child.href}><i>{String(childIndex + 1).padStart(2, "0")}</i><b>{child.label}</b><span aria-hidden="true">↗</span></Link>)}
