@@ -89,6 +89,24 @@ test("news cards support an announcement without a supplied image and preserve e
   assert.match(photo, /alt="Original source photo"/);
 });
 
+test("the negotiator card uses its replacement while the article retains its original hero", async () => {
+  const imageUrl = await moduleUrl("../lib/post-image.ts", { "./finance-poland-news": await moduleUrl("../lib/finance-poland-news.ts"), "./finance-finland-news": await moduleUrl("../lib/finance-finland-news.ts") });
+  const { getEditorialImage } = await import(imageUrl);
+  const post = { ...edupro.eduproAnnouncement, slug: "finansovo-ekonomichnyi-blok-prohramy-standart-profspilkovyi-perehovornyk", imageUrl: "/original-hero.png", imageAlt: "Original article hero" };
+  assert.deepEqual(getEditorialImage(post), { imageUrl: post.imageUrl, imageAlt: post.imageAlt });
+  assert.deepEqual(getEditorialImage(post, "hero"), getEditorialImage(post));
+  const link = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))};export default function Link(props){return createElement("a",props);}`).toString("base64")}`;
+  const { NewsCard } = await import(await moduleUrl("../app/components/NewsCard.tsx", { "next/link": link, "@/lib/post-image": imageUrl }));
+  const html = renderToStaticMarkup(createElement(NewsCard, { post }));
+  assert.match(html, /src="\/images\/news\/finance-negotiator-2026\.png"/);
+  assert.match(html, /object-fit:contain/);
+  assert.ok(html.includes(`/news/${post.slug}`));
+  assert.doesNotMatch(html, /original-hero/);
+  const original = await readFile(new URL("../public/images/news/finance-negotiator-2026.png", import.meta.url));
+  assert.equal(original.length, 898473);
+  assert.equal(createHash("sha256").update(original).digest("hex"), "faa87f0afd1b857eb622dc2b3139839f4cdc9337d403714107993dbd4e6b545e");
+});
+
 test("scientific club renders only published visible club materials and keeps its empty heading", async () => {
   const rendererUrl = `data:text/javascript;base64,${Buffer.from(`import {createElement} from ${JSON.stringify(import.meta.resolve("react"))}; export function DepartmentEditorialContent({entries}){return entries.map(entry=>createElement("article",{key:entry.id},entry.title))}`).toString("base64")}`;
   const { MarketingScienceClub } = await import(await moduleUrl("../app/programs/[slug]/MarketingScienceClub.tsx", { "@/app/components/DepartmentEditorialContent": rendererUrl }));

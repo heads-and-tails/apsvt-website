@@ -40,6 +40,15 @@ const editorialImages: Record<string, EditorialImage> = {
   },
 };
 
-export function getEditorialImage(post: Pick<Post, "slug" | "imageUrl" | "imageAlt">): EditorialImage {
+const cardImages: Record<string, EditorialImage> = {
+  "finansovo-ekonomichnyi-blok-prohramy-standart-profspilkovyi-perehovornyk": {
+    imageUrl: "/images/news/finance-negotiator-2026.png",
+    imageAlt: "Онлайн-заняття з фінансово-економічного блоку програми «Стандарт — профспілковий переговорник»",
+    imageFit: "contain",
+  },
+};
+
+export function getEditorialImage(post: Pick<Post, "slug" | "imageUrl" | "imageAlt">, variant: "card" | "hero" = "hero"): EditorialImage {
+  if (variant === "card" && cardImages[post.slug]) return cardImages[post.slug];
   return editorialImages[post.slug] ?? { imageUrl: post.imageUrl, imageAlt: post.imageAlt };
 }
