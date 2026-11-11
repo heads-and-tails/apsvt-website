@@ -1,8 +1,11 @@
 import type { Post } from "@/lib/data";
 
+import { financeFinlandCardImage, financeFinlandNewsSlug } from "./finance-finland-news";
+
 type EditorialImage = Pick<Post, "imageUrl" | "imageAlt"> & { imageFit?: "contain" | "cover" };
 
 const editorialImages: Record<string, EditorialImage> = {
+  [financeFinlandNewsSlug]: financeFinlandCardImage,
   "vidkryta-zustrich-suddiv-konstytutsiinoho-sudu-2026-10-29": {
     imageUrl: "/images/news/constitutional-court-meeting-2026-10-29.jpg",
     imageAlt: "Афіша відкритої зустрічі із суддями Конституційного Суду України 29 жовтня 2026 року",
