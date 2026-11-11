@@ -3096,3 +3096,20 @@ test("opens the Law faculty discussion section with separate editable specialty 
     assert.ok(page.includes('href="/en/programs/law"'));
   }
 });
+
+test("opens separate Law faculty rating and alumni sections", async () => {
+  const path = "/departments/law-faculty";
+  const html = await (await render(path)).text();
+  for (const [section, title] of [["faculty-rating", "Рейтинг"], ["faculty-alumni", "Випускники"]]) {
+    assert.ok(html.includes(`id="${section}"`));
+    assert.ok(html.includes(`href="${path}#${section}"`));
+    assert.ok(html.includes(`href="${path}/${section}/general"`));
+    const response = await render(`${path}/${section}/general`);
+    assert.equal(response.status, 200);
+    const page = await response.text();
+    assert.ok(page.includes(`<h1>${title}</h1>`));
+    assert.match(page, /Матеріали ще не оприлюднено/);
+    assert.ok(page.includes(`href="${path}#${section}"`));
+    assert.ok(page.includes('href="/en/programs/law"'));
+  }
+});

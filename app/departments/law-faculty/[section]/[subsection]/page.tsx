@@ -47,7 +47,7 @@ export default async function Page({ params }: Props) {
   const programmePage = lawFacultyProgrammes.find((programme) => programme.id === subsection);
   const publication = section === "faculty-programmes" ? getPublicAdministrationPublication(subsection) : undefined;
   const theses = section === "faculty-repository" ? (await getPublicContent("student_thesis")).filter(({ payload }) => programme === "law" ? /(?:D8|081|право)/i.test(payload.program || "") : /(?:D4|281|публічн)/i.test(payload.program || "")) : [];
-  return <main id="top" data-page-materials-server="true"><SiteHeader englishHref={isDiscussionPage ? "/en/programs/law" : isAccreditationPage ? "/en/programs/law" : section === "faculty-programmes" ? "/en/programs/law#education-levels" : undefined} />
+  return <main id="top" data-page-materials-server="true"><SiteHeader englishHref={isDiscussionPage || ["faculty-rating", "faculty-alumni"].includes(section) ? "/en/programs/law" : isAccreditationPage ? "/en/programs/law" : section === "faculty-programmes" ? "/en/programs/law#education-levels" : undefined} />
     <section className="faculty-subpage-hero"><div className="wrap">
       <nav aria-label="Навігаційний ланцюжок"><Link href={lawFacultyPath}>Юридичний факультет</Link><span> / </span><a href={`${lawFacultyPath}#${section}`}>{page.parentTitle}</a><span> / {page.title}</span></nav>
       <h1>{page.title}</h1><a href={`${lawFacultyPath}#${section}`}>← {page.parentTitle}</a>
