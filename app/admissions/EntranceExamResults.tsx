@@ -1,3 +1,4 @@
+import { EntranceExamRecordings } from "./EntranceExamRecordings";
 import {
   bachelorEntranceResults,
   bachelorEntranceResultsJuly31,
@@ -11,7 +12,7 @@ import {
   masterEntranceResultsSeptember16,
   masterEntranceResultsSeptember17,
   masterEntranceResultsOctober8,
-  masterInterviewVideo,
+  masterInterviewRecordingsHref,
   type EntranceResultDocument,
 } from "@/lib/entrance-results";
 
@@ -86,19 +87,13 @@ function MasterResultBatch() {
         <div><small>Магістратура · 6 серпня 2026</small><h5>Співбесіда з англійської мови</h5></div>
         <div className="entrance-result-action"><small>PDF · 2 сторінки</small><b>Відкрити ↗</b></div>
       </a>
-      <a href={masterInterviewVideo} target="_blank" rel="noreferrer">
+      <a href={masterInterviewRecordingsHref} target="_blank" rel="noreferrer">
         <span>02</span>
-        <div><small>Магістратура · 6 серпня 2026</small><h5>Відеозапис співбесіди</h5></div>
-        <div className="entrance-result-action"><small>MP4 · відео</small><b>Відкрити ↗</b></div>
+        <div><small>Магістратура · 6 серпня 2026</small><h5>Відеозаписи співбесіди</h5></div>
+        <div className="entrance-result-action"><small>YouTube · відеозаписи</small><b>Відкрити ↗</b></div>
       </a>
     </div>
-    <div className="entrance-result-video">
-      <video controls preload="metadata" playsInline>
-        <source src={masterInterviewVideo} type="video/mp4" />
-        Ваш браузер не підтримує відтворення відео.
-      </video>
-      <p>Відеозапис можна переглянути безпосередньо на сторінці або відкрити в окремій вкладці.</p>
-    </div>
+
   </details>;
 }
 
@@ -112,6 +107,7 @@ export function EntranceExamResults() {
     <nav className="entrance-results-level-nav" aria-label="Результати за рівнями освіти">
       <a href="#results-bachelor"><span>01</span><b>Бакалаврат</b><small>Результати опубліковано</small></a>
       <a href="#results-master"><span>02</span><b>Магістратура</b><small>Окремий підрозділ</small></a>
+      <a href="#entrance-videos"><span>03</span><b>Відеозаписи</b><small>За датами випробувань</small></a>
     </nav>
 
     <article className="entrance-results-level" id="results-bachelor">
@@ -133,5 +129,6 @@ export function EntranceExamResults() {
       <ResultBatch date="7 серпня" documents={masterEntranceResultsAugust7} level="Магістратура" />
       <MasterResultBatch />
     </article>
+    <EntranceExamRecordings />
   </div></section>;
 }

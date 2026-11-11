@@ -1807,8 +1807,9 @@ test("announces and duplicates the published entrance results in news",async()=>
     assert.match(july31ArticleHtml,new RegExp(`results/2026-07-31/${file}\\.pdf`));
   }
   assert.match(august6ArticleHtml,/results\/2026-08-06\/english-interview-master\.pdf/);
-  assert.match(august6ArticleHtml,/english-interview\.mp4/);
-  assert.match(august6ArticleHtml,/Відеозапис співбесіди/);
+  assert.match(august6ArticleHtml,/href="\/admissions#entrance-videos-2026-08-06"/);
+  assert.doesNotMatch(august6ArticleHtml,/<video|english-interview\.mp4/);
+  assert.match(august6ArticleHtml,/Відеозаписи співбесіди/);
 });
 
 test("keeps the applicant rankings announcement out of general news and preserves its originals",async()=>{
@@ -2977,4 +2978,25 @@ test("the general news page renders visible publication dates newest first", asy
   const dates = [...html.matchAll(/class="date">(\d{2})\.(\d{2})\.(\d{4})/g)].map(([, day, month, year]) => Date.UTC(Number(year), Number(month) - 1, Number(day)));
   assert.ok(dates.length > 1);
   for (let i = 1; i < dates.length; i++) assert.ok(dates[i - 1] >= dates[i], "A newer article must precede an older article");
+});
+
+
+test("groups published entrance-exam recordings by date using YouTube without changing result PDFs", async () => {
+  const response = await render("/admissions");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /id="entrance-videos"/);
+  assert.match(html, /Відеозаписи вступних випробувань/);
+  assert.match(html, /10(?:<!-- -->)? відеозаписів/);
+  for (const date of ["2026-07-29", "2026-07-31", "2026-08-06", "2026-08-18", "2026-09-16", "2026-10-09"]) {
+    assert.match(html, new RegExp(`id="entrance-videos-${date}"`));
+    assert.match(html, new RegExp(`dateTime="${date}"|datetime="${date}"`));
+  }
+  const ids = ["H8W4q7wpZHA", "jBp31e3DJeI", "5plYKGeALG8", "EtoszEztJPI", "mmfbrrJVL_Q", "ouII-LD5AAc", "PxWUNVlDbZM", "1a4agEqSD6k", "hsDBHv3_mjg", "rmvW-qVkHMw"];
+  for (const id of ids) assert.equal(html.split(`href="https://www.youtube.com/watch?v=${id}"`).length - 1, 1, id);
+  assert.equal((html.match(/href="https:\/\/www\.youtube\.com\/watch\?v=/g) || []).length, 10);
+  assert.doesNotMatch(html, /<video|<iframe|english-interview\.mp4/);
+  assert.match(html, /href="#entrance-videos"/);
+  assert.match(html, /href="\/admissions#entrance-videos-2026-08-06"/);
+  for (const href of ["/documents/admissions/results/2026-08-06/english-interview-master.pdf", "/documents/admissions/results/2026-07-29/ukrainian-language.pdf"]) assert.ok(html.includes(`href="${href}"`), href);
 });

@@ -6,7 +6,7 @@ import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { aiTrainingNewsSlug, erasmusDaysNewsSlug, getPostBySlug, getPosts, guestLectureHubertNewsSlug, internationalAiTrainingNewsSlug, internationalAiTrainingTitle, mentalHealthConferenceNewsSlug, pilcSeiteNewsSlug, stakeholderDiscussionNewsSlug, studyUaExpoNewsSlug, volodymyrLipkanArticleNewsSlug } from "@/lib/data";
 import { getEditorialImage } from "@/lib/post-image";
-import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewVideo } from "@/lib/entrance-results";
+import { entranceResultsNewsSlugAugust6, getEntranceResultDocumentsForNews, masterInterviewRecordingsHref } from "@/lib/entrance-results";
 import { applicantRankingsNewsSlug, bachelorApplicantRankings, bachelorRankingDocumentCount } from "@/lib/admissions-rankings";
 import { NewsCard } from "../../components/NewsCard";
 import { EditorialRichText } from "../../components/EditorialRichText";
@@ -149,11 +149,8 @@ export default async function Page({ params }: Props) {
           <Link href="/admissions#entrance-results">Усі результати у розділі «Вступнику» →</Link>
         </div>}
         {isMasterEntranceResultsNews && <div className="entrance-result-video">
-          <video controls preload="metadata" playsInline>
-            <source src={masterInterviewVideo} type="video/mp4" />
-            Ваш браузер не підтримує відтворення відео.
-          </video>
-          <p>Відеозапис співбесіди можна переглянути на сторінці або <a href={masterInterviewVideo} target="_blank" rel="noreferrer">відкрити в окремій вкладці ↗</a>.</p>
+
+          <p>Відеозаписи співбесіди від 6 серпня 2026 року: <a href={masterInterviewRecordingsHref} target="_blank" rel="noreferrer">відкрити відеозаписи ↗</a>.</p>
         </div>}
         {isApplicantRankingsNews && <div className="news-result-files news-ranking-files">
           <span>{`${bachelorRankingDocumentCount} рейтингових списків за програмами`}</span>
