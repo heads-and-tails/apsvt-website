@@ -11,6 +11,7 @@ import { qualityCentre } from "@/lib/quality-centre";
 type NavItem = {
   href: string;
   label: string;
+  nativeNavigation?: boolean;
   children: readonly { href: string; label: string }[];
 };
 
@@ -31,6 +32,16 @@ const ukLinks: readonly NavItem[] = [
   ] },
   { href: lawFacultyPath, label: "Юридичний факультет", children: lawFacultyStructure.map((section) => ({ href: `${lawFacultyPath}#${section.id}`, label: section.title })) },
   { href: psychologyFacultyPath, label: "Факультет психології", children: psychologyFacultyStructure.map((section) => ({ href: `${psychologyFacultyPath}#${section.id}`, label: section.title })) },
+  { href: "/departments/economics-social-tourism-faculty", label: "Факультет економіки", nativeNavigation: true, children: [
+    { href: "/departments/economics-social-tourism-faculty#faculty-about", label: "Про факультет" },
+    { href: "/departments/economics-social-tourism-faculty#departments", label: "Кафедри й напрями" },
+    { href: "/departments/economics-social-tourism-faculty#faculty-programmes", label: "Освітні програми" },
+    { href: "/departments/economics-social-tourism-faculty#faculty-organization", label: "Організація факультету" },
+    { href: "/departments/economics-social-tourism-faculty#faculty-science", label: "Наукова діяльність" },
+    { href: "/departments/economics-social-tourism-faculty#faculty-practice", label: "Практика й партнери" },
+    { href: "/departments/economics-social-tourism-faculty#faculty-quality", label: "Якість освіти" },
+    { href: "/departments/economics-social-tourism-faculty#department-news", label: "Новини факультету" },
+  ] },
   { href: "/admissions", label: "Вступнику", children: [
     { href: "/admissions#route", label: "Як вступити" }, { href: "/admissions#dates", label: "Ключові дати" },
     { href: "/tuition", label: "Вартість і оплата" }, { href: "/admissions#entrance-exams", label: "Розклад випробувань" },
@@ -144,7 +155,7 @@ export function SiteHeader({ englishHref }: { englishHref?: string } = {}) {
   }, [open]);
 
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 1101px)");
+    const desktop = window.matchMedia("(min-width: 1281px)");
     const closeAtDesktopWidth = (event: MediaQueryListEvent) => {
       if (event.matches) {
         setOpen(false);
@@ -199,7 +210,7 @@ export function SiteHeader({ englishHref }: { englishHref?: string } = {}) {
               <Link className="desktop-nav-link" href={item.href} aria-haspopup="menu">{item.label}<span aria-hidden="true">⌄</span></Link>
               <div className="desktop-dropdown" aria-label={`${item.label}: підрозділи`}>
                 <div className="desktop-dropdown-heading"><small>{english ? "Explore section" : "Підрозділи"}</small><b>{item.label}</b></div>
-                {item.children.map((child, childIndex) => <Link href={child.href} key={child.href}><i>{String(childIndex + 1).padStart(2, "0")}</i><b>{child.label}</b><span aria-hidden="true">↗</span></Link>)}
+                {item.children.map((child, childIndex) => item.nativeNavigation ? <a href={child.href} key={child.href}><i>{String(childIndex + 1).padStart(2, "0")}</i><b>{child.label}</b><span aria-hidden="true">↗</span></a> : <Link href={child.href} key={child.href}><i>{String(childIndex + 1).padStart(2, "0")}</i><b>{child.label}</b><span aria-hidden="true">↗</span></Link>)}
               </div>
             </div>;
           })}
@@ -230,7 +241,7 @@ export function SiteHeader({ englishHref }: { englishHref?: string } = {}) {
                     <span>{String(index + 1).padStart(2, "0")}</span><b>{item.label}</b><i aria-hidden="true">+</i>
                   </summary>
                   <div className="menu-subitems">
-                    {item.children.map((child, childIndex) => <Link href={child.href} key={child.href} onClick={closeMenu} tabIndex={open ? 0 : -1}><small>{String(childIndex + 1).padStart(2, "0")}</small><b>{child.label}</b><span aria-hidden="true">→</span></Link>)}
+                    {item.children.map((child, childIndex) => item.nativeNavigation ? <a href={child.href} key={child.href} onClick={closeMenu} tabIndex={open ? 0 : -1}><small>{String(childIndex + 1).padStart(2, "0")}</small><b>{child.label}</b><span aria-hidden="true">→</span></a> : <Link href={child.href} key={child.href} onClick={closeMenu} tabIndex={open ? 0 : -1}><small>{String(childIndex + 1).padStart(2, "0")}</small><b>{child.label}</b><span aria-hidden="true">→</span></Link>)}
                   </div>
                 </details>
               ))}

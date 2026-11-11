@@ -2060,7 +2060,7 @@ test("renders one accessible navigation menu across languages",async()=>{
   assert.match(header,/document\.body\.style\.overflow = "hidden"/);
   assert.match(header,/className="desktop-mainnav"/);
   assert.match(css,/\.mainnav\{display:block;position:absolute;top:100%/);
-  assert.match(css,/@media\(min-width:1101px\)\{\.mainnav\{display:none\}\.burger\{display:none\}\}/);
+  assert.match(css,/@media\(min-width:1281px\)\{\.mainnav\{display:none\}\.burger\{display:none\}\}/);
   assert.match(css,/height:calc\(100svh - 68px\)/);
   assert.match(css,/\.mainnav\{background:var\(--paper\)\}/);
 });
@@ -3040,4 +3040,23 @@ test("groups published entrance-exam recordings by date using YouTube without ch
   assert.match(html, /href="#entrance-videos"/);
   assert.match(html, /href="\/admissions#entrance-videos-2026-08-06"/);
   for (const href of ["/documents/admissions/results/2026-08-06/english-interview-master.pdf", "/documents/admissions/results/2026-07-29/ukrainian-language.pdf"]) assert.ok(html.includes(`href="${href}"`), href);
+});
+
+test("links all Economics faculty sections beside the other faculties in both Ukrainian menus", async () => {
+  const html = await (await render("/about")).text();
+  const path = "/departments/economics-social-tourism-faculty";
+  const desktop = html.match(/<nav class="desktop-mainnav"[\s\S]*?<\/nav>/)?.[0] ?? "";
+  const mobile = html.match(/<nav id="site-navigation"[\s\S]*?<\/nav>/)?.[0] ?? "";
+  for (const menu of [desktop, mobile]) {
+    assert.ok(menu.indexOf(path + "#faculty-about") > menu.indexOf("psychology-social-development-faculty"));
+    for (const id of ["faculty-about", "departments", "faculty-programmes", "faculty-organization", "faculty-science", "faculty-practice", "faculty-quality", "department-news"]) {
+      assert.ok(menu.includes(`href="${path}#${id}"`), id);
+    }
+  }
+  const faculty = await (await render(path)).text();
+  for (const id of ["faculty-about", "departments", "faculty-programmes", "faculty-organization", "faculty-science", "faculty-practice", "faculty-quality", "department-news"]) {
+    assert.ok(faculty.includes(`id="${id}"`), id);
+  }
+  const english = await (await render("/en/about")).text();
+  assert.doesNotMatch(english.match(/<nav class="desktop-mainnav"[\s\S]*?<\/nav>/)?.[0] ?? "", /Факультет економіки/);
 });
