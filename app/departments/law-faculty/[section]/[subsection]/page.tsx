@@ -15,6 +15,9 @@ import { lawFacultyProgrammes } from "@/lib/law-faculty-programmes";
 import { LawFacultyProgramme } from "@/app/components/LawFacultyProgramme";
 import { lawFacultyAccreditationDocuments, lawFacultyAccreditationPath, lawMasterProgrammePath } from "@/lib/law-faculty-accreditation";
 
+import { isProgrammeFolder, parseProgrammeDocumentCategory } from "@/lib/programme-folders";
+import { LawDiscussionFolders } from "@/app/components/LawDiscussionFolders";
+
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ section: string; subsection: string }> };
 const findPage = (section: string, subsection: string) => lawFacultySubpages.find((page) => page.sectionId === section && page.id === subsection);
@@ -35,13 +38,16 @@ export default async function Page({ params }: Props) {
     isAccreditationPage ? getPublicDocuments(lawMasterProgrammePath) : Promise.resolve([]),
   ]);
   const accreditationDocuments = isAccreditationPage ? lawFacultyAccreditationDocuments(documents, programmeDocuments) : [];
-  const visibleEntries = entries.filter((entry) => !["hero", "override"].includes(entry.entryType));
+  const isDiscussionPage = section === "faculty-discussion";
+  const folders = isDiscussionPage ? entries.filter(isProgrammeFolder) : [];
+  const looseDocuments = isDiscussionPage ? documents.filter((document) => !parseProgrammeDocumentCategory(document.category).folderId) : documents;
+  const visibleEntries = entries.filter((entry) => !["hero", "override"].includes(entry.entryType) && (!isDiscussionPage || !isProgrammeFolder(entry)));
   const siblings = lawFacultyStructure.find((item) => item.id === section)!.children;
   const programme = subsection === "law" ? "law" : "public-administration";
   const programmePage = lawFacultyProgrammes.find((programme) => programme.id === subsection);
   const publication = section === "faculty-programmes" ? getPublicAdministrationPublication(subsection) : undefined;
   const theses = section === "faculty-repository" ? (await getPublicContent("student_thesis")).filter(({ payload }) => programme === "law" ? /(?:D8|081|право)/i.test(payload.program || "") : /(?:D4|281|публічн)/i.test(payload.program || "")) : [];
-  return <main id="top" data-page-materials-server="true"><SiteHeader englishHref={isAccreditationPage ? "/en/programs/law" : section === "faculty-programmes" ? "/en/programs/law#education-levels" : undefined} />
+  return <main id="top" data-page-materials-server="true"><SiteHeader englishHref={isDiscussionPage ? "/en/programs/law" : isAccreditationPage ? "/en/programs/law" : section === "faculty-programmes" ? "/en/programs/law#education-levels" : undefined} />
     <section className="faculty-subpage-hero"><div className="wrap">
       <nav aria-label="Навігаційний ланцюжок"><Link href={lawFacultyPath}>Юридичний факультет</Link><span> / </span><a href={`${lawFacultyPath}#${section}`}>{page.parentTitle}</a><span> / {page.title}</span></nav>
       <h1>{page.title}</h1><a href={`${lawFacultyPath}#${section}`}>← {page.parentTitle}</a>
@@ -51,11 +57,12 @@ export default async function Page({ params }: Props) {
       {section === "faculty-programmes" && programmePage ? <LawFacultyProgramme programme={programmePage} publication={publication} entries={visibleEntries} documents={documents} /> : <>
       <div className="wrap"><h2>{page.title}</h2>
       {isAccreditationPage && <p>Матеріали акредитації освітніх програм юридичного факультету. <Link href={lawMasterProgrammePath}>Право · магістр →</Link></p>}
-      {!visibleEntries.length && !documents.length && !accreditationDocuments.length && !["faculty-programmes", "faculty-repository"].includes(section) && <p>Матеріали ще не оприлюднено.</p>}
+      {!visibleEntries.length && !documents.length && !folders.length && !accreditationDocuments.length && !["faculty-programmes", "faculty-repository"].includes(section) && <p>Матеріали ще не оприлюднено.</p>}
     </div>{section === "faculty-council"
       ? <div className="wrap"><DepartmentEditorialContent inline entries={visibleEntries} /></div>
       : <DepartmentEditorialContent entries={visibleEntries} />}
-      <PageDocuments pagePath={page.path} documents={isAccreditationPage ? accreditationDocuments : undefined} title={isAccreditationPage ? "Документи з акредитації" : undefined} description={isAccreditationPage ? "Оприлюднені матеріали освітніх програм." : undefined} />
+      {isDiscussionPage && <LawDiscussionFolders folders={folders} documents={documents} />}
+      <PageDocuments pagePath={page.path} documents={isAccreditationPage ? accreditationDocuments : isDiscussionPage ? looseDocuments : undefined} title={isAccreditationPage ? "Документи з акредитації" : undefined} description={isAccreditationPage ? "Оприлюднені матеріали освітніх програм." : undefined} />
       </>}
     </section>
     {section === "faculty-repository" && <ThesesCatalogue items={theses} />}

@@ -3,7 +3,7 @@
 import { uploadEditorialFile } from "@/lib/editorial-upload-client";
 import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import type { DepartmentEntry } from "@/lib/department-content";
-import { parseProgrammeDocumentCategory, programmeDocumentCategory, programmeDocumentCategoryLabel, programmeFolderSection } from "@/lib/programme-folders";
+import { isLawDiscussionPage, parseProgrammeDocumentCategory, programmeDocumentCategory, programmeDocumentCategoryLabel, programmeFolderSection } from "@/lib/programme-folders";
 import { ProgrammeFolderEditor } from "./ProgrammeFolderEditor";
 import type { DocumentStatus, PageDocument, PageDocumentInput } from "@/lib/documents";
 import type { Publisher } from "@/lib/auth";
@@ -71,8 +71,9 @@ export function DocumentManager({ documents, setDocuments, folders, setFolders, 
   const published = useMemo(() => documents.filter((document) => document.status === "published").length, [documents]);
   const isProfessionalProgramme = professionalEducationProgrammes.some((programme) => programme.path === form.pagePath);
   const isLawProgramme = lawFacultySubpages.some((page) => page.path === form.pagePath && page.sectionId === "faculty-programmes");
-  const folderSection = isLawProgramme ? programmeFolderSection(programmeDocumentKind) : undefined;
-  const listedDocuments = isLawProgramme ? documents.filter((document) => {
+  const isLawDiscussion = isLawDiscussionPage(form.pagePath);
+  const folderSection = isLawDiscussion ? "discussion" : isLawProgramme ? programmeFolderSection(programmeDocumentKind) : undefined;
+  const listedDocuments = isLawProgramme || isLawDiscussion ? documents.filter((document) => {
     const parsed = parseProgrammeDocumentCategory(document.category);
     return document.pagePath === form.pagePath && parsed.kind === programmeDocumentKind && (!folderSection || parsed.folderId === folderId);
   }) : documents;
@@ -135,8 +136,10 @@ export function DocumentManager({ documents, setDocuments, folders, setFolders, 
 
   function changePagePath(pagePath: string) {
     const isProgramme = professionalEducationProgrammes.some((programme) => programme.path === pagePath) || lawFacultySubpages.some((page) => page.path === pagePath && page.sectionId === "faculty-programmes");
+    const isDiscussion = isLawDiscussionPage(pagePath);
     setFolderId("");
-    setForm((current) => ({ ...current, pagePath, category: isProgramme ? "Освітня програма" : current.category }));
+    setForm((current) => ({ ...current, pagePath, category: isProgramme ? "Освітня програма" : isDiscussion ? "Обговорення" : parseProgrammeDocumentCategory(current.category).folderId ? "Офіційний документ" : current.category }));
+    if (isDiscussion) { setProgrammeDocumentKind("Обговорення"); setProgrammeDocumentYear(""); }
     if (isProgramme) { setProgrammeDocumentKind("Освітня програма"); setProgrammeDocumentYear(""); }
   }
 
@@ -166,7 +169,7 @@ export function DocumentManager({ documents, setDocuments, folders, setFolders, 
       setDocuments((current) => editing ? current.map((item) => item.id === editing ? result : item) : [result, ...current]);
       setMessage(result.status === "published" ? "Документ опубліковано на вибраній сторінці та автоматично додано до загального каталогу" : "Чернетку документа збережено");
       setEditing(null);
-      if (isLawProgramme) setForm({ ...empty, pagePath: form.pagePath, category: form.category });
+      if (isLawProgramme || isLawDiscussion) setForm({ ...empty, pagePath: form.pagePath, category: form.category });
       else { setForm({ ...empty, pagePath: allowedPageOptions[0]?.[0] || "/materials" }); setScheduleSelection(defaultScheduleDocumentSelection); setProgrammeDocumentKind("Освітня програма"); setProgrammeDocumentYear(""); setFolderId(""); }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Не вдалося зберегти документ");
@@ -190,7 +193,7 @@ export function DocumentManager({ documents, setDocuments, folders, setFolders, 
     setScheduleSelection(parseScheduleDocumentCategory(item.category) || defaultScheduleDocumentSelection);
     const { kind, year, folderId: itemFolderId } = parseProgrammeDocumentCategory(item.category);
     setFolderId(itemFolderId);
-    if (professionalEducationProgrammes.some((programme) => programme.path === item.pagePath) || lawFacultySubpages.some((page) => page.path === item.pagePath && page.sectionId === "faculty-programmes")) {
+    if (professionalEducationProgrammes.some((programme) => programme.path === item.pagePath) || lawFacultySubpages.some((page) => page.path === item.pagePath && page.sectionId === "faculty-programmes") || isLawDiscussionPage(item.pagePath)) {
       setProgrammeDocumentKind(kind || "Освітня програма");
       setProgrammeDocumentYear(year);
     }
@@ -243,13 +246,17 @@ export function DocumentManager({ documents, setDocuments, folders, setFolders, 
         <label className={`document-drop ${form.fileUrl ? "ready" : ""}`}>{form.fileUrl ? <><b>{form.fileName}</b><span>Файл готовий до публікації</span></> : <><b>Оберіть файл</b><span>PDF, DOC, DOCX, XLS, XLSX, PPT або PPTX</span></>}<input type="file" required={!form.fileUrl} disabled={busy} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); event.target.value = ""; }} /></label>
         <div className="document-fields">
           <label>Назва документа<input required value={form.title} onChange={(event) => change("title", event.target.value)} /></label>
-          {form.pagePath !== "/schedule" && !isProfessionalProgramme && !isLawProgramme && <label>Категорія<input required value={form.category} onChange={(event) => change("category", event.target.value)} placeholder="Наказ, положення, програма…" /></label>}
+          {form.pagePath !== "/schedule" && !isProfessionalProgramme && !isLawProgramme && !isLawDiscussion && <label>Категорія<input required value={form.category} onChange={(event) => change("category", event.target.value)} placeholder="Наказ, положення, програма…" /></label>}
           {(isProfessionalProgramme || isLawProgramme) && <fieldset className="schedule-document-fields wide programme-document-fields">
             <legend>Де показати документ у програмі</legend>
             <p>Додавайте необмежену кількість освітніх програм і навчальних планів: один файл на кожний потрібний рік.</p>
             <label>Тип документа<select value={programmeDocumentKind} onChange={(event) => setProgrammeCategory(event.target.value, programmeDocumentYear)}><option>Освітня програма</option><option>Навчальний план</option>{isLawProgramme && <><option>Робоча програма</option><option>Анотація</option></>}<option>Інший документ</option></select></label>
             <label>Рік / навчальний рік<input required={!folderSection} value={programmeDocumentYear} onChange={(event) => setProgrammeCategory(programmeDocumentKind, event.target.value)} placeholder="Наприклад: 2026 або 2026/27" /></label>
             {folderSection && <ProgrammeFolderEditor pagePath={form.pagePath} sectionId={folderSection} folders={folders} setFolders={setFolders} documents={documents} selectedId={folderId} onSelect={(id) => setProgrammeCategory(programmeDocumentKind, programmeDocumentYear, id)} busy={busy} setBusy={setBusy} onMessage={setMessage} />}
+          </fieldset>}
+          {isLawDiscussion && <fieldset className="schedule-document-fields wide programme-document-fields">
+            <legend>Папки обговорення</legend>
+            <ProgrammeFolderEditor pagePath={form.pagePath} sectionId="discussion" folders={folders} setFolders={setFolders} documents={documents} selectedId={folderId} onSelect={(id) => setProgrammeCategory("Обговорення", "", id)} busy={busy} setBusy={setBusy} onMessage={setMessage} />
           </fieldset>}
           <label className="wide">Короткий опис<textarea rows={3} value={form.description} onChange={(event) => change("description", event.target.value)} /></label>
           <label>Сторінка<select value={form.pagePath} onChange={(event) => changePagePath(event.target.value)}>{allowedPageOptions.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label>

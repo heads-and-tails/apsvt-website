@@ -66,7 +66,7 @@ export function LawFacultyProgramme({ programme, publication, entries, documents
   </div>;
 }
 
-function ProgrammeDocumentLinks({ documents }: { documents: PageDocument[] }) {
+export function ProgrammeDocumentLinks({ documents }: { documents: PageDocument[] }) {
   if (!documents.length) return null;
   return <ul className="programme-material-list">{documents.map((document) => <li key={document.id}><a href={document.fileUrl} target="_blank" rel="noopener noreferrer"><span>{document.title}{document.description && <small>{document.description}</small>}</span><small>{document.fileName} ↗</small></a></li>)}</ul>;
 }

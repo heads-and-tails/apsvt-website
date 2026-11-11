@@ -2,10 +2,17 @@ import type { DepartmentEntry, DepartmentEntryInput } from "./department-content
 import type { PageDocument, PageDocumentInput } from "./documents";
 import { lawFacultyProgrammes, lawProgrammePath } from "./law-faculty-programmes";
 
+import { lawFacultySubpages } from "./law-faculty-structure";
+
+export function isLawDiscussionPage(path: string): boolean {
+  return lawFacultySubpages.some((page) => page.sectionId === "faculty-discussion" && page.path === path);
+}
+
 export const programmeFolderRole = "programme-document-folder";
 export const programmeFolderSections = [
   { id: "working-programmes", kind: "Робоча програма", title: "Робочі програми" },
   { id: "course-annotations", kind: "Анотація", title: "Анотації" },
+  { id: "discussion", kind: "Обговорення", title: "Обговорення" },
 ] as const;
 export type ProgrammeFolderSection = (typeof programmeFolderSections)[number]["id"];
 
@@ -14,8 +21,9 @@ export function programmeFolderSection(kind: string): ProgrammeFolderSection | u
 }
 
 export function isProgrammeFolder(entry: Pick<DepartmentEntry, "pagePath" | "sectionId" | "entryType" | "role">): boolean {
-  return entry.role === programmeFolderRole && entry.entryType === "section"
-    && programmeFolderSections.some((section) => section.id === entry.sectionId)
+  if (entry.role !== programmeFolderRole || entry.entryType !== "section") return false;
+  if (entry.sectionId === "discussion") return isLawDiscussionPage(entry.pagePath);
+  return programmeFolderSections.some((section) => section.id === entry.sectionId)
     && lawFacultyProgrammes.some((programme) => lawProgrammePath(programme.id) === entry.pagePath);
 }
 

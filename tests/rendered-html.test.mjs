@@ -2500,7 +2500,7 @@ test("keeps four law departments to five closed sections and separates programme
     assert.doesNotMatch(html,/id="science-clubs"|id="academic-council"|id="programme-discussion"/);
   }
   const faculty=await (await render("/departments/law-faculty")).text();
-  assert.doesNotMatch(faculty,/id="faculty-discussion"|Рішення та протоколи/);
+  assert.doesNotMatch(faculty,/Рішення та протоколи/);
   assert.match(faculty,/class="faculty-council-materials"/);
   for(const slug of ["d8-law-bachelor","d8-law-master","d8-law-phd","d4-public-administration-bachelor","d4-public-administration-master","d4-public-administration-phd"]){
     const html=await (await render(`/departments/law-faculty/faculty-programmes/${slug}`)).text();
@@ -3078,4 +3078,21 @@ test("publishes the final Law master's accreditation meeting schedule and exact 
   ]) assert.ok(article.includes(`href="${target}"`), target);
   assert.match(html, /Фінальна зустріч-брифінг/);
   assert.ok((await (await render("/news")).text()).includes(`href="/news/${slug}"`));
+});
+
+test("opens the Law faculty discussion section with separate editable specialty pages", async () => {
+  const path = "/departments/law-faculty";
+  const html = await (await render(path)).text();
+  assert.ok(html.includes('id="faculty-discussion"'));
+  assert.match(html, /Обговорення/);
+  for (const [id, title] of [["law", "Право"], ["public-administration", "Публічне управління та адміністрування"]]) {
+    assert.ok(html.includes(`href="${path}/faculty-discussion/${id}"`));
+    const response = await render(`${path}/faculty-discussion/${id}`);
+    assert.equal(response.status, 200);
+    const page = await response.text();
+    assert.ok(page.includes(`<h1>${title}</h1>`));
+    assert.match(page, /Матеріали ще не оприлюднено/);
+    assert.ok(page.includes(`href="${path}#faculty-discussion"`));
+    assert.ok(page.includes('href="/en/programs/law"'));
+  }
 });

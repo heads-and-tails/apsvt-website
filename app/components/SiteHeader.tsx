@@ -30,7 +30,7 @@ const ukLinks: readonly NavItem[] = [
     { href: "/programs/management", label: "Менеджмент" }, { href: "/programs/social-work", label: "Соціальна робота" },
     { href: "/departments/digital-technologies#programmes", label: "Професійна освіта · 5 програм" },
   ] },
-  { href: lawFacultyPath, label: "Юридичний факультет", children: lawFacultyStructure.map((section) => ({ href: `${lawFacultyPath}#${section.id}`, label: section.title })) },
+  { href: lawFacultyPath, label: "Юридичний факультет", nativeNavigation: true, children: lawFacultyStructure.map((section) => ({ href: `${lawFacultyPath}#${section.id}`, label: section.title })) },
   { href: psychologyFacultyPath, label: "Факультет психології", children: psychologyFacultyStructure.map((section) => ({ href: `${psychologyFacultyPath}#${section.id}`, label: section.title })) },
   { href: "/departments/economics-social-tourism-faculty", label: "Факультет економіки", nativeNavigation: true, children: [
     { href: "/departments/economics-social-tourism-faculty#faculty-about", label: "Про факультет" },
