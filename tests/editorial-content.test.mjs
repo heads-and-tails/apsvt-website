@@ -312,7 +312,7 @@ test("shared document cards render supplied publications and preserve filtering 
 const programmeDocumentsUrl = await moduleUrl("../lib/programme-documents.ts");
 const lawProgrammesUrl = await moduleUrl("../lib/law-faculty-programmes.ts", { "./law-faculty-structure": lawStructureUrl, "./programme-documents": programmeDocumentsUrl });
 const lawProgrammes = await import(lawProgrammesUrl);
-const programmeFoldersUrl = await moduleUrl("../lib/programme-folders.ts", { "./law-faculty-programmes": lawProgrammesUrl });
+const programmeFoldersUrl = await moduleUrl("../lib/programme-folders.ts", { "./law-faculty-programmes": lawProgrammesUrl, "./law-faculty-structure": lawStructureUrl });
 const programmeFolders = await import(programmeFoldersUrl);
 
 test("programme folders retain stable membership and hide unavailable, cross-section and cross-programme files", () => {
@@ -1030,4 +1030,23 @@ test("Marketing guarantors render before both programme document tabs at their o
     assert.ok(start < html.indexOf(`id="marketing-${level}-plans-tab"`));
     assert.equal(html.split(entries.find(x => x.sectionId === `marketing-${level}-guarantor`).summary).length - 1, 1);
   }
+});
+
+test("discussion folders keep the two specialties separate and preserve draft visibility", () => {
+  const law = "/departments/law-faculty/faculty-discussion/law";
+  const administration = "/departments/law-faculty/faculty-discussion/public-administration";
+  const folder = { ...programmeFolders.programmeFolderInput(law, "discussion", "Проєкти ОП"), id: "discussion-1" };
+  const document = { pagePath: law, category: programmeFolders.programmeDocumentCategory("Обговорення", "", folder.id) };
+  assert.ok(programmeFolders.isLawDiscussionPage(law));
+  assert.ok(programmeFolders.isLawDiscussionPage(administration));
+  assert.equal(programmeFolders.isLawDiscussionPage(law + "/unknown"), false);
+  assert.ok(programmeFolders.isProgrammeFolder(folder));
+  assert.ok(programmeFolders.programmeDocumentIsVisible(document, [folder]));
+  assert.ok(programmeFolders.programmeDocumentIsVisible(document, [{ ...folder, title: "Оновлена назва" }]));
+  for (const changed of [{ ...folder, pagePath: administration }, { ...folder, pagePath: lawProgrammes.lawProgrammePath("d8-law-master") }, { ...folder, sectionId: "working-programmes" }, { ...folder, status: "draft" }, { ...folder, hidden: true }]) {
+    assert.equal(programmeFolders.programmeDocumentIsVisible(document, [changed]), false);
+  }
+  assert.equal(programmeFolders.programmeFolderMatchesDocument({ ...document, pagePath: administration }, folder), false);
+  assert.equal(programmeFolders.programmeFolderMatchesDocument({ ...document, category: "Робоча програма · папка:discussion-1" }, folder), false);
+  assert.equal(programmeFolders.programmeDocumentCategoryLabel(document.category, [folder]), "Обговорення · Проєкти ОП");
 });
