@@ -37,7 +37,7 @@ export const bachelorEntranceResultsSeptember11: EntranceResultDocument[] = [
 
 export const entranceResultsNewsSlugJuly31 = "rezultaty-vstupnykh-vyprobuvan-31-lypnia-2026";
 export const entranceResultsNewsSlugAugust6 = "rezultaty-vstupnykh-vyprobuvan-6-serpnia-2026";
-export const masterInterviewVideo = "https://apsvt-academy.ikucha.chatgpt.site/media/admissions/results/2026-08-06/english-interview.mp4";
+export const masterInterviewRecordingsHref = "/admissions#entrance-videos-2026-08-06";
 
 export const bachelorEntranceResults: EntranceResultDocument[] = [
   {
