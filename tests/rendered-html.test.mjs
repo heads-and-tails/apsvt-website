@@ -405,7 +405,7 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(await (await render("/news")).text(),/mental-health-conference-science-2026\.jpg/);
   assert.match(html,/Відкрита лекція Володимира Білоуса/);
   assert.match(await (await render("/news")).text(),/Гостьова лекція Єнс-Райнхольда Губерта/);
-  assert.match(html,/EDUPRO2026: AI FOR EDUCATORS/);
+  assert.match(await (await render("/news")).text(),/EDUPRO2026: AI FOR EDUCATORS/);
   assert.match(await (await render("/news")).text(),/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
   assert.match(html,/EMPOWER-EAST розпочав роботу/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
@@ -449,7 +449,6 @@ test("publishes the complete EduPro announcement with the supplied registration 
   assert.doesNotMatch(html, /detail-hero-bg|<img[^>]*src=""/);
   assert.match(html, /class="lang-toggle"[^>]*href="\/en\/news"|href="\/en\/news"[^>]*class="lang-toggle"/);
   assert.ok((await (await render("/news")).text()).includes(path));
-  assert.ok((await (await render("/")).text()).includes(path));
   const englishIndex = await (await render("/en/news")).text();
   assert.ok(englishIndex.includes(`/en${path}`));
   assert.doesNotMatch(englishIndex, /<img[^>]*src=""/);
@@ -3171,4 +3170,30 @@ test("publishes the corrected Finland internship news with four unchanged photos
     assert.equal(bytes.length, size);
     assert.equal(createHash("sha256").update(bytes).digest("hex"), digest);
   }
+});
+
+
+test("publishes the corrected Poland training report and keeps Finland first in Finance", async () => {
+  const slug = "tsyfrovyi-balans-stiikist-treninh-polshcha-2026";
+  const response = await render(`/news/${slug}`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const article = html.split('<article class="detail-copy">')[1].split("</article>")[0];
+  for (const fact of ["Ткаченко Яніна Станіславівна", "Гуляєва Людмила Петрівна", "з 17 по 21 травня 2026 року", "Закопане", "KA153-YOU", "21 учасника", "Association for the Protection of the Rights of Ukrainians in Slovakia", "Foundation International Center of Dialogue, Innovations and Future", "Магія добра", "Youthpass", "Автор: Гуляєва Людмила Петрівна"]) assert.ok(article.includes(fact), fact);
+  assert.match(html, /8 листопада 2026/);
+  assert.ok(html.includes('href="/en/news"'));
+  assert.doesNotMatch(article, /Короткий підпис|Новина 4|при відкритті/);
+  const news = await (await render("/news")).text();
+  assert.ok(news.includes(`href="/news/${slug}"`));
+  assert.ok(news.includes('src="/images/news/finance-poland-2026.jpg"'));
+  const home = await (await render("/")).text();
+  assert.ok(home.includes(`href="/news/${slug}"`));
+  assert.equal((home.match(/class="news"/g) || []).length, 9);
+  const finance = (await (await render("/programs/finance")).text()).split('class="academic-news-section"')[1].split("</section>")[0];
+  const cards = [...finance.matchAll(/<a\b(?=[^>]*class="news")(?=[^>]*href="([^"]+)")[^>]*>/g)].map(match => match[1]);
+  assert.equal(cards.length, 3);
+  assert.equal(cards[0], "/news/mizhnarodne-stazhuvannia-finansy-finliandiia-2026");
+  const bytes = await readFile(new URL("../public/images/news/finance-poland-2026.jpg", import.meta.url));
+  assert.equal(bytes.length, 197994);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), "d0a5c9ab4eb1a9fe8a41a9c2d769573957fd9113ff259d1b0dae86c77c7d154d");
 });

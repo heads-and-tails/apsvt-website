@@ -34,6 +34,7 @@ import { managementDiscussionNews, managementDiscussionNewsSlug } from "./manage
 import { daadOpportunitiesNews, daadOpportunitiesNewsSlug } from "./daad-opportunities-news";
 import { bilousOpenLectureNews, bilousOpenLectureNewsSlug } from "./bilous-open-lecture-news";
 
+import { financePolandNews, financePolandNewsSlug } from "./finance-poland-news";
 import { financeFinlandNews, financeFinlandNewsSlug } from "./finance-finland-news";
 import { strategyDiscussionNews, strategyDiscussionNewsSlug } from "./strategy-discussion-news";
 import { lawAccreditationNews, lawAccreditationNewsSlug } from "./law-accreditation-news";
@@ -70,6 +71,7 @@ function encodePostBody(post: Pick<Post, "body" | "hideDate">): string {
 }
 
 export const seedPosts: Post[] = [
+  financePolandNews,
   financeFinlandNews,
   strategyDiscussionNews,
   lawAccreditationNews,
@@ -648,7 +650,7 @@ async function ensureSupabasePosts(): Promise<void> {
     const inserted = await admin.from("editorial_posts").upsert(seedPosts.map(toSupabaseRow), { onConflict: "id" });
     if (inserted.error) throw inserted.error;
   } else {
-    const required = seedPosts.filter((post) => post.slug === financeFinlandNewsSlug || post.slug === strategyDiscussionNewsSlug || post.slug === lawAccreditationNewsSlug || post.slug === bilousOpenLectureNewsSlug || post.slug === daadOpportunitiesNewsSlug || post.slug === deanCompetitionNewsSlug || post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug || post.slug === marketingDiscussionMarchNewsSlug || post.slug === marketingDiscussionMayNewsSlug || post.slug === aiTrainingNewsSlug || post.slug === psychologyCollectiveMeetingNewsSlug || post.slug === volodymyrLipkanArticleNewsSlug || post.slug === annaPuhachovaPodcastNewsSlug || post.slug === eduproNewsSlug || post.slug === constitutionalCourtLectureNewsSlug || post.slug === constitutionalCourtMeetingNewsSlug || post.slug === empowerEastKickoffNewsSlug || post.slug === managementDiscussionNewsSlug);
+    const required = seedPosts.filter((post) => post.slug === financePolandNewsSlug || post.slug === financeFinlandNewsSlug || post.slug === strategyDiscussionNewsSlug || post.slug === lawAccreditationNewsSlug || post.slug === bilousOpenLectureNewsSlug || post.slug === daadOpportunitiesNewsSlug || post.slug === deanCompetitionNewsSlug || post.slug === entranceResultsNewsSlug || post.slug === entranceResultsNewsSlugJuly31 || post.slug === entranceResultsNewsSlugAugust6 || post.slug === applicantRankingsNewsSlug || post.slug === academicCompetitionNewsSlug || post.slug === stakeholderDiscussionNewsSlug || post.slug === studyUaExpoNewsSlug || post.slug === mentalHealthConferenceNewsSlug || post.slug === mentalHealthConferenceResultsNewsSlug || post.slug === pilcSeiteNewsSlug || post.slug === guestLectureHubertNewsSlug || post.slug === judgeBudzanGuestLectureNewsSlug || post.slug === wartimeFirstAidTrainingNewsSlug || post.slug === internationalAiTrainingNewsSlug || post.slug === erasmusDaysNewsSlug || post.slug === marketingDiscussionMarchNewsSlug || post.slug === marketingDiscussionMayNewsSlug || post.slug === aiTrainingNewsSlug || post.slug === psychologyCollectiveMeetingNewsSlug || post.slug === volodymyrLipkanArticleNewsSlug || post.slug === annaPuhachovaPodcastNewsSlug || post.slug === eduproNewsSlug || post.slug === constitutionalCourtLectureNewsSlug || post.slug === constitutionalCourtMeetingNewsSlug || post.slug === empowerEastKickoffNewsSlug || post.slug === managementDiscussionNewsSlug);
     const inserted = await admin.from("editorial_posts").upsert(required.map(toSupabaseRow), { onConflict: "id", ignoreDuplicates: true });
     if (inserted.error) throw inserted.error;
   }
