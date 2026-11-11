@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { SiteSearch } from "./SiteSearch";
 import { lawFacultyPath, lawFacultyStructure } from "@/lib/law-faculty-structure";
 import { psychologyFacultyPath, psychologyFacultyStructure } from "@/lib/psychology-faculty-structure";
+import { qualityCentre } from "@/lib/quality-centre";
 
 type NavItem = {
   href: string;
@@ -17,6 +18,7 @@ const ukLinks: readonly NavItem[] = [
   { href: "/about", label: "Академія", children: [
     { href: "/about", label: "Про Академію" }, { href: "/about#structure", label: "Структура" },
     { href: "/departments", label: "Факультети й кафедри" }, { href: "/about/licenses", label: "Ліцензії та акредитація" },
+    { href: qualityCentre.path, label: qualityCentre.title },
     { href: "/about/honorary", label: "Почесні професори та доктори" },
     { href: "/vacancies", label: "Вакансії" }, { href: "/news", label: "Новини" }, { href: "/news/archive", label: "Архів новин" }, { href: "/contacts", label: "Контакти" },
   ] },

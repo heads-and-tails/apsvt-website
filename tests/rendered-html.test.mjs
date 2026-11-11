@@ -4,6 +4,22 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("opens the quality and accreditation centre from Academy navigation and structure", async () => {
+  const [centreResponse, aboutResponse, englishResponse] = await Promise.all([
+    render("/about/quality-centre"), render("/about"), render("/en/about"),
+  ]);
+  assert.equal(centreResponse.status, 200);
+  const centre = await centreResponse.text();
+  const about = await aboutResponse.text();
+  assert.match(centre, /Центр забезпечення внутрішньої якості вищої освіти та акредитацій/);
+  assert.match(centre, /Охріменко Ігор Віталійович/);
+  assert.match(centre, /href="\/about#structure"/);
+  assert.match(centre, /href="\/en\/about"/);
+  assert.match(about, /id="structure"[\s\S]*href="\/about\/quality-centre"/);
+  assert.equal(englishResponse.status, 200);
+  assert.doesNotMatch(await englishResponse.text(), /href="\/about\/quality-centre"/);
+});
+
 test("publishes the Academy's archived honorary professors and doctors", async () => {
   const [response, aboutResponse] = await Promise.all([render("/about/honorary"), render("/about")]);
   assert.equal(response.status, 200);
