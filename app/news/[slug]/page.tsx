@@ -17,6 +17,7 @@ import { constitutionalCourtMeetingNewsSlug, constitutionalCourtMeetingPoster } 
 import { empowerEastKickoffImages, empowerEastKickoffNewsSlug } from "@/lib/empower-east-news";
 import { DepartmentImages } from "@/app/components/DepartmentMedia";
 
+import { strategyDiscussionNewsSlug } from "@/lib/strategy-discussion-news";
 import { lawAccreditationNewsSlug } from "@/lib/law-accreditation-news";
 
 export const dynamic = "force-dynamic";
@@ -80,7 +81,7 @@ export default async function Page({ params }: Props) {
   const showHeroImage = Boolean(heroImage.imageUrl) && !isEmpowerNews;
 
   return <main id="top">
-    <SiteHeader englishHref={post.slug === lawAccreditationNewsSlug || post.slug === eduproNewsSlug || isEmpowerNews || post.slug === constitutionalCourtMeetingNewsSlug ? "/en/news" : undefined} />
+    <SiteHeader englishHref={post.slug === strategyDiscussionNewsSlug || post.slug === lawAccreditationNewsSlug || post.slug === eduproNewsSlug || isEmpowerNews || post.slug === constitutionalCourtMeetingNewsSlug ? "/en/news" : undefined} />
     <section className={showHeroImage ? "detail-hero image" : "detail-hero"}>
       {showHeroImage && <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} style={post.slug === volodymyrLipkanArticleNewsSlug ? { objectPosition: "center 12%" } : undefined} /></div>}
       <div className="wrap"><div className="detail-kicker mono">{post.category}{post.hideDate ? "" : ` · ${date}`}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div>

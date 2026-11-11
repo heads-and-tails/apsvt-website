@@ -3113,3 +3113,19 @@ test("opens separate Law faculty rating and alumni sections", async () => {
     assert.ok(page.includes('href="/en/programs/law"'));
   }
 });
+
+test("publishes the Academy strategy discussion invitation with a working feedback address", async () => {
+  const slug = "obhovorennia-stratehii-akademii-2027-2033";
+  const response = await render(`/news/${slug}`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const article = html.split('<article class="detail-copy">')[1].split("</article>")[0];
+  assert.match(article, /на 2027–2033 роки/);
+  assert.match(article, /здобувачів вищої освіти, викладачів, стейкхолдерів, роботодавців/);
+  assert.match(article, /на 2027 -2033 роки/);
+  assert.ok(article.includes('href="mailto:info@socosvita.kiev.ua"'));
+  assert.ok(html.includes('/apsvt-students-real.jpg'));
+  assert.doesNotMatch(article, /опублікуйте таку новину|можливо якусь картинку|Тел\./);
+  assert.ok(html.includes('href="/en/news"'));
+  assert.ok((await (await render("/news")).text()).includes(`href="/news/${slug}"`));
+});
