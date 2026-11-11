@@ -208,6 +208,24 @@ export const masterEntranceResultsSeptember17: EntranceResultDocument[] = [
   },
 ];
 
+export const masterEntranceResultsOctober7: EntranceResultDocument[] = [
+  {
+    title: "Фаховий іспит із психології замість ЄФВВ",
+    href: "/documents/admissions/results/2026-10-07/psychology.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із публічного управління та адміністрування замість ЄФВВ",
+    href: "/documents/admissions/results/2026-10-07/public-administration.pdf",
+    pages: 1,
+  },
+  {
+    title: "Фаховий іспит із соціальної роботи та консультування замість ЄФВВ",
+    href: "/documents/admissions/results/2026-10-07/social-work-counselling.pdf",
+    pages: 1,
+  },
+];
+
 export const masterEntranceResultsOctober8: EntranceResultDocument[] = [
   {
     title: "Співбесіда з англійської мови",

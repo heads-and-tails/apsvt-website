@@ -11,6 +11,7 @@ import {
   masterEntranceResultsAugust19,
   masterEntranceResultsSeptember16,
   masterEntranceResultsSeptember17,
+  masterEntranceResultsOctober7,
   masterEntranceResultsOctober8,
   masterInterviewRecordingsHref,
   type EntranceResultDocument,
@@ -122,6 +123,7 @@ export function EntranceExamResults() {
     <article className="entrance-results-level" id="results-master">
       <header><span>02 / Магістратура</span><h3>Результати вступних випробувань</h3><p>Офіційні матеріали згруповано за датами проведення вступних випробувань.</p></header>
       <ResultBatch date="8 жовтня" documents={masterEntranceResultsOctober8} level="Магістратура" />
+      <ResultBatch date="7 жовтня" documents={masterEntranceResultsOctober7} level="Магістратура" />
       <ResultBatch date="17 вересня" documents={masterEntranceResultsSeptember17} level="Магістратура" />
       <ResultBatch date="16 вересня" documents={masterEntranceResultsSeptember16} level="Магістратура" />
       <ResultBatch date="19 серпня" documents={masterEntranceResultsAugust19} level="Магістратура" />
