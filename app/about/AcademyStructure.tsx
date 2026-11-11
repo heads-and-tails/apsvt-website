@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { qualityCentre } from "@/lib/quality-centre";
 
 type ProgrammeLink = { code: string; name: string; href: string };
 type Department = { title: string; description: string; href: string; programmes: ProgrammeLink[] };
@@ -63,6 +64,7 @@ const otherUnits = [
   { title: "Наука й аспірантура", description: "Дослідження, фахові видання, конференції та програми PhD.", href: "/research" },
   { title: "Міжнародна діяльність", description: "Erasmus+, подвійні дипломи та партнерські проєкти.", href: "/international" },
   { title: "Сервіси Академії", description: "Вступ, бібліотека, кампус, гуртожиток і студентська підтримка.", href: "/facilities" },
+  { title: qualityCentre.title, description: `Керівник — ${qualityCentre.headName}.`, href: qualityCentre.path },
 ];
 
 function departmentNoun(count: number) {
@@ -120,6 +122,6 @@ export function AcademyStructure() {
 
     <div className="structure-directory-link"><div><span>{departmentCount}</span><p>кафедр і навчальних осередків у повному каталозі</p></div><Link href="/departments">Відкрити каталог кафедр →</Link></div>
 
-    <div className="structure-other"><div className="structure-other-head"><span>Інші частини Академії</span><p>Управління, наука, міжнародна робота та сервіси не заховані всередині факультетів.</p></div><div>{otherUnits.map((unit) => <Link href={unit.href} key={unit.title}><small>Підрозділ</small><h3>{unit.title}</h3><p>{unit.description}</p><b>→</b></Link>)}</div></div>
+    <div className="structure-other"><div className="structure-other-head"><span>Інші частини Академії</span><p>Управління, наука, міжнародна робота та сервіси не заховані всередині факультетів.</p></div><div>{otherUnits.map((unit) => <Link href={unit.href} key={unit.title} className={unit.href === qualityCentre.path ? "structure-centre-unit" : undefined}><small>Підрозділ</small><h3>{unit.title}</h3><p>{unit.description}</p><b>→</b></Link>)}</div></div>
   </div></section>;
 }
