@@ -3270,3 +3270,28 @@ test("publishes the complete Management open-meeting invitation with working dis
     if (route === "/") assert.equal((page.match(/class="news"/g) || []).length, 9);
   }
 });
+
+
+test("publishes the complete Law open-meeting invitation while retaining Management and the Law accreditation schedule", async () => {
+  const slug = "vidkryta-zustrich-ekspertna-hrupa-pravo-2026-11-16";
+  const response = await render(`/news/${slug}`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const article = html.split('<article class="detail-copy">')[1].split("</article>")[0];
+  for (const fact of ["D8 Право", "ІD у СДЕБО 77421", "16 листопада 2026 року.", "15:00- 15:40", "745 1271 8298", "Код доступу: 1234567"]) assert.ok(article.includes(fact), fact);
+  assert.ok(article.includes("href=\"https://us04web.zoom.us/j/74512718298?pwd=H2utLIOu2dIQzobcTXx2YOgakyaLwZ.1\""));
+  assert.ok(html.includes('href="/en/news"'));
+  assert.match(html, /12 листопада 2026/);
+  const { lawOpenMeetingNews } = await import("../lib/law-open-meeting-news.ts");
+  assert.equal(createHash("sha256").update(lawOpenMeetingNews.body.replace(/\s+/g, " ").trim()).digest("hex"), "fcb9807945d3226260d6314acf1f640e6abf1523b7ac5adf9be7127a9567616b");
+  assert.equal(lawOpenMeetingNews.imageUrl, "");
+  for (const route of ["/", "/news"]) {
+    const page = await (await render(route)).text();
+    assert.ok(page.includes(`href="/news/${slug}"`), route);
+    assert.ok(page.includes('href="/news/vidkryta-zustrich-ekspertna-hrupa-menedzhment-2026-11-18"'), route);
+    if (route === "/") assert.equal((page.match(/class="news"/g) || []).length, 9);
+  }
+  const schedule = await (await render("/news/zustrichi-ekspertnoi-hrupy-pravo-mahistr-2026-11")).text();
+  assert.ok(schedule.includes("href=\"https://us04web.zoom.us/j/74512718298?pwd=H2utLIOu2dIQzobcTXx2YOgakyaLwZ.1\""));
+  assert.ok(schedule.includes("745 1271 8298"));
+});
