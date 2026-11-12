@@ -757,6 +757,7 @@ test("respects successful empty published-news queries and preserves fallback fo
     "./bilous-open-lecture-news": await moduleUrl("../lib/bilous-open-lecture-news.ts"),
     "./finance-poland-news": await moduleUrl("../lib/finance-poland-news.ts"),
     "./finance-finland-news": await moduleUrl("../lib/finance-finland-news.ts"),
+    "./management-open-meeting-news": await moduleUrl("../lib/management-open-meeting-news.ts"),
     "./strategy-discussion-news": await moduleUrl("../lib/strategy-discussion-news.ts"),
     "./law-accreditation-news": await moduleUrl("../lib/law-accreditation-news.ts"),
     "./constitutional-court-lecture-news": await moduleUrl("../lib/constitutional-court-lecture-news.ts"),

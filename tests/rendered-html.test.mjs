@@ -977,7 +977,8 @@ test("preserves the earlier guest lecture as the homepage news advances",async()
     (await render("/news")).text(),
     (await render("/news/guest-lecture-jens-reinhold-hubert-2026")).text(),
   ]);
-  assert.match(homeHtml,/Студенти юридичного факультету долучилися до гостьової лекції суддів Конституційного Суду України/);
+  assert.equal((homeHtml.match(/class="news"/g) || []).length,9);
+  assert.match(newsHtml,/Студенти юридичного факультету долучилися до гостьової лекції суддів Конституційного Суду України/);
   assert.match(newsHtml,/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(articleHtml,/8 жовтня · 13:20/);
   assert.match(articleHtml,/820 3384 7880 · код 977364/);
@@ -2636,7 +2637,7 @@ test("publishes the supplied court lecture report and corrected original poster 
   const paragraphs=post.body.split("\n\n");
   assert.equal(paragraphs.length,6);
   const escape=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#x27;");
-  const [article,english,listing,home,faculty]=await Promise.all([render(`/news/${post.slug}`),render(`/en/news/${post.slug}`),render("/news"),render("/"),render("/departments/law-faculty")]);
+  const [article,english,listing,faculty]=await Promise.all([render(`/news/${post.slug}`),render(`/en/news/${post.slug}`),render("/news"),render("/departments/law-faculty")]);
   for(const response of [article,english]){
     assert.equal(response.status,200);
     const html=await response.text();
@@ -2654,7 +2655,7 @@ test("publishes the supplied court lecture report and corrected original poster 
       assert.match(html,/22 жовтня 2026/);
     }
   }
-  for(const response of [listing,home,faculty])assert.ok((await response.text()).includes(`href="/news/${post.slug}"`));
+  for(const response of [listing,faculty])assert.ok((await response.text()).includes(`href="/news/${post.slug}"`));
   const image=await readFile(new URL(`../public${poster.src}`,import.meta.url));
   assert.equal(image.subarray(0,3).toString("hex"),"ffd8ff");
   assert.equal(createHash("sha256").update(image).digest("hex"),"b0d1aa70ccc941552542e2cc031c33fc103ecfd2b07a2f1bfe1b22d2d12cf7f8");
@@ -3246,5 +3247,26 @@ test("retains the eight supplied schedule PDFs without modification", async () =
     assert.equal(pdf.subarray(0, 4).toString(), "%PDF");
     assert.equal(pdf.length, size, name);
     assert.equal(createHash("sha256").update(pdf).digest("hex"), sha256, name);
+  }
+});
+
+
+test("publishes the complete Management open-meeting invitation with working discovery and English fallback", async () => {
+  const slug = "vidkryta-zustrich-ekspertna-hrupa-menedzhment-2026-11-18";
+  const response = await render(`/news/${slug}`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const article = html.split('<article class="detail-copy">')[1].split("</article>")[0];
+  for (const fact of ["D3 Менеджмент", "18 листопада 2026 року.", "10:20–11:20", "786 6582 9558", "Пароль: 2026"]) assert.ok(article.includes(fact), fact);
+  assert.ok(article.includes("href=\"https://us04web.zoom.us/j/78665829558?pwd=VDEkaJ3NsmHRkcG6PTlXC2M7iCemE4.1\""));
+  assert.ok(html.includes('href="/en/news"'));
+  assert.match(html, /12 листопада 2026/);
+  const { managementOpenMeetingNews } = await import("../lib/management-open-meeting-news.ts");
+  assert.equal(createHash("sha256").update(managementOpenMeetingNews.body.replace(/\s+/g, " ").trim()).digest("hex"), "14c053e4f24a9237c4e4259e70df0a6d6b10d5c32d0c65a54bd2a58461973cf4");
+  assert.equal(managementOpenMeetingNews.imageUrl, "");
+  for (const route of ["/", "/news"]) {
+    const page = await (await render(route)).text();
+    assert.ok(page.includes(`href="/news/${slug}"`), route);
+    if (route === "/") assert.equal((page.match(/class="news"/g) || []).length, 9);
   }
 });
