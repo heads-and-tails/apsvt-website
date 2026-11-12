@@ -1688,6 +1688,24 @@ test("answers document questions from the curated RAG index with sources",async(
   assert.match(answer.sources[0].href,/10-poriadok-podannia-apeliatsii\.pdf/);
 });
 
+test("groups the confirmed entrance schedules by degree and chronological stream", async () => {
+  const response = await render("/admissions");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const scheduleLinks = [...html.matchAll(/href="(\/documents\/admissions\/entrance-exams\/streams-2026\/[^\"]+\.pdf)"/g)].map((match) => match[1]);
+  assert.equal(scheduleLinks.length, 8);
+  assert.equal(new Set(scheduleLinks).size, 8);
+  assert.deepEqual(scheduleLinks.map((href) => href.split("/").at(-1)), ["bachelor-stream-1-nmt-2026.pdf", "bachelor-stream-1-second-degree-2026.pdf", "bachelor-stream-2-2026.pdf", "bachelor-stream-3-2026.pdf", "master-stream-1-2026.pdf", "master-stream-2-2026.pdf", "phd-stream-1-2026.pdf", "phd-stream-3-2026.pdf"]);
+  for (const date of ["15–31 липня 2026", "8–11 вересня 2026", "7–8 жовтня 2026", "6–19 серпня 2026", "15–17 вересня 2026", "21–26 серпня 2026", "7–9 жовтня 2026"]) assert.ok(html.includes(date));
+  assert.match(html, /Співбесіди замість НМТ/);
+  assert.match(html, /Співбесіди для здобуття другої вищої освіти/);
+  assert.doesNotMatch(html, /href="\/documents\/admissions\/entrance-exams\/additional-session-2026\//);
+  assert.doesNotMatch(html, /master-stream-3-2026|phd-stream-2-2026|05 серпня/);
+  const english = await render("/en/admissions");
+  assert.equal(english.status, 200);
+  assert.match(await english.text(), /REQUEST GUIDANCE|Request guidance/);
+});
+
 test("publishes the applicant hub and official 2026 admission documents",async()=>{
   const html=await (await render("/admissions")).text();
   assert.match(html,/Вступнику 2026/);
@@ -1713,15 +1731,15 @@ test("publishes the applicant hub and official 2026 admission documents",async()
   assert.match(html,/results\/2026-07-29\/english-language\.pdf/);
   const bachelorSection=html.indexOf('id="entrance-bachelor"');
   const bachelorAdditional=html.indexOf('id="entrance-bachelor-additional"');
-  const bachelorAdditionalPdf=html.indexOf("additional-session-2026/bachelor-interviews.pdf");
+  const bachelorAdditionalPdf=html.indexOf("streams-2026/bachelor-stream-2-2026.pdf");
   const masterSection=html.indexOf('id="entrance-master"');
   const masterAdditional=html.indexOf('id="entrance-master-additional"');
-  const masterAdditionalPdf=html.indexOf("additional-session-2026/master-interviews-professional-exams.pdf");
+  const masterAdditionalPdf=html.indexOf("streams-2026/master-stream-2-2026.pdf");
   const phdSection=html.indexOf('id="entrance-phd"');
   assert.ok(bachelorSection<bachelorAdditional && bachelorAdditional<bachelorAdditionalPdf && bachelorAdditionalPdf<masterSection);
   assert.ok(masterSection<masterAdditional && masterAdditional<masterAdditionalPdf && masterAdditionalPdf<phdSection);
   assert.match(html,/8–11 вересня 2026/);
-  assert.match(html,/02 \/ Магістратура/);
+  assert.match(html,/02(?:<!-- -->)? \/ (?:<!-- -->)?Магістратура/);
   assert.match(html,/Рейтингові списки<br\/>вступників/);
   assert.match(html,/44 PDF-документів/);
   assert.match(html,/rankings\/2026-08-03\/law-full-time-first-year\.pdf/);
@@ -3196,4 +3214,23 @@ test("publishes the corrected Poland training report and keeps Finland first in 
   const bytes = await readFile(new URL("../public/images/news/finance-poland-2026.jpg", import.meta.url));
   assert.equal(bytes.length, 197994);
   assert.equal(createHash("sha256").update(bytes).digest("hex"), "d0a5c9ab4eb1a9fe8a41a9c2d769573957fd9113ff259d1b0dae86c77c7d154d");
+});
+
+test("retains the eight supplied schedule PDFs without modification", async () => {
+  const originals = [
+    ["bachelor-stream-1-nmt-2026.pdf", 796281, "96e9565e1beed04eab8c4727cbf456f8e3f05cb184169dcd42a8e646df0525d2"],
+    ["bachelor-stream-1-second-degree-2026.pdf", 2446370, "a4b544958b82c926e86aaebab20676ada0509822c5437ec32e614fedfd4aa9b9"],
+    ["bachelor-stream-2-2026.pdf", 1091898, "aa1055810598dc993fd0c6cfd128818171f1d0f61b13c884f0e5c9a6385d953b"],
+    ["bachelor-stream-3-2026.pdf", 439632, "f6b13b0159df9df2e3c2cd5df8d1acf276cd0598e9a8930aac6b7ca9685b17f9"],
+    ["master-stream-1-2026.pdf", 2985253, "95bf03103b2efae3b00d51a3a6f2d921a2757e337dc02240686d1efc107810e2"],
+    ["master-stream-2-2026.pdf", 244482, "5b9cb708eb89802a543650161254a8f5fa09bf04e318a7dc98aa3d53920fe54d"],
+    ["phd-stream-1-2026.pdf", 1339087, "d980db8b9aaf98c51148aaff13887b46c01b4802fab51559d204f5c8947b1413"],
+    ["phd-stream-3-2026.pdf", 624081, "b1239dafb185c196c53f8d908dbd4dad903a2360978ecab16c4ea5f0cb32cdc7"],
+  ];
+  for (const [name, size, sha256] of originals) {
+    const pdf = await readFile(new URL(`../public/documents/admissions/entrance-exams/streams-2026/${name}`, import.meta.url));
+    assert.equal(pdf.subarray(0, 4).toString(), "%PDF");
+    assert.equal(pdf.length, size, name);
+    assert.equal(createHash("sha256").update(pdf).digest("hex"), sha256, name);
+  }
 });

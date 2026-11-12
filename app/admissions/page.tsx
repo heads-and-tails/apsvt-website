@@ -1,4 +1,5 @@
 import { entranceExamRecordingGroups } from "@/lib/entrance-exam-recordings";
+import { entranceScheduleAliases } from "@/lib/entrance-exam-schedules";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "../components/SiteHeader";
@@ -32,7 +33,7 @@ const admissionsSections: readonly AdmissionsSectionMeta[] = [
   { id: "tuition", index: "03", title: "Вартість і оплата", description: "Тарифи, договори та безпечні реквізити для оплати.", icon: "₴" },
   { id: "documents", index: "04", title: "Що підготувати", description: "Основний пакет документів і контакти комісії.", icon: "DOC" },
   { id: "ukrainians-abroad", index: "04.1", title: "Українцям за кордоном", description: "Алгоритм дистанційного вступу та підтвердження даних.", icon: "UA" },
-  { id: "entrance-exams", index: "05", title: "Розклад випробувань", description: "Дати співбесід та іспитів за рівнями освіти.", icon: "CAL", aliases: ["entrance-bachelor", "entrance-master", "entrance-phd", "entrance-schedule"] },
+  { id: "entrance-exams", index: "05", title: "Розклад випробувань", description: "Дати співбесід та іспитів за рівнями освіти.", icon: "CAL", aliases: ["entrance-schedule", ...entranceScheduleAliases] },
   { id: "entrance-programs", index: "06", title: "Програми випробувань", description: "Офіційні програми підготовки у форматі PDF.", icon: "PDF", aliases: ["programs-bachelor", "programs-master", "programs-phd"] },
   { id: "entrance-results", index: "07", title: "Результати випробувань", description: "Опубліковані результати співбесід та іспитів.", icon: "✓", aliases: ["results-bachelor", "results-master", "entrance-videos", ...entranceExamRecordingGroups.map((group) => group.id)] },
   { id: "enrollment-orders", index: "07.1", title: "Накази про зарахування", description: "Офіційні накази, впорядковані за датою і рівнем.", icon: "№" },
