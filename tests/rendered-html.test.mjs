@@ -20,6 +20,20 @@ test("opens the quality and accreditation centre from Academy navigation and str
   assert.doesNotMatch(await englishResponse.text(), /href="\/about\/quality-centre"/);
 });
 
+test("publishes the supplied quality-centre regulation as an unchanged original PDF", async () => {
+  const html = await (await render("/about/quality-centre")).text();
+  const link = html.match(/<a[^>]*href="\/documents\/quality\/quality-centre-regulations-2026\.pdf"[^>]*>/)?.[0];
+  assert.ok(link);
+  assert.match(link, /target="_blank"/);
+  assert.match(link, /rel="noopener noreferrer"/);
+  assert.match(html, /Положення про Центр внутрішньої системи якості освіти та акредитації/);
+  assert.match(html.replace(/<!--.*?-->/g, ""), /PDF · 24 сторінки/);
+  const pdf = await readFile(new URL("../public/documents/quality/quality-centre-regulations-2026.pdf", import.meta.url));
+  assert.equal(pdf.length, 547992);
+  assert.equal(pdf.subarray(0, 4).toString(), "%PDF");
+  assert.equal(createHash("sha256").update(pdf).digest("hex"), "60a890f1c2e83124d835fc4a6234d82238af2029f87b802d89321de5ddcf2418");
+});
+
 test("publishes the Academy's archived honorary professors and doctors", async () => {
   const [response, aboutResponse] = await Promise.all([render("/about/honorary"), render("/about")]);
   assert.equal(response.status, 200);
