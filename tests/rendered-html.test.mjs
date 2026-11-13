@@ -4,6 +4,25 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("opens the complete PhD teaching timetable from programmes and official documents", async () => {
+  const html = await (await render("/research/postgraduate-doctoral")).text();
+  const href = "/documents/research/postgraduate-doctoral/2026/phd-teaching-schedule-semester-1-2026-2027.pdf";
+  for (const id of ["programmes", "documents"]) {
+    const section = html.split(`id="${id}"`)[1].split("</section>")[0];
+    assert.equal(section.split(`href="${href}"`).length - 1, 1);
+    const link = section.split(`href="${href}"`)[1].split("</a>")[0];
+    assert.match(link, /target="_blank"/);
+    assert.match(link, /Розклад навчальних занять аспірантури — І семестр 2026\/2027/);
+    assert.match(link, /PDF · 5 сторінок/);
+  }
+  for (const file of ["phd-enrollment-order", "phd-admission-dates-and-selection", "phd-tuition", "doctoral-programme-opening", "doctoral-tuition"]) {
+    assert.ok(html.includes(`/documents/research/postgraduate-doctoral/2026/${file}-2026.pdf`));
+  }
+  const bytes = await readFile(new URL(`../public${href}`, import.meta.url));
+  assert.equal(bytes.length, 401385);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), "7f828fb7353bc471e61fd85970f9feafd066cbfb53c4f2c6d3a3efb37165b22c");
+});
+
 test("links the original faculty consultation schedule beside the three departments", async () => {
   const path = "/departments/psychology-social-development-faculty";
   const html = await (await render(path)).text();
