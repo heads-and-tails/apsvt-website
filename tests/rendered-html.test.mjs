@@ -4,6 +4,31 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("publishes the complete Nadraha lecture announcement with its original uncropped portrait", async () => {
+  const slug = "hostova-lektsiia-vasylia-nadrahy-sotsialne-zabezpechennia-2026";
+  const response = await render(`/news/${slug}`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const normalize = (text) => text.normalize("NFKC").replace(/\s+/g, " ").trim();
+  for (const paragraph of ["Гостьова лекція «Сучасна парадигма соціального забезпечення в Україні»", "У грудні 2026 року в Академії праці, соціальних відносин і туризму відбудеться гостьова лекція на тему «Сучасна парадигма соціального забезпечення в Україні».", "Запрошений лектор - Василь Іванович Надрага, колишній Міністр праці та соціальної політики України, доктор економічних наук, професор кафедри менеджменту та міжнародних економічних відносин Навчально-наукового інституту управління, економіки та природокористування Таврійського національного університету імені В. І. Вернадського.", "Під час зустрічі планується обговорення сучасних підходів до формування та реалізації державної соціальної політики, трансформації системи соціального забезпечення в умовах воєнного стану, актуальних викликів соціального захисту населення та перспектив удосконалення соціального законодавства України.", "До участі запрошуються здобувачі вищої освіти, науково-педагогічні працівники Академії та всі зацікавлені особи.", "📅 Дата проведення: 3 грудня 2026 року", "💻 Формат: онлайн (лінк буде повідомлено додатково)."]) assert.ok(normalize(html).includes(normalize(paragraph)), paragraph);
+  assert.ok(html.includes('href="/en/news"'));
+  assert.ok(html.includes('href="/images/news/nadraha-guest-lecture-2026.jpeg"'));
+  assert.ok(html.includes('width="300" height="472"'));
+  assert.ok(!html.includes('class="detail-hero image"'));
+  const article = html.split('<article class="detail-copy">')[1].split('</article>')[0];
+  assert.ok(!article.includes("zoom.us"));
+  assert.equal(article.split("У грудні 2026 року в Академії").length - 1, 1);
+  for (const route of ["/news", "/"]) {
+    const listing = await (await render(route)).text();
+    assert.ok(listing.includes(`href="/news/${slug}"`), route);
+    const card = listing.split(`href="/news/${slug}"`)[1].split("</a>")[0];
+    assert.ok(card.includes("object-fit:contain"), route);
+  }
+  const image = await readFile(new URL("../public/images/news/nadraha-guest-lecture-2026.jpeg", import.meta.url));
+  assert.equal(image.length, 62303);
+  assert.equal(createHash("sha256").update(image).digest("hex"), "f51b104b08de8c24b22dcf071393928a12722a04cb4498897d42547dfea77af7");
+});
+
 test("publishes eighteen original practice agreements inside the Marketing master practice folder", async () => {
   const html = await (await render("/programs/marketing")).text();
   const practice = html.split('id="marketing-methodical-master-practice"')[1];
@@ -512,7 +537,8 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(await (await render("/news")).text(),/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(await (await render("/news")).text(),/EDUPRO2026: AI FOR EDUCATORS/);
   assert.match(await (await render("/news")).text(),/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);
-  assert.match(html,/EMPOWER-EAST розпочав роботу/);
+  assert.match(html,/Гостьова лекція «Сучасна парадигма соціального забезпечення в Україні»/);
+  assert.match(await (await render("/news")).text(),/EMPOWER-EAST розпочав роботу/);
   assert.doesNotMatch(html,/codex-preview|Your site is taking shape/i);
 });
 
@@ -2790,7 +2816,7 @@ test("publishes the corrected EMPOWER release, all three originals and its grant
     assert.ok(html.includes(`href="/images/news/empower-east-2026/${file}.jpg"`));
     assert.ok(html.includes(`src="/images/news/empower-east-2026/${file}.jpg"`));
   }
-  for (const page of ["/", "/news", "/international"]) assert.ok((await (await render(page)).text()).includes(`href="${path}"`), page);
+  for (const page of ["/news", "/international"]) assert.ok((await (await render(page)).text()).includes(`href="${path}"`), page);
   const grants = await (await render("/international")).text();
   assert.match(grants, /Грантова діяльність/);
   assert.ok(grants.includes('href="/news/novi-horyzonty-dlya-molodykh-naukovtsiv-apsvt-startuye-v-mizhnarodnomu-proyekti"'));

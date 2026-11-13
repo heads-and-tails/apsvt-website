@@ -3,9 +3,12 @@ import type { Post } from "@/lib/data";
 import { financePolandCardImage, financePolandNewsSlug } from "./finance-poland-news";
 import { financeFinlandCardImage, financeFinlandNewsSlug } from "./finance-finland-news";
 
+import { nadrahaGuestLectureNewsSlug, nadrahaGuestLecturePortrait } from "./nadraha-guest-lecture-news";
+
 type EditorialImage = Pick<Post, "imageUrl" | "imageAlt"> & { imageFit?: "contain" | "cover" };
 
 const editorialImages: Record<string, EditorialImage> = {
+  [nadrahaGuestLectureNewsSlug]: nadrahaGuestLecturePortrait,
   [financePolandNewsSlug]: financePolandCardImage,
   [financeFinlandNewsSlug]: financeFinlandCardImage,
   "vidkryta-zustrich-suddiv-konstytutsiinoho-sudu-2026-10-29": {
