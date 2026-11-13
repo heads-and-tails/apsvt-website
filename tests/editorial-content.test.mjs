@@ -28,6 +28,54 @@ const interactive = await import(interactiveUrl);
 const customSectionsUrl = await moduleUrl("../lib/editorial-custom-sections.ts");
 const customSections = await import(customSectionsUrl);
 
+test("centralizes published psychology department material without exposing drafts or changing its owner", async () => {
+  const structureUrl = await moduleUrl("../lib/psychology-faculty-structure.ts");
+  const departmentsUrl = await moduleUrl("../lib/psychology-departments.ts");
+  const { collectPsychologyFacultyContent, psychologyFacultySources } = await import(await moduleUrl("../lib/psychology-faculty-content.ts", {
+    "./psychology-faculty-structure": structureUrl,
+    "./psychology-departments": departmentsUrl,
+  }));
+  const [faculty, clinical, business, social] = psychologyFacultySources;
+  const entry = (id, pagePath, sectionId, extra = {}) => ({ id, pagePath, sectionId, entryType: "section", status: "published", sortOrder: 0, createdAt: "2026-11-01", ...extra });
+  const entries = [
+    entry("programme", clinical, "department-education"),
+    entry("news", business, "department-about", { entryType: "news" }),
+    entry("repository", social, "repository"),
+    entry("document", social, "department-documents", { entryType: "material" }),
+    entry("history", social, "department-history"),
+    entry("science", social, "department-science"),
+    entry("quality", social, "other", { entryType: "quality" }),
+    entry("faculty", faculty, "faculty-council"),
+    entry("legacy-faculty", faculty, "", { entryType: "article" }),
+    entry("retained", clinical, "department-about"),
+    entry("draft", business, "department-news", { status: "draft" }),
+    entry("hidden", social, "department-documents", { hidden: true }),
+    entry("unrelated", "/departments/finance", "department-news"),
+    entry("previously-hidden-section", clinical, "department-history"),
+    entry("teacher", business, "department-team", { entryType: "teacher" }),
+  ];
+  const document = (id, pagePath, status = "published") => ({ id, pagePath, status, sortOrder: 0, createdAt: "2026-11-01" });
+  const global = document("global", "*");
+  const documents = [global, document("department", clinical), global, document("draft", faculty, "draft"), document("unrelated", "/departments/finance")];
+  const original = structuredClone({ entries, documents });
+  const result = collectPsychologyFacultyContent(entries, documents);
+  const ids = (section) => result.entriesBySection.get(section)?.map((item) => item.id);
+  assert.deepEqual(ids("faculty-programmes"), ["programme"]);
+  assert.deepEqual(ids("department-news"), ["news", "legacy-faculty"]);
+  assert.deepEqual(ids("faculty-repository"), ["repository"]);
+  assert.deepEqual(ids("faculty-regulations"), ["document"]);
+  assert.deepEqual(ids("faculty-about"), ["history"]);
+  assert.deepEqual(ids("faculty-science"), ["science"]);
+  assert.deepEqual(ids("faculty-proposals"), ["quality"]);
+  assert.deepEqual(ids("faculty-council"), ["faculty"]);
+  assert.deepEqual(result.documents.map((item) => item.id), ["global", "department"]);
+  assert.equal(result.entriesBySection.get("faculty-programmes")[0].pagePath, clinical);
+  assert.deepEqual({ entries, documents }, original);
+  const empty = collectPsychologyFacultyContent([], []);
+  assert.equal(empty.entriesBySection.size, 0);
+  assert.deepEqual(empty.documents, []);
+});
+
 test("custom editorial sections require a dedicated UUID and root marker", async () => {
   const sectionId = "editorial-section-123e4567-e89b-42d3-a456-426614174000";
   assert.equal(customSections.isCustomSectionId(sectionId), true);

@@ -31,7 +31,7 @@ const ukLinks: readonly NavItem[] = [
     { href: "/departments/digital-technologies#programmes", label: "Професійна освіта · 5 програм" },
   ] },
   { href: lawFacultyPath, label: "Юридичний факультет", nativeNavigation: true, children: lawFacultyStructure.map((section) => ({ href: `${lawFacultyPath}#${section.id}`, label: section.title })) },
-  { href: psychologyFacultyPath, label: "Факультет психології", nativeNavigation: true, children: psychologyFacultyStructure.map((section) => ({ href: `${psychologyFacultyPath}#${section.id}`, label: section.title })) },
+  { href: psychologyFacultyPath, label: "Факультет психології та соціального розвитку", nativeNavigation: true, children: psychologyFacultyStructure.map((section) => ({ href: `${psychologyFacultyPath}#${section.id}`, label: section.title })) },
   { href: "/departments/economics-social-tourism-faculty", label: "Факультет економіки", nativeNavigation: true, children: [
     { href: "/departments/economics-social-tourism-faculty#faculty-about", label: "Про факультет" },
     { href: "/departments/economics-social-tourism-faculty#departments", label: "Кафедри й напрями" },
@@ -60,7 +60,6 @@ const ukLinks: readonly NavItem[] = [
   { href: "/people", label: "Люди", children: [
     { href: "/people", label: "Команда Академії" }, { href: "/departments", label: "Кафедри" },
     { href: "/departments/economics-social-tourism-faculty", label: "Факультет економіки й туризму" },
-    { href: "/departments/psychology-social-development-faculty", label: "Факультет психології та соціального розвитку" },
     { href: "/students/council", label: "Студентська рада" },
   ] },
   { href: "/international", label: "Міжнародне", children: [
