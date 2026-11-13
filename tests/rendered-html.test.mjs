@@ -2499,9 +2499,11 @@ test("publishes Prib's faculty corrections and the supplied psychology theses", 
     assert.doesNotMatch(department, /Історія кафедри/);
     assert.doesNotMatch(department, /id="science-clubs"/);
   }
-  assert.match(clinical, /ОПП «Клінічна психологія»/);
-  assert.match(business, /ОПП «Психологія бізнесу та управління»/);
-  assert.match(social, /Історія кафедри/);
+  for (const department of [clinical, business, social]) {
+    assert.doesNotMatch(department, /id="department-history"|id="department-education"|id="repository"|id="department-news"|id="department-documents"/);
+    assert.ok(department.includes('href="/departments/psychology-social-development-faculty#faculty-programmes"'));
+    assert.equal((department.match(/class="admissions-icon-card/g) || []).length, 4);
+  }
   assert.match(journals, /Психодіагностика з основами математичної статистики/);
   assert.match(theses, /Психолого-соціальні чинники ментального здоров’я молоді/);
   assert.match(theses, /thesis-18\.pdf/);
@@ -2537,7 +2539,7 @@ test("keeps psychology deep links while simplifying its directory and separating
   assert.doesNotMatch(socialWork, /Тривалість PhD/);
 });
 
-test("serves the original psychology programmes and plans from the matching faculty and department cards", async () => {
+test("serves the original psychology programmes and plans from the central faculty catalogue", async () => {
   const [faculty, clinical, business] = await Promise.all([
     render("/departments/psychology-social-development-faculty").then((response) => response.text()),
     render("/departments/psychology-social-development-faculty/clinical-psychology").then((response) => response.text()),
@@ -2554,10 +2556,8 @@ test("serves the original psychology programmes and plans from the matching facu
   const pdfLinks = (html) => [...new Set([...html.matchAll(/href="(\/documents\/programmes\/psychology-faculty\/[^\"]+\.pdf)"/g)].map(([, href]) => href))];
   const files = pdfLinks(catalogue);
   assert.equal(files.length, 18);
-  assert.equal(pdfLinks(clinical).length, 3);
-  assert.ok(pdfLinks(clinical).every((href) => href.includes("/clinical-psychology-")));
-  assert.equal(pdfLinks(business).length, 6);
-  assert.ok(pdfLinks(business).every((href) => href.includes("/business-psychology-")));
+  assert.equal(pdfLinks(clinical).length, 0);
+  assert.equal(pdfLinks(business).length, 0);
   for (const href of files) {
     const pdf = await readFile(new URL(`../public${href}`, import.meta.url));
     assert.equal(pdf.subarray(0, 4).toString(), "%PDF");
@@ -2572,6 +2572,10 @@ test("includes every psychology faculty section in the shared header menu", asyn
   const sections = ["faculty-about", "faculty-leadership", "faculty-council", "departments", "faculty-laboratory", "faculty-team", "faculty-science", "faculty-student-government", "faculty-regulations", "faculty-proposals", "faculty-accreditation", "faculty-repository", "faculty-programmes", "faculty-practice", "department-news"];
   assert.deepEqual(links, sections.map((id) => `${path}#${id}`));
   assert.ok(!links.some((href) => href.endsWith("#quality") || href.endsWith("#faculty-discussion")));
+  assert.ok(html.includes('aria-label="Факультет психології та соціального розвитку: підрозділи"'));
+  const peopleMenu = html.split('aria-label="Люди: підрозділи"')[1].split('</div></div>')[0];
+  assert.ok(peopleMenu.includes("Команда Академії"));
+  assert.ok(!peopleMenu.includes(path));
 });
 
 test("places four psychology discussion folders and their supplied links inside faculty proposals", async () => {

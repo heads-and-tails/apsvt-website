@@ -3059,6 +3059,7 @@ main section[id]{scroll-margin-top:96px}
 .mainnav .menu-grid .menu-subitems a{display:grid;grid-template-columns:28px minmax(0,1fr) 22px;gap:9px;align-items:center;background:#fff;border:0;min-height:48px;padding:9px 11px}
 .mainnav .menu-grid .menu-subitems a>small{font:8px var(--mono);color:var(--cobalt)}
 .mainnav .menu-grid .menu-subitems a>b{font:600 14px/1.4 var(--body);overflow-wrap:normal;word-break:normal;hyphens:none;text-wrap:balance}
+.mainnav .menu-grid .menu-subitems a[href^="/departments/psychology-social-development-faculty#"]{grid-column:1/-1}
 .mainnav .menu-grid .menu-subitems a>span{justify-self:end}
 .mainnav .menu-grid .menu-subitems a:hover,.mainnav .menu-grid .menu-subitems a:focus-visible{background:var(--navy);color:#fff}
 .mainnav .menu-grid .menu-subitems a:hover>small,.mainnav .menu-grid .menu-subitems a:focus-visible>small{color:var(--gold)}

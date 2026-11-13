@@ -7,6 +7,8 @@ import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { PageDocuments } from "../../components/PageDocuments";
 import { DepartmentEditorialContent } from "../../components/DepartmentEditorialContent";
+import { getPublicDocuments } from "@/lib/documents";
+import { collectPsychologyFacultyContent, psychologyFacultySources } from "@/lib/psychology-faculty-content";
 import { getDepartmentEntries } from "@/lib/department-content";
 import { SectionHub } from "../../components/SectionHub";
 import { AcademicNews } from "../../components/AcademicNews";
@@ -62,13 +64,17 @@ const facultyCouncil = [
 
 export default async function Page() {
   const pagePath = "/departments/psychology-social-development-faculty";
-  const departmentEntries = await getDepartmentEntries(pagePath);
+  const [entryGroups, documentGroups] = await Promise.all([
+    Promise.all(psychologyFacultySources.map(getDepartmentEntries)),
+    Promise.all(psychologyFacultySources.map(getPublicDocuments)),
+  ]);
+  const facultyContent = collectPsychologyFacultyContent(entryGroups.flat(), documentGroups.flat());
   const dean = psychologyFacultyTeam.find((person) => person.id === "liudmyla-beheza");
 
-  return <main id="top"><SiteHeader />
+  return <main id="top" data-page-materials-server="true"><SiteHeader />
     <section className="law-faculty-hero festt-hero"><div className="law-faculty-hero-image"><img src="/program-psychology.jpg" alt="Психологічна освіта та робота з людьми" /></div><div className="wrap law-faculty-hero-copy"><Link href="/departments">← Усі факультети й кафедри</Link><span>ФПСР · факультет психології та соціального розвитку</span><h1>Психологія.<br /><em>Соціальний розвиток.</em></h1><p>Формуємо фахівців у сфері психічного здоров’я та соціального благополуччя, які підтримують людину, її професійне зростання і активну участь у суспільстві.</p><div><b>3</b><span>кафедри</span><b>7</b><span>освітніх траєкторій</span></div></div></section><div className="hero-rule" />
 
-    <SectionHub sections={facultySections} eyebrow="Навігатор факультету" description="Оберіть кафедри, програми, науку, практику, документи або новини — відкриється тільки потрібний розділ.">
+    <SectionHub extraContent={facultySections.map((section) => <div className="wrap" key={section.id}><DepartmentEditorialContent entries={facultyContent.entriesBySection.get(section.id) || []} inline /></div>)} sections={facultySections} eyebrow="Навігатор факультету" description="Оберіть кафедри, програми, науку, практику, документи або новини — відкриється тільки потрібний розділ.">
 
     <section className="law-faculty-intro festt-intro" id="faculty-about"><div className="wrap law-faculty-intro-grid"><div><div className="idx">01 / Про факультет</div><h2>Пізнаємо особистість та зміцнюємо суспільство</h2></div><div><p className="program-lede">Факультет готує компетентних фахівців у сфері психології та соціальної роботи задля психологічного благополуччя, професійного розвитку й соціальної взаємодії особистості у суспільстві.</p><p>Освітні програми поєднують аналітичну підготовку, роботу з реальними кейсами, дослідження та практику. Студент може будувати індивідуальну траєкторію між суміжними професійними сферами.</p><div className="law-faculty-milestones"><span><b>2</b>предметні напрями</span><span><b>3</b>рівні вищої освіти</span><span><b>1</b>спільна професійна екосистема</span></div></div></div></section>
 
@@ -76,7 +82,7 @@ export default async function Page() {
 
     <section className="faculty-structure-section faculty-governance" id="faculty-council"><div className="wrap"><div className="sec-head"><div><div className="idx">03 / Вчена рада факультету</div><h2>Склад вченої ради факультету</h2></div></div><ol className="faculty-council-list">{facultyCouncil.map((member) => <li key={member}>{member}</li>)}</ol></div></section>
 
-    <section className="law-faculty-departments festt-departments" id="departments"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Академічна структура</div><h2>Три кафедри — один факультет</h2></div><p>Кожна картка відкриває окрему сторінку кафедри зі складом, освітою, наукою, гуртками, новинами, документами й контактами.</p></div><div className="law-department-grid">{departments.map(([number, title, text, href, code]) => <Link href={href} key={number}><span>{number}</span><small>{code}</small><h3>{title}</h3><p>{text}</p><b>Відкрити кафедру →</b></Link>)}</div></div></section>
+    <section className="law-faculty-departments festt-departments" id="departments"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Академічна структура</div><h2>Три кафедри — один факультет</h2></div><p>Кожна картка відкриває окрему сторінку кафедри зі складом, напрямами роботи й контактами.</p></div><div className="law-department-grid">{departments.map(([number, title, text, href, code]) => <Link href={href} key={number}><span>{number}</span><small>{code}</small><h3>{title}</h3><p>{text}</p><b>Відкрити кафедру →</b></Link>)}</div></div></section>
 
     <PsychologyFacultyLaboratory />
 
@@ -86,19 +92,19 @@ export default async function Page() {
 
     <section className="faculty-structure-section faculty-governance" id="faculty-student-government"><div className="wrap"><div className="sec-head"><div><div className="idx">08 / Студентське самоврядування</div><h2>Участь студентів у житті факультету</h2></div><p>Студентська рада, ініціативи, події, представництво й контакти відкриваються окремо.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-gold" href="/students/council"><span>01 / Студенти</span><h3>Студентська рада</h3><p>Команда, проєкти, ініціативи, події та контакти.</p><b>Відкрити студентську раду →</b></Link></div></div></section>
 
-    <section className="faculty-structure-section faculty-repository" id="faculty-regulations"><div className="wrap"><div className="sec-head"><div><div className="idx">09 / Нормативні документи</div><h2>Нормативні документи факультету</h2></div></div><PsychologyRegulationLinks documents={psychologyFacultyRegulations} /></div></section>
+    <section className="faculty-structure-section faculty-repository" id="faculty-regulations"><div className="wrap"><div className="sec-head"><div><div className="idx">09 / Нормативні документи</div><h2>Нормативні документи факультету</h2></div></div><PsychologyRegulationLinks documents={psychologyFacultyRegulations} /><PageDocuments pagePath={pagePath} documents={facultyContent.documents} /></div></section>
 
     <section className="faculty-structure-section faculty-repository" id="faculty-proposals"><div className="wrap"><div className="sec-head"><div><div className="idx">10 / Проєкти, пропозиції та результати розгляду</div><h2>Проєкти, пропозиції та результати розгляду</h2></div></div><PsychologyProgrammeDiscussion programmes={discussionProgrammes} /><div className="faculty-link-grid"><Link className="faculty-link-card" href="/programs/social-work#quality"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Проєкти, пропозиції й результати розгляду.</p><b>Перейти до якості програми →</b></Link></div></div></section>
 
-    <section className="faculty-structure-section faculty-repository" id="faculty-accreditation"><div className="wrap"><div className="sec-head"><div><div className="idx">11 / Матеріали акредитаційних справ</div><h2>Матеріали спеціальності C4 «Психологія»</h2></div><p>Документи зібрано у спільній папці факультету — без окремого архіву.</p></div><div className="faculty-link-grid"><a className="faculty-link-card faculty-link-card-dark" href="https://drive.google.com/drive/folders/11TgK4XqA1qKd2V8dy6A7c9an0oX0A49r?usp=sharing" target="_blank" rel="noreferrer"><span>01 / Google Drive</span><h3>Папка матеріалів акредитаційних справ</h3><p>Перегляд актуальних матеріалів факультету в одному місці.</p><b>Відкрити папку ↗</b></a></div><PageDocuments pagePath={pagePath} /></div></section>
+    <section className="faculty-structure-section faculty-repository" id="faculty-accreditation"><div className="wrap"><div className="sec-head"><div><div className="idx">11 / Матеріали акредитаційних справ</div><h2>Матеріали спеціальності C4 «Психологія»</h2></div><p>Документи зібрано у спільній папці факультету — без окремого архіву.</p></div><div className="faculty-link-grid"><a className="faculty-link-card faculty-link-card-dark" href="https://drive.google.com/drive/folders/11TgK4XqA1qKd2V8dy6A7c9an0oX0A49r?usp=sharing" target="_blank" rel="noreferrer"><span>01 / Google Drive</span><h3>Папка матеріалів акредитаційних справ</h3><p>Перегляд актуальних матеріалів факультету в одному місці.</p><b>Відкрити папку ↗</b></a></div></div></section>
 
-    <section className="faculty-structure-section faculty-repository" id="faculty-repository"><div className="wrap"><div className="sec-head"><div><div className="idx">12 / Репозитарій</div><h2>Кваліфікаційні роботи та наукові матеріали</h2></div><p>Каталог можна переглядати за програмою, роком, автором і науковим керівником.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-blue" href="/research/theses"><span>01 / C4</span><h3>Психологія</h3><p>Бакалаврські, магістерські й дослідницькі роботи.</p><b>Відкрити репозитарій →</b></Link><Link className="faculty-link-card" href="/research/theses"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Кваліфікаційні роботи соціального напряму.</p><b>Відкрити репозитарій →</b></Link></div></div></section>
+    <section className="faculty-structure-section faculty-repository" id="faculty-repository"><div className="wrap"><div className="sec-head"><div><div className="idx">12 / Репозитарій</div><h2>Кваліфікаційні роботи та наукові матеріали</h2></div><p>Каталог можна переглядати за програмою, роком, автором і науковим керівником.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-blue" href="/research/theses"><span>01 / C4</span><h3>Психологія</h3><p>Бакалаврські, магістерські й дослідницькі роботи.</p><b>Відкрити репозитарій →</b></Link><Link className="faculty-link-card" href="/research/theses"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Кваліфікаційні роботи соціального напряму.</p><b>Відкрити репозитарій →</b></Link><Link className="faculty-link-card" href="/research/journals"><span>03 / Наукові видання</span><h3>Публікації, збірники та монографії</h3><b>Відкрити видання →</b></Link></div></div></section>
 
     <section className="faculty-programmes" id="faculty-programmes"><div className="wrap"><div className="sec-head"><div><div className="idx">13 / Освітні програми</div><h2>Освітні програми факультету</h2></div></div><FacultyProgrammeCards programmes={programmes} /></div></section>
 
     <PsychologyFacultyPractice />
 
-    <div id="department-news"><AcademicNews slugs={["psychology", "social-work"]} title="Новини факультету й кафедр" limit={5} prioritySlugs={[psychologyCollectiveMeetingNewsSlug]} /><DepartmentEditorialContent entries={departmentEntries} /></div>
+    <div id="department-news"><AcademicNews slugs={["psychology", "social-work"]} title="Новини факультету й кафедр" limit={5} prioritySlugs={[psychologyCollectiveMeetingNewsSlug]} /></div>
     </SectionHub>
     <SiteFooter />
   </main>;
