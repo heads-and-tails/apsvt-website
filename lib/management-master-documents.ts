@@ -28,3 +28,27 @@ export const managementMasterPracticeDocuments: readonly ManagementMasterDocumen
   { title: "Методичні рекомендації по виконанню та захисту кваліфікаційної роботи", href: "/documents/management/master-2026/qualification-work-guidelines.pdf" },
 ];
 
+export const managementMasterAnnotationGroups: readonly { title: string; documents: readonly ManagementMasterDocument[] }[] = [
+  {
+    title: "Анотації дисциплін · 1 курс",
+    documents: [
+      { title: "Громадські організації в Україні", href: "/documents/management/master-2026/annotations/public-organizations.docx" },
+      { title: "Соціальний менеджмент", href: "/documents/management/master-2026/annotations/social-management.docx" },
+      { title: "Інформаційні системи та технології в управлінні організацією", href: "/documents/management/master-2026/annotations/information-systems.docx" },
+      { title: "Консалтингові послуги в сфері управління", href: "/documents/management/master-2026/annotations/management-consulting.docx" },
+      { title: "Маркетинг туристичних дестинацій", href: "/documents/management/master-2026/annotations/tourist-destinations.docx" },
+      { title: "Медичний туризм", href: "/documents/management/master-2026/annotations/medical-tourism.docx" },
+      { title: "Організація круїзних подорожей", href: "/documents/management/master-2026/annotations/cruise-travel.docx" },
+      { title: "Управління потенціалом підприємства", href: "/documents/management/master-2026/annotations/enterprise-potential.docx" },
+      { title: "Управлінський облік", href: "/documents/management/master-2026/annotations/management-accounting.docx" },
+    ],
+  },
+  {
+    title: "Анотації дисциплін · 2 курс",
+    documents: [
+      { title: "Грантова діяльність", href: "/documents/management/master-2026/annotations/grant-activities.docx" },
+      { title: "Мотиваційний механізм підприємства", href: "/documents/management/master-2026/annotations/enterprise-motivation.docx" },
+      { title: "Управління ефективністю розвитку підприємства", href: "/documents/management/master-2026/annotations/enterprise-development-performance.docx" },
+    ],
+  },
+];
