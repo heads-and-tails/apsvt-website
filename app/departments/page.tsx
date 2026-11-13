@@ -47,15 +47,6 @@ const facultyGroups = [
       { id: "social-work", title: "Кафедра соціально-трудових відносин та соціальної роботи", text: "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", href: "/departments/psychology-social-development-faculty/social-work", programmes: [{ code: "I10", title: "Соціальна робота та консультування", href: "/programs/social-work" }] },
     ],
   },
-  {
-    code: "ЗАК",
-    name: "Загальноакадемічна підготовка",
-    description: "Мовні, гуманітарні та міжкультурні компетентності для студентів усіх освітніх програм.",
-    profileHref: "/departments/languages-humanities",
-    departments: [
-      { id: "languages", title: "Кафедра іноземних мов та гуманітарних дисциплін", text: "Професійна іноземна мова, українська для іноземців, критичне мислення та гуманітарна освіта.", href: "/departments/languages-humanities", programmes: [{ code: "Усі", title: "Освітні програми", href: "/programs" }] },
-    ],
-  },
 ];
 
 export default function Page() {
@@ -63,7 +54,7 @@ export default function Page() {
   return <main id="top"><SiteHeader />
     <section className="phero department-hero"><div className="wrap"><div className="crumb">Головна / Кафедри</div><span>{count} кафедр і навчальних осередків</span><h1>Кафедри<br />Академії</h1><p className="lead">Повна академічна структура: команди, які відповідають за зміст програм, якість викладання, дослідження і зв’язок навчання з практикою.</p></div></section><div className="phero-rule" />
     <section className="department-map"><div className="wrap"><div className="sec-head"><div><div className="idx">01 / Академічні підрозділи</div><h2>Від факультету<br />до програми</h2></div><p>Спочатку оберіть факультет, потім кафедру. Доступні освітні програми показані окремими кнопками — шукати їх на інших сторінках не потрібно.</p></div>
-      <div className="department-faculties">{facultyGroups.map((group, groupIndex) => <section className="department-faculty" key={group.code}><header><span>{String(groupIndex + 1).padStart(2, "0")}</span><div><small>Факультет · {group.code}</small><h2>{group.name}</h2><p>{group.description}</p><Link className="department-faculty-profile" href={group.profileHref}>Відкрити сторінку факультету →</Link></div><b>{group.departments.length}<small>кафедр</small></b></header><div className="department-directory">{group.departments.map((department, index) => <article id={department.id} key={department.title}><span>{String(index + 1).padStart(2, "0")}</span><div><small>Кафедра</small><h3><Link href={department.href}>{department.title}</Link></h3><p>{department.text}</p>{department.programmes.length > 0 && <nav aria-label={`Програми: ${department.title}`}>{department.programmes.map((programme) => <Link href={programme.href} key={`${department.id}-${programme.code}`}><b>{programme.code}</b><span>{programme.title}</span><i>↗</i></Link>)}</nav>}</div></article>)}</div></section>)}</div>
+      <div className="department-faculties">{facultyGroups.map((group, groupIndex) => <section className="department-faculty" key={group.code}><header><span>{String(groupIndex + 1).padStart(2, "0")}</span><div><small>Факультет · {group.code}</small><h2>{group.name}</h2><p>{group.description}</p><Link className="department-faculty-profile" href={group.profileHref}>Відкрити сторінку факультету →</Link></div><b>{group.departments.length}<small>кафедр</small></b></header><div className="department-directory">{group.departments.map((department, index) => <article id={department.id} key={department.title}><span>{String(index + 1).padStart(2, "0")}</span><div><small>Кафедра</small><h3><Link href={department.href}>{department.title}</Link></h3><p>{department.text}</p>{department.programmes.length > 0 && <nav aria-label={`Програми: ${department.title}`}>{department.programmes.map((programme) => <Link href={programme.href} key={`${department.id}-${programme.href}`}><b>{programme.code}</b><span>{programme.title}</span><i>↗</i></Link>)}</nav>}</div></article>)}</div></section>)}</div>
     </div></section>
     <section className="department-practice-band"><div className="wrap"><div><div className="idx">02 / Навчально-практичні осередки</div><h2>Практика всередині Академії</h2></div><div className="department-practice-links"><Link href="/programs/law/legal-clinic"><span>Юридична клініка «Феміда»</span><b>Первинна правова допомога й супервізія →</b></Link><Link href="/programs/law/forensic-laboratory"><span>Лабораторія криміналістики</span><b>Кабінет слідчого та криміналістичний майданчик →</b></Link></div></div></section>
     <section className="department-doctoral"><div className="wrap">

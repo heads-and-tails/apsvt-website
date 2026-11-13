@@ -315,7 +315,7 @@ test("publishes the November DAAD opportunities with every deadline, event and d
   assert.ok(international.split('id="international-opportunities"')[1].includes(`href="/news/${slug}"`));
   assert.ok(english.includes("Zukunft Ukraine") && english.includes("Goethe-Institut"));
 });
-test("lists the new languages department under the economics faculty without changing existing units", async () => {
+test("keeps the languages department solely under the economics faculty without a duplicate faculty group", async () => {
   const title = "Кафедра української та іноземних мов і гуманітарних наук";
   const id = "ukrainian-foreign-languages-humanities";
   const href = `/departments#${id}`;
@@ -335,13 +335,18 @@ test("lists the new languages department under the economics faculty without cha
   assert.ok(record.includes(title));
   assert.match(record, /Факультет економіки, соціальних технологій і туризму/);
   assert.doesNotMatch(record, /<nav/);
-  assert.equal((directory.match(/<article id=/g) || []).length, 13);
-  assert.match(groups[3][1], /id="languages"/);
+  assert.equal((directory.match(/<article id=/g) || []).length, 12);
+  assert.equal(groups.length, 3);
+  assert.doesNotMatch(directory, /Загальноакадемічна підготовка|id="languages"/);
+  const structure = about.split('class="structure-faculties"')[1].split('class="structure-directory-link"')[0];
+  assert.equal((structure.match(/<details/g) || []).length, 3);
+  assert.doesNotMatch(structure, /Загальноакадемічна підготовка/);
   assert.equal(existing.status, 200);
   const firstFaculty = about.split('class="structure-faculties"')[1].split("</details>")[0];
   assert.ok(firstFaculty.includes(title) && firstFaculty.includes(`href="${href}"`));
   const { siteSearchItems } = await import("../lib/site-search.ts");
   assert.equal(siteSearchItems.find((item) => item.href === href)?.title, title);
+  assert.equal(siteSearchItems.filter((item) => item.href === "/departments/languages-humanities").length, 0);
 });
 test("publishes the Management discussion with its original draft and truthful publication date", async () => {
   const slug = "obhovorennia-proiektu-opp-menedzhment-2026";
