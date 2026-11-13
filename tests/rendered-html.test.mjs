@@ -4,6 +4,43 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("publishes eighteen original practice agreements inside the Marketing master practice folder", async () => {
+  const html = await (await render("/programs/marketing")).text();
+  const practice = html.split('id="marketing-methodical-master-practice"')[1];
+  const agreements = practice.split('id="marketing-methodical-master-practice-agreements"')[1].split("</details>")[0];
+  assert.ok(agreements.includes("Договори про організацію та проведення практичної підготовки здобувачів вищої освіти"));
+  assert.equal((agreements.match(/target="_blank"/g) || []).length, 18);
+  assert.ok(!agreements.includes("Матеріали цього підрозділу поки не опубліковано"));
+  const originals = [
+    { href: "/documents/marketing/practice-agreements/elektromerezhbud-7.pdf", bytes: 3047428, sha256: "070d1a7be2e41786e41c83e87f32d81951ce3bb71592641d211b22bc1734c5ad" },
+    { href: "/documents/marketing/practice-agreements/rating.pdf", bytes: 3216042, sha256: "0165204f8c0a7251fe0cc1c6bbd8471b0e021194897e681749f38de607b1769d" },
+    { href: "/documents/marketing/practice-agreements/eva-trans.pdf", bytes: 2282517, sha256: "6dbdedc9e438f9560db2b5900740808b3108b04adb97aba3aef1116ebbdcfde8" },
+    { href: "/documents/marketing/practice-agreements/kyiv-bkk.pdf", bytes: 3068186, sha256: "7faa70e39494b70eeffa5de0cb77e39156f3d9b2fa7a3b16d34b3c29fbf9a8b0" },
+    { href: "/documents/marketing/practice-agreements/rosynka.pdf", bytes: 4383126, sha256: "a41ee0de93364c0f30bbe01506afae1530722e3ae434800763b8d48e2f867df5" },
+    { href: "/documents/marketing/practice-agreements/monfor-naftoservis.pdf", bytes: 2709625, sha256: "2aff4cc245c3f42817d70440b7eb30707e36e2702ee432077f207a7063fb3298" },
+    { href: "/documents/marketing/practice-agreements/rang-logistic.pdf", bytes: 2352144, sha256: "d59ee3d2c93584e6d832c6f037b9716b84b0bf99ba216af2714ff31b491b6ecd" },
+    { href: "/documents/marketing/practice-agreements/spetsspektor-kyiv.pdf", bytes: 3366540, sha256: "ec985674a1180ad8024d0921fae2583345b6dbea12136e62ba2f0cceb18bc47e" },
+    { href: "/documents/marketing/practice-agreements/polissia-product.pdf", bytes: 2562371, sha256: "29573a48abefa26d4586e0e73d3af794c5fcdf6e567dd6586ebb33e6e3ddf475" },
+    { href: "/documents/marketing/practice-agreements/remos.pdf", bytes: 2817483, sha256: "43b0bcb1e06f8bf0ba6b8e0934b857b8fe1fdae160282e1d4c8aada8ee1dd2a0" },
+    { href: "/documents/marketing/practice-agreements/defacto-retail.pdf", bytes: 2707440, sha256: "fb16d42bc8821792990db0ae978aa5b972cd268908e855973f38528d9f46104f" },
+    { href: "/documents/marketing/practice-agreements/leon-plus.pdf", bytes: 3055577, sha256: "a596149071b7305c3e6e85ced1c64265d5032466eeb9211fe60ee118f48e30cf" },
+    { href: "/documents/marketing/practice-agreements/felichita.pdf", bytes: 2385330, sha256: "36858122bfbbd6499845b9f3f5162bbd89251b17e51f700b5f921e930eb425da" },
+    { href: "/documents/marketing/practice-agreements/diad-logistic.pdf", bytes: 3616505, sha256: "386837bb0e95d8b1b26d3a24fc2e7a8ede910b67a39cc9998482f63ade98ee89" },
+    { href: "/documents/marketing/practice-agreements/travel-ukraine-today.pdf", bytes: 3232314, sha256: "fff2b1525b4acf1238d473244606280b4b9604069a14c4b7cc712e5d388d6424" },
+    { href: "/documents/marketing/practice-agreements/front-vil.pdf", bytes: 3006321, sha256: "f48922fe395a723cb775b9a50e2c5f9e122096cc98df1e1bbf9d536777f8fbc3" },
+    { href: "/documents/marketing/practice-agreements/essity-ukraine.pdf", bytes: 3007045, sha256: "602df579f8170ca9bf18c7898755a7c6a942eac2996ca562eea069f26d8b3b16" },
+    { href: "/documents/marketing/practice-agreements/terminal-rozetka.pdf", bytes: 3160154, sha256: "b448caeaea550ade3b4c37bc722ea05511c9a1ca01bd5e2dfa3fd267bede5878" },
+  ];
+  for (const original of originals) {
+    assert.ok(agreements.includes(`href="${original.href}"`));
+    const bytes = await readFile(new URL(`../public${original.href}`, import.meta.url));
+    assert.equal(bytes.length, original.bytes);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), original.sha256);
+  }
+  const bachelor = html.split('id="marketing-methodical-bachelor-practice"')[1].split("</details>")[0];
+  assert.ok(!bachelor.includes("practice-agreements"));
+});
+
 test("opens Management annotation folders with twelve unchanged original DOCX files", async () => {
   const html = await (await render("/programs/management")).text();
   const section = html.split('id="management-master-documents"')[1].split("</section>")[0];

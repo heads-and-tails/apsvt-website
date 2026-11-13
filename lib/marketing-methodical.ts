@@ -1,3 +1,5 @@
+export const marketingPracticeAgreementsSectionId = "marketing-methodical-master-practice-agreements";
+
 type MarketingMethodicalSection = { id: string; title: string; children?: readonly { id: string; title: string }[] };
 export const marketingMethodicalGroups: readonly { id: string; title: string; sections: readonly MarketingMethodicalSection[] }[] = [
   { id: "bachelor", title: "Бакалаврат", sections: [
@@ -12,7 +14,7 @@ export const marketingMethodicalGroups: readonly { id: string; title: string; se
     { id: "marketing-methodical-master-work-programmes", title: "Робочі програми навчальних дисциплін", children: [{ id: "marketing-methodical-master-work-programmes-electives", title: "Вибіркові дисципліни" }] },
     { id: "marketing-methodical-master-annotations", title: "Анотації навчальних дисциплін", children: [{ id: "marketing-methodical-master-annotations-electives", title: "Вибіркові дисципліни" }] },
     { id: "marketing-methodical-master-recommendations", title: "Методичні рекомендації" },
-    { id: "marketing-methodical-master-practice", title: "Практична підготовка" },
+    { id: "marketing-methodical-master-practice", title: "Практична підготовка", children: [{ id: marketingPracticeAgreementsSectionId, title: "Договори про організацію та проведення практичної підготовки здобувачів вищої освіти" }] },
     { id: "marketing-methodical-master-qualification", title: "Кваліфікаційні роботи та атестація" },
   ] },
   { id: "general", title: "Загальні навчально-методичні матеріали", sections: [
