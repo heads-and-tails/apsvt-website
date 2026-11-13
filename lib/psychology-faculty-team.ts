@@ -117,6 +117,14 @@ export const psychologyFacultyTeam: PsychologyFacultyMember[] = [
     interests: ["психологія", "професійна підготовка"],
   },
   {
+    id: "serhii-moshenskyi",
+    name: "Сергій Мошенський",
+    role: "кандидат технічних наук",
+    summary: "",
+    image: "/people/psychology-faculty/serhii-moshenskyi.jpg",
+    interests: [],
+  },
+  {
     id: "valentyn-teslenko",
     name: "Валентин Тесленко",
     role: "доктор педагогічних наук, професор",
