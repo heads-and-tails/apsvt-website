@@ -3273,6 +3273,11 @@ main section[id]{scroll-margin-top:96px}
 .postgraduate-document-list small{display:block;color:rgba(9,14,24,.5);font:7px var(--mono);letter-spacing:.06em;text-transform:uppercase}
 .postgraduate-document-list div>b{display:block;margin-top:7px;font:600 13px/1.35 var(--body)}
 .postgraduate-document-list>a>strong{justify-self:end;color:var(--cobalt);font-size:20px}
+.postgraduate-doctoral-resources{margin-top:20px;border-top:1px solid rgba(255,255,255,.22)}
+.postgraduate-doctoral-resources>a{border-bottom-color:rgba(255,255,255,.22)}
+.postgraduate-doctoral-resources>a:hover{background:rgba(255,255,255,.06)}
+.postgraduate-doctoral-resources>a>span,.postgraduate-doctoral-resources>a>strong{color:var(--gold)}
+.postgraduate-doctoral-resources small{color:#b8c4d9}
 
 .postgraduate-contact{background:var(--gold)}
 .postgraduate-contact-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(240px,.55fr);gap:clamp(45px,8vw,120px);align-items:end}

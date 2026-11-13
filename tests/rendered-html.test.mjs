@@ -4,6 +4,31 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("keeps complete Psychology doctoral resources within the corresponding field", async () => {
+  const html = await (await render("/research/postgraduate-doctoral")).text();
+  const section = html.split('id="doctoral"')[1].split("</section>")[0];
+  const fields = [...section.matchAll(/<article>[\s\S]*?<\/article>/g)].map(([field]) => field);
+  assert.equal(fields.length, 4);
+  const psychology = fields.find((field) => field.includes("Психологічні науки"));
+  assert.ok(psychology);
+  for (const [file, title, pages, size, hash] of [
+    ["psychology-doctoral-programme-2022.pdf", "Наукова програма підготовки докторів наук «Психологія» — 2022", "11 сторінок", 431587, "f37cb146045bf589a1c9bbdbc6e207df50022a82e6b22fbf2df27ad034c6fe27"],
+    ["psychology-doctoral-dissertation-planning-2026.pdf", "Перелік документів для планування та затвердження теми докторської дисертації — 2026", "2 сторінки", 134173, "967dcddd77914c774543e63894f0132d7ba35cc5d5752fccb4bd248f3d6b312e"],
+  ]) {
+    const href = `/documents/research/postgraduate-doctoral/2026/${file}`;
+    assert.equal(html.split(`href="${href}"`).length - 1, 1);
+    assert.ok(psychology.includes(`href="${href}"`));
+    assert.ok(psychology.includes(title));
+    assert.ok(psychology.includes(`PDF · ${pages}`));
+    const link = psychology.split(`href="${href}"`)[1].split("</a>")[0];
+    assert.match(link, /target="_blank"/);
+    const bytes = await readFile(new URL(`../public${href}`, import.meta.url));
+    assert.equal(bytes.length, size);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), hash);
+  }
+  assert.equal(fields.filter((field) => field.includes("postgraduate-doctoral-resources")).length, 1);
+});
+
 test("opens the complete PhD teaching timetable from programmes and official documents", async () => {
   const html = await (await render("/research/postgraduate-doctoral")).text();
   const href = "/documents/research/postgraduate-doctoral/2026/phd-teaching-schedule-semester-1-2026-2027.pdf";
