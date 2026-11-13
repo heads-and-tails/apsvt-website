@@ -48,15 +48,6 @@ const faculties: FacultyGroup[] = [
       { title: "Кафедра соціально-трудових відносин та соціальної роботи", description: "Соціальна політика, підтримка людей і громад, консультування та реабілітація.", href: "/programs/social-work#department", programmes: [{ code: "I10", name: "Соціальна робота та консультування", href: "/programs/social-work" }] },
     ],
   },
-  {
-    code: "ЗАК",
-    title: "Загальноакадемічна підготовка",
-    description: "Мовні, гуманітарні та міжкультурні компетентності для студентів усіх спеціальностей.",
-    href: "/departments/languages-humanities",
-    departments: [
-      { title: "Кафедра іноземних мов та гуманітарних дисциплін", description: "Професійні мови, критичне мислення та гуманітарна освіта.", href: "/departments/languages-humanities", programmes: [{ code: "Усі", name: "Освітні програми", href: "/programs" }] },
-    ],
-  },
 ];
 
 const otherUnits = [
