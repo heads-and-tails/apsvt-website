@@ -4,6 +4,26 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("links the original faculty consultation schedule beside the three departments", async () => {
+  const path = "/departments/psychology-social-development-faculty";
+  const html = await (await render(path)).text();
+  const section = html.split('id="departments"')[1].split("</section>")[0];
+  const href = "/documents/psychology-faculty/consultations-2026-2027.pdf";
+  assert.match(section, /Три кафедри — один факультет/);
+  for (const slug of ["clinical-psychology", "business-psychology", "social-work"]) {
+    assert.ok(section.includes(`href="${path}/${slug}"`));
+  }
+  assert.equal((section.match(new RegExp(`href="${href}"`, "g")) || []).length, 1);
+  const card = section.split(`href="${href}"`)[1].split("</a>")[0];
+  assert.match(card, /target="_blank"/);
+  assert.match(card, /Графік індивідуальних консультацій/);
+  assert.match(card, /2026\/2027 навчальний рік/);
+  assert.ok(section.indexOf(`href="${href}"`) > section.indexOf(`href="${path}/social-work"`));
+  const bytes = await readFile(new URL(`../public${href}`, import.meta.url));
+  assert.equal(bytes.length, 255508);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), "9272d8c46d61a76afa90a9c7a0330ef2233436ac06930a468467ca98e57c5d79");
+});
+
 test("places the supplied Moshenskyi profile after Lapinska in both requested teams", async () => {
   const facultyPath = "/departments/psychology-social-development-faculty";
   for (const [path, id] of [[facultyPath, "faculty-team"], [`${facultyPath}/business-psychology`, "department-team"]]) {
