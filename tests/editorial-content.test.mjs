@@ -28,6 +28,33 @@ const interactive = await import(interactiveUrl);
 const customSectionsUrl = await moduleUrl("../lib/editorial-custom-sections.ts");
 const customSections = await import(customSectionsUrl);
 
+test("renders partner agreements alongside preserved logos, summaries and website links", async () => {
+  const stub = `data:text/javascript;base64,${Buffer.from('export default function Link(){return null} export function AcademicProfileCard(){return null} export function departmentTeacherProfile(){} export function EditorialRichText(){return null}').toString("base64")}`;
+  const mediaUrl = await moduleUrl("../lib/department-media.ts", { "./editorial-text": textUrl });
+  const departmentMediaUrl = await moduleUrl("../app/components/DepartmentMedia.tsx", { "@/lib/department-media": mediaUrl });
+  const { DepartmentEditorialContent } = await import(await moduleUrl("../app/components/DepartmentEditorialContent.tsx", {
+    "next/link": stub,
+    "./AcademicProfileCard": stub,
+    "./EditorialRichText": stub,
+    "./DepartmentMedia": departmentMediaUrl,
+    "@/lib/department-media": mediaUrl,
+    "@/lib/department-news-date": await moduleUrl("../lib/department-news-date.ts"),
+    "@/lib/editorial-custom-sections": customSectionsUrl,
+  }));
+  const entry = { id: "partner", entryType: "partner", title: "Партнер", summary: "Спільні освітні заходи", imageUrl: "/partner.png", imageAlt: "Логотип партнера", profileUrl: "https://example.org", sortOrder: 10, attachments: [{ url: "/agreement.pdf", label: "Договір про співробітництво" }], fileUrl: "/agreement.pdf", fileName: "Попередня назва" };
+  const render = (entries) => renderToStaticMarkup(createElement(DepartmentEditorialContent, { entries }));
+  const html = render([entry]);
+  assert.match(html, /src="\/partner.png"/);
+  assert.match(html, /alt="Логотип партнера"/);
+  assert.match(html, /Спільні освітні заходи/);
+  assert.match(html, /href="https:\/\/example.org"/);
+  assert.equal(html.split('href="/agreement.pdf"').length - 1, 1);
+  assert.match(html, /aria-label="Документи матеріалу"/);
+  assert.match(html, /href="\/agreement.pdf" target="_blank" rel="noopener noreferrer">Договір про співробітництво/);
+  assert.doesNotMatch(render([{ ...entry, hidden: true }]), /agreement.pdf|Договір/);
+  assert.doesNotMatch(render([{ ...entry, attachments: [], fileUrl: "" }]), /department-authored-files/);
+});
+
 test("centralizes published psychology department material without exposing drafts or changing its owner", async () => {
   const structureUrl = await moduleUrl("../lib/psychology-faculty-structure.ts");
   const departmentsUrl = await moduleUrl("../lib/psychology-departments.ts");

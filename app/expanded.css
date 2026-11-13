@@ -3767,6 +3767,8 @@ html body :is(.sec-head,.split,.deep-intro,.law-curriculum-head,.documents-catal
 .editorial-richtext p:empty{min-height:1em}.department-public-content .lead,.academic-profile-copy>p{white-space:pre-line}
 .department-authored-images{display:grid;gap:16px;max-width:100%;margin:20px 0 28px}.department-authored-images--gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.department-authored-images figure{margin:0;min-width:0}.department-authored-images img{display:block;width:100%;height:auto;max-width:100%;min-height:0;object-fit:contain}.department-authored-image--crop img{aspect-ratio:16/9;object-fit:cover}
 .department-authored-files{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}.department-authored-files a{max-width:100%;padding:12px 0;color:var(--cobalt);font:600 14px/1.5 var(--body);text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.department-partner-grid .department-authored-files{margin:18px 0 0}
+.department-partner-grid .department-authored-files a{margin-top:0;text-transform:none;letter-spacing:normal}
 .department-news-grid .department-authored-images{margin:0}.department-news-grid .department-authored-images img{height:auto;aspect-ratio:auto;object-fit:contain}.department-news-grid .department-authored-image--crop img{aspect-ratio:16/9;object-fit:cover}
 @media(max-width:760px){.department-authored-images--gallery{grid-template-columns:1fr}}
 .editor-media-images,.editor-media-files{display:grid;gap:12px;padding:18px;border:1px solid #d3d8e0}.editor-media-images>b,.editor-media-files>b{font:700 11px var(--body);text-transform:uppercase}.editor-media-images>small,.editor-media-files>small{font:12px/1.6 var(--body);color:#586273;letter-spacing:0;text-transform:none}
