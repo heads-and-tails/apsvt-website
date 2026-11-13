@@ -4,6 +4,38 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("publishes the full Open for Action report and keeps all three requested Finance stories accessible", async () => {
+  const slug = "mizhnarodnyi-volonterskyi-proiekt-open-for-action-2026";
+  const html = await (await render(`/news/${slug}`)).text();
+  const normalize = (text) => text.normalize("NFKC").replace(/\s+/g, " ").trim();
+  for (const paragraph of ["Міжнародний волонтерський проєкт Open for Action", "Кафедра фінансів Академії праці, соціальних відносин і туризму спільно з Всеукраїнською громадською організацією «Сила Країни» розпочала реалізацію міжнародного волонтерського проєкту  Open for Action, спрямованого на посилення спроможності українських організацій у країнах Європейського Союзу. Ініціаторкою, авторкою ідеї та керівницею проєкту є доцентка кафеди фінансів АПСВТ Гуляєва Людмила Петрівна.", "Кафедра фінансів Академії праці, соціальних відносин і туризму спільно з Всеукраїнською громадською організацією «Сила Країни» розпочала реалізацію міжнародного волонтерського проєкту Open for Action, спрямованого на посилення спроможності українських організацій у країнах Європейського Союзу, розвиток міжнародного партнерства та розширення можливостей залучення європейського фінансування для реалізації суспільно важливих ініціатив.", "Ініціаторкою, авторкою ідеї та керівницею проєкту є Людмила Гуляєва — доцентка кафеди фінансів АПСВТ, експертка з фандрейзингу та міжнародного проєктного менеджменту, членкиня ВГО «Сила Країни». Координатором проєкту виступає ВГО «Сила Країни».", "7 жовтня 2026 року відбулася перша організаційна зустріч Open for Action, до якої долучилися понад 50 учасників із 20 країн Європи, включно з Україною. Зустріч стала платформою для знайомства представників українських і європейських організацій, обміну досвідом, обговорення перспективних напрямів співпраці та формування міжнародної партнерської мережі. Під час заходу учасники ознайомилися з концепцією проєкту, його основними цілями, запланованими заходами та можливостями участі у спільних ініціативах. Також було розпочато формування міжнародних робочих груп, які працюватимуть над реалізацією окремих напрямів діяльності Open for Action.", "Міжнародний проєкт Open for Action передбачає створення відкритої платформи для навчання, обміну досвідом, розвитку партнерств і спільної проєктної діяльності українських організацій у країнах Європейського Союзу.", "У межах Open for Action заплановано:", "«Open for Action: Академія європейських можливостей» — серію безкоштовних освітніх онлайн-заходів щодо європейських грантових програм, фандрейзингу та міжнародного проєктного менеджменту.", "Створення електронного каталогу українських організацій у країнах ЄС для посилення їхньої видимості, налагодження професійних контактів і розвитку співпраці.", "Проведення міжнародних партнерських зустрічей для обміну досвідом, пошуку партнерів та формування спільних ініціатив.", "Розвиток міжнародних проєктних консорціумів для підготовки та реалізації проєктів за підтримки програм і фондів Європейського Союзу.", "Формування міжнародної мережі співпраці, яка об’єднуватиме українські та європейські громадські організації, експертів і представників українських спільнот за кордоном.", "Особлива увага приділятиметься практичним інструментам залучення грантового фінансування ЄС, розвитку проєктних компетентностей та посиленню спроможності українських організацій представляти інтереси України на міжнародному рівні.", "Автор: Гуляєва Людмила Петрівна"]) assert.ok(normalize(html).includes(normalize(paragraph)), paragraph);
+  const article = html.split('<article class="detail-copy">')[1].split("</article>")[0];
+  assert.equal((article.match(/<li>/g) || []).length, 5);
+  assert.match(html, /12 листопада 2026/);
+  assert.ok(!html.includes('class="detail-hero image"'));
+  assert.ok(html.includes('href="/en/news"'));
+  assert.ok(article.includes('href="/images/news/finance-open-for-action-2026.png"'));
+  assert.ok(article.includes('width="1254" height="828"'));
+  assert.doesNotMatch(article, /Короткий підпис|Новина 6|Новина \(повна/);
+  for (const route of ["/news", "/", "/programs/finance"]) {
+    const listing = await (await render(route)).text();
+    const card = listing.split(`href="/news/${slug}"`)[1]?.split("</a>")[0];
+    assert.ok(card?.includes("object-fit:contain"), route);
+  }
+  const department = (await (await render("/programs/finance")).text()).split('class="academic-news-section"')[1].split("</section>")[0];
+  const cards = [...department.matchAll(/<a\b(?=[^>]*class="news")(?=[^>]*href="([^"]+)")[^>]*>/g)].map(match => match[1]);
+  assert.deepEqual(cards, ["/news/mizhnarodne-stazhuvannia-finansy-finliandiia-2026", `/news/${slug}`, "/news/polsko-ukrainska-ekonomichna-konferentsiia-pulawy-2026"]);
+  const english = await render(`/en/news/${slug}`);
+  assert.equal(english.status, 307);
+  assert.equal(new URL(english.headers.get("location"), "http://localhost").pathname, `/news/${slug}`);
+  const index = await (await render("/en/news")).text();
+  const anchor = index.match(new RegExp(`<a\\b[^>]*href="/news/${slug}"[^>]*>`))?.[0] || "";
+  assert.match(anchor, /\blang="uk"/);
+  const bytes = await readFile(new URL("../public/images/news/finance-open-for-action-2026.png", import.meta.url));
+  assert.equal(bytes.length, 1212743);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), "4ea31e0f4856196b528b869133ac26cc4d5a5f267e71831fda8a8b2899194b35");
+});
+
 test("publishes the full Pulawy conference report with the requested photo position and original images", async () => {
   const slug = "polsko-ukrainska-ekonomichna-konferentsiia-pulawy-2026";
   const response = await render(`/news/${slug}`);
@@ -33,7 +65,7 @@ test("publishes the full Pulawy conference report with the requested photo posit
   const cards = [...finance.matchAll(/<a\b(?=[^>]*class="news")(?=[^>]*href="([^"]+)")[^>]*>/g)].map(match => match[1]);
   assert.equal(cards.length, 3);
   assert.equal(cards[0], "/news/mizhnarodne-stazhuvannia-finansy-finliandiia-2026");
-  assert.equal(cards[1], `/news/${slug}`);
+  assert.equal(cards[2], `/news/${slug}`);
   for (const original of [{"source": "05.jpeg", "href": "/images/news/finance-pulawy-2026/card.jpeg", "bytes": 215938, "sha256": "e2da1eea274d0c2ace239c5d63aa6a8597a9e8b1f395bd8dcf4182c535a53b71"}, {"source": "06.jpg", "href": "/images/news/finance-pulawy-2026/presentation.jpg", "bytes": 723703, "sha256": "424b3bf5a3a2a84b79d4c7a58a8850886dadbecb35b0a7aab327265de57aec0a"}]) {
     const bytes = await readFile(new URL(`../public${original.href}`, import.meta.url));
     assert.equal(bytes.length, original.bytes);
@@ -419,14 +451,13 @@ test("publishes the approved 2026 Management master package with unchanged origi
 test("publishes the supplied Bilous open lecture with its date, speaker and exact Zoom target", async () => {
   const slug = "vidkryta-lektsiia-volodymyra-bilousa-9-lystopada-2026";
   const zoom = "https://us02web.zoom.us/j/87040876569?pwd=sonAciICHl4RNUzVRSUbeQ3YmrFj0l.1";
-  const [home, news, englishNews, article, englishArticle] = await Promise.all([
-    render("/").then((response) => response.text()),
+  const [news, englishNews, article, englishArticle] = await Promise.all([
     render("/news").then((response) => response.text()),
     render("/en/news").then((response) => response.text()),
     render(`/news/${slug}`).then((response) => response.text()),
     render(`/en/news/${slug}`).then((response) => response.text()),
   ]);
-  for (const html of [home, news]) assert.ok(html.includes(`href="/news/${slug}"`));
+  assert.ok(news.includes(`href="/news/${slug}"`));
   assert.ok(englishNews.includes(`href="/en/news/${slug}"`));
   for (const html of [article, englishArticle]) {
     const body = html.split('class="detail-copy"')[1].split("</article>")[0];
@@ -570,7 +601,8 @@ test("server-renders the finished Ukrainian homepage",async()=>{
   assert.match(html,/href="\/en"[^>]*>EN<\/a>/i);
   assert.match(html,/Освітні траєкторії/);
   assert.match(await (await render("/news")).text(),/mental-health-conference-science-2026\.jpg/);
-  assert.match(html,/Відкрита лекція Володимира Білоуса/);
+  assert.match(await (await render("/news")).text(),/Відкрита лекція Володимира Білоуса/);
+  assert.match(html,/Міжнародний волонтерський проєкт Open for Action/);
   assert.match(await (await render("/news")).text(),/Гостьова лекція Єнс-Райнхольда Губерта/);
   assert.match(await (await render("/news")).text(),/EDUPRO2026: AI FOR EDUCATORS/);
   assert.match(await (await render("/news")).text(),/АПСВТ Наталія Гончаренко взяла участь у програмі PILC &amp; SEITE 2026/);

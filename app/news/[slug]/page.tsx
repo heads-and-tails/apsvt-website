@@ -28,6 +28,7 @@ import { lawOpenMeetingNewsSlug } from "@/lib/law-open-meeting-news";
 
 import { nadrahaGuestLectureNewsSlug, nadrahaGuestLecturePortrait } from "@/lib/nadraha-guest-lecture-news";
 
+import { financeOpenForActionNewsSlug, financeOpenForActionImage } from "@/lib/finance-open-for-action-news";
 import { financeConferenceNewsSlug, financeConferencePhoto, splitFinanceConferenceBody } from "@/lib/finance-conference-news";
 
 export const dynamic = "force-dynamic";
@@ -91,12 +92,13 @@ export default async function Page({ params }: Props) {
   const isFinanceFinlandNews = post.slug === financeFinlandNewsSlug;
   const isFinancePolandNews = post.slug === financePolandNewsSlug;
   const isNadrahaGuestLectureNews = post.slug === nadrahaGuestLectureNewsSlug;
+  const isFinanceOpenForActionNews = post.slug === financeOpenForActionNewsSlug;
   const isFinanceConferenceNews = post.slug === financeConferenceNewsSlug;
   const conferenceBody = isFinanceConferenceNews ? splitFinanceConferenceBody(articleBody) : null;
-  const showHeroImage = Boolean(heroImage.imageUrl) && !isEmpowerNews && !isFinanceFinlandNews && !isFinancePolandNews && !isNadrahaGuestLectureNews && !isFinanceConferenceNews;
+  const showHeroImage = Boolean(heroImage.imageUrl) && !isEmpowerNews && !isFinanceFinlandNews && !isFinancePolandNews && !isNadrahaGuestLectureNews && !isFinanceConferenceNews && !isFinanceOpenForActionNews;
 
   return <main id="top">
-    <SiteHeader englishHref={isFinanceConferenceNews || isNadrahaGuestLectureNews || post.slug === lawOpenMeetingNewsSlug || post.slug === managementOpenMeetingNewsSlug || isFinancePolandNews || isFinanceFinlandNews || post.slug === strategyDiscussionNewsSlug || post.slug === lawAccreditationNewsSlug || post.slug === eduproNewsSlug || isEmpowerNews || post.slug === constitutionalCourtMeetingNewsSlug ? "/en/news" : undefined} />
+    <SiteHeader englishHref={isFinanceOpenForActionNews || isFinanceConferenceNews || isNadrahaGuestLectureNews || post.slug === lawOpenMeetingNewsSlug || post.slug === managementOpenMeetingNewsSlug || isFinancePolandNews || isFinanceFinlandNews || post.slug === strategyDiscussionNewsSlug || post.slug === lawAccreditationNewsSlug || post.slug === eduproNewsSlug || isEmpowerNews || post.slug === constitutionalCourtMeetingNewsSlug ? "/en/news" : undefined} />
     <section className={showHeroImage ? "detail-hero image" : "detail-hero"}>
       {showHeroImage && <div className="detail-hero-bg"><img src={heroImage.imageUrl} alt={heroImage.imageAlt} style={post.slug === volodymyrLipkanArticleNewsSlug ? { objectPosition: "center 12%" } : undefined} /></div>}
       <div className="wrap"><div className="detail-kicker mono">{post.category}{post.hideDate ? "" : ` · ${date}`}</div><h1>{post.title}</h1><p className="detail-deck">{post.excerpt}</p></div>
@@ -117,6 +119,9 @@ export default async function Page({ params }: Props) {
         {isEmpowerNews && empowerEastKickoffImages.map((photo) => <a href={photo.url} target="_blank" rel="noreferrer" key={photo.url}>
           <DepartmentImages entry={{ images: [photo] }} />
         </a>)}
+        {isFinanceOpenForActionNews && <figure className="lecture-news-poster">
+          <a href={financeOpenForActionImage.imageUrl} target="_blank" rel="noreferrer"><Image src={financeOpenForActionImage.imageUrl} alt={financeOpenForActionImage.imageAlt} width={1254} height={828} unoptimized /></a>
+        </figure>}
         {isNadrahaGuestLectureNews && <figure className="lecture-news-poster" style={{ maxWidth: 300 }}>
           <a href={nadrahaGuestLecturePortrait.imageUrl} target="_blank" rel="noreferrer"><Image src={nadrahaGuestLecturePortrait.imageUrl} alt={nadrahaGuestLecturePortrait.imageAlt} width={300} height={472} unoptimized /></a>
         </figure>}
