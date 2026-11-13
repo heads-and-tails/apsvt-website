@@ -1,3 +1,6 @@
+import { psychologyMentalHealthRegulation } from "@/lib/psychology-faculty-regulations";
+import { PsychologyRegulationLinks } from "./PsychologyRegulationLinks";
+
 const laboratoryTasks = [
   "Підвищення якості підготовки фахівців завдяки практичній складовій навчання.",
   "Проведення лабораторних і практичних занять на високому науковому, методичному й технічному рівні.",
@@ -77,6 +80,7 @@ export function PsychologyFacultyPractice() {
   return <section className="faculty-content-section faculty-practice-detail" id="faculty-practice"><div className="wrap">
     <div className="faculty-content-head"><div><div className="idx">14 / Практика й партнери</div><h2>Центр ментального здоров’я та бази практики</h2></div><p>Психологічна підтримка, професійна практика та співпраця зі стейкголдерами поєднані в одному розділі.</p></div>
     <article className="faculty-mental-card"><div><span>01 / Структурний підрозділ АПСВТ</span><h3>Центр ментального здоров’я</h3></div><div><p>Центр працює на постійній основі задля захисту психічного здоров’я здобувачів освіти, викладачів, працівників і відвідувачів Академії. Допомога також надається вступникам, батькам, внутрішньо переміщеним і постраждалим особам, військовослужбовцям, ветеранам та їхнім родинам.</p><ul><li>психологічна та реабілітаційна допомога;</li><li>підтримка й супровід особистісного зростання;</li><li>медико-психологічні, психотерапевтичні, психокорекційні, тренінгові й консультативні заходи;</li><li>семінари, круглі столи і тренінги;</li><li>діагностика труднощів адаптації, потенційних можливостей і професійного самовизначення.</li></ul></div></article>
+    <PsychologyRegulationLinks documents={[psychologyMentalHealthRegulation]} />
     <div className="faculty-practice-list-head"><span>21 база</span><h3>Стейкголдери та бази практики</h3></div>
     <div className="faculty-practice-list">{practiceBases.map(([name, address], index) => <article key={`${name}-${address}`}><span>{String(index + 1).padStart(2, "0")}</span><div><h4>{name}</h4><p>{address}</p></div></article>)}</div>
   </div></section>;

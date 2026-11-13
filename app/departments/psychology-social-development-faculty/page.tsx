@@ -1,3 +1,5 @@
+import { psychologyFacultyRegulations } from "@/lib/psychology-faculty-regulations";
+import { PsychologyRegulationLinks } from "./PsychologyRegulationLinks";
 import { FacultyProgrammeCards } from "@/app/components/FacultyProgrammeCards";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -83,6 +85,8 @@ export default async function Page() {
     <PsychologyFacultyScience />
 
     <section className="faculty-structure-section faculty-governance" id="faculty-student-government"><div className="wrap"><div className="sec-head"><div><div className="idx">08 / Студентське самоврядування</div><h2>Участь студентів у житті факультету</h2></div><p>Студентська рада, ініціативи, події, представництво й контакти відкриваються окремо.</p></div><div className="faculty-link-grid"><Link className="faculty-link-card faculty-link-card-gold" href="/students/council"><span>01 / Студенти</span><h3>Студентська рада</h3><p>Команда, проєкти, ініціативи, події та контакти.</p><b>Відкрити студентську раду →</b></Link></div></div></section>
+
+    <section className="faculty-structure-section faculty-repository" id="faculty-regulations"><div className="wrap"><div className="sec-head"><div><div className="idx">09 / Нормативні документи</div><h2>Нормативні документи факультету</h2></div></div><PsychologyRegulationLinks documents={psychologyFacultyRegulations} /></div></section>
 
     <section className="faculty-structure-section faculty-repository" id="faculty-proposals"><div className="wrap"><div className="sec-head"><div><div className="idx">10 / Проєкти, пропозиції та результати розгляду</div><h2>Проєкти, пропозиції та результати розгляду</h2></div></div><PsychologyProgrammeDiscussion programmes={discussionProgrammes} /><div className="faculty-link-grid"><Link className="faculty-link-card" href="/programs/social-work#quality"><span>02 / I10</span><h3>Соціальна робота та консультування</h3><p>Проєкти, пропозиції й результати розгляду.</p><b>Перейти до якості програми →</b></Link></div></div></section>
 
