@@ -3021,8 +3021,8 @@ test("publishes four additional Marketing masters theses in both repositories", 
   },
   {
     "href": "/documents/research/marketing/theses/2026/thesis-29.pdf",
-    "bytes": 1745244,
-    "sha256": "2dd99f4920ce218177b629705dbfd4ada50026acae5769daa474e4e5ee23460f",
+    "bytes": 1807178,
+    "sha256": "db3e4ece5d9533d534eb58369dbb9ae5152a6bc8fde3ee6f6bc97c251b42621c",
     "author": "Гоцул В. Є."
   }
 ];
