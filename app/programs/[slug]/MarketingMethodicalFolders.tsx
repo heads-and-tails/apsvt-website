@@ -1,5 +1,6 @@
 import type { DepartmentEntry } from "@/lib/department-content";
-import { marketingMethodicalGroups } from "@/lib/marketing-methodical";
+import { marketingPracticeAgreements } from "@/lib/marketing-practice-agreements";
+import { marketingMethodicalGroups, marketingPracticeAgreementsSectionId } from "@/lib/marketing-methodical";
 import { DepartmentEditorialContent } from "@/app/components/DepartmentEditorialContent";
 import { MarketingElectronicResources } from "./MarketingElectronicResources";
 
@@ -45,6 +46,7 @@ export function MarketingMethodicalFolders({ entries }: { entries: DepartmentEnt
             {retained.length > 0 && <div className="marketing-methodical-file-list">{retained.map((file) => <a href={file.href} target="_blank" rel="noreferrer" key={file.href}><span>{file.year}</span><strong>{file.title}</strong><b>{file.href.endsWith(".pdf") ? "PDF ↗" : "↗"}</b></a>)}</div>}
             {section.children?.map((child) => {
               const childEntries = entries.filter((entry) => entry.sectionId === child.id && !entry.hidden);
+              const staticFiles = child.id === marketingPracticeAgreementsSectionId ? marketingPracticeAgreements : [];
               const childFiles = childEntries.filter((entry) => entry.entryType === "material" && entry.fileUrl);
               const childYears = [...new Set(childFiles.map(academicYear))].sort((a, b) => b.localeCompare(a, "uk"));
               return <details className="marketing-methodical-elective-subfolder" id={child.id} key={child.id}>
@@ -52,7 +54,8 @@ export function MarketingMethodicalFolders({ entries }: { entries: DepartmentEnt
                 <div className="marketing-methodical-elective-body">
                   <DepartmentEditorialContent entries={childEntries.filter((entry) => entry.entryType !== "material")} inline />
                   {childYears.map((year) => <div className="marketing-methodical-year" key={year}><h4>{year === "Рік не зазначено" ? year : `${year} навчальний рік`}</h4><div className="marketing-methodical-file-list">{childFiles.filter((entry) => academicYear(entry) === year).map((entry) => <a href={entry.fileUrl} target="_blank" rel="noreferrer" key={entry.id}><span>{year}</span><strong>{entry.title}</strong><b>{entry.fileUrl.toLowerCase().split("?")[0].endsWith(".pdf") ? "PDF ↗" : "↗"}</b></a>)}</div></div>)}
-                  {!childEntries.length && <p className="marketing-methodical-empty">Матеріали цього підрозділу поки не опубліковано.</p>}
+                  {staticFiles.length > 0 && <div className="marketing-methodical-file-list">{staticFiles.map((file) => <a href={file.href} target="_blank" rel="noreferrer" key={file.href}><span>Договір</span><strong>{file.title}</strong><b>PDF ↗</b></a>)}</div>}
+                  {!childEntries.length && !staticFiles.length && <p className="marketing-methodical-empty">Матеріали цього підрозділу поки не опубліковано.</p>}
                 </div>
               </details>;
             })}

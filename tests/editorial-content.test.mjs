@@ -566,7 +566,8 @@ test("mobility subsection shows only its visible published content and keeps a u
 
 test("makes every marketing methodical subsection editable", () => {
   const registered = sections.editorialSectionsForPage("/programs/marketing").filter((section) => section.id.startsWith("marketing-methodical-"));
-  assert.equal(registered.length, 18);
+  assert.equal(registered.length, 19);
+  assert.ok(registered.some((section) => section.id === "marketing-methodical-master-practice-agreements"));
   assert.ok(registered.some((section) => section.label === "Бакалаврат · Курсові роботи"));
   assert.ok(registered.some((section) => section.label === "Магістратура · Кваліфікаційні роботи та атестація"));
   for (const level of ["bachelor", "master"]) for (const type of ["work-programmes", "annotations"]) {
