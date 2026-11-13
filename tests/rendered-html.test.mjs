@@ -4,6 +4,18 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("publishes the approved language-of-instruction sentence prominently on the Ukrainian homepage", async () => {
+  const sentence = "Мовою освітнього процесу в Академії праці, соціальних відносин і туризму є державна мова";
+  const html = await (await render("/")).text();
+  assert.equal(html.split('class="home-language-notice"').length - 1, 1);
+  const notice = html.split('class="home-language-notice"')[1].split("</aside>")[0];
+  assert.ok(notice.includes(`<p>${sentence}</p>`));
+  assert.ok(html.indexOf('class="ticker"') < html.indexOf('class="home-language-notice"'));
+  assert.ok(html.indexOf('class="home-language-notice"') < html.indexOf('class="home-announcement"'));
+  const english = await (await render("/en")).text();
+  assert.ok(!english.includes(sentence) && !english.includes('class="home-language-notice"'));
+});
+
 test("keeps complete Psychology doctoral resources within the corresponding field", async () => {
   const html = await (await render("/research/postgraduate-doctoral")).text();
   const section = html.split('id="doctoral"')[1].split("</section>")[0];

@@ -1809,6 +1809,9 @@ table.weekly-schedule tbody tr:hover td{background:#f7f8ff}
 
 .home-hiring{position:relative;background:#fff;overflow:hidden}
 .home-hiring:after{content:"TEAM";position:absolute;right:-.04em;bottom:-.32em;font:700 clamp(150px,25vw,380px)/1 var(--disp);color:transparent;-webkit-text-stroke:1px rgba(36,72,255,.12);pointer-events:none}
+.home-language-notice{background:var(--navy);color:#fff}
+.home-language-notice .wrap{padding-block:24px}
+.home-language-notice p{max-width:90ch;margin:0;padding-left:20px;border-left:3px solid var(--gold);font-size:clamp(16px,1.5vw,20px);line-height:1.6}
 .home-announcement{padding:46px 0;background:var(--navy);color:var(--paper);border-top:6px solid var(--gold)}
 .home-announcement-grid{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:clamp(28px,5vw,72px);align-items:center}
 .home-announcement-date{min-height:142px;padding:17px;background:var(--gold);color:var(--ink);display:flex;flex-direction:column;justify-content:space-between;box-shadow:9px 9px var(--cobalt)}
