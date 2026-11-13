@@ -716,6 +716,17 @@ export const officialDocuments: OfficialDocument[] = [
     status: "reference",
   },
   {
+    id: "staff-rating-2026",
+    category: "quality",
+    title: "Положення про рейтингове оцінювання діяльності науково-педагогічних працівників",
+    description: "Мета, критерії та порядок щорічного рейтингового оцінювання діяльності науково-педагогічних працівників Академії.",
+    href: "/documents/regulations/staff-rating-2026.pdf",
+    format: "PDF",
+    pages: 6,
+    updated: "2026",
+    status: "current",
+  },
+  {
     id: "best-teacher-competition",
     category: "governance",
     title: "Положення про конкурс «Викладач року Академії»",

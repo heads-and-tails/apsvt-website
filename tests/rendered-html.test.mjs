@@ -4,6 +4,26 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("publishes the original staff-rating regulation in regulations and the searchable quality catalogue", async () => {
+  const href = "/documents/regulations/staff-rating-2026.pdf";
+  const title = "Положення про рейтингове оцінювання діяльності науково-педагогічних працівників";
+  const [regulations, catalogue] = await Promise.all([
+    (await render("/documents/regulations")).text(),
+    (await render("/documents")).text(),
+  ]);
+  for (const html of [regulations, catalogue]) {
+    const card = html.split(`href="${href}"`)[1]?.split("</a>")[0];
+    assert.ok(card?.includes(title));
+    assert.match(card, /target="_blank"/);
+    assert.match(card.replace(/<!--.*?-->/g, ""), /6 сторінок/);
+  }
+  assert.ok(catalogue.split('id="quality"')[1].split('</section>')[0].includes(href));
+  assert.equal((regulations.match(/class="regulations-grid"/g) || []).length, 1);
+  const pdf = await readFile(new URL(`../public${href}`, import.meta.url));
+  assert.equal(pdf.length, 481724);
+  assert.equal(createHash("sha256").update(pdf).digest("hex"), "7fbc1fb1c22b823e182fb3d4470e29418bbdbff2d0dd2e7141ddf60eaf980da9");
+});
+
 test("opens the quality and accreditation centre from Academy navigation and structure", async () => {
   const [centreResponse, aboutResponse, englishResponse] = await Promise.all([
     render("/about/quality-centre"), render("/about"), render("/en/about"),
