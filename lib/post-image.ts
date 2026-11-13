@@ -5,9 +5,12 @@ import { financeFinlandCardImage, financeFinlandNewsSlug } from "./finance-finla
 
 import { nadrahaGuestLectureNewsSlug, nadrahaGuestLecturePortrait } from "./nadraha-guest-lecture-news";
 
+import { financeConferenceCardImage, financeConferenceNewsSlug } from "./finance-conference-news";
+
 type EditorialImage = Pick<Post, "imageUrl" | "imageAlt"> & { imageFit?: "contain" | "cover" };
 
 const editorialImages: Record<string, EditorialImage> = {
+  [financeConferenceNewsSlug]: financeConferenceCardImage,
   [nadrahaGuestLectureNewsSlug]: nadrahaGuestLecturePortrait,
   [financePolandNewsSlug]: financePolandCardImage,
   [financeFinlandNewsSlug]: financeFinlandCardImage,

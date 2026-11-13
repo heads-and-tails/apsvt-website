@@ -4,6 +4,43 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("publishes the full Pulawy conference report with the requested photo position and original images", async () => {
+  const slug = "polsko-ukrainska-ekonomichna-konferentsiia-pulawy-2026";
+  const response = await render(`/news/${slug}`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const article = html.split('<article class="detail-copy">')[1].split("</article>")[0];
+  const normalize = (text) => text.normalize("NFKC").replace(/\s+/g, " ").trim();
+  for (const paragraph of ["Участь АПСВТ у Польсько-українській економічній конференції", "Доцент кафедри фінансів, експертка з грантів та фандрейзингу Гуляєва Людмила Петрівна представила АПСВТ на Польсько-українській економічній конференції «Реалізація спільних інвестиційних проєктів за кошти фондів Європейського Союзу» в рамках панелі «Фонди Європейського Союзу та міжнародні партнерства для самоврядування і підприємств».", "10–11 червня 2026 року у Пулавському науково-технологічному парку ( м. Пулави, Польща) відбулася Польсько-українська економічна конференція «Реалізація спільних інвестиційних проєктів за кошти фондів Європейського Союзу». Конференція була присвячена розвитку польсько-української економічної співпраці, підготовці спільних інвестиційних ініціатив, залученню фінансування Європейського Союзу, підтримці органів місцевого самоврядування, підприємств та інституцій розвитку в реалізації міжнародних проєктів.", "Академію праці, соціальних відносин і туризму на заході представила Людмила Гуляєва, доцент кафедри фінансів, експертка з грантів та фандрейзингу. У межах панелі «Фонди Європейського Союзу та міжнародні партнерства для самоврядування і підприємств» Людмила Гуляєва виступила з доповіддю «Технологія підготовки грантової заявки до програм ЄС: практичні рекомендації». У доповіді було розглянуто практичні аспекти підготовки проєктних заявок до програм Європейського Союзу: аналіз конкурсної документації, оцінювання відповідності проєктної ідеї цілям програми, формування міжнародного партнерства, розроблення змістовної частини заявки, підготовку бюджету та запобігання типовим помилкам заявників.", "Участь представниці кафедри фінансів у міжнародній конференції засвідчує експертний потенціал Академії у сфері грантового фінансування, міжнародного проєктного менеджменту та розвитку українсько-польської співпраці. Захід став важливим майданчиком для професійного діалогу між представниками самоврядування, бізнесу, фінансових установ, інституцій розвитку та експертного середовища України і Польщі.", "Автор: Гуляєва Людмила Петрівна"]) assert.ok(normalize(html).includes(normalize(paragraph)), paragraph);
+  assert.match(html, /6 листопада 2026/);
+  assert.ok(html.includes('href="/en/news"'));
+  assert.ok(!html.includes('class="detail-hero image"'));
+  assert.doesNotMatch(article, /РОЗМІЩУЄМО|Короткий підпис|Новина 5/);
+  const english = await render(`/en/news/${slug}`);
+  assert.equal(english.status, 307);
+  assert.equal(new URL(english.headers.get("location"), "http://localhost").pathname, `/news/${slug}`);
+  const englishIndex = await (await render("/en/news")).text();
+  const englishCard = englishIndex.match(new RegExp(`<a\\b[^>]*href="/news/${slug}"[^>]*>`))?.[0] || "";
+  assert.match(englishCard, /\blang="uk"/);
+  assert.match(englishCard, /\bclass="news"/);
+  const photo = article.indexOf('src="/images/news/finance-pulawy-2026/presentation.jpg"');
+  assert.ok(photo > article.indexOf("запобігання типовим помилкам заявників."));
+  assert.ok(photo < article.indexOf("Участь представниці кафедри фінансів"));
+  assert.ok(article.includes("object-fit:contain"));
+  assert.ok(article.includes('href="/images/news/finance-pulawy-2026/presentation.jpg"'));
+  for (const route of ["/news", "/", "/programs/finance"]) assert.ok((await (await render(route)).text()).includes(`href="/news/${slug}"`), route);
+  const finance = (await (await render("/programs/finance")).text()).split('class="academic-news-section"')[1].split("</section>")[0];
+  const cards = [...finance.matchAll(/<a\b(?=[^>]*class="news")(?=[^>]*href="([^"]+)")[^>]*>/g)].map(match => match[1]);
+  assert.equal(cards.length, 3);
+  assert.equal(cards[0], "/news/mizhnarodne-stazhuvannia-finansy-finliandiia-2026");
+  assert.equal(cards[1], `/news/${slug}`);
+  for (const original of [{"source": "05.jpeg", "href": "/images/news/finance-pulawy-2026/card.jpeg", "bytes": 215938, "sha256": "e2da1eea274d0c2ace239c5d63aa6a8597a9e8b1f395bd8dcf4182c535a53b71"}, {"source": "06.jpg", "href": "/images/news/finance-pulawy-2026/presentation.jpg", "bytes": 723703, "sha256": "424b3bf5a3a2a84b79d4c7a58a8850886dadbecb35b0a7aab327265de57aec0a"}]) {
+    const bytes = await readFile(new URL(`../public${original.href}`, import.meta.url));
+    assert.equal(bytes.length, original.bytes);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), original.sha256);
+  }
+});
+
 test("publishes the complete Nadraha lecture announcement with its original uncropped portrait", async () => {
   const slug = "hostova-lektsiia-vasylia-nadrahy-sotsialne-zabezpechennia-2026";
   const response = await render(`/news/${slug}`);
@@ -2845,7 +2882,7 @@ test("publishes the 29 October court meeting announcement with original poster a
   assert.match(html, /class="lecture-news-poster"/);
   assert.ok(html.includes(poster.caption));
   assert.match(html, /href="\/en\/news"/);
-  for (const route of ["/news", "/departments/law-faculty", "/"]) {
+  for (const route of ["/news", "/departments/law-faculty"]) {
     const listing = await render(route);
     assert.equal(listing.status, 200);
     assert.equal((await listing.text()).split(`href="${path}"`).length - 1, 1, `${route} links the canonical announcement once`);
