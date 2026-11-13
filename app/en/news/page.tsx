@@ -7,6 +7,8 @@ import { englishPosts } from "@/lib/english-content";
 import { empowerEastKickoffNewsSlug } from "@/lib/empower-east-news";
 import { getEditorialImage } from "@/lib/post-image";
 
+import { financeConferenceNewsSlug } from "@/lib/finance-conference-news";
+
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "News and stories", description: "Academy news, research, events and community stories." };
 
@@ -18,7 +20,7 @@ export default async function NewsPage() {
   return <main id="top" className="english-page"><SiteHeader />
     <section className="phero"><div className="wrap"><div className="crumb">Home / News</div><h1>News and<br />stories</h1><p className="lead">Education, research, international partnerships and the people of the Academy.</p></div></section>
     <div className="phero-rule" />
-    <section><div className="wrap"><div className="news-grid">{englishPosts.map((post) => <Link className="news" href={post.slug === empowerEastKickoffNewsSlug ? `/news/${post.slug}` : `/en/news/${post.slug}`} lang={post.slug === empowerEastKickoffNewsSlug ? "uk" : undefined} key={post.slug}>
+    <section><div className="wrap"><div className="news-grid">{englishPosts.map((post) => <Link className="news" href={post.slug === empowerEastKickoffNewsSlug || post.slug === financeConferenceNewsSlug ? `/news/${post.slug}` : `/en/news/${post.slug}`} lang={post.slug === empowerEastKickoffNewsSlug || post.slug === financeConferenceNewsSlug ? "uk" : undefined} key={post.slug}>
       {post.imageUrl && <div className="ph"><img src={post.imageUrl} alt={post.imageAlt} style={{ objectFit: getEditorialImage(post).imageFit }} /></div>}
       <div className="in">{!dateSettings.get(post.slug) && <span className="date">{format.format(new Date(post.publishedAt || post.createdAt))}</span>}<h3>{post.title}</h3><p>{post.excerpt}</p><span className="cat">{post.category}</span></div>
     </Link>)}</div></div></section><EnglishFooter />
