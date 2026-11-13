@@ -4,6 +4,35 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("opens Management annotation folders with twelve unchanged original DOCX files", async () => {
+  const html = await (await render("/programs/management")).text();
+  const section = html.split('id="management-master-documents"')[1].split("</section>")[0];
+  assert.ok(section.includes("Анотації дисциплін · 1 курс"));
+  assert.ok(section.includes("Анотації дисциплін · 2 курс"));
+  assert.equal((section.replace(/<!--.*?-->/g, "").match(/DOCX ↗/g) || []).length, 12);
+  const originals = [
+    { href: "/documents/management/master-2026/annotations/public-organizations.docx", bytes: 29373, sha256: "f84ac5f4043228ac137981236b138fe68a2e92551cc6b66fb3a86a69c847426f" },
+    { href: "/documents/management/master-2026/annotations/social-management.docx", bytes: 46998, sha256: "1dd6ddd4eb64cfdc57454eaa1a72e5e8ad7e1978856f9ae3ed0f11b78f4e3e51" },
+    { href: "/documents/management/master-2026/annotations/information-systems.docx", bytes: 26761, sha256: "efabd1ba5207e0a2d5c76a7567046e7dbd89e874f43dc2ccb67f56d62533aa2f" },
+    { href: "/documents/management/master-2026/annotations/management-consulting.docx", bytes: 30027, sha256: "458e3c07b354c342e907587fc2cfa545a0f8ee93931d7f7ff2d3729156d5f2b3" },
+    { href: "/documents/management/master-2026/annotations/tourist-destinations.docx", bytes: 2071496, sha256: "f72f04c7956760fc7d17a288c2e19b4f87f908ad7955a3bc6adb6e4d235d3557" },
+    { href: "/documents/management/master-2026/annotations/medical-tourism.docx", bytes: 2071264, sha256: "1e3bbbcb35fd268ede21525f31b58396d253dce85b5e706665c0b1ec2e70ea03" },
+    { href: "/documents/management/master-2026/annotations/cruise-travel.docx", bytes: 2835717, sha256: "b0912ab57c37eff402326c08292785cd74aa32f73d4fc80ad71748b3303e47dd" },
+    { href: "/documents/management/master-2026/annotations/enterprise-potential.docx", bytes: 29510, sha256: "b8c4be223680ecf3e1cddfa98b2bdafd119d6aa151c31128a8c2cd475581978c" },
+    { href: "/documents/management/master-2026/annotations/management-accounting.docx", bytes: 40652, sha256: "dcd2ac9a7d2faa63e06d1b43e84f190e0d09525431c70935c9c4b16d11fb8f17" },
+    { href: "/documents/management/master-2026/annotations/grant-activities.docx", bytes: 29170, sha256: "0b00b02e8010b0fbec29171bbe86c36461a796f491657e917d76f1a61aac09c9" },
+    { href: "/documents/management/master-2026/annotations/enterprise-motivation.docx", bytes: 28850, sha256: "f5ad286dd9ad5d6aeaebbbfcb19c7b3e0cc8c6361d062dacbb79e5063a250a6b" },
+    { href: "/documents/management/master-2026/annotations/enterprise-development-performance.docx", bytes: 27564, sha256: "b3d5a29b7579780bccab2d0d856ce2657978895a9ea1f2a52302993aa3b4be6d" },
+  ];
+  for (const original of originals) {
+    assert.ok(section.includes(`href="${original.href}"`));
+    const bytes = await readFile(new URL(`../public${original.href}`, import.meta.url));
+    assert.equal(bytes.length, original.bytes);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), original.sha256);
+  }
+  assert.equal((section.match(/href="[^"]+\.pdf"/g) || []).length, 17);
+});
+
 test("publishes the original staff-rating regulation in regulations and the searchable quality catalogue", async () => {
   const href = "/documents/regulations/staff-rating-2026.pdf";
   const title = "Положення про рейтингове оцінювання діяльності науково-педагогічних працівників";
@@ -269,7 +298,7 @@ test("publishes the approved 2026 Management master package with unchanged origi
   const html = await (await render("/programs/management")).text();
   const resources = html.split('id="management-master-documents"')[1].split("</section>")[0];
   assert.ok(resources.includes("Документи магістратури"));
-  assert.equal((resources.match(/<details>/g) || []).length, 2);
+  assert.equal((resources.match(/<details>/g) || []).length, 4);
   for (const file of files) {
     assert.equal(resources.split(`href="${file.href}"`).length - 1, 1, file.href);
     const original = await readFile(new URL(`../public${file.href}`, import.meta.url));
