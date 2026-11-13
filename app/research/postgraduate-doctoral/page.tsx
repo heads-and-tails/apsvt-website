@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { phdTeachingSchedule } from "../../../lib/postgraduate-documents";
+import { phdTeachingSchedule, psychologyDoctoralDocuments } from "../../../lib/postgraduate-documents";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
@@ -169,6 +169,9 @@ export default function Page() {
         <div className="postgraduate-doctoral-grid">
           {doctoralFields.map((field) => <article key={field.code}>
             <span>{field.code}</span><h3>{field.title}</h3><ul>{field.items.map((item) => <li key={item}>{item}</li>)}</ul>
+            {field.code === "19" && <nav className="postgraduate-document-list postgraduate-doctoral-resources" aria-label="Документи докторантури з психології">
+              {psychologyDoctoralDocuments.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{document.meta}</small><b>{document.title}</b></div><strong>↗</strong></a>)}
+            </nav>}
           </article>)}
         </div>
         <p className="postgraduate-disclaimer">Опубліковані документи підтверджують відкриття спеціальностей і вартість підготовки. Умови подання матеріалів та індивідуальний маршрут вступу варто попередньо узгодити з відділом аспірантури та докторантури.</p>
