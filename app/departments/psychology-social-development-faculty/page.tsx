@@ -17,6 +17,7 @@ import { PsychologyFacultyTeam } from "./PsychologyFacultyTeam";
 import { PsychologyProgrammeDiscussion } from "./PsychologyProgrammeDiscussion";
 import { AcademicProfileCard } from "../../components/AcademicProfileCard";
 import { psychologyFacultyTeam } from "@/lib/psychology-faculty-team";
+import { psychologyFacultyConsultationSchedule } from "@/lib/psychology-faculty-documents";
 import { PsychologyFacultyLaboratory, PsychologyFacultyPractice, PsychologyFacultyScience } from "./PsychologyFacultyDetails";
 import { psychologyFacultyProgrammes as programmes } from "@/lib/psychology-faculty-programmes";
 import { psychologyFacultyStructure as facultySections } from "@/lib/psychology-faculty-structure";
@@ -82,7 +83,7 @@ export default async function Page() {
 
     <section className="faculty-structure-section faculty-governance" id="faculty-council"><div className="wrap"><div className="sec-head"><div><div className="idx">03 / Вчена рада факультету</div><h2>Склад вченої ради факультету</h2></div></div><ol className="faculty-council-list">{facultyCouncil.map((member) => <li key={member}>{member}</li>)}</ol></div></section>
 
-    <section className="law-faculty-departments festt-departments" id="departments"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Академічна структура</div><h2>Три кафедри — один факультет</h2></div><p>Кожна картка відкриває окрему сторінку кафедри зі складом, напрямами роботи й контактами.</p></div><div className="law-department-grid">{departments.map(([number, title, text, href, code]) => <Link href={href} key={number}><span>{number}</span><small>{code}</small><h3>{title}</h3><p>{text}</p><b>Відкрити кафедру →</b></Link>)}</div></div></section>
+    <section className="law-faculty-departments festt-departments" id="departments"><div className="wrap"><div className="sec-head"><div><div className="idx">04 / Академічна структура</div><h2>Три кафедри — один факультет</h2></div><p>Картки кафедр відкривають окремі сторінки зі складом, напрямами роботи й контактами.</p></div><div className="law-department-grid">{departments.map(([number, title, text, href, code]) => <Link href={href} key={number}><span>{number}</span><small>{code}</small><h3>{title}</h3><p>{text}</p><b>Відкрити кафедру →</b></Link>)}<a href={psychologyFacultyConsultationSchedule.href} target="_blank" rel="noreferrer"><span>PDF · 2 сторінки</span><small>{psychologyFacultyConsultationSchedule.year}</small><h3>{psychologyFacultyConsultationSchedule.title}</h3><p>Науково-педагогічні працівники факультету психології та соціального розвитку.</p><b>Відкрити графік ↗</b></a></div></div></section>
 
     <PsychologyFacultyLaboratory />
 
