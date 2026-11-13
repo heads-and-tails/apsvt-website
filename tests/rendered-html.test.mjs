@@ -4,6 +4,31 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("publishes nine original faculty regulations and links the mental-health regulation below its introduction", async () => {
+  const path = "/departments/psychology-social-development-faculty";
+  const html = await (await render(path)).text();
+  const section = html.split('id="faculty-regulations"')[1].split("</section>")[0];
+  assert.ok(section.includes("Нормативні документи факультету"));
+  assert.equal((section.match(/target="_blank"/g) || []).length, 9);
+  for (const original of [{"href": "/documents/psychology-faculty/regulations/faculty.pdf", "title": "Положення про факультет психології та соціального розвитку", "bytes": 413934, "sha256": "b6e0a13d07715106af3d03d016fc503b73fb7aa2fcb0c38b438cf24b477a4fd5"}, {"href": "/documents/psychology-faculty/regulations/deans-office.pdf", "title": "Положення про деканат факультету психології та соціального розвитку", "bytes": 431619, "sha256": "0a9cedd42c84e8ea3a961bdff1512ad887e5dee82ffc0ac8e87c8ee11a50a908"}, {"href": "/documents/psychology-faculty/regulations/academic-council.pdf", "title": "Положення про Вчену раду факультету психології та соціального розвитку", "bytes": 355319, "sha256": "b667c9c7ac4d646c5518b7d9a7f7cf7f36a613e3e1333cbbe0bbd108392fb993"}, {"href": "/documents/psychology-faculty/regulations/clinical-psychology-department.pdf", "title": "Положення про кафедру клінічної психології та психотерапії", "bytes": 409014, "sha256": "d41c30511e05345e1b14e2344003ad5b7b11cedfacf4fe7f80b37f4e4173aaa4"}, {"href": "/documents/psychology-faculty/regulations/business-psychology-department.pdf", "title": "Положення про кафедру психології бізнесу та управління", "bytes": 533175, "sha256": "1fe79cad287844a13b906fece8885bea32287f8a896ee6763c3b6658b6fc5c6a"}, {"href": "/documents/psychology-faculty/regulations/teaching-research-laboratory.pdf", "title": "Положення про навчально-дослідну лабораторію факультету психології та соціального розвитку", "bytes": 498557, "sha256": "86d1bfa599ca566bf6863d8ed86bb5864cd03d1833dc21a3be172dc5213d755a"}, {"href": "/documents/psychology-faculty/regulations/student-research-circle.pdf", "title": "Положення про науковий гурток факультету психології та соціального розвитку", "bytes": 422586, "sha256": "2b0286d27ed310ff36e35d545358a1e2c144ae787cabb131eb208de83b244ac5"}, {"href": "/documents/psychology-faculty/regulations/student-group-representatives.pdf", "title": "Положення про старостат факультету психології та соціального розвитку", "bytes": 282438, "sha256": "1de4127d79ba10f388224f25321548c2c7c1bc9433171920b4a5f66451193e0f"}, {"href": "/documents/psychology-faculty/regulations/mental-health-centre.pdf", "title": "Положення про Центр ментального здоров’я Академії праці, соціальних відносин і туризму", "bytes": 333187, "sha256": "d27a70554b5ce1d26646391efda8c1d8e98acf7ea87126e4995362b134250e54"}]) {
+    const link = section.split(`href="${original.href}"`)[1]?.split("</a>")[0];
+    assert.ok(link?.includes(original.title), original.title);
+    const bytes = await readFile(new URL(`../public${original.href}`, import.meta.url));
+    assert.equal(bytes.length, original.bytes);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), original.sha256);
+  }
+  const practice = html.split('id="faculty-practice"')[1].split("</section>")[0];
+  const centre = practice.indexOf('href="/documents/psychology-faculty/regulations/mental-health-centre.pdf"');
+  assert.ok(centre > practice.indexOf("діагностика труднощів адаптації"));
+  assert.ok(centre < practice.indexOf('class="faculty-practice-list-head"'));
+  assert.ok(practice.includes("Центр працює на постійній основі"));
+  assert.equal((practice.match(/<article>/g) || []).length, 21);
+  assert.ok(html.includes('href="https://drive.google.com/drive/folders/11TgK4XqA1qKd2V8dy6A7c9an0oX0A49r?usp=sharing"'));
+  const home = await (await render("/")).text();
+  assert.ok(home.includes(`href="${path}#faculty-regulations"`));
+  assert.equal((await render("/en/people")).status, 200);
+});
+
 test("publishes the full Open for Action report and keeps all three requested Finance stories accessible", async () => {
   const slug = "mizhnarodnyi-volonterskyi-proiekt-open-for-action-2026";
   const html = await (await render(`/news/${slug}`)).text();
@@ -2544,7 +2569,7 @@ test("includes every psychology faculty section in the shared header menu", asyn
   const html = await (await render("/")).text();
   const path = "/departments/psychology-social-development-faculty";
   const links = [...new Set([...html.matchAll(/href="(\/departments\/psychology-social-development-faculty#[^\"]+)"/g)].map(([, href]) => href))];
-  const sections = ["faculty-about", "faculty-leadership", "faculty-council", "departments", "faculty-laboratory", "faculty-team", "faculty-science", "faculty-student-government", "faculty-proposals", "faculty-accreditation", "faculty-repository", "faculty-programmes", "faculty-practice", "department-news"];
+  const sections = ["faculty-about", "faculty-leadership", "faculty-council", "departments", "faculty-laboratory", "faculty-team", "faculty-science", "faculty-student-government", "faculty-regulations", "faculty-proposals", "faculty-accreditation", "faculty-repository", "faculty-programmes", "faculty-practice", "department-news"];
   assert.deepEqual(links, sections.map((id) => `${path}#${id}`));
   assert.ok(!links.some((href) => href.endsWith("#quality") || href.endsWith("#faculty-discussion")));
 });
