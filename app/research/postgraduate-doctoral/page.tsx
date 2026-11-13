@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { phdTeachingSchedule } from "../../../lib/postgraduate-documents";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
@@ -35,6 +36,7 @@ const phdDocuments = [
   ["Наказ про набір до аспірантури у 2026 році", "/documents/research/postgraduate-doctoral/2026/phd-enrollment-order-2026.pdf", "PDF · 2 сторінки"],
   ["Строки, випробування та умови конкурсного відбору", "/documents/research/postgraduate-doctoral/2026/phd-admission-dates-and-selection-2026.pdf", "PDF · 3 сторінки"],
   ["Вартість навчання в аспірантурі у 2026 році", "/documents/research/postgraduate-doctoral/2026/phd-tuition-2026.pdf", "PDF · 1 сторінка"],
+  [phdTeachingSchedule.title, phdTeachingSchedule.href, phdTeachingSchedule.meta],
 ] as const;
 
 const doctoralDocuments = [
@@ -116,6 +118,9 @@ export default function Page() {
           </article>)}
         </div>
         <div className="postgraduate-programme-total"><span>Загальний обсяг набору</span><b>20 місць</b><Link href="/programs#doctoral-programmes">Освітньо-наукові програми та матеріали →</Link></div>
+        <div className="postgraduate-document-list">
+          <a href={phdTeachingSchedule.href} target="_blank" rel="noreferrer"><span>PDF</span><div><small>{phdTeachingSchedule.meta}</small><b>{phdTeachingSchedule.title}</b></div><strong>↗</strong></a>
+        </div>
       </div>
     </section>
 
@@ -188,11 +193,11 @@ export default function Page() {
       <div className="wrap">
         <header className="postgraduate-section-head">
           <div><span className="idx">07 / Офіційні матеріали</span><h2>Документи без пошуку по сайту</h2></div>
-          <p>Уся ключова інформація вже пояснена вище. Тут зібрані першоджерела: накази, детальні умови вступу та затверджена вартість.</p>
+          <p>Уся ключова інформація вже пояснена вище. Тут зібрані першоджерела: накази, детальні умови вступу, розклад занять та затверджена вартість.</p>
         </header>
         <div className="postgraduate-document-groups">
           <article>
-            <div className="postgraduate-document-heading"><span>PhD</span><div><small>Аспірантура</small><h3>Набір і вступ 2026</h3></div></div>
+            <div className="postgraduate-document-heading"><span>PhD</span><div><small>Аспірантура</small><h3>Вступ, навчання й оплата</h3></div></div>
             <div className="postgraduate-document-list">{phdDocuments.map(([title, href, meta], index) => <a href={href} target="_blank" rel="noreferrer" key={href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{meta}</small><b>{title}</b></div><strong>↗</strong></a>)}</div>
           </article>
           <article>
