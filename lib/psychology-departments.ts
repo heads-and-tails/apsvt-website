@@ -32,7 +32,7 @@ export const psychologyDepartments: PsychologyDepartment[] = [
     programmeHref: "/programs/psychology",
     summary: "Кафедра працює з організаційною психологією, професійним розвитком, командами, лідерством, комунікаціями та управлінням змінами.",
     focus: ["організаційна психологія", "психологія праці", "лідерство", "професійний розвиток"],
-    teamIds: ["liudmyla-beheza", "hlib-prib", "kateryna-miliutina", "olesia-borets", "mariia-zhytynska", "tetiana-lapinska", "olha-yakovenko"],
+    teamIds: ["liudmyla-beheza", "hlib-prib", "kateryna-miliutina", "olesia-borets", "mariia-zhytynska", "tetiana-lapinska", "serhii-moshenskyi", "olha-yakovenko"],
     newsSlug: "psychology",
   },
   {

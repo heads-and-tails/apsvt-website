@@ -4,6 +4,29 @@ import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
 
+test("places the supplied Moshenskyi profile after Lapinska in both requested teams", async () => {
+  const facultyPath = "/departments/psychology-social-development-faculty";
+  for (const [path, id] of [[facultyPath, "faculty-team"], [`${facultyPath}/business-psychology`, "department-team"]]) {
+    const html = await (await render(path)).text();
+    const section = html.split(`id="${id}"`)[1].split("</section>")[0];
+    const cards = [...section.matchAll(/<article class="academic-profile-card"[\s\S]*?<\/article>/g)].map(([card]) => card);
+    const lapinska = cards.findIndex((card) => card.includes("Тетяна Лапінська"));
+    assert.ok(lapinska >= 0, path);
+    assert.ok(cards[lapinska + 1].includes("Сергій Мошенський"), path);
+    assert.equal(cards.filter((card) => card.includes("Сергій Мошенський")).length, 1);
+    assert.ok(cards[lapinska + 1].includes("кандидат технічних наук"));
+    assert.ok(cards[lapinska + 1].includes('src="/people/psychology-faculty/serhii-moshenskyi.jpg"'));
+    assert.doesNotMatch(cards[lapinska + 1], /<details|mailto:|Наукові інтереси|Інформація уточнюється/);
+  }
+  for (const slug of ["clinical-psychology", "social-work"]) {
+    const html = await (await render(`${facultyPath}/${slug}`)).text();
+    assert.ok(!html.includes("Сергій Мошенський"));
+  }
+  const bytes = await readFile(new URL("../public/people/psychology-faculty/serhii-moshenskyi.jpg", import.meta.url));
+  assert.equal(bytes.length, 111509);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), "00f7824330cb31913c47b151a23f0f0a27f15ac6584f5537813066d3923f3ad0");
+});
+
 test("publishes nine original faculty regulations and links the mental-health regulation below its introduction", async () => {
   const path = "/departments/psychology-social-development-faculty";
   const html = await (await render(path)).text();
