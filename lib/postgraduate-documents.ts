@@ -4,10 +4,21 @@ export const phdTeachingSchedule = {
   meta: "PDF · 5 сторінок",
 } as const;
 
+export const doctoralRegulation = {
+  title: "Положення про докторантуру АПСВТ — 2026",
+  href: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/doctoral-20261114/doctoral-regulation-2026.pdf",
+  meta: "PDF · 5 сторінок",
+} as const;
+
 export const psychologyDoctoralDocuments = [
   {
     title: "Наукова програма підготовки докторів наук «Психологія» — 2022",
     href: "/documents/research/postgraduate-doctoral/2026/psychology-doctoral-programme-2022.pdf",
+    meta: "PDF · 11 сторінок",
+  },
+  {
+    title: "Наукова програма підготовки докторів наук «Психологія» — 2026",
+    href: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/doctoral-20261114/psychology-programme-2026.pdf",
     meta: "PDF · 11 сторінок",
   },
   {

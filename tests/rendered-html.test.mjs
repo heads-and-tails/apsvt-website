@@ -53,6 +53,38 @@ test("keeps complete Psychology doctoral resources within the corresponding fiel
   assert.equal(fields.filter((field) => field.includes("postgraduate-doctoral-resources")).length, 1);
 });
 
+test("publishes the full 2026 doctoral programme and regulation in their respective sections", async () => {
+  const html = await (await render("/research/postgraduate-doctoral")).text();
+  const doctoral = html.split('id="doctoral"')[1].split("</section>")[0];
+  const fields = [...doctoral.matchAll(/<article>[\s\S]*?<\/article>/g)].map(([field]) => field);
+  const psychology = fields.find((field) => field.includes("Психологічні науки"));
+  const origin = "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/doctoral-20261114";
+  const programme = `${origin}/psychology-programme-2026.pdf`;
+  const regulation = `${origin}/doctoral-regulation-2026.pdf`;
+  assert.ok(psychology.includes(`href="${programme}"`));
+  assert.ok(psychology.indexOf("psychology-doctoral-programme-2022.pdf") < psychology.indexOf(programme));
+  assert.ok(psychology.indexOf(programme) < psychology.indexOf("psychology-doctoral-dissertation-planning-2026.pdf"));
+  assert.equal(html.split(`href="${programme}"`).length - 1, 1);
+  assert.equal(fields.filter((field) => field.includes(regulation)).length, 0);
+  for (const id of ["doctoral", "documents"]) {
+    const section = html.split(`id="${id}"`)[1].split("</section>")[0];
+    assert.equal(section.split(`href="${regulation}"`).length - 1, 1);
+    assert.match(section.split(`href="${regulation}"`)[1].split("</a>")[0], /target="_blank"[\s\S]*PDF · 5 сторінок[\s\S]*Положення про докторантуру АПСВТ — 2026/);
+  }
+  assert.match(psychology.split(`href="${programme}"`)[1].split("</a>")[0], /target="_blank"[\s\S]*PDF · 11 сторінок[\s\S]*Наукова програма підготовки докторів наук «Психологія» — 2026/);
+  for (const [url, size, hash] of [
+    [programme, 459427, "c94879b55798aec3710cda37d23db91d9009b8011f2238a2d50f8e4901b4284f"],
+    [regulation, 330956, "25c5c6175a2c56a5d02ca6bf83cdf13e2fe7ac4578b8dbd9e7b9ac7d9b8e2626"],
+  ]) {
+    const response = await fetch(url, { signal: AbortSignal.timeout(60_000) });
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get("content-type"), /application\/pdf/);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    assert.equal(bytes.length, size);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), hash);
+  }
+});
+
 test("opens the complete PhD teaching timetable from programmes and official documents", async () => {
   const html = await (await render("/research/postgraduate-doctoral")).text();
   const href = "/documents/research/postgraduate-doctoral/2026/phd-teaching-schedule-semester-1-2026-2027.pdf";
