@@ -228,7 +228,7 @@ test("publishes the full Pulawy conference report with the requested photo posit
   assert.ok(photo < article.indexOf("Участь представниці кафедри фінансів"));
   assert.ok(article.includes("object-fit:contain"));
   assert.ok(article.includes('href="/images/news/finance-pulawy-2026/presentation.jpg"'));
-  for (const route of ["/news", "/", "/programs/finance"]) assert.ok((await (await render(route)).text()).includes(`href="/news/${slug}"`), route);
+  for (const route of ["/news", "/programs/finance"]) assert.ok((await (await render(route)).text()).includes(`href="/news/${slug}"`), route);
   const finance = (await (await render("/programs/finance")).text()).split('class="academic-news-section"')[1].split("</section>")[0];
   const cards = [...finance.matchAll(/<a\b(?=[^>]*class="news")(?=[^>]*href="([^"]+)")[^>]*>/g)].map(match => match[1]);
   assert.equal(cards.length, 3);
@@ -3652,4 +3652,35 @@ test("publishes the complete Law open-meeting invitation while retaining Managem
   const schedule = await (await render("/news/zustrichi-ekspertnoi-hrupy-pravo-mahistr-2026-11")).text();
   assert.ok(schedule.includes("href=\"https://us04web.zoom.us/j/74512718298?pwd=H2utLIOu2dIQzobcTXx2YOgakyaLwZ.1\""));
   assert.ok(schedule.includes("745 1271 8298"));
+});
+
+
+test("publishes the complete law masters congratulations and all five original photos", async () => {
+  const href = "/news/vitaiemo-mahistriv-pravo-naukovi-zdobutky-2026";
+  const response = await render(href);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.ok(html.includes("Вітаємо магістрів ОПП «Право» з відзначенням наукових здобутків!"));
+  const article = html.split('<article class="detail-copy">')[1].split("</article>")[0];
+  const text = article.replace(/<[^>]*>/g, "");
+  for (const paragraph of ["Серед наших магістрів чимало талановитих, цілеспрямованих і перспективних правників, які не лише успішно опановують освітню програму, а й активно займаються науковою діяльністю. За вагомі здобутки в науковій роботі, за поданням Вченої ради юридичного факультету, окремих здобувачів було відзначено подяками ректора Академії. Сьогодні ці заслужені відзнаки знайшли своїх власників!", "Щиро вітаємо наших магістрів! Бажаємо успішних результатів ЄДКІ, невичерпної наснаги, професійного зростання та впевненості у власних силах. Нехай здобуті знання стануть міцним фундаментом майбутніх перемог, а обрана професія - справою життя, що приноситиме не лише особистий успіх, а й користь суспільству та Україні!", "Пишаємося вами та віримо в ваше успішне професійне майбутнє!"]) assert.ok(text.includes(paragraph));
+  assert.equal((article.match(/<img /g) || []).length, 5);
+  for (let index = 1; index <= 5; index++) {
+    const url = `https://bscmsv7ysiioa246.public.blob.vercel-storage.com/news/law-masters-20261114/photo-${index}.jpeg`;
+    assert.ok(article.includes(`href="${url}" target="_blank"`));
+    assert.ok(article.includes(`src="${url}"`));
+  }
+  assert.ok(html.includes('href="/en/news"'));
+  assert.ok(!html.includes(`href="/en${href}"`));
+  assert.ok(article.includes('href="/news"'));
+  const news = await (await render("/news")).text();
+  assert.ok(news.includes(`href="${href}"`));
+  assert.ok((await (await render("/")).text()).includes(`href="${href}"`));
+  const english = await render(`/en${href}`);
+  assert.equal(english.status, 307);
+  assert.equal(new URL(english.headers.get("location"), "http://localhost").pathname, href);
+  const englishIndex = await (await render("/en/news")).text();
+  const englishCard = englishIndex.match(new RegExp(`<a\\b[^>]*href="${href}"[^>]*>`))?.[0] || "";
+  assert.match(englishCard, /\blang="uk"/);
+
 });

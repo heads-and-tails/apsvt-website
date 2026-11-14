@@ -827,6 +827,7 @@ test("respects successful empty published-news queries and preserves fallback fo
   const { state } = await import(mockUrl);
   const posts = await import(await moduleUrl("../lib/data.ts", {
     "./edupro-news": eduproUrl,
+    "./law-masters-news": await moduleUrl("../lib/law-masters-news.ts"),
     "./empower-east-news": await moduleUrl("../lib/empower-east-news.ts"),
     "./management-discussion-news": await moduleUrl("../lib/management-discussion-news.ts"),
     "./daad-opportunities-news": await moduleUrl("../lib/daad-opportunities-news.ts"),
