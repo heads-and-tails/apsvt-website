@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/documents/:path(.*\\.[^/]+)",
+        destination: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/website-20261114/documents/:path",
+        permanent: true,
+      },
+      {
         source: "/materials/visnyk-1-2-2020-50b2542a1.html",
         destination: "https://www.socosvita.kiev.ua/sites/default/files/Visnyk_1-2_2020.pdf",
         permanent: false,
