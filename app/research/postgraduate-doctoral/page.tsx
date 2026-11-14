@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { doctoralRegulation, phdTeachingSchedule, psychologyDoctoralDocuments } from "../../../lib/postgraduate-documents";
+import { doctoralRegulation, phdEducationalProcessSchedule, phdTeachingSchedule, psychologyDoctoralDocuments } from "../../../lib/postgraduate-documents";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
@@ -37,6 +37,7 @@ const phdDocuments = [
   ["Строки, випробування та умови конкурсного відбору", "/documents/research/postgraduate-doctoral/2026/phd-admission-dates-and-selection-2026.pdf", "PDF · 3 сторінки"],
   ["Вартість навчання в аспірантурі у 2026 році", "/documents/research/postgraduate-doctoral/2026/phd-tuition-2026.pdf", "PDF · 1 сторінка"],
   [phdTeachingSchedule.title, phdTeachingSchedule.href, phdTeachingSchedule.meta],
+  [phdEducationalProcessSchedule.title, phdEducationalProcessSchedule.href, phdEducationalProcessSchedule.meta],
 ] as const;
 
 const doctoralDocuments = [
@@ -120,7 +121,7 @@ export default function Page() {
         </div>
         <div className="postgraduate-programme-total"><span>Загальний обсяг набору</span><b>20 місць</b><Link href="/programs#doctoral-programmes">Освітньо-наукові програми та матеріали →</Link></div>
         <div className="postgraduate-document-list">
-          <a href={phdTeachingSchedule.href} target="_blank" rel="noreferrer"><span>PDF</span><div><small>{phdTeachingSchedule.meta}</small><b>{phdTeachingSchedule.title}</b></div><strong>↗</strong></a>
+          {[phdTeachingSchedule, phdEducationalProcessSchedule].map((document) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}><span>PDF</span><div><small>{document.meta}</small><b>{document.title}</b></div><strong>↗</strong></a>)}
         </div>
       </div>
     </section>
