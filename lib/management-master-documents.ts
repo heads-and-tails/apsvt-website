@@ -33,7 +33,7 @@ export const managementMasterAnnotationGroups: readonly { title: string; documen
     title: "Анотації дисциплін · 1 курс",
     documents: [
       { title: "Громадські організації в Україні", href: "/documents/management/master-2026/annotations/public-organizations.docx" },
-      { title: "Соціальний менеджмент", href: "/documents/management/master-2026/annotations/social-management.docx" },
+      { title: "Соціальний менеджмент", href: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/management-annotations-20261114/social-management-135e30ae.docx" },
       { title: "Інформаційні системи та технології в управлінні організацією", href: "/documents/management/master-2026/annotations/information-systems.docx" },
       { title: "Консалтингові послуги в сфері управління", href: "/documents/management/master-2026/annotations/management-consulting.docx" },
       { title: "Маркетинг туристичних дестинацій", href: "/documents/management/master-2026/annotations/tourist-destinations.docx" },
@@ -49,6 +49,12 @@ export const managementMasterAnnotationGroups: readonly { title: string; documen
       { title: "Грантова діяльність", href: "/documents/management/master-2026/annotations/grant-activities.docx" },
       { title: "Мотиваційний механізм підприємства", href: "/documents/management/master-2026/annotations/enterprise-motivation.docx" },
       { title: "Управління ефективністю розвитку підприємства", href: "/documents/management/master-2026/annotations/enterprise-development-performance.docx" },
+    ],
+  },
+  {
+    title: "Анотації вибіркових дисциплін",
+    documents: [
+      { title: "Сучасні інструменти фінансування бізнесу", href: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/management-annotations-20261114/modern-business-financing-f6205a26.docx" },
     ],
   },
 ];

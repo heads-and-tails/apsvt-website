@@ -323,15 +323,19 @@ test("publishes eighteen original practice agreements inside the Marketing maste
   assert.ok(!bachelor.includes("practice-agreements"));
 });
 
-test("opens Management annotation folders with twelve unchanged original DOCX files", async () => {
+test("opens Management annotation folders with thirteen approved original DOCX files", async () => {
   const html = await (await render("/programs/management")).text();
   const section = html.split('id="management-master-documents"')[1].split("</section>")[0];
   assert.ok(section.includes("Анотації дисциплін · 1 курс"));
   assert.ok(section.includes("Анотації дисциплін · 2 курс"));
-  assert.equal((section.replace(/<!--.*?-->/g, "").match(/DOCX ↗/g) || []).length, 12);
+  assert.equal((section.replace(/<!--.*?-->/g, "").match(/DOCX ↗/g) || []).length, 13);
+  assert.ok(section.includes("Анотації вибіркових дисциплін"));
+  assert.equal(section.split("Соціальний менеджмент").length - 1, 1);
+  assert.ok(!section.includes('href="/documents/management/master-2026/annotations/social-management.docx"'));
   const originals = [
     { href: "/documents/management/master-2026/annotations/public-organizations.docx", bytes: 29373, sha256: "f84ac5f4043228ac137981236b138fe68a2e92551cc6b66fb3a86a69c847426f" },
-    { href: "/documents/management/master-2026/annotations/social-management.docx", bytes: 46998, sha256: "1dd6ddd4eb64cfdc57454eaa1a72e5e8ad7e1978856f9ae3ed0f11b78f4e3e51" },
+    { href: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/management-annotations-20261114/social-management-135e30ae.docx", bytes: 46598, sha256: "135e30ae9f31c7d4d8e50f8b7f525f5866d948f12190996f869fbdaa56f3daff" },
+    { href: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/management-annotations-20261114/modern-business-financing-f6205a26.docx", bytes: 42270, sha256: "f6205a264fbb0f00058c011a77973364db96849e1ef82064df03518922e6f160" },
     { href: "/documents/management/master-2026/annotations/information-systems.docx", bytes: 26761, sha256: "efabd1ba5207e0a2d5c76a7567046e7dbd89e874f43dc2ccb67f56d62533aa2f" },
     { href: "/documents/management/master-2026/annotations/management-consulting.docx", bytes: 30027, sha256: "458e3c07b354c342e907587fc2cfa545a0f8ee93931d7f7ff2d3729156d5f2b3" },
     { href: "/documents/management/master-2026/annotations/tourist-destinations.docx", bytes: 2071496, sha256: "f72f04c7956760fc7d17a288c2e19b4f87f908ad7955a3bc6adb6e4d235d3557" },
@@ -345,7 +349,9 @@ test("opens Management annotation folders with twelve unchanged original DOCX fi
   ];
   for (const original of originals) {
     assert.ok(section.includes(`href="${original.href}"`));
-    const bytes = await readFile(new URL(`../public${original.href}`, import.meta.url));
+    const bytes = original.href.startsWith("https://")
+      ? Buffer.from(await (await fetch(original.href)).arrayBuffer())
+      : await readFile(new URL(`../public${original.href}`, import.meta.url));
     assert.equal(bytes.length, original.bytes);
     assert.equal(createHash("sha256").update(bytes).digest("hex"), original.sha256);
   }
@@ -617,7 +623,7 @@ test("publishes the approved 2026 Management master package with unchanged origi
   const html = await (await render("/programs/management")).text();
   const resources = html.split('id="management-master-documents"')[1].split("</section>")[0];
   assert.ok(resources.includes("Документи магістратури"));
-  assert.equal((resources.match(/<details>/g) || []).length, 4);
+  assert.equal((resources.match(/<details>/g) || []).length, 5);
   for (const file of files) {
     assert.equal(resources.split(`href="${file.href}"`).length - 1, 1, file.href);
     const original = await readFile(new URL(`../public${file.href}`, import.meta.url));
