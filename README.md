@@ -6,6 +6,26 @@ The Vercel `/panel` route uses Supabase Auth. New users remain pending until an 
 
 The existing Sites deployment continues to use D1/R2 when Supabase variables are absent.
 
+## Downloadable documents
+
+Published documents live in the dedicated public Vercel Blob store
+`apsvt-public-documents` (`store_BscmsV7ySiiOa246`, team `signal-media`), shared
+between deployments. Existing `/documents/...` downloads redirect to the immutable
+`website-20261114/documents/` archive; `/documents` remains the catalogue page.
+`lib/hosted-documents.json` records each migrated original's URL, byte count, and
+SHA-256. Tests download the originals directly from Blob and check their hashes.
+
+For new documents, prefer the editorial panel when its content model supports the
+requested change. Otherwise upload to Blob at a unique immutable path and use the
+returned public URL. Do not add large document binaries to `public/`. Verify the
+hosted file against the approved original before publishing its link. Never place
+the Blob read/write token in browser code or commit it.
+
+Run broad browser checks locally or on previews, followed by focused production
+checks of the affected routes, languages, interactions, and desktop/mobile views.
+Complete local validation before pushing a reviewable branch to avoid redundant
+preview builds. Preserve the required checks and per-change merge/deploy process.
+
 ## Website videos
 
 When a task requests uploading or publishing a video on the APSVT website, host the video on the configured YouTube channel and embed or link the resulting YouTube URL in the requested page. Do not store the video binary in this repository or the website's file storage. This convention also applies to website requests received by email.

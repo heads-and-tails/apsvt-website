@@ -1,8 +1,20 @@
 import assert from "node:assert/strict";
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir } from "./published-files.mjs";
 import test from "node:test";
 import { strFromU8, unzipSync } from "fflate";
 import { createHash } from "node:crypto";
+
+test("keeps archived document URLs working while the catalogue remains a page", async () => {
+  const path = "/documents/admissions/exam-programs/2026/master/social-work.pdf";
+  const response = await render(`${path}?download=1`);
+  assert.equal(response.status, 308);
+  const location = new URL(response.headers.get("location"));
+  assert.equal(location.origin, "https://bscmsv7ysiioa246.public.blob.vercel-storage.com");
+  assert.equal(location.pathname, `/website-20261114${path}`);
+  assert.equal((await render("/documents")).status, 200);
+  assert.equal((await render("/documents/regulations")).status, 200);
+  assert.equal((await render("/documents/archive")).status, 200);
+});
 
 test("publishes the approved language-of-instruction sentence prominently on the Ukrainian homepage", async () => {
   const sentence = "Мовою освітнього процесу в Академії праці, соціальних відносин і туризму є державна мова";

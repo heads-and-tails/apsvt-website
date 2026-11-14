@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile } from "./published-files.mjs";
 import test from "node:test";
 import ts from "typescript";
 import { createElement } from "react";
