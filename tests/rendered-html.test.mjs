@@ -104,6 +104,26 @@ test("opens the complete PhD teaching timetable from programmes and official doc
   assert.equal(createHash("sha256").update(bytes).digest("hex"), "7f828fb7353bc471e61fd85970f9feafd066cbfb53c4f2c6d3a3efb37165b22c");
 });
 
+test("opens the original postgraduate educational-process schedule for both semesters", async () => {
+  const html = await (await render("/research/postgraduate-doctoral")).text();
+  const href = "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/phd-process-20261114/educational-process-2026-2027-semesters-1-2-jdiFNBD68QTQVhB1BlnWBzIBeSrzUC.pdf";
+  for (const id of ["programmes", "documents"]) {
+    const section = html.split(`id="${id}"`)[1].split("</section>")[0];
+    assert.equal(section.split(`href="${href}"`).length - 1, 1);
+    const link = section.split(`href="${href}"`)[1].split("</a>")[0];
+    assert.match(link, /target="_blank"/);
+    assert.match(link, /rel="noreferrer"/);
+    assert.match(link, /Графік освітнього процесу аспірантури — І та ІІ семестри 2026\/2027/);
+    assert.match(link, /PDF · 1 сторінка/);
+  }
+  const response = await fetch(href, { signal: AbortSignal.timeout(60_000) });
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type"), /application\/pdf/);
+  const bytes = Buffer.from(await response.arrayBuffer());
+  assert.equal(bytes.length, 218605);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), "a698b6f3655dcf9cb83b0e7c0abb5cd9be8fe7d2f2e9f8dea3480b77e087485a");
+});
+
 test("links the original faculty consultation schedule beside the three departments", async () => {
   const path = "/departments/psychology-social-development-faculty";
   const html = await (await render(path)).text();

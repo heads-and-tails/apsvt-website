@@ -4,6 +4,12 @@ export const phdTeachingSchedule = {
   meta: "PDF · 5 сторінок",
 } as const;
 
+export const phdEducationalProcessSchedule = {
+  title: "Графік освітнього процесу аспірантури — І та ІІ семестри 2026/2027",
+  href: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/phd-process-20261114/educational-process-2026-2027-semesters-1-2-jdiFNBD68QTQVhB1BlnWBzIBeSrzUC.pdf",
+  meta: "PDF · 1 сторінка",
+} as const;
+
 export const doctoralRegulation = {
   title: "Положення про докторантуру АПСВТ — 2026",
   href: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/doctoral-20261114/doctoral-regulation-2026.pdf",
