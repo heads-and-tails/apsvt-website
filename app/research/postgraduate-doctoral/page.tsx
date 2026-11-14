@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { phdTeachingSchedule, psychologyDoctoralDocuments } from "../../../lib/postgraduate-documents";
+import { doctoralRegulation, phdTeachingSchedule, psychologyDoctoralDocuments } from "../../../lib/postgraduate-documents";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { SectionHub, type SectionHubItem } from "../../components/SectionHub";
@@ -42,6 +42,7 @@ const phdDocuments = [
 const doctoralDocuments = [
   ["Наказ про відкриття докторантури у 2026 році", "/documents/research/postgraduate-doctoral/2026/doctoral-programme-opening-2026.pdf", "PDF · 2 сторінки"],
   ["Вартість навчання в докторантурі у 2026 році", "/documents/research/postgraduate-doctoral/2026/doctoral-tuition-2026.pdf", "PDF · 1 сторінка"],
+  [doctoralRegulation.title, doctoralRegulation.href, doctoralRegulation.meta],
 ] as const;
 
 const postgraduateSections: readonly SectionHubItem[] = [
@@ -173,6 +174,9 @@ export default function Page() {
               {psychologyDoctoralDocuments.map((document, index) => <a href={document.href} target="_blank" rel="noreferrer" key={document.href}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{document.meta}</small><b>{document.title}</b></div><strong>↗</strong></a>)}
             </nav>}
           </article>)}
+        </div>
+        <div className="postgraduate-document-list postgraduate-doctoral-resources">
+          <a href={doctoralRegulation.href} target="_blank" rel="noreferrer"><span>PDF</span><div><small>{doctoralRegulation.meta}</small><b>{doctoralRegulation.title}</b></div><strong>↗</strong></a>
         </div>
         <p className="postgraduate-disclaimer">Опубліковані документи підтверджують відкриття спеціальностей і вартість підготовки. Умови подання матеріалів та індивідуальний маршрут вступу варто попередньо узгодити з відділом аспірантури та докторантури.</p>
       </div>
