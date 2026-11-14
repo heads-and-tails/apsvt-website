@@ -11,6 +11,11 @@ import { financeConferenceCardImage, financeConferenceNewsSlug } from "./finance
 type EditorialImage = Pick<Post, "imageUrl" | "imageAlt"> & { imageFit?: "contain" | "cover" };
 
 const editorialImages: Record<string, EditorialImage> = {
+  "vitaiemo-mahistriv-pravo-naukovi-zdobutky-2026": {
+    imageUrl: "https://bscmsv7ysiioa246.public.blob.vercel-storage.com/news/law-masters-20261114/photo-5.jpeg",
+    imageAlt: "Магістри ОПП «Право» з подяками ректора за наукові здобутки",
+    imageFit: "contain",
+  },
   [financeOpenForActionNewsSlug]: financeOpenForActionImage,
   [financeConferenceNewsSlug]: financeConferenceCardImage,
   [nadrahaGuestLectureNewsSlug]: nadrahaGuestLecturePortrait,

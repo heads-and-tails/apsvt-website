@@ -11,6 +11,8 @@ import { empowerEastKickoffNewsSlug } from "@/lib/empower-east-news";
 import { financeOpenForActionNewsSlug } from "@/lib/finance-open-for-action-news";
 import { financeConferenceNewsSlug } from "@/lib/finance-conference-news";
 
+import { lawMastersNewsSlug } from "@/lib/law-masters-news";
+
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ slug: string }> };
 
@@ -22,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function NewsArticle({ params }: Props) {
   const { slug } = await params;
-  if (slug === empowerEastKickoffNewsSlug || slug === financeConferenceNewsSlug || slug === financeOpenForActionNewsSlug) redirect(`/news/${slug}`);
+  if (slug === lawMastersNewsSlug || slug === empowerEastKickoffNewsSlug || slug === financeConferenceNewsSlug || slug === financeOpenForActionNewsSlug) redirect(`/news/${slug}`);
   const post = englishPosts.find((item) => item.slug === slug);
   if (!post) notFound();
   const original = await getPostBySlug(slug);
